@@ -98,6 +98,7 @@ public class PlayGame extends SimpleApplication implements AnimEventListener{
         
         //registerScene("town.zip", "main.scene");
         loadScene("Scenes/town/main.j3o");
+        //loadScene("Scenes/shore/mainScene.j3o");
         setCollisionPhysics();
         initKeyEvent();
         addAmbientLight();
@@ -148,8 +149,7 @@ public class PlayGame extends SimpleApplication implements AnimEventListener{
             firstPersonPlayer.setFallSpeed(30);
             appState.getPhysicsSpace().add(landScape);
             appState.getPhysicsSpace().add(firstPersonPlayer);
-            
-            
+                        
     }
     
     public void createRock(){
@@ -183,12 +183,12 @@ public class PlayGame extends SimpleApplication implements AnimEventListener{
         
     }
     
-    public void showGuiText(String text){
-      guiNode.detachAllChildren();
+    public void showGuiText(String text, int posx, int posy){
+      
       BitmapText title = new BitmapText(assetManager.loadFont("Interface/Fonts/Default.fnt"), false);
       title.setText(text);
       title.setSize(assetManager.loadFont("Interface/Fonts/Default.fnt").getCharSet().getRenderedSize());
-      title.setLocalTranslation(500, 700, 0);
+      title.setLocalTranslation(posx, posy, 0);
       guiNode.attachChild(title);
       
     }
@@ -203,33 +203,37 @@ public class PlayGame extends SimpleApplication implements AnimEventListener{
 //    }
     
     public void loadScene(String gameLevel){
-        loadAudio();
+        
+        if (gameLevel.contains("town")){ loadAudio("Sound/Environment/Ocean Waves.ogg", "Scenes/town/music_level_town.ogg");}
+        if (gameLevel.contains("shore")){ loadAudio("Sound/Environment/Ocean Waves.ogg", "Scenes/shore/music_level_shore.ogg");}
+                
         level = assetManager.loadModel(gameLevel);
-        //level.setLocalTranslation(0, 0, 0);
+        
         level.setLocalScale(2f);        
         rootNode.attachChild(level);
+        
+        showGuiText("Level: "+gameLevel, 500, 500);
         
                 
     }
     
-    private void loadAudio(){
+    private void loadAudio(String ambsound, String levelmusic){
         
-        levelAmbientSound = new AudioNode(assetManager, "Sound/Environment/Ocean Waves.ogg", DataType.Stream); 
+        levelAmbientSound = new AudioNode(assetManager, ambsound, DataType.Stream); 
         levelAmbientSound.setLooping(true);
         levelAmbientSound.setPositional(true);
         levelAmbientSound.setVolume(2);
         rootNode.attachChild(levelAmbientSound);
         levelAmbientSound.play();
         
-        String levelMusicTitle = "Music/Soundtracks/forest.wav";
-        levelMusic = new AudioNode(assetManager, levelMusicTitle, DataType.Stream); 
-        levelMusic.setLooping(true);
+        levelMusic = new AudioNode(assetManager, levelmusic, DataType.Stream); 
+        levelMusic.setLooping(false);
         levelMusic.setPositional(false);
         levelMusic.setVolume(2);
         rootNode.attachChild(levelMusic);
         levelMusic.play();
         
-        showGuiText("Now playing: "+levelMusicTitle);
+        showGuiText("Now playing: "+levelmusic, 500, 700);
     }
     
     @Override
