@@ -1,0 +1,12 @@
+Material shinyMat : Common/MatDefs/Light/Lighting.j3md {
+     MaterialParameters {
+        NormalMap : "Textures/Terrain/Pond/Pond_normal.png"
+        DiffuseMap : "Textures/Terrain/Pond/Pond.jpg"
+        UseMaterialColors: true
+        Specular: 1.0 1.0 1.0 1.0
+        Diffuse: 1.0 1.0 1.0 1.0
+        Shininess: 64.0
+     }
+    AdditionalRenderState {
+    }
+}
