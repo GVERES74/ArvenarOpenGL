@@ -26,11 +26,11 @@ import com.jme3.effect.shapes.EmitterSphereShape;
 import com.jme3.font.BitmapText;
 import com.jme3.input.KeyInput;
 import com.jme3.input.controls.ActionListener;
+import com.jme3.input.controls.AnalogListener;
 import com.jme3.input.controls.KeyTrigger;
 import com.jme3.light.DirectionalLight;
 import com.jme3.material.Material;
 import com.jme3.math.Vector3f;
-import com.jme3.renderer.Camera;
 import com.jme3.scene.Geometry;
 import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
@@ -67,8 +67,6 @@ public class GameAppState extends AbstractAppState implements AnimEventListener{
     private AnimControl control;
     
     ParticleEmitter precipitationParticleEmitter;
-    
-    
     
     
     @Override
@@ -199,7 +197,7 @@ public class GameAppState extends AbstractAppState implements AnimEventListener{
             level.setLocalScale(2f);        
             this.app.getRootNode().attachChild(level);
 
-            showGuiText("Level: "+gameLevel, 500, 500);
+            showGuiText("Level: "+gameLevel, 500, 650);
              
         }
     
@@ -222,7 +220,7 @@ public class GameAppState extends AbstractAppState implements AnimEventListener{
             levelMusic.play();
 
             levelMiscSound = new AudioNode(this.app.getAssetManager(), levelmisc, AudioData.DataType.Buffer); 
-            levelMiscSound.setLooping(false);
+            levelMiscSound.setLooping(true);
             levelMiscSound.setPositional(false);
             levelMiscSound.setVolume(2);
             this.app.getRootNode().attachChild(levelMiscSound);
@@ -239,6 +237,7 @@ public class GameAppState extends AbstractAppState implements AnimEventListener{
             this.app.getInputManager().addMapping("Jump", new KeyTrigger(KeyInput.KEY_SPACE));
 
             this.app.getInputManager().addListener(actionListener, "Forward", "Backward", "StrafeLeft", "StrafeRight", "Jump");
+            
         }
         
     
@@ -266,7 +265,7 @@ public class GameAppState extends AbstractAppState implements AnimEventListener{
         );
     }
     
-         private ActionListener actionListener = new ActionListener(){
+        private ActionListener actionListener = new ActionListener(){
             public void onAction (String keyBinding, boolean keyPressed, float tpf){
                 switch (keyBinding){
                     
@@ -276,8 +275,23 @@ public class GameAppState extends AbstractAppState implements AnimEventListener{
                     case "StrafeRight": keyD = keyPressed; break;
                     case "Jump": if (keyPressed) {firstPersonPlayer.jump(new Vector3f(0,20f,0));}; break;
                 }
-                levelMiscSound.playInstance();
+                
+                if (keyPressed) {   
+                    levelMiscSound.play();}
+                else if (!keyPressed){
+                    levelMiscSound.stop();
+                }
+                
             }
+        };
+         
+         
+        private AnalogListener analogListener = new AnalogListener(){
+        
+        @Override
+            public void onAnalog(String keyBinding, float value, float tpf) {
+            
+        }
         };
         
     
@@ -285,6 +299,8 @@ public class GameAppState extends AbstractAppState implements AnimEventListener{
     @Override
     public void cleanup() {
         super.cleanup();
+        
+        this.app.getRootNode().detachAllChildren();
         //TODO: clean up what you initialized in the initialize method,
         //e.g. remove all spatials from rootNode
         //this is called on the OpenGL thread after the AppState has been detached
