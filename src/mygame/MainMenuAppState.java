@@ -42,8 +42,6 @@ public class MainMenuAppState extends BaseAppState{
     private Node startGUINode = new Node("Main Menu GUINode");
     private AudioNode mainMenuThemePlayer;
     
-    BitmapText startGameText, gameOptionsText, exitGameText; 
-        
     
     @Override
     public void initialize(Application app) {
@@ -60,6 +58,7 @@ public class MainMenuAppState extends BaseAppState{
         loadMenuMusic();
         
         createMainMenu();
+        initMenuControls();
         
         
     //TODO: initialize your AppState, e.g. attach spatials to rootNode
@@ -128,14 +127,14 @@ public class MainMenuAppState extends BaseAppState{
                 pemitter.setEndColor(  new ColorRGBA(1f, 0f, 0f, 1f));   // red
                 pemitter.setStartColor(new ColorRGBA(1f, 1f, 0f, 0.5f)); // yellow
                 pemitter.setLowLife(0.5f);
-                pemitter.setHighLife(2.0f);
+                pemitter.setHighLife(1.0f);
                 pemitter.setStartSize(0.5f);
                 pemitter.setEndSize(0.1f);
                 pemitter.getParticleInfluencer().setInitialVelocity(new Vector3f(0,5,0));
                 pemitter.getParticleInfluencer().setVelocityVariation(0.3f);
                 pemitter.setLocalTranslation(0, 0, -15);
                 pemitter.setNumParticles(200);
-                //pemitter.setParticlesPerSec(20);
+                pemitter.setParticlesPerSec(20);
                 startRootNode.attachChild(pemitter);
             
     }
@@ -153,12 +152,20 @@ public class MainMenuAppState extends BaseAppState{
              
              public void createMainMenu(){
                 this.app.setDisplayStatView(false); this.app.setDisplayFps(false);
-                startGameText = new BitmapText(this.app.getAssetManager().loadFont("Interface/Fonts/Default.fnt"), false);
-                startGameText.setText("Start New Game");
-                startGameText.setSize(this.app.getAssetManager().loadFont("Interface/Fonts/Default.fnt").getCharSet().getRenderedSize());
-                startGameText.setLocalTranslation(50, 600, 0);
-                 
-                startGUINode.attachChild(startGameText);
+                createMenuText("Start New Game", 50, 800);
+                createMenuText("Game Options", 50, 700);
+                createMenuText("Credits", 50, 600);
+                createMenuText("Exit Game", 50, 500);
+             }
+             
+             public void createMenuText(String name, float posx, float posy){
+                BitmapText menuItemText = new BitmapText(this.app.getAssetManager().loadFont("Interface/Fonts/Antiqua.fnt"), false);
+                menuItemText.setText(name);
+                menuItemText.setSize(this.app.getAssetManager().loadFont("Interface/Fonts/Antiqua.fnt").getCharSet().getRenderedSize());
+                menuItemText.setLocalTranslation(posx, posy, 0);
+                menuItemText.setColor(ColorRGBA.White);
+                
+                startGUINode.attachChild(menuItemText);
              }
     
     @Override
@@ -187,7 +194,7 @@ public class MainMenuAppState extends BaseAppState{
         @Override
         public void onAction(String name, boolean keyPressed, float tpf) {
             if (name.equals("MBLeft")) {
-                
+                app.setDisplayStatView(true);
             }
         }
     };
