@@ -36,8 +36,8 @@ public class PlayGame extends SimpleApplication implements AnimEventListener{
         GameAppState gameAppState = new GameAppState();
         MainMenuAppState menuAppState = new MainMenuAppState();
         
-//        this.stateManager.attach(menuAppState);
-        this.stateManager.attach(gameAppState);
+        this.stateManager.attach(menuAppState);
+//        this.stateManager.attach(gameAppState);
         
          /** Load a Node from a .j3o file */
                   
