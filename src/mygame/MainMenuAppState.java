@@ -79,7 +79,7 @@ public class MainMenuAppState extends BaseAppState{
         public void loadMainScene(){
             mainScene = this.app.getAssetManager().loadModel("Scenes/MainMenu/mainMenuScene.j3o");
             this.app.getRootNode().attachChild(mainScene);
-            this.app.getCamera().setLocation(new Vector3f(35f, 3f, 3f));
+            this.app.getCamera().setLocation(new Vector3f(10f, 3f, 5f));
             this.app.getCamera().setRotation(new Quaternion().fromAngleAxis(0, Vector3f.UNIT_Y)); //initial camera direction
             
         }
@@ -96,23 +96,29 @@ public class MainMenuAppState extends BaseAppState{
     
         public void loadSceneModels(){
 
-            createModel("stump_roundDetailed.glb", 17f, 0.1f, -15f, 6f);
-            createModel("tree_pineTallD_detailed.glb", 30f, 0.1f, -25, 10f);
-            createModel("grass.glb", 20f, 0.3f, -15f, 5f);
-            createModel("grass_large.glb", 17f, 0.3f, -10f, 5f);
-            createModel("campfire_logs.glb", 25f, 0.2f, -15f, 5f);
-            createModel("campfire_stones.glb", 25f, 0.2f, -15f, 6f);
-            createModel("bed_floor.glb", 30f, 0.2f, -15f, 6f);
-            createModel("Crate-04.j3o", 20f, 0.2f, -22f, 2f);
+            createModel("stump_roundDetailed.glb", 17f, 0.1f, -15f, 0f, 4f);
+            createModel("tree_pineTallD_detailed.glb", 30f, 0.1f, -25, 0f, 8f);
+            createModel("grass.glb", 20f, 0.3f, -15f, 0f, 3f);
+            createModel("grass_large.glb", 17f, 0.3f, -10f, 0f, 3f);
+            createModel("campfire_logs.glb", 0f, 0.1f, 0, 0f, 2f);
+            createModel("campfire_stones.glb", -0.2f, 0.1f, 0, 0f, 3f);
+            createModel("bed_floor.glb", 1f, 0.1f, 3f, 0f, 3f);
+            createModel("Crate-04.j3o", 25f, 0.1f, -15f, 1f, 2f);
+            createModel("mini_wood_barrel.obj", 26f, 0.1f, -14f, 2f, 0.02f);
+            createModel("tree_pineDefaultA.glb", -4f, 0.0f, -5f, 0f, 6f);
+            createModel("tent_detailedOpen.glb", -5f, 0.3f, 3f, 80f, 6f);
+            createModel("sign.glb", 25f, 0.1f, -10f, 90f, 5f);
+            
 
         }
     
-        public void createModel(String modelName, float xpos, float ypos, float zpos, float scale){
+        public void createModel(String modelName, float xpos, float ypos, float zpos, float yaw, float scale){
             Spatial model = this.app.getAssetManager().loadModel("Models/"+modelName);
             
             model.setMaterial((Material) this.app.getAssetManager().loadMaterial("Materials/wood.j3m"));
             
             model.setLocalTranslation(xpos, ypos, zpos);
+            model.rotate(0, yaw, 0);
             model.setLocalScale(scale);
             startRootNode.attachChild(model);
         }
@@ -136,7 +142,7 @@ public class MainMenuAppState extends BaseAppState{
             pemitter.setEndSize(1.0f);
             pemitter.getParticleInfluencer().setInitialVelocity(new Vector3f(0,-20,0));
             pemitter.getParticleInfluencer().setVelocityVariation(0.5f);
-            pemitter.setLocalTranslation(0, 50, 0);
+            pemitter.setLocalTranslation(25f, 50f, 15f);
             pemitter.setNumParticles(500);
             pemitter.setParticlesPerSec(20);
             pemitter.setShape(new EmitterSphereShape(Vector3f.ZERO,100f));
@@ -154,12 +160,12 @@ public class MainMenuAppState extends BaseAppState{
             pemitter.setEndColor(  new ColorRGBA(1f, 0f, 0f, 1f));   // red
             pemitter.setStartColor(new ColorRGBA(1f, 1f, 0f, 0.5f)); // yellow
             pemitter.setLowLife(0.5f);
-            pemitter.setHighLife(1.0f);
-            pemitter.setStartSize(0.5f);
+            pemitter.setHighLife(1.5f);
+            pemitter.setStartSize(0.4f);
             pemitter.setEndSize(0.1f);
-            pemitter.getParticleInfluencer().setInitialVelocity(new Vector3f(0,2,0));
+            pemitter.getParticleInfluencer().setInitialVelocity(new Vector3f(0,1,0));
             pemitter.getParticleInfluencer().setVelocityVariation(0.3f);
-            pemitter.setLocalTranslation(25f, 0.2f, -15f);
+            pemitter.setLocalTranslation(0f, 0.3f, 0f);
             pemitter.setNumParticles(200);
             pemitter.setParticlesPerSec(20);
             startRootNode.attachChild(pemitter);
