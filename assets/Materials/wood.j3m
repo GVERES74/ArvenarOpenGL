@@ -1,0 +1,10 @@
+Material woodmaterial : Common/MatDefs/Light/Lighting.j3md {
+              MaterialParameters {
+                DiffuseMap: Textures/Material/wooden_diffuse.tga
+                NormalMap:  Textures/Material/wooden_normal.tga
+		UseMaterialColors: true
+	        Specular: 1.0 1.0 1.0 1.0
+        	Diffuse: 1.0 1.0 1.0 1.0
+	        Shininess: 20.0 
+        
+  }

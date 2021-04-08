@@ -22,8 +22,11 @@ public class PlayGame extends SimpleApplication implements AnimEventListener{
     public static void main(String[] args) {
                 
         PlayGame app = new PlayGame();
-        app.start();
         AppSettings settings = new AppSettings(true);
+        settings.setResolution(1366, 768);
+                
+        app.start();
+        
         settings.setTitle("Arvenar 3D OpenGl");
         app.setSettings(settings);
         
