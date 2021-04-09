@@ -5,10 +5,10 @@
  */
 package mygame;
 
-import com.jme3.animation.AnimChannel;
-import com.jme3.animation.AnimControl;
-import com.jme3.animation.AnimEventListener;
+import Utils.MaterialCreator;
+import Utils.WaterCreator;
 import com.jme3.app.Application;
+import com.jme3.app.LegacyApplication;
 import com.jme3.app.SimpleApplication;
 import com.jme3.app.state.BaseAppState;
 import com.jme3.audio.AudioNode;
@@ -22,15 +22,21 @@ import com.jme3.input.controls.ActionListener;
 import com.jme3.input.controls.KeyTrigger;
 import com.jme3.input.controls.MouseButtonTrigger;
 import com.jme3.light.DirectionalLight;
-import com.jme3.light.Light;
 import com.jme3.material.Material;
+
 import com.jme3.math.ColorRGBA;
 import com.jme3.math.FastMath;
+import com.jme3.math.Plane;
 import com.jme3.math.Quaternion;
+import com.jme3.math.Vector2f;
 import com.jme3.math.Vector3f;
+import com.jme3.renderer.queue.RenderQueue;
+import com.jme3.renderer.queue.RenderQueue.ShadowMode;
+import com.jme3.scene.Geometry;
 import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
-import com.jme3.system.AppSettings;
+import com.jme3.scene.shape.Quad;
+import com.jme3.water.SimpleWaterProcessor;
 
 /**
  *
@@ -40,7 +46,7 @@ public class MainMenuAppState extends BaseAppState{
     
     
     private SimpleApplication app;
-    
+         
     private Spatial mainScene;
     private Node startRootNode = new Node("Main Menu RootNode");
     private Node startGUINode = new Node("Main Menu GUINode");
@@ -52,6 +58,7 @@ public class MainMenuAppState extends BaseAppState{
     public void initialize(Application app) {
         
         this.app = (SimpleApplication) app;
+                                
         screenHeight = this.app.getCamera().getHeight();
         screenWidth = this.app.getCamera().getWidth();
         
@@ -63,13 +70,14 @@ public class MainMenuAppState extends BaseAppState{
         loadMainScene();
         createWorldLight();
         loadSceneModels();
+        createSimpleWater(30, 25, -15f, -1f, -12f);
+        createSimpleWater(10, 15, 22f, -0.5f, 5f);
         createPrecipitation();
         createFirePlace();
         loadMenuMusic();
         
         createMainMenu();
         initMenuControls();
-        
         
     //TODO: initialize your AppState, e.g. attach spatials to rootNode
         //this is called on the OpenGL thread after the AppState has been attached
@@ -96,27 +104,42 @@ public class MainMenuAppState extends BaseAppState{
     
         public void loadSceneModels(){
 
-            createModel("stump_roundDetailed.glb", 17f, 0.1f, -15f, 0f, 4f);
-            createModel("tree_pineTallD_detailed.glb", 30f, 0.1f, -25, 0f, 8f);
-            createModel("grass.glb", 20f, 0.3f, -15f, 0f, 3f);
-            createModel("grass_large.glb", 17f, 0.3f, -10f, 0f, 3f);
-            createModel("campfire_logs.glb", 0f, 0.1f, 0, 0f, 2f);
-            createModel("campfire_stones.glb", -0.2f, 0.1f, 0, 0f, 3f);
-            createModel("bed_floor.glb", 1f, 0.1f, 3f, 0f, 3f);
-            createModel("Crate-04.j3o", 25f, 0.1f, -15f, 1f, 2f);
-            createModel("mini_wood_barrel.obj", 26f, 0.1f, -14f, 2f, 0.02f);
-            createModel("tree_pineDefaultA.glb", -4f, 0.0f, -5f, 0f, 6f);
-            createModel("tent_detailedOpen.glb", -5f, 0.3f, 3f, 80f, 6f);
-            createModel("sign.glb", 25f, 0.1f, -10f, 90f, 5f);
+//            createModel("stump_roundDetailed.glb", 17f, 0.1f, -15f, 0f, 4f);
+            createModel("Models/Tree_Pine/snow_pine_tree.obj", "Models/Tree_Pine/pine_snow.j3m", 35f, 0.1f, -22, 0f, 0.1f);
+            createModel("Models/Tree_Pine/snow_pine_tree.obj", "Models/Tree_Pine/pine_snow.j3m", -8f, 0.0f, -8f, 0f, 0.1f);
+            createModel("Models/Grass/grass.glb", "Models/Grass/grass.j3m", 20f, 0.3f, -15f, 0f, 3f);
+            createModel("Models/Grass/grass_large.glb", "Models/Grass/grass.j3m", 17f, 0.3f, -10f, 0f, 3f);
+            createModel("Models/Bush/bush_round.obj", "Models/Bush/bush_round.j3m", 28f, -0.2f, 5f, 0f, 0.1f);
+            
+            
+            createModel("Models/Campfire/campfire_logs.obj", "Models/Campfire/campfire_logs.j3m", 0f, -0.1f, 0f, 0f, 2f);
+            createModel("Models/Campfire/campfire_stones.obj", "Models/Campfire/campfire_stones.j3m", 0f, -0.1f, 0f, 0f, 3f);
+            createModel("Models/Floorbed/bed_floor.glb", "Models/Floorbed/bed_floor.j3m", 1f, 0.1f, 3f, 0f, 3f);
+            
+            createModel("Models/Crate/Crate-04.obj", "Models/Crate/wood_crate.j3m", 25f, 0.0f, -15f, 1f, 2f);
+            createModel("Models/Crate/Crate-01.obj", "Models/Crate/wood_crate.j3m", 25f, 1.05f, -15f, 3f, 2f);
+            createModel("Models/Crate/Crate-02.obj", "Models/Crate/wood_crate.j3m", 22f, 0.0f, -15f, 6f, 2f);
+            createModel("Models/Crate/Crate-03.obj", "Models/Crate/wood_crate.j3m", 23f, 0.0f, -13f, 19f, 2f);
+            createModel("Models/Crate/Crate-05.obj", "Models/Crate/wood_crate.j3m", 20f, 0.0f, -10f, 0f, 2f);
+            createModel("Models/Crate/Crate-05.obj", "Models/Crate/wood_crate.j3m", 22f, 0.3f, -15f, 0f, 3f);
+            
+            createModel("Models/Cage/CageBed.j3o", "Models/Cage/cage.j3m", 25f, 0.0f, -23f, 2f, 1f);
+            
+            createModel("Models/Barrel/mini_wood_barrel.obj", "Models/Barrel/wood_barrel.j3m", 26f, 0.0f, -14f, 2f, 0.02f);
+            createModel("Models/Barrel/mini_wood_barrel.obj", "Models/Barrel/wood_barrel.j3m", 28f, 0.0f, -21f, 2f, 0.02f);
+            
+            
+            createModel("Models/Tent/tent_detailedOpen.obj", "Models/Tent/tent.j3m", -5f, 0f, 3f, 90f, 6f);
+            createModel("Models/Signpost/sign.obj", "Models/Signpost/signpost.j3m", 25f, -0.5f, -10f, 0f, 5f);
             
 
         }
     
-        public void createModel(String modelName, float xpos, float ypos, float zpos, float yaw, float scale){
-            Spatial model = this.app.getAssetManager().loadModel("Models/"+modelName);
-            
-            model.setMaterial((Material) this.app.getAssetManager().loadMaterial("Materials/wood.j3m"));
-            
+        public void createModel(String modelfile, String custmatfile, float xpos, float ypos, float zpos, float yaw, float scale){
+            Spatial model = this.app.getAssetManager().loadModel(modelfile);
+                        
+                model.setMaterial(this.app.getAssetManager().loadMaterial(custmatfile));
+                                
             model.setLocalTranslation(xpos, ypos, zpos);
             model.rotate(0, yaw, 0);
             model.setLocalScale(scale);
@@ -171,6 +194,26 @@ public class MainMenuAppState extends BaseAppState{
             startRootNode.attachChild(pemitter);
             
         }
+        
+        public void createSimpleWater(float width, float depth, float posx, float posy, float posz){
+            
+            SimpleWaterProcessor waterCreator = new SimpleWaterProcessor(this.app.getAssetManager());
+                                 waterCreator.setReflectionScene(mainScene);
+            
+            Vector3f waterLocation = new Vector3f(0,-6,0);
+            
+            waterCreator.setPlane(new Plane(Vector3f.UNIT_Y, waterLocation.dot(Vector3f.UNIT_Y)));
+            this.app.getViewPort().addProcessor(waterCreator);
+            waterCreator.setWaterDepth(40);
+            waterCreator.setDistortionScale(0.05f);
+            waterCreator.setWaveSpeed(0.05f);
+                                    
+            Geometry watergeom = waterCreator.createWaterGeometry(width, depth);
+                     watergeom.setLocalTranslation(posx, posy, posz);
+                     watergeom.setShadowMode(RenderQueue.ShadowMode.Receive);
+                     watergeom.setMaterial(waterCreator.getMaterial());
+                     startRootNode.attachChild(watergeom);
+    }                 
             
             
         protected void rotateCamera(float value, float tpf
@@ -258,7 +301,8 @@ public class MainMenuAppState extends BaseAppState{
     
     @Override
     public void cleanup(Application app) {
-        
+        startRootNode.detachAllChildren();
+        startGUINode.detachAllChildren();
         //TODO: clean up what you initialized in the initialize method,
         //e.g. remove all spatials from rootNode
         //this is called on the OpenGL thread after the AppState has been detached

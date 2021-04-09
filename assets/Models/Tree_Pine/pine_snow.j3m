@@ -1,0 +1,11 @@
+Material pinetree_snow : Common/MatDefs/Light/Lighting.j3md {
+              MaterialParameters {
+                DiffuseMap:  Models/Tree_Pine/pine_snow_diffuse.tga
+                //NormalMap:  Models/Tree_Pine/pine_snow_normal.tga
+		UseMaterialColors: true
+	        Specular: 1.0 1.0 1.0 1.0
+        	Diffuse: 1.0 1.0 1.0 1.0
+	        Shininess: 20.0 
+        
+  }
+}
