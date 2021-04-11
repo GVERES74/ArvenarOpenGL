@@ -1,17 +1,17 @@
 Material tent : Common/MatDefs/Light/Lighting.j3md {
               MaterialParameters {
-                DiffuseMap:  Models/Tent/thatch.png
+                DiffuseMap:  Repeat Models/Tent/thatch.png
                 //NormalMap:
 		UseMaterialColors: true
 	        Specular: 1.0 1.0 1.0 1.0
         	Diffuse: 1.0 1.0 1.0 1.0
-	        Shininess: 20.0 
+	        Shininess: 10.0 
         
   }
 
 AdditionalRenderState {
        
-        FaceCull Off
+        FaceCull Front
     }
 
 }

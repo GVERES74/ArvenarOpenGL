@@ -52,6 +52,7 @@ public class MainMenuAppState extends BaseAppState{
     private Node startGUINode = new Node("Main Menu GUINode");
     private AudioNode mainMenuThemePlayer;
     float screenHeight, screenWidth;
+    WaterCreator waterproc = new WaterCreator();
         
     
     @Override
@@ -114,7 +115,7 @@ public class MainMenuAppState extends BaseAppState{
             
             createModel("Models/Campfire/campfire_logs.obj", "Models/Campfire/campfire_logs.j3m", 0f, -0.1f, 0f, 0f, 2f);
             createModel("Models/Campfire/campfire_stones.obj", "Models/Campfire/campfire_stones.j3m", 0f, -0.1f, 0f, 0f, 3f);
-            createModel("Models/Floorbed/bed_floor.glb", "Models/Floorbed/bed_floor.j3m", 1f, 0.1f, 3f, 0f, 3f);
+            createModel("Models/Floorbed/bed_floor.obj", "Models/Floorbed/bed_floor.j3m", 1f, 0.1f, 3f, 0f, 3f);
             
             createModel("Models/Crate/Crate-04.obj", "Models/Crate/wood_crate.j3m", 25f, 0.0f, -15f, 1f, 2f);
             createModel("Models/Crate/Crate-01.obj", "Models/Crate/wood_crate.j3m", 25f, 1.05f, -15f, 3f, 2f);
@@ -124,11 +125,11 @@ public class MainMenuAppState extends BaseAppState{
             createModel("Models/Crate/Crate-05.obj", "Models/Crate/wood_crate.j3m", 22f, 0.3f, -15f, 0f, 3f);
             
             createModel("Models/Cage/CageBed.j3o", "Models/Cage/cage.j3m", 25f, 0.0f, -23f, 2f, 1f);
-            
+//            createModel("Models/Trunk/trunk.j3o", "", 5f, 0f, 3f, 90f, 1f);
             createModel("Models/Barrel/mini_wood_barrel.obj", "Models/Barrel/wood_barrel.j3m", 26f, 0.0f, -14f, 2f, 0.02f);
             createModel("Models/Barrel/mini_wood_barrel.obj", "Models/Barrel/wood_barrel.j3m", 28f, 0.0f, -21f, 2f, 0.02f);
             
-            
+            createModel("Models/Stool/DwarfBeerBarrel.j3o", "Models/Stool/stool.j3m", 2f, 0f, -3f, 0f, 0.5f);
             createModel("Models/Tent/tent_detailedOpen.obj", "Models/Tent/tent.j3m", -5f, 0f, 3f, 90f, 6f);
             createModel("Models/Signpost/sign.obj", "Models/Signpost/signpost.j3m", 25f, -0.5f, -10f, 0f, 5f);
             
@@ -138,8 +139,9 @@ public class MainMenuAppState extends BaseAppState{
         public void createModel(String modelfile, String custmatfile, float xpos, float ypos, float zpos, float yaw, float scale){
             Spatial model = this.app.getAssetManager().loadModel(modelfile);
                         
-                model.setMaterial(this.app.getAssetManager().loadMaterial(custmatfile));
-                                
+            if(custmatfile !=""){   
+            model.setMaterial(this.app.getAssetManager().loadMaterial(custmatfile));
+            }                    
             model.setLocalTranslation(xpos, ypos, zpos);
             model.rotate(0, yaw, 0);
             model.setLocalScale(scale);
@@ -294,7 +296,7 @@ public class MainMenuAppState extends BaseAppState{
     @Override
     public void update(float tpf) {
         //TODO: implement behavior during runtime
-        rotateCamera(1,tpf,Vector3f.UNIT_Y);
+//        rotateCamera(1,tpf,Vector3f.UNIT_Y);
         //moveCamera();
        
     }

@@ -1,6 +1,6 @@
 Material signpost : Common/MatDefs/Light/Lighting.j3md {
               MaterialParameters {
-                DiffuseMap:  Models/Signpost/wood2.png
+                DiffuseMap:  Repeat Models/Signpost/wood2.png
                 //NormalMap: 
 		UseMaterialColors: true
 	        Specular: 1.0 1.0 1.0 1.0
