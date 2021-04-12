@@ -1,7 +1,7 @@
 Material wood_crate : Common/MatDefs/Light/Lighting.j3md {
               MaterialParameters {
                 DiffuseMap: Flip Models/Crate/wooden_diffuse.tga
-                NormalMap:  Flip Models/Crate/wooden_normal.tga
+                //NormalMap:  Flip Models/Crate/wooden_normal.tga
 		UseMaterialColors: true
 	        Specular: 1.0 1.0 1.0 1.0
         	Diffuse: 1.0 1.0 1.0 1.0
