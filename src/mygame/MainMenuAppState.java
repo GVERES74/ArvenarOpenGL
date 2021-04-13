@@ -11,6 +11,7 @@ import com.jme3.app.Application;
 import com.jme3.app.LegacyApplication;
 import com.jme3.app.SimpleApplication;
 import com.jme3.app.state.BaseAppState;
+import com.jme3.audio.AudioData.DataType;
 import com.jme3.audio.AudioNode;
 import com.jme3.effect.ParticleEmitter;
 import com.jme3.effect.ParticleMesh;
@@ -51,7 +52,7 @@ public class MainMenuAppState extends BaseAppState{
     private Spatial mainScene;
     private Node startRootNode = new Node("Main Menu RootNode");
     private Node startGUINode = new Node("Main Menu GUINode");
-    private AudioNode mainMenuThemePlayer;
+    private AudioNode mainMenuThemePlayer, ambSoundNode, plainSoundNode;
     float screenHeight, screenWidth;
     WaterCreator waterproc = new WaterCreator();
     BitmapText menuItemText, camPosInfoText;
@@ -77,9 +78,13 @@ public class MainMenuAppState extends BaseAppState{
         createSimpleWater(10, 20, 22f, -0.5f, 5f);
         createPrecipitation();
         createFirePlace();
-        createCreek();
+        createWaterStream();
         createWaterFall();
         loadMenuMusic();
+        
+        loadAmbientSound("Sounds/Ambient/Water/waterstream.ogg", true, true, 0.5f, 23f, -0.5f, -11f);
+        loadAmbientSound("Sounds/Ambient/Water/waterfall_01.ogg", true, false, 0.5f, 32f, 2f, -2f);
+        loadAmbientSound("Sounds/Ambient/Fire/torchBurning.ogg", true, true, 1.0f, 0f, 0f, 0f);
         
         createMainMenu();
         initMenuControls();
@@ -106,6 +111,20 @@ public class MainMenuAppState extends BaseAppState{
             mainMenuThemePlayer.play();
 
         }
+        
+        public void loadAmbientSound(String file, Boolean looping, Boolean positional, float vol, float posx, float posy, float posz){
+
+            ambSoundNode = new AudioNode(this.app.getAssetManager(), file);
+            ambSoundNode.setLooping(looping);
+            ambSoundNode.setPositional(positional);
+            ambSoundNode.setLocalTranslation(posx, posy, posz);
+            ambSoundNode.setMaxDistance(5);
+            ambSoundNode.setVolume(vol);
+            
+            startRootNode.attachChild(ambSoundNode);
+            ambSoundNode.play();
+
+        }
     
         public void loadSceneModels(){
 
@@ -128,12 +147,12 @@ public class MainMenuAppState extends BaseAppState{
             createModel("Models/Campfire/campfire_stones.obj", "Models/Campfire/campfire_stones.j3m", 0f, -0.1f, 0f, 0f, 3f);
             createModel("Models/Floorbed/bed_floor.obj", "Models/Floorbed/bed_floor.j3m", 1f, 0.1f, 3f, 0f, 3f);
             
-            createModel("Models/Crate/Crate-04.obj", "Models/Crate/wood_crate.j3m", 33f, 0.0f, -17f, 1f, 2f);
-            createModel("Models/Crate/Crate-01.obj", "Models/Crate/wood_crate.j3m", 33f, 1.05f, -17f, 3f, 2f);
-            createModel("Models/Crate/Crate-02.obj", "Models/Crate/wood_crate.j3m", 30f, 0.0f, -17f, 6f, 2f);
-            createModel("Models/Crate/Crate-03.obj", "Models/Crate/wood_crate.j3m", 31f, 0.0f, -15f, 19f, 2f);
+            createModel("Models/Crate/Crate-04.obj", "Models/Crate/wood_crate.j3m", 28f, 0.0f, -20f, 1f, 2f);
+            createModel("Models/Crate/Crate-01.obj", "Models/Crate/wood_crate.j3m", 28f, 1.05f, -20f, 3f, 2f);
+            createModel("Models/Crate/Crate-02.obj", "Models/Crate/wood_crate.j3m", 27f, 0.0f, -18f, 6f, 2f);
+            createModel("Models/Crate/Crate-03.obj", "Models/Crate/wood_crate.j3m", 27f, 0.0f, -22f, 19f, 2f);
             createModel("Models/Crate/Crate-05.obj", "Models/Crate/wood_crate.j3m", 20f, 0.0f, -8f, 0f, 2f);
-            createModel("Models/Crate/Crate-05.obj", "Models/Crate/wood_crate.j3m", 30f, 0.3f, -17f, 0f, 3f);
+            createModel("Models/Crate/Crate-05.obj", "Models/Crate/wood_crate.j3m", 27f, 0.3f, -18f, 0f, 3f);
             
             createModel("Models/Cage/CageBed.j3o", "Models/Cage/cage.j3m", 25f, 0.0f, -24f, 2f, 1f);
 //            createModel("Models/Trunk/trunk.j3o", "", 5f, 0f, 3f, 90f, 1f);
@@ -208,27 +227,27 @@ public class MainMenuAppState extends BaseAppState{
             
         }
         
-        public void createCreek(){
-            ParticleEmitter creekemitter = new ParticleEmitter("Emitter", ParticleMesh.Type.Triangle, 30);
+        public void createWaterStream(){
+            ParticleEmitter wstreamEmitter = new ParticleEmitter("Emitter", ParticleMesh.Type.Triangle, 30);
             Material waterMaterial = new Material(this.app.getAssetManager(), "Common/MatDefs/Misc/Particle.j3md");
             waterMaterial.setTexture("Texture", this.app.getAssetManager().loadTexture("Effects/Explosion/flame.png"));
-            creekemitter.setMaterial(waterMaterial);
-            creekemitter.setImagesX(2);
-            creekemitter.setImagesY(2);
-            creekemitter.setEndColor(ColorRGBA.Blue);   
-            creekemitter.setStartColor(ColorRGBA.Cyan); 
-            creekemitter.setLowLife(10f);
-            creekemitter.setHighLife(30f);
-            creekemitter.setStartSize(1.5f);
-            creekemitter.setEndSize(0.1f);
-            creekemitter.setGravity(0, 0, 0);
-            creekemitter.getParticleInfluencer().setInitialVelocity(new Vector3f(-1,-0.1f,-1));
-            creekemitter.getParticleInfluencer().setVelocityVariation(0.1f);
-            creekemitter.setLocalTranslation(32f, -0.7f, -2f);
-            creekemitter.setNumParticles(300);
-            creekemitter.setParticlesPerSec(50);
-            creekemitter.setShape(new EmitterBoxShape(new Vector3f(-2f,-1f,-1f),new Vector3f(2f,1f,1f)));
-            startRootNode.attachChild(creekemitter);
+            wstreamEmitter.setMaterial(waterMaterial);
+            wstreamEmitter.setImagesX(2);
+            wstreamEmitter.setImagesY(2);
+            wstreamEmitter.setEndColor(ColorRGBA.Blue);   
+            wstreamEmitter.setStartColor(ColorRGBA.Cyan); 
+            wstreamEmitter.setLowLife(5f);
+            wstreamEmitter.setHighLife(20f);
+            wstreamEmitter.setStartSize(1.0f);
+            wstreamEmitter.setEndSize(0.1f);
+            wstreamEmitter.setGravity(0, 0, 0);
+            wstreamEmitter.getParticleInfluencer().setInitialVelocity(new Vector3f(-1,-0.1f,-1));
+            wstreamEmitter.getParticleInfluencer().setVelocityVariation(0.1f);
+            wstreamEmitter.setLocalTranslation(32f, -0.7f, -2f);
+            wstreamEmitter.setNumParticles(300);
+            wstreamEmitter.setParticlesPerSec(50);
+            wstreamEmitter.setShape(new EmitterBoxShape(new Vector3f(-1f,-0.5f,-1f),new Vector3f(1f,0.5f,1f)));
+            startRootNode.attachChild(wstreamEmitter);
             
         }
         
@@ -241,14 +260,14 @@ public class MainMenuAppState extends BaseAppState{
             waterfallemitter.setImagesY(2);
             waterfallemitter.setEndColor(ColorRGBA.Blue);   
             waterfallemitter.setStartColor(ColorRGBA.Cyan); 
-            waterfallemitter.setLowLife(10f);
-            waterfallemitter.setHighLife(15f);
+            waterfallemitter.setLowLife(5f);
+            waterfallemitter.setHighLife(10f);
             waterfallemitter.setStartSize(1.5f);
-            waterfallemitter.setEndSize(0.1f);
+            waterfallemitter.setEndSize(0.5f);
             waterfallemitter.setGravity(0, 0, 0);
-            waterfallemitter.getParticleInfluencer().setInitialVelocity(new Vector3f(0f,-2f,0f));
+            waterfallemitter.getParticleInfluencer().setInitialVelocity(new Vector3f(-0.8f,-2f,0.0f));
             waterfallemitter.getParticleInfluencer().setVelocityVariation(0.1f);
-            waterfallemitter.setLocalTranslation(32f, 10f, -2f);
+            waterfallemitter.setLocalTranslation(35.5f, 10f, -3f);
             waterfallemitter.setNumParticles(300);
             waterfallemitter.setParticlesPerSec(50);
             waterfallemitter.setShape(new EmitterBoxShape(new Vector3f(-1f,-1f,-1f),new Vector3f(1f,1f,1f)));
@@ -298,12 +317,19 @@ public class MainMenuAppState extends BaseAppState{
         
         protected void moveCamera(){
             float moveX = this.app.getCamera().getDirection().x/500;
-            float moveZ = this.app.getCamera().getDirection().z/500;
+            float moveZ = this.app.getCamera().getDirection().z/300;
             float camx = this.app.getCamera().getLocation().x;
             float camz = this.app.getCamera().getLocation().z;
             float camy = this.app.getCamera().getLocation().y;
               this.app.getCamera().setLocation(new Vector3f(camx-moveX, camy, camz-moveZ));
 
+        }
+        
+        public void leaveAutoPlay(){
+            
+            
+            mainMenuThemePlayer.stop();
+            
         }
              
              
@@ -335,8 +361,10 @@ public class MainMenuAppState extends BaseAppState{
             this.app.getInputManager().addMapping("MBLeft", new MouseButtonTrigger(MouseInput.BUTTON_LEFT));
             this.app.getInputManager().addMapping("MenuUp", new KeyTrigger(KeyInput.KEY_UP));
             this.app.getInputManager().addMapping("MenuDown", new KeyTrigger(KeyInput.KEY_DOWN));
+            this.app.getInputManager().addMapping("PlayGame", new KeyTrigger(KeyInput.KEY_END));
+            
 
-            this.app.getInputManager().addListener(actionListener, "MBLeft", "MenuUp", "MenuDown");
+            this.app.getInputManager().addListener(actionListener, "MBLeft", "MenuUp", "MenuDown", "PlayGame");
         
         
         }
@@ -344,10 +372,13 @@ public class MainMenuAppState extends BaseAppState{
         private final ActionListener actionListener = new ActionListener() {
             @Override
             public void onAction(String name, boolean keyPressed, float tpf) {
-                if (name.equals("MBLeft")) {
-                    createMenuText("CamDir: "+app.getCamera().getLocation(), 50, screenHeight-200);
+                switch (name) {
                     
-                                    }
+                    case "MBLeft": createMenuText("CamDir: "+app.getCamera().getLocation(), 50, screenHeight-200); break;
+                    case "PlayGame": leaveAutoPlay(); break;
+                }
+                
+                
             }
         };
     
