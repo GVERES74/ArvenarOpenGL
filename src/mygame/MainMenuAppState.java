@@ -97,7 +97,7 @@ public class MainMenuAppState extends BaseAppState{
         public void loadMainScene(){
             mainScene = this.app.getAssetManager().loadModel("Scenes/MainMenu/mainMenuScene.j3o");
             this.app.getRootNode().attachChild(mainScene);
-            this.app.getCamera().setLocation(new Vector3f(10f, 3f, 5f));
+            this.app.getCamera().setLocation(new Vector3f(10f, 2f, 5f));
             this.app.getCamera().setRotation(new Quaternion().fromAngleAxis(0, Vector3f.UNIT_Y)); //initial camera direction
             
         }
@@ -303,32 +303,26 @@ public class MainMenuAppState extends BaseAppState{
             Quaternion q = rotate.mult(this.app.getCamera().getRotation());
             this.app.getCamera().setRotation(q);
 
-              if (this.app.getCamera().getDirection().z == -0.9f){
-                  rotationSpeed = -0.05f;
-              }
-
-              if (this.app.getCamera().getDirection().z == -0.2f){
-                  rotationSpeed = -0.1f;
-              }
-
-
+              
         }
         
         
         protected void moveCamera(){
-            float moveX = this.app.getCamera().getDirection().x/500;
+            float moveX = this.app.getCamera().getDirection().x/1000;
             float moveZ = this.app.getCamera().getDirection().z/300;
             float camx = this.app.getCamera().getLocation().x;
             float camz = this.app.getCamera().getLocation().z;
             float camy = this.app.getCamera().getLocation().y;
-              this.app.getCamera().setLocation(new Vector3f(camx-moveX, camy, camz-moveZ));
+              this.app.getCamera().setLocation(new Vector3f(camx+moveX, camy, camz+moveZ));
 
         }
         
         public void leaveAutoPlay(){
             
-            
             mainMenuThemePlayer.stop();
+            
+            this.app.getCamera().setLocation(new Vector3f(2f, 2f, 2f));
+            
             
         }
              
@@ -351,6 +345,7 @@ public class MainMenuAppState extends BaseAppState{
             menuItemText.setSize(24);
             menuItemText.setLocalTranslation(posx, posy, 0);
             menuItemText.setColor(ColorRGBA.White);
+                      
 
             startGUINode.attachChild(menuItemText);
         }
@@ -361,7 +356,7 @@ public class MainMenuAppState extends BaseAppState{
             this.app.getInputManager().addMapping("MBLeft", new MouseButtonTrigger(MouseInput.BUTTON_LEFT));
             this.app.getInputManager().addMapping("MenuUp", new KeyTrigger(KeyInput.KEY_UP));
             this.app.getInputManager().addMapping("MenuDown", new KeyTrigger(KeyInput.KEY_DOWN));
-            this.app.getInputManager().addMapping("PlayGame", new KeyTrigger(KeyInput.KEY_END));
+            this.app.getInputManager().addMapping("PlayGame", new KeyTrigger(KeyInput.KEY_BACK));
             
 
             this.app.getInputManager().addListener(actionListener, "MBLeft", "MenuUp", "MenuDown", "PlayGame");
@@ -377,8 +372,7 @@ public class MainMenuAppState extends BaseAppState{
                     case "MBLeft": createMenuText("CamDir: "+app.getCamera().getLocation(), 50, screenHeight-200); break;
                     case "PlayGame": leaveAutoPlay(); break;
                 }
-                
-                
+                             
             }
         };
     
