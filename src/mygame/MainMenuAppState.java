@@ -26,7 +26,6 @@ import com.jme3.input.controls.KeyTrigger;
 import com.jme3.input.controls.MouseButtonTrigger;
 import com.jme3.light.DirectionalLight;
 import com.jme3.material.Material;
-import com.jme3.niftygui.NiftyJmeDisplay;
 
 import com.jme3.math.ColorRGBA;
 import com.jme3.math.Plane;
@@ -42,13 +41,14 @@ import com.jme3.water.SimpleWaterProcessor;
 import de.lessvoid.nifty.Nifty;
 import de.lessvoid.nifty.screen.Screen;
 import de.lessvoid.nifty.screen.ScreenController;
+    
 
 
 /**
  *
  * @author TE332168
  */
-public class MainMenuAppState extends BaseAppState implements ScreenController{
+public class MainMenuAppState extends BaseAppState{
     
     
     private SimpleApplication app;
@@ -60,7 +60,7 @@ public class MainMenuAppState extends BaseAppState implements ScreenController{
     private AudioRenderer     audioRenderer;
     private ViewPort          viewPort;
     private Nifty nifty;
-    private Screen screen;
+    
       
          
     private Spatial mainScene;
@@ -90,15 +90,7 @@ public class MainMenuAppState extends BaseAppState implements ScreenController{
         rootNode.attachChild(startGUINode);
         
         inputManager.deleteMapping(SimpleApplication.INPUT_MAPPING_EXIT); //delete ESC key quit app function
-        inputManager.addMapping("TOGGLE_OPTIONS", new KeyTrigger(KeyInput.KEY_ESCAPE));
-        inputManager.addListener(actionListener, "TOGGLE_OPTIONS");
-        
-        NiftyJmeDisplay niftyDisplay = new NiftyJmeDisplay(assetManager, inputManager, audioRenderer, viewPort);
-        nifty = niftyDisplay.getNifty();
-        nifty.fromXml("Interface/Controls/NiftyGui.xml", "start");
-        app.getGuiViewPort().addProcessor(niftyDisplay);
-        
-        
+       
         //this.app.getFlyByCamera().setEnabled(false);
                 
         loadMainScene();
@@ -384,10 +376,9 @@ public class MainMenuAppState extends BaseAppState implements ScreenController{
             inputManager.addMapping("MBLeft", new MouseButtonTrigger(MouseInput.BUTTON_LEFT));
             inputManager.addMapping("MenuUp", new KeyTrigger(KeyInput.KEY_UP));
             inputManager.addMapping("MenuDown", new KeyTrigger(KeyInput.KEY_DOWN));
-            inputManager.addMapping("PlayGame", new KeyTrigger(KeyInput.KEY_BACK));
+            inputManager.addMapping("ExitGame", new KeyTrigger(KeyInput.KEY_ESCAPE));
             
-
-            inputManager.addListener(actionListener, "MBLeft", "MenuUp", "MenuDown", "PlayGame");
+            inputManager.addListener(actionListener, "MBLeft", "MenuUp", "MenuDown", "ExitGame");
         
         
         }
@@ -398,7 +389,7 @@ public class MainMenuAppState extends BaseAppState implements ScreenController{
                 switch (name) {
                     
                     case "MBLeft": createMenuText("CamDir: "+app.getCamera().getLocation(), 50, screenHeight-200); break;
-                    case "PlayGame": leaveAutoPlay(); break;
+                    case "ExitGame": app.getFlyByCamera().setEnabled(false); break;
 //                    case "TOGGLE_OPTIONS": if (isPressed){
 //                                            nifty.getCurrentScreen().
 //                                            getScreenController().toggleOptionsMenu();
@@ -434,27 +425,10 @@ public class MainMenuAppState extends BaseAppState implements ScreenController{
 
     @Override
     protected void onDisable() {
-
         
     }
 
-    @Override
-    public void bind(Nifty nifty, Screen screen) {
-        this.nifty = nifty;
-        this.screen = screen;
-        
-    }
-
-    @Override
-    public void onStartScreen() {
-        nifty.gotoScreen("start");
-        nifty.getCurrentScreen().findElementByName("options");
-    }
-
-    @Override
-    public void onEndScreen() {
-        
-    }
-    
-    
+   
 }
+
+                                  
