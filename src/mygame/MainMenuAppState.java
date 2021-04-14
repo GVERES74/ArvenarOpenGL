@@ -5,19 +5,20 @@
  */
 package mygame;
 
-import Utils.MaterialCreator;
-import Utils.WaterCreator;
+
 import com.jme3.app.Application;
-import com.jme3.app.LegacyApplication;
 import com.jme3.app.SimpleApplication;
+import com.jme3.app.state.AppStateManager;
 import com.jme3.app.state.BaseAppState;
-import com.jme3.audio.AudioData.DataType;
+import com.jme3.asset.AssetManager;
 import com.jme3.audio.AudioNode;
+import com.jme3.audio.AudioRenderer;
 import com.jme3.effect.ParticleEmitter;
 import com.jme3.effect.ParticleMesh;
 import com.jme3.effect.shapes.EmitterBoxShape;
 import com.jme3.effect.shapes.EmitterSphereShape;
 import com.jme3.font.BitmapText;
+import com.jme3.input.InputManager;
 import com.jme3.input.KeyInput;
 import com.jme3.input.MouseInput;
 import com.jme3.input.controls.ActionListener;
@@ -25,57 +26,87 @@ import com.jme3.input.controls.KeyTrigger;
 import com.jme3.input.controls.MouseButtonTrigger;
 import com.jme3.light.DirectionalLight;
 import com.jme3.material.Material;
+import com.jme3.niftygui.NiftyJmeDisplay;
 
 import com.jme3.math.ColorRGBA;
-import com.jme3.math.FastMath;
 import com.jme3.math.Plane;
 import com.jme3.math.Quaternion;
-import com.jme3.math.Vector2f;
 import com.jme3.math.Vector3f;
+import com.jme3.renderer.RenderManager;
+import com.jme3.renderer.ViewPort;
 import com.jme3.renderer.queue.RenderQueue;
-import com.jme3.renderer.queue.RenderQueue.ShadowMode;
 import com.jme3.scene.Geometry;
 import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
-import com.jme3.scene.shape.Quad;
 import com.jme3.water.SimpleWaterProcessor;
+import de.lessvoid.nifty.Nifty;
+import de.lessvoid.nifty.screen.Screen;
+import de.lessvoid.nifty.screen.ScreenController;
+
 
 /**
  *
  * @author TE332168
  */
-public class MainMenuAppState extends BaseAppState{
+public class MainMenuAppState extends BaseAppState implements ScreenController{
     
     
     private SimpleApplication app;
+    private Node              rootNode;
+    private AssetManager      assetManager;
+    private AppStateManager   stateManager;
+    private InputManager      inputManager;
+    private RenderManager     renderManager;
+    private AudioRenderer     audioRenderer;
+    private ViewPort          viewPort;
+    private Nifty nifty;
+    private Screen screen;
+      
          
     private Spatial mainScene;
     private Node startRootNode = new Node("Main Menu RootNode");
     private Node startGUINode = new Node("Main Menu GUINode");
     private AudioNode mainMenuThemePlayer, ambSoundNode, plainSoundNode;
     float screenHeight, screenWidth;
-    WaterCreator waterproc = new WaterCreator();
+    
     BitmapText menuItemText, camPosInfoText;
         
     
     @Override
     public void initialize(Application app) {
         
-        this.app = (SimpleApplication) app;
+        this.app = (SimpleApplication) app; // can cast Application to something more specific
+        this.rootNode     = this.app.getRootNode();
+        this.assetManager = this.app.getAssetManager();
+        this.stateManager = this.app.getStateManager();
+        this.inputManager = this.app.getInputManager();
+        this.viewPort     = this.app.getViewPort();
+               
                                 
-        screenHeight = this.app.getCamera().getHeight();
-        screenWidth = this.app.getCamera().getWidth();
+        screenHeight = app.getCamera().getHeight();
+        screenWidth = app.getCamera().getWidth();
         
-        this.app.getRootNode().attachChild(startRootNode);
-        this.app.getGuiNode().attachChild(startGUINode);
+        rootNode.attachChild(startRootNode);
+        rootNode.attachChild(startGUINode);
+        
+        inputManager.deleteMapping(SimpleApplication.INPUT_MAPPING_EXIT); //delete ESC key quit app function
+        inputManager.addMapping("TOGGLE_OPTIONS", new KeyTrigger(KeyInput.KEY_ESCAPE));
+        inputManager.addListener(actionListener, "TOGGLE_OPTIONS");
+        
+        NiftyJmeDisplay niftyDisplay = new NiftyJmeDisplay(assetManager, inputManager, audioRenderer, viewPort);
+        nifty = niftyDisplay.getNifty();
+        nifty.fromXml("Interface/Controls/NiftyGui.xml", "start");
+        app.getGuiViewPort().addProcessor(niftyDisplay);
+        
+        
         //this.app.getFlyByCamera().setEnabled(false);
-        
-        
+                
         loadMainScene();
         createWorldLight();
         loadSceneModels();
         createSimpleWater(35, 25, -15f, -1f, -12f);
         createSimpleWater(10, 20, 22f, -0.5f, 5f);
+        
         createPrecipitation();
         createFirePlace();
         createWaterStream();
@@ -96,15 +127,15 @@ public class MainMenuAppState extends BaseAppState{
         
         public void loadMainScene(){
             mainScene = this.app.getAssetManager().loadModel("Scenes/MainMenu/mainMenuScene.j3o");
-            this.app.getRootNode().attachChild(mainScene);
-            this.app.getCamera().setLocation(new Vector3f(10f, 2f, 5f));
-            this.app.getCamera().setRotation(new Quaternion().fromAngleAxis(0, Vector3f.UNIT_Y)); //initial camera direction
+            rootNode.attachChild(mainScene);
+            app.getCamera().setLocation(new Vector3f(10f, 2f, 5f));
+            app.getCamera().setRotation(new Quaternion().fromAngleAxis(0, Vector3f.UNIT_Y)); //initial camera direction
             
         }
     
         public void loadMenuMusic(){
 
-            mainMenuThemePlayer = new AudioNode(this.app.getAssetManager(),"Scenes/MainMenu/RPG_Ambient_2.ogg");
+            mainMenuThemePlayer = new AudioNode(assetManager,"Scenes/MainMenu/RPG_Ambient_2.ogg");
             mainMenuThemePlayer.setLooping(true);
             mainMenuThemePlayer.setPositional(false);
             startRootNode.attachChild(mainMenuThemePlayer);
@@ -114,7 +145,7 @@ public class MainMenuAppState extends BaseAppState{
         
         public void loadAmbientSound(String file, Boolean looping, Boolean positional, float vol, float posx, float posy, float posz){
 
-            ambSoundNode = new AudioNode(this.app.getAssetManager(), file);
+            ambSoundNode = new AudioNode(assetManager, file);
             ambSoundNode.setLooping(looping);
             ambSoundNode.setPositional(positional);
             ambSoundNode.setLocalTranslation(posx, posy, posz);
@@ -163,14 +194,13 @@ public class MainMenuAppState extends BaseAppState{
             createModel("Models/Tent/tent_detailedOpen.obj", "Models/Tent/tent.j3m", -5f, 0f, 3f, 90f, 6f);
             createModel("Models/Signpost/sign.obj", "Models/Signpost/signpost.j3m", 21f, -0.25f, -8f, -1f, 3f);
             
-
         }
     
         public void createModel(String modelfile, String custmatfile, float xpos, float ypos, float zpos, float yaw, float scale){
-            Spatial model = this.app.getAssetManager().loadModel(modelfile);
+            Spatial model = assetManager.loadModel(modelfile);
                         
             if(custmatfile !=""){   
-            model.setMaterial(this.app.getAssetManager().loadMaterial(custmatfile));
+            model.setMaterial(assetManager.loadMaterial(custmatfile));
             }                    
             model.setLocalTranslation(xpos, ypos, zpos);
             model.rotate(0, yaw, 0);
@@ -186,8 +216,8 @@ public class MainMenuAppState extends BaseAppState{
     
         public void createPrecipitation(){
             ParticleEmitter pemitter = new ParticleEmitter("Emitter", ParticleMesh.Type.Triangle, 30);
-            Material dropMaterial = new Material(this.app.getAssetManager(), "Common/MatDefs/Misc/Particle.j3md");
-                dropMaterial.setTexture("Texture", this.app.getAssetManager().loadTexture("Effects/Explosion/flame.png"));
+            Material dropMaterial = new Material(assetManager, "Common/MatDefs/Misc/Particle.j3md");
+                dropMaterial.setTexture("Texture", assetManager.loadTexture("Effects/Explosion/flame.png"));
             pemitter.setMaterial(dropMaterial);
             pemitter.setImagesX(2);
             pemitter.setImagesY(2);
@@ -207,8 +237,8 @@ public class MainMenuAppState extends BaseAppState{
 
         public void createFirePlace(){
             ParticleEmitter pemitter = new ParticleEmitter("Emitter", ParticleMesh.Type.Triangle, 30);
-            Material dropMaterial = new Material(this.app.getAssetManager(), "Common/MatDefs/Misc/Particle.j3md");
-            dropMaterial.setTexture("Texture", this.app.getAssetManager().loadTexture("Effects/Explosion/flame.png"));
+            Material dropMaterial = new Material(assetManager, "Common/MatDefs/Misc/Particle.j3md");
+            dropMaterial.setTexture("Texture", assetManager.loadTexture("Effects/Explosion/flame.png"));
             pemitter.setMaterial(dropMaterial);
             pemitter.setImagesX(2);
             pemitter.setImagesY(2);
@@ -229,8 +259,8 @@ public class MainMenuAppState extends BaseAppState{
         
         public void createWaterStream(){
             ParticleEmitter wstreamEmitter = new ParticleEmitter("Emitter", ParticleMesh.Type.Triangle, 30);
-            Material waterMaterial = new Material(this.app.getAssetManager(), "Common/MatDefs/Misc/Particle.j3md");
-            waterMaterial.setTexture("Texture", this.app.getAssetManager().loadTexture("Effects/Explosion/flame.png"));
+            Material waterMaterial = new Material(assetManager, "Common/MatDefs/Misc/Particle.j3md");
+            waterMaterial.setTexture("Texture", assetManager.loadTexture("Effects/Explosion/flame.png"));
             wstreamEmitter.setMaterial(waterMaterial);
             wstreamEmitter.setImagesX(2);
             wstreamEmitter.setImagesY(2);
@@ -253,8 +283,8 @@ public class MainMenuAppState extends BaseAppState{
         
         public void createWaterFall(){
             ParticleEmitter waterfallemitter = new ParticleEmitter("Emitter", ParticleMesh.Type.Triangle, 30);
-            Material waterMaterial = new Material(this.app.getAssetManager(), "Common/MatDefs/Misc/Particle.j3md");
-            waterMaterial.setTexture("Texture", this.app.getAssetManager().loadTexture("Effects/Explosion/flame.png"));
+            Material waterMaterial = new Material(assetManager, "Common/MatDefs/Misc/Particle.j3md");
+            waterMaterial.setTexture("Texture", assetManager.loadTexture("Effects/Explosion/flame.png"));
             waterfallemitter.setMaterial(waterMaterial);
             waterfallemitter.setImagesX(2);
             waterfallemitter.setImagesY(2);
@@ -277,13 +307,13 @@ public class MainMenuAppState extends BaseAppState{
         
         public void createSimpleWater(float width, float depth, float posx, float posy, float posz){
             
-            SimpleWaterProcessor waterCreator = new SimpleWaterProcessor(this.app.getAssetManager());
+            SimpleWaterProcessor waterCreator = new SimpleWaterProcessor(assetManager);
                                  waterCreator.setReflectionScene(mainScene);
             
             Vector3f waterLocation = new Vector3f(0,-6,0);
             
             waterCreator.setPlane(new Plane(Vector3f.UNIT_Y, waterLocation.dot(Vector3f.UNIT_Y)));
-            this.app.getViewPort().addProcessor(waterCreator);
+            viewPort.addProcessor(waterCreator);
             waterCreator.setWaterDepth(40);
             waterCreator.setDistortionScale(0.05f);
             waterCreator.setWaveSpeed(0.05f);
@@ -296,81 +326,83 @@ public class MainMenuAppState extends BaseAppState{
     }                 
             
             
-        protected void rotateCamera(float value, float tpf
+        protected void rotateCamera(float rotationSpeed, float value, float tpf
                             , Vector3f axis){
-            float rotationSpeed = -0.1f;
+            
             Quaternion rotate = new Quaternion().fromAngleNormalAxis(rotationSpeed * value * tpf, axis);
-            Quaternion q = rotate.mult(this.app.getCamera().getRotation());
-            this.app.getCamera().setRotation(q);
-
+            Quaternion q = rotate.mult(app.getCamera().getRotation());
+            app.getCamera().setRotation(q);
               
         }
         
         
         protected void moveCamera(){
-            float moveX = this.app.getCamera().getDirection().x/1000;
-            float moveZ = this.app.getCamera().getDirection().z/300;
-            float camx = this.app.getCamera().getLocation().x;
-            float camz = this.app.getCamera().getLocation().z;
-            float camy = this.app.getCamera().getLocation().y;
-              this.app.getCamera().setLocation(new Vector3f(camx+moveX, camy, camz+moveZ));
+            Vector3f camDirection = app.getCamera().getDirection();
+            Vector3f camLocation = app.getCamera().getLocation();
+            
+            //float moveX = camDirection.x/1000;
+            float moveX = camDirection.x/800;
+            float moveZ = camDirection.z/300;
+            float camx = camLocation.x;
+            float camz = camLocation.z;
+            float camy = camLocation.y;
+                app.getCamera().setLocation(new Vector3f(camx+moveX, camy, camz+moveZ));
 
         }
         
         public void leaveAutoPlay(){
             
             mainMenuThemePlayer.stop();
-            
-            this.app.getCamera().setLocation(new Vector3f(2f, 2f, 2f));
-            
+            rotateCamera(0f, 1,0,Vector3f.UNIT_Y);
+            app.getCamera().setLocation(new Vector3f(2f, 2f, 2f));
             
         }
-             
-             
+                        
              
         public void createMainMenu(){
-            this.app.setDisplayStatView(false); this.app.setDisplayFps(false);
+            app.setDisplayStatView(false); app.setDisplayFps(false);
 
             createMenuText("Start New Game", 50, screenHeight-50);
             createMenuText("Game Options", 50, screenHeight-80);
             createMenuText("Credits", 50, screenHeight-110);
             createMenuText("Exit Game", 50, screenHeight-140);
-
-            
+ 
         }
              
         public void createMenuText(String name, float posx, float posy){
-            menuItemText = new BitmapText(this.app.getAssetManager().loadFont("Interface/Fonts/Antiqua.fnt"), false);
+            menuItemText = new BitmapText(assetManager.loadFont("Interface/Fonts/Antiqua.fnt"), false);
             menuItemText.setText(name);
             menuItemText.setSize(24);
             menuItemText.setLocalTranslation(posx, posy, 0);
             menuItemText.setColor(ColorRGBA.White);
-                      
-
             startGUINode.attachChild(menuItemText);
         }
         
         
         public void initMenuControls(){
         
-            this.app.getInputManager().addMapping("MBLeft", new MouseButtonTrigger(MouseInput.BUTTON_LEFT));
-            this.app.getInputManager().addMapping("MenuUp", new KeyTrigger(KeyInput.KEY_UP));
-            this.app.getInputManager().addMapping("MenuDown", new KeyTrigger(KeyInput.KEY_DOWN));
-            this.app.getInputManager().addMapping("PlayGame", new KeyTrigger(KeyInput.KEY_BACK));
+            inputManager.addMapping("MBLeft", new MouseButtonTrigger(MouseInput.BUTTON_LEFT));
+            inputManager.addMapping("MenuUp", new KeyTrigger(KeyInput.KEY_UP));
+            inputManager.addMapping("MenuDown", new KeyTrigger(KeyInput.KEY_DOWN));
+            inputManager.addMapping("PlayGame", new KeyTrigger(KeyInput.KEY_BACK));
             
 
-            this.app.getInputManager().addListener(actionListener, "MBLeft", "MenuUp", "MenuDown", "PlayGame");
+            inputManager.addListener(actionListener, "MBLeft", "MenuUp", "MenuDown", "PlayGame");
         
         
         }
     
         private final ActionListener actionListener = new ActionListener() {
             @Override
-            public void onAction(String name, boolean keyPressed, float tpf) {
+            public void onAction(String name, boolean isPressed, float tpf) {
                 switch (name) {
                     
                     case "MBLeft": createMenuText("CamDir: "+app.getCamera().getLocation(), 50, screenHeight-200); break;
                     case "PlayGame": leaveAutoPlay(); break;
+//                    case "TOGGLE_OPTIONS": if (isPressed){
+//                                            nifty.getCurrentScreen().
+//                                            getScreenController().toggleOptionsMenu();
+//                                            }
                 }
                              
             }
@@ -380,7 +412,7 @@ public class MainMenuAppState extends BaseAppState{
     @Override
     public void update(float tpf) {
         //TODO: implement behavior during runtime
-        rotateCamera(1,tpf,Vector3f.UNIT_Y);
+        rotateCamera(-0.1f, 1,tpf,Vector3f.UNIT_Y);
         moveCamera();
        
     }
@@ -397,12 +429,31 @@ public class MainMenuAppState extends BaseAppState{
         
     @Override
     protected void onEnable() {
-
+        
     }
 
     @Override
     protected void onDisable() {
 
+        
+    }
+
+    @Override
+    public void bind(Nifty nifty, Screen screen) {
+        this.nifty = nifty;
+        this.screen = screen;
+        
+    }
+
+    @Override
+    public void onStartScreen() {
+        nifty.gotoScreen("start");
+        nifty.getCurrentScreen().findElementByName("options");
+    }
+
+    @Override
+    public void onEndScreen() {
+        
     }
     
     
