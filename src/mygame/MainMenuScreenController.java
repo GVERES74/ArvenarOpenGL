@@ -75,14 +75,14 @@ public class MainMenuScreenController extends BaseAppState implements ScreenCont
     public void quitGame(){
         System.out.println("Game left...");
         //this.app.stop();
-        //System.exit(0);
+        System.exit(0);
         
     }
     
     public void buttonEffect(Element element, NiftyMouseInputEvent event){
                 
         System.out.println("Mouse Over: "+element.getId());
-        element.setWidth(120);
+        element.setWidth(250);
                
         
     }

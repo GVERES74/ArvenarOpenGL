@@ -173,7 +173,7 @@ public class MainMenuScreen extends BaseAppState{
             
             createModel("Models/Campfire/campfire_logs.obj", "Models/Campfire/campfire_logs.j3m", 0f, -0.1f, 0f, 0f, 2f);
             createModel("Models/Campfire/campfire_stones.obj", "Models/Campfire/campfire_stones.j3m", 0f, -0.1f, 0f, 0f, 3f);
-            createModel("Models/Floorbed/bed_floor.obj", "Models/Floorbed/bed_floor.j3m", 1f, 0.1f, 3f, 0f, 3f);
+            createModel("Models/Floorbed/bed_floor.obj", "Models/Floorbed/bed_floor.j3m", 1f, 0f, 3f, 1f, 3f);
             
             createModel("Models/Crate/Crate-04.obj", "Models/Crate/wood_crate.j3m", 28f, 0.0f, -20f, 1f, 2f);
             createModel("Models/Crate/Crate-01.obj", "Models/Crate/wood_crate.j3m", 28f, 1.05f, -20f, 3f, 2f);
@@ -457,31 +457,57 @@ public class MainMenuScreen extends BaseAppState{
                     }});        
                     
                     panel(new PanelBuilder("Panel_Menu_ForButtons"){{
-                        childLayoutVertical();
+//                        childLayoutVertical();
+                        childLayoutAbsoluteInside();
                         alignLeft();
                         valignCenter();
                         height("500px");
-                        width("250px"); 
-                        //backgroundColor("#0c01"); //last digit sets the alpha channel
-                        //style("nifty-panel");
+                        width("300px"); 
+                        padding("10px");
+                        
+                        backgroundColor("#eee1"); //last digit sets the alpha channel
+//                        style("nifty-panel");
                                            
                         
                         
                         control(new ButtonBuilder("Button_Play", "Play Game"){{
-                            alignLeft();
-                            valignCenter();
-                            height("30px");
-                            width("100px"); 
+//                            alignLeft();
+//                            valignBottom();
+                            x("20px");
+                            y("20px");
+                            height("50px");
+                            width("220px");  
+                            
                             interactOnClick("startGame()");
+                            interactOnMouseOver("buttonEffect()");
+                            
+                        }});
+                        
+                        control(new ButtonBuilder("Button_Settings", "Game Settings"){{
+                            x("20px");
+                            y("80px");
+                            height("50px");
+                            width("220px");    
+                            interactOnClick("settingsGame()");
+                            interactOnMouseOver("buttonEffect()");
+                            backgroundColor("#0c01");
+                        }});
+                        
+                        control(new ButtonBuilder("Button_Credits", "Game Credits"){{
+                            x("20px");
+                            y("140px");
+                            height("50px");
+                            width("220px");   
+                            interactOnClick("creditsGame()");
                             interactOnMouseOver("buttonEffect()");
                             backgroundColor("#0c01");
                         }});
 
                         control(new ButtonBuilder("Button_Exit", "Exit Game"){{
-                            alignLeft();
-                            valignBottom();
-                            height("30px");
-                            width("100px");
+                            x("20px");
+                            y("200px");
+                            height("50px");
+                            width("220px");    
                             interactOnClick("quitGame()");
                             interactOnMouseOver("buttonEffect()");
                             backgroundColor("#0c01");
