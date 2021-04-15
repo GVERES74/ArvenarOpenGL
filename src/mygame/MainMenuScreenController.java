@@ -7,9 +7,10 @@ package mygame;
 
 import com.jme3.app.Application;
 import com.jme3.app.SimpleApplication;
-import com.jme3.app.state.AppStateManager;
 import com.jme3.app.state.BaseAppState;
 import de.lessvoid.nifty.Nifty;
+import de.lessvoid.nifty.elements.Element;
+import de.lessvoid.nifty.input.NiftyMouseInputEvent;
 import de.lessvoid.nifty.screen.Screen;
 import de.lessvoid.nifty.screen.ScreenController;
 
@@ -17,7 +18,7 @@ import de.lessvoid.nifty.screen.ScreenController;
  *
  * @author TE332168
  */
-public class StartScreen extends BaseAppState implements ScreenController{
+public class MainMenuScreenController extends BaseAppState implements ScreenController{
     
     SimpleApplication app;
     
@@ -44,35 +45,49 @@ public class StartScreen extends BaseAppState implements ScreenController{
     
     @Override
     protected void onEnable() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        
     }
 
     @Override
     protected void onDisable() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        
     }
 
     @Override
     public void bind(Nifty nifty, Screen screen) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        
     }
 
     @Override
     public void onStartScreen() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        
     }
 
     @Override
     public void onEndScreen() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        
     }
     
-    public void startGame(Screen screen){
-        new PlayGame();
+    public void startGame(){
+        System.out.println("Play Game button pressed...");
     }
     
     public void quitGame(){
-        app.stop();
+        System.out.println("Game left...");
+        //this.app.stop();
+        //System.exit(0);
+        
     }
     
+    public void buttonEffect(Element element, NiftyMouseInputEvent event){
+                
+        System.out.println("Mouse Over: "+element.getId());
+        element.setWidth(120);
+               
+        
+    }
+    
+    public void showExitPopUp(){
+        
+    }
 }

@@ -31,6 +31,7 @@ import com.jme3.math.ColorRGBA;
 import com.jme3.math.Plane;
 import com.jme3.math.Quaternion;
 import com.jme3.math.Vector3f;
+import com.jme3.niftygui.NiftyJmeDisplay;
 import com.jme3.renderer.RenderManager;
 import com.jme3.renderer.ViewPort;
 import com.jme3.renderer.queue.RenderQueue;
@@ -39,8 +40,12 @@ import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
 import com.jme3.water.SimpleWaterProcessor;
 import de.lessvoid.nifty.Nifty;
-import de.lessvoid.nifty.screen.Screen;
-import de.lessvoid.nifty.screen.ScreenController;
+import de.lessvoid.nifty.builder.LayerBuilder;
+import de.lessvoid.nifty.builder.PanelBuilder;
+import de.lessvoid.nifty.builder.PopupBuilder;
+import de.lessvoid.nifty.builder.ScreenBuilder;
+import de.lessvoid.nifty.builder.TextBuilder;
+import de.lessvoid.nifty.controls.button.builder.ButtonBuilder;
     
 
 
@@ -48,7 +53,7 @@ import de.lessvoid.nifty.screen.ScreenController;
  *
  * @author TE332168
  */
-public class MainMenuAppState extends BaseAppState{
+public class MainMenuScreen extends BaseAppState{
     
     
     private SimpleApplication app;
@@ -390,10 +395,7 @@ public class MainMenuAppState extends BaseAppState{
                     
                     case "MBLeft": createMenuText("CamDir: "+app.getCamera().getLocation(), 50, screenHeight-200); break;
                     case "ExitGame": app.getFlyByCamera().setEnabled(false); break;
-//                    case "TOGGLE_OPTIONS": if (isPressed){
-//                                            nifty.getCurrentScreen().
-//                                            getScreenController().toggleOptionsMenu();
-//                                            }
+                    
                 }
                              
             }
@@ -420,8 +422,85 @@ public class MainMenuAppState extends BaseAppState{
         
     @Override
     protected void onEnable() {
+        NiftyJmeDisplay niftyDisplay = NiftyJmeDisplay.newNiftyJmeDisplay(assetManager, inputManager, audioRenderer, viewPort);
+        nifty = niftyDisplay.getNifty();
+        app.getFlyByCamera().setDragToRotate(true);
         
+        app.getGuiViewPort().addProcessor(niftyDisplay); 
+        nifty.loadStyleFile("nifty-default-styles.xml");
+        nifty.loadControlFile("nifty-default-controls.xml");
+        
+        nifty.addScreen("Screen_MainMenu", new ScreenBuilder("Main Menu"){{
+                controller(new mygame.MainMenuScreenController());
+                defaultFocusElement("Button_Play");
+                
+                layer(new LayerBuilder("Layer_Menu_ForMain"){{
+                    childLayoutVertical();
+                    
+                    
+                    panel(new PanelBuilder("Panel_Menu_ForTitle"){{
+                        childLayoutVertical();
+                        alignLeft();
+                        valignCenter();
+                        height("100px");
+                        width("250px"); 
+                        
+                            text(new TextBuilder() {{
+                                text("Main Menu");
+                                font("Interface/Fonts/Antiqua.fnt");
+                                height("100%");
+                                width("100%");
+                                alignLeft();
+                                valignTop();
+                                
+                            }});
+                    }});        
+                    
+                    panel(new PanelBuilder("Panel_Menu_ForButtons"){{
+                        childLayoutVertical();
+                        alignLeft();
+                        valignCenter();
+                        height("500px");
+                        width("250px"); 
+                        //backgroundColor("#0c01"); //last digit sets the alpha channel
+                        //style("nifty-panel");
+                                           
+                        
+                        
+                        control(new ButtonBuilder("Button_Play", "Play Game"){{
+                            alignLeft();
+                            valignCenter();
+                            height("30px");
+                            width("100px"); 
+                            interactOnClick("startGame()");
+                            interactOnMouseOver("buttonEffect()");
+                            backgroundColor("#0c01");
+                        }});
+
+                        control(new ButtonBuilder("Button_Exit", "Exit Game"){{
+                            alignLeft();
+                            valignBottom();
+                            height("30px");
+                            width("100px");
+                            interactOnClick("quitGame()");
+                            interactOnMouseOver("buttonEffect()");
+                            backgroundColor("#0c01");
+                        }});
+                        
+//                        popup(new PopupBuilder("popupExit") {{
+//                            childLayoutCenter();
+//                            backgroundColor("#000a");
+//                        }}.registerPopup(nifty));
+                            
+                        
+                }});
+                }});
+                }}.build(nifty));
+        
+                
+                nifty.gotoScreen("Screen_MainMenu");
     }
+
 
     @Override
     protected void onDisable() {
