@@ -36,12 +36,12 @@ public class PlayGame extends SimpleApplication implements AnimEventListener{
     @Override
     public void simpleInitApp() {
         
-        //GameAppState gameAppState = new GameAppState();
+        
         MainMenuScreen menuAppState = new MainMenuScreen();
+            this.stateManager.attach(menuAppState);
         
-        
-        
-        this.stateManager.attach(menuAppState);
+//        SettingsScreen settingsAppState = new SettingsScreen(); 
+//            stateManager.attach(settingsAppState);
         
          /** Load a Node from a .j3o file */
                   

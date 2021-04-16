@@ -66,7 +66,6 @@ public class MainMenuScreen extends BaseAppState{
     private ViewPort          viewPort;
     private Nifty nifty;
     
-      
          
     private Spatial mainScene;
     private Node startRootNode = new Node("Main Menu RootNode");
@@ -92,7 +91,7 @@ public class MainMenuScreen extends BaseAppState{
         screenWidth = app.getCamera().getWidth();
         
         rootNode.attachChild(startRootNode);
-        rootNode.attachChild(startGUINode);
+       // rootNode.attachChild(startGUINode);
         
         inputManager.deleteMapping(SimpleApplication.INPUT_MAPPING_EXIT); //delete ESC key quit app function
        
@@ -479,7 +478,7 @@ public class MainMenuScreen extends BaseAppState{
                             width("220px");  
                             
                             interactOnClick("startGame()");
-                            interactOnMouseOver("buttonEffect()");
+//                            interactOnMouseOver("buttonEffect()");
                             
                         }});
                         
@@ -488,8 +487,8 @@ public class MainMenuScreen extends BaseAppState{
                             y("80px");
                             height("50px");
                             width("220px");    
-                            interactOnClick("settingsGame()");
-                            interactOnMouseOver("buttonEffect()");
+                            interactOnClick("settingsGame(Screen_GameSettings)");
+//                            interactOnMouseOver("buttonEffect()");
                             backgroundColor("#0c01");
                         }});
                         
@@ -499,7 +498,7 @@ public class MainMenuScreen extends BaseAppState{
                             height("50px");
                             width("220px");   
                             interactOnClick("creditsGame()");
-                            interactOnMouseOver("buttonEffect()");
+//                            interactOnMouseOver("buttonEffect()");
                             backgroundColor("#0c01");
                         }});
 
@@ -509,7 +508,7 @@ public class MainMenuScreen extends BaseAppState{
                             height("50px");
                             width("220px");    
                             interactOnClick("quitGame()");
-                            interactOnMouseOver("buttonEffect()");
+//                            interactOnMouseOver("buttonEffect()");
                             backgroundColor("#0c01");
                         }});
                         
@@ -524,7 +523,7 @@ public class MainMenuScreen extends BaseAppState{
                 }}.build(nifty));
         
                 
-                nifty.gotoScreen("Screen_MainMenu");
+               nifty.gotoScreen("Screen_MainMenu");
     }
 
 
