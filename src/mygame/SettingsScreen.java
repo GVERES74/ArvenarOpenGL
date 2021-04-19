@@ -19,11 +19,14 @@ import com.jme3.renderer.ViewPort;
 import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
 import de.lessvoid.nifty.Nifty;
+import de.lessvoid.nifty.builder.EffectBuilder;
+import de.lessvoid.nifty.builder.HoverEffectBuilder;
 import de.lessvoid.nifty.builder.LayerBuilder;
 import de.lessvoid.nifty.builder.PanelBuilder;
 import de.lessvoid.nifty.builder.ScreenBuilder;
 import de.lessvoid.nifty.builder.TextBuilder;
 import de.lessvoid.nifty.controls.button.builder.ButtonBuilder;
+import de.lessvoid.nifty.effects.Effect;
 
 /**
  *
@@ -39,6 +42,7 @@ public class SettingsScreen extends BaseAppState {
     private RenderManager     renderManager;
     private AudioRenderer     audioRenderer;
     private ViewPort          viewPort;
+    
     private Nifty nifty;
     
     private Spatial mainScene;
@@ -80,7 +84,7 @@ public class SettingsScreen extends BaseAppState {
 
      @Override
     protected void onEnable() {
-        NiftyJmeDisplay niftyDisplay = NiftyJmeDisplay.newNiftyJmeDisplay(assetManager, inputManager, audioRenderer, viewPort);
+        NiftyJmeDisplay niftyDisplay = NiftyJmeDisplay.newNiftyJmeDisplay(assetManager, inputManager, audioRenderer, openAlDevice, viewPort);
         nifty = niftyDisplay.getNifty();
         app.getFlyByCamera().setDragToRotate(true);
         
@@ -88,17 +92,22 @@ public class SettingsScreen extends BaseAppState {
         nifty.loadStyleFile("nifty-default-styles.xml");
         nifty.loadControlFile("nifty-default-controls.xml");
         
+        nifty.registerSound("btnclick", "Interface/click.wav");
+        
+        
         nifty.addScreen("Screen_GameSettings", new ScreenBuilder("Game Settings"){{
                 controller(new mygame.SettingsScreenController());
                 //defaultFocusElement("Button_Play");
                 
+                
                 layer(new LayerBuilder("Layer_Settings_AllItems"){{
-                    childLayoutVertical();
+                    childLayoutAbsoluteInside();
                                         
-                    panel(new PanelBuilder("Panel_Settings_ForTitle"){{
-                        childLayoutVertical();
-                        alignLeft();
-                        valignCenter();
+                    panel(new PanelBuilder("Panel_Settings_Title"){{
+                        childLayoutAbsoluteInside(); //!! please remember if you want to set child x / y positions manually
+                        padding("10px");
+                        x("20px");
+                        y("20px");
                         height("100px");
                         width("250px"); 
                         
@@ -107,23 +116,22 @@ public class SettingsScreen extends BaseAppState {
                                 font("Interface/Fonts/Antiqua.fnt");
                                 height("100%");
                                 width("100%");
-                                alignLeft();
-                                valignTop();
+                                padding("10px");
+                                x("20px");
+                                y("20px");
                                 
                             }});
                     }});        
                     
-                    panel(new PanelBuilder("Panel_Settings_For_ScreenButtons"){{
+                    panel(new PanelBuilder("Panel_Settings_ScreenButtons"){{
 //                        childLayoutVertical();
                         childLayoutAbsoluteInside();
-                        alignLeft();
-                        valignCenter();
+                        padding("10px");
+                        x("50px");
+                        y("520px");
                         height("200px");
                         width("300px"); 
-                        padding("10px");
-                        
-                        backgroundColor("#eee1"); //last digit sets the alpha channel
-//                        style("nifty-panel");
+                                                
                         
                         control(new ButtonBuilder("Button_Apply", "Apply Changes"){{
 //                            alignLeft();
@@ -132,9 +140,9 @@ public class SettingsScreen extends BaseAppState {
                             y("20px");
                             height("50px");
                             width("220px");  
-                            
                             interactOnClick("popupApplySettings()");
-                            interactOnMouseOver("buttonEffect()");
+                            
+                                
                             
                         }});
                         
@@ -146,8 +154,58 @@ public class SettingsScreen extends BaseAppState {
                             interactOnClick("popupCancelSettings()");
                             interactOnMouseOver("buttonEffect()");
                             backgroundColor("#0c01");
+                                onStartHoverEffect(new HoverEffectBuilder("playSound"){{
+                                  effectParameter("sound", "btnclick");
+                                    
+                                }});
                         }});
+                        }});
+                    
+                    panel(new PanelBuilder("Panel_Settings_VideoControls"){{
+//                        childLayoutVertical();
+                        childLayoutAbsoluteInside();
                         
+                        x("500px");
+                        y("20px");
+                        height("200px");
+                        width("300px"); 
+                                                
+                        backgroundColor("#eee1"); //last digit sets the alpha channel
+//                        style("nifty-panel");
+                    
+
+                            text(new TextBuilder() {{
+                                text("Video Settings");
+                                font("aurulent-sans-16.fnt");
+                                color("#f00f");
+                                height("50%");
+                                width("50%");
+                                x("0px");
+                                y("0px");                                
+                            }});
+                            
+                                text(new TextBuilder() {{
+                                    text("Resolution");
+                                    font("aurulent-sans-16.fnt");
+                                    color("#ffff");
+                                    height("50%");
+                                    width("50%");
+                                    x("5px");
+                                    y("30px");                                
+                                }});
+                            
+                                text(new TextBuilder() {{
+                                    text("Fullscreen");
+                                    font("aurulent-sans-16.fnt");
+                                    color("#ffff");
+                                    height("50%");
+                                    width("50%");
+                                    x("5px");
+                                    y("60px");                                
+                                }});
+                            
+                        
+                }});
                         
 //                        popup(new PopupBuilder("popupExit") {{
 //                            childLayoutCenter();
@@ -155,13 +213,15 @@ public class SettingsScreen extends BaseAppState {
 //                        }}.registerPopup(nifty));
                             
                         
-                }});
+                
                 }});
                 }}.build(nifty));
         
                 
                 nifty.gotoScreen("Screen_GameSettings");
     }
+    
+   
 
 
     @Override

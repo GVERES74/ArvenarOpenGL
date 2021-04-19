@@ -22,12 +22,12 @@ public class SettingsScreenController extends BaseAppState implements ScreenCont
     private Nifty nifty;
     
     @Override
-    protected void initialize(Application arg0) {
+    protected void initialize(Application app) {
         
     }
 
     @Override
-    protected void cleanup(Application arg0) {
+    protected void cleanup(Application app) {
         
     }
 
@@ -42,7 +42,7 @@ public class SettingsScreenController extends BaseAppState implements ScreenCont
     }
 
     @Override
-    public void bind(Nifty arg0, Screen arg1) {
+    public void bind(Nifty nifty, Screen screen) {
         
     }
 
