@@ -39,20 +39,27 @@ public class MainMenuScreenController extends BaseAppState implements ScreenCont
     private ViewPort          viewPort;
     private Nifty nifty;
     
-    
+        
     @Override
     public void initialize(Application app) {
         
         //TODO: initialize your AppState, e.g. attach spatials to rootNode
         //this is called on the OpenGL thread after the AppState has been attached
+        this.app = (SimpleApplication) app; // can cast Application to something more specific
+        this.rootNode     = this.app.getRootNode();
+        this.assetManager = this.app.getAssetManager();
+        this.stateManager = this.app.getStateManager();
+        this.inputManager = this.app.getInputManager();
+        this.viewPort     = this.app.getViewPort();
+        this.nifty = nifty;
         
-                
+        
         SettingsScreen settingsAppState = new SettingsScreen(); 
             stateManager.attach(settingsAppState);
         
         NiftyJmeDisplay niftyDisplay = NiftyJmeDisplay.newNiftyJmeDisplay(assetManager, inputManager, audioRenderer, viewPort);
         nifty = niftyDisplay.getNifty();
-    }
+        }
     
     @Override
     public void update(float tpf) {
@@ -99,10 +106,10 @@ public class MainMenuScreenController extends BaseAppState implements ScreenCont
     }
         
     
-    public void settingsGame(String screenId){
-        
-        //nifty.gotoScreen(screenId);
+    public void settingsGame(String screenID){
+//        nifty.gotoScreen(screenID);
         System.out.println("Game Settings button pressed...");
+       
     }
     
     public void creditsGame(String nextScreen){

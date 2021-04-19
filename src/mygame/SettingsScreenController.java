@@ -6,6 +6,7 @@
 package mygame;
 
 import com.jme3.app.Application;
+import com.jme3.app.SimpleApplication;
 import com.jme3.app.state.AbstractAppState;
 import com.jme3.app.state.AppStateManager;
 import com.jme3.app.state.BaseAppState;
@@ -18,16 +19,18 @@ import de.lessvoid.nifty.screen.ScreenController;
  * @author TE332168
  */
 public class SettingsScreenController extends BaseAppState implements ScreenController {
+    
+    private SimpleApplication app;
 
     private Nifty nifty;
     
     @Override
-    protected void initialize(Application arg0) {
-        
+    protected void initialize(Application app) {
+        this .app = (SimpleApplication) app;
     }
 
     @Override
-    protected void cleanup(Application arg0) {
+    protected void cleanup(Application app) {
         
     }
 
@@ -42,7 +45,7 @@ public class SettingsScreenController extends BaseAppState implements ScreenCont
     }
 
     @Override
-    public void bind(Nifty arg0, Screen arg1) {
+    public void bind(Nifty nifty, Screen screen) {
         
     }
 
@@ -56,9 +59,14 @@ public class SettingsScreenController extends BaseAppState implements ScreenCont
         
     }
     
+    public void popupApplySettings(){
+        
+        
+    }
+    
     public void backToMainMenu(String nextScreen){
         System.out.println("Play Game button pressed...");
-        nifty.gotoScreen(nextScreen);
+//        nifty.gotoScreen(nextScreen);
     }
    
     

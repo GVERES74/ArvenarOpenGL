@@ -63,6 +63,7 @@ public class SettingsScreen extends BaseAppState {
             
             rootNode.attachChild(settingsRootNode);
             rootNode.attachChild(settingsGUINode);
+            stateManager.attach(this);
             
                         
     }
@@ -90,7 +91,7 @@ public class SettingsScreen extends BaseAppState {
         
         nifty.addScreen("Screen_GameSettings", new ScreenBuilder("Game Settings"){{
                 controller(new mygame.SettingsScreenController());
-                //defaultFocusElement("Button_Play");
+                defaultFocusElement("Button_Apply");
                 
                 layer(new LayerBuilder("Layer_Settings_AllItems"){{
                     childLayoutVertical();
@@ -98,7 +99,7 @@ public class SettingsScreen extends BaseAppState {
                     panel(new PanelBuilder("Panel_Settings_ForTitle"){{
                         childLayoutVertical();
                         alignLeft();
-                        valignCenter();
+                        valignBottom();
                         height("100px");
                         width("250px"); 
                         
