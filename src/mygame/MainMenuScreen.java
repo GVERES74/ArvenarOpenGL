@@ -42,7 +42,6 @@ import com.jme3.water.SimpleWaterProcessor;
 import de.lessvoid.nifty.Nifty;
 import de.lessvoid.nifty.builder.LayerBuilder;
 import de.lessvoid.nifty.builder.PanelBuilder;
-import de.lessvoid.nifty.builder.PopupBuilder;
 import de.lessvoid.nifty.builder.ScreenBuilder;
 import de.lessvoid.nifty.builder.TextBuilder;
 import de.lessvoid.nifty.controls.button.builder.ButtonBuilder;
@@ -53,7 +52,7 @@ import de.lessvoid.nifty.controls.button.builder.ButtonBuilder;
  *
  * @author TE332168
  */
-public class MainMenuScreen extends BaseAppState{
+public class MainMenuScreen extends BaseAppState {
     
     
     private SimpleApplication app;
@@ -74,7 +73,7 @@ public class MainMenuScreen extends BaseAppState{
     float screenHeight, screenWidth;
     
     BitmapText menuItemText, camPosInfoText;
-        
+    
     
     @Override
     public void initialize(Application app) {
@@ -92,7 +91,8 @@ public class MainMenuScreen extends BaseAppState{
         
         rootNode.attachChild(startRootNode);
        // rootNode.attachChild(startGUINode);
-        
+       
+                          
         inputManager.deleteMapping(SimpleApplication.INPUT_MAPPING_EXIT); //delete ESC key quit app function
        
         //this.app.getFlyByCamera().setEnabled(false);
@@ -413,9 +413,7 @@ public class MainMenuScreen extends BaseAppState{
     public void cleanup(Application app) {
         startRootNode.detachAllChildren();
         startGUINode.detachAllChildren();
-        //TODO: clean up what you initialized in the initialize method,
-        //e.g. remove all spatials from rootNode
-        //this is called on the OpenGL thread after the AppState has been detached
+        
     }    
         
         
@@ -524,6 +522,8 @@ public class MainMenuScreen extends BaseAppState{
         
                 
                nifty.gotoScreen("Screen_MainMenu");
+        
+
     }
 
 
@@ -531,6 +531,9 @@ public class MainMenuScreen extends BaseAppState{
     protected void onDisable() {
         
     }
+
+    
+        
 
    
 }

@@ -37,11 +37,11 @@ public class PlayGame extends SimpleApplication implements AnimEventListener{
     public void simpleInitApp() {
         
         
-        MainMenuScreen menuAppState = new MainMenuScreen();
-            this.stateManager.attach(menuAppState);
-        
-//        SettingsScreen settingsAppState = new SettingsScreen(); 
-//            stateManager.attach(settingsAppState);
+//        MainMenuScreen menuAppState = new MainMenuScreen();
+//            this.stateManager.attach(menuAppState);
+//        
+        SettingsScreen settingsAppState = new SettingsScreen(); 
+            stateManager.attach(settingsAppState);
         
         
          /** Load a Node from a .j3o file */

@@ -38,8 +38,13 @@ public class MainMenuScreenController extends BaseAppState implements ScreenCont
     private AudioRenderer     audioRenderer;
     private ViewPort          viewPort;
     private Nifty nifty;
+    private Screen screen;
     
         
+
+    SettingsScreen settingsAppState;
+    
+
     @Override
     public void initialize(Application app) {
         
@@ -51,16 +56,13 @@ public class MainMenuScreenController extends BaseAppState implements ScreenCont
         this.stateManager = this.app.getStateManager();
         this.inputManager = this.app.getInputManager();
         this.viewPort     = this.app.getViewPort();
-        this.nifty = nifty;
+           
+
         
-        
-        SettingsScreen settingsAppState = new SettingsScreen(); 
-            stateManager.attach(settingsAppState);
-        
-        NiftyJmeDisplay niftyDisplay = NiftyJmeDisplay.newNiftyJmeDisplay(assetManager, inputManager, audioRenderer, viewPort);
-        nifty = niftyDisplay.getNifty();
-        }
-    
+           settingsAppState = new SettingsScreen(); 
+           stateManager.attach(settingsAppState);
+    }       
+           
     @Override
     public void update(float tpf) {
         //TODO: implement behavior during runtime
@@ -105,9 +107,11 @@ public class MainMenuScreenController extends BaseAppState implements ScreenCont
         nifty.gotoScreen(nextScreen);
     }
         
-    
-    public void settingsGame(String screenID){
-//        nifty.gotoScreen(screenID);
+        
+    public void settingsGame(String screenId){
+        
+        stateManager.attach(settingsAppState);
+
         System.out.println("Game Settings button pressed...");
        
     }

@@ -19,11 +19,17 @@ import com.jme3.renderer.ViewPort;
 import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
 import de.lessvoid.nifty.Nifty;
+import de.lessvoid.nifty.builder.EffectBuilder;
+import de.lessvoid.nifty.builder.HoverEffectBuilder;
 import de.lessvoid.nifty.builder.LayerBuilder;
 import de.lessvoid.nifty.builder.PanelBuilder;
 import de.lessvoid.nifty.builder.ScreenBuilder;
 import de.lessvoid.nifty.builder.TextBuilder;
 import de.lessvoid.nifty.controls.button.builder.ButtonBuilder;
+import de.lessvoid.nifty.controls.checkbox.builder.CheckboxBuilder;
+import de.lessvoid.nifty.controls.dropdown.builder.DropDownBuilder;
+import de.lessvoid.nifty.effects.Effect;
+import de.lessvoid.nifty.screen.Screen;
 
 /**
  *
@@ -39,7 +45,9 @@ public class SettingsScreen extends BaseAppState {
     private RenderManager     renderManager;
     private AudioRenderer     audioRenderer;
     private ViewPort          viewPort;
+    
     private Nifty nifty;
+    private Screen screen;
     
     private Spatial mainScene;
     
@@ -55,7 +63,6 @@ public class SettingsScreen extends BaseAppState {
         this.stateManager = this.app.getStateManager();
         this.inputManager = this.app.getInputManager();
         this.viewPort     = this.app.getViewPort();
-        
         
         
          mainScene = assetManager.loadModel("Scenes/shore/mainScene.j3o");
@@ -89,17 +96,25 @@ public class SettingsScreen extends BaseAppState {
         nifty.loadStyleFile("nifty-default-styles.xml");
         nifty.loadControlFile("nifty-default-controls.xml");
         
+        nifty.registerSound("btnclick", "Interface/sounds/ButtonClick.ogg");
+        
+        
         nifty.addScreen("Screen_GameSettings", new ScreenBuilder("Game Settings"){{
                 controller(new mygame.SettingsScreenController());
                 defaultFocusElement("Button_Apply");
                 
+                
                 layer(new LayerBuilder("Layer_Settings_AllItems"){{
-                    childLayoutVertical();
+                    childLayoutAbsoluteInside();
                                         
-                    panel(new PanelBuilder("Panel_Settings_ForTitle"){{
-                        childLayoutVertical();
-                        alignLeft();
-                        valignBottom();
+                
+
+                    panel(new PanelBuilder("Panel_Settings_Title"){{
+                        childLayoutAbsoluteInside(); //!! please remember if you want to set child x / y positions manually
+                        padding("10px");
+                        x("20px");
+                        y("20px");
+
                         height("100px");
                         width("250px"); 
                         
@@ -108,34 +123,46 @@ public class SettingsScreen extends BaseAppState {
                                 font("Interface/Fonts/Antiqua.fnt");
                                 height("100%");
                                 width("100%");
-                                alignLeft();
-                                valignTop();
+                                padding("10px");
+                                x("20px");
+                                y("20px");
                                 
                             }});
                     }});        
                     
-                    panel(new PanelBuilder("Panel_Settings_For_ScreenButtons"){{
+                    panel(new PanelBuilder("Panel_Settings_ScreenButtons"){{
 //                        childLayoutVertical();
                         childLayoutAbsoluteInside();
-                        alignLeft();
-                        valignCenter();
+                        padding("10px");
+                        x("50px");
+                        y("520px");
                         height("200px");
                         width("300px"); 
-                        padding("10px");
-                        
-                        backgroundColor("#eee1"); //last digit sets the alpha channel
-//                        style("nifty-panel");
+                                                
                         
                         control(new ButtonBuilder("Button_Apply", "Apply Changes"){{
-//                            alignLeft();
-//                            valignBottom();
+
                             x("20px");
                             y("20px");
                             height("50px");
                             width("220px");  
+//                            interactOnClick("popupApplySettings()");
+                              interactOnClick("backToMainMenu(Screen_MainMenu)");  
+                            onStartHoverEffect(new HoverEffectBuilder("fade"){{
+                                  length(100);
+                                  effectParameter("start", "#0");
+                                  effectParameter("end", "#f");
+                                  neverStopRendering(true);
+                                          
+                                 }});
                             
-                            interactOnClick("popupApplySettings()");
-                            interactOnMouseOver("buttonEffect()");
+                            onStartHoverEffect(new HoverEffectBuilder("move"){{      
+                                  effectParameter("mode", "toOffset");
+                                  effectParameter("offsetX", "+15");
+                                    
+                                }});
+                            
+                                
                             
                         }});
                         
@@ -147,8 +174,91 @@ public class SettingsScreen extends BaseAppState {
                             interactOnClick("popupCancelSettings()");
                             interactOnMouseOver("buttonEffect()");
                             backgroundColor("#0c01");
+//                                onStartHoverEffect(new HoverEffectBuilder("playSound"){{
+//                                  effectParameter("sound", "btnclick");
+//                                    
+//                                }});
+
+                             onStartHoverEffect(new HoverEffectBuilder("fade"){{
+                                  length(100);
+                                  effectParameter("start", "#0");
+                                  effectParameter("end", "#f");
+                                  neverStopRendering(true);
+                                          
+                                 }});
+                            
+                            onStartHoverEffect(new HoverEffectBuilder("move"){{      
+                                  effectParameter("mode", "toOffset");
+                                  effectParameter("offsetX", "+15");
+                                    
+                                }});     
+                                      
+                                        
+                                    
+                                
                         }});
+                        }});
+                    
+                    panel(new PanelBuilder("Panel_Settings_VideoControls"){{
+
+                        childLayoutAbsoluteInside();
                         
+                        x("500px");
+                        y("20px");
+                        height("200px");
+                        width("400px"); 
+                                                
+                        backgroundColor("#eee1"); //last digit sets the alpha channel
+//                        style("nifty-panel");
+                    
+
+                            text(new TextBuilder() {{
+                                text("Video Settings");
+                                font("aurulent-sans-16.fnt");
+                                color("#f00f");
+                                height("50%");
+                                width("50%");
+                                x("0px");
+                                y("0px");                                
+                            }});
+                            
+                                text(new TextBuilder() {{
+                                    text("Fullscreen");
+                                    font("aurulent-sans-16.fnt");
+                                    color("#ffff");
+                                    height("50%");
+                                    width("50%");
+                                    x("5px");
+                                    y("30px");                                
+                                }});
+                                
+                                control(new CheckboxBuilder("fullscreen") {{
+                                    
+                                    x("150px");
+                                    y("70px");   
+                                }});
+                            
+                                text(new TextBuilder() {{
+                                    text("Resolution");
+                                    font("aurulent-sans-16.fnt");
+                                    color("#ffff");
+                                    height("50%");
+                                    width("50%");
+                                    x("5px");
+                                    y("60px");                                
+                                }});
+                                
+                                control(new DropDownBuilder("resolutions") {{
+                                    width("200px");
+                                    x("150px");
+                                    y("100px");   
+                                    
+                                }});
+                            
+                                
+                            
+                        
+                }});
                         
 //                        popup(new PopupBuilder("popupExit") {{
 //                            childLayoutCenter();
@@ -156,13 +266,15 @@ public class SettingsScreen extends BaseAppState {
 //                        }}.registerPopup(nifty));
                             
                         
-                }});
+                
                 }});
                 }}.build(nifty));
         
                 
                 nifty.gotoScreen("Screen_GameSettings");
     }
+    
+   
 
 
     @Override
