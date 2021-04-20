@@ -82,7 +82,7 @@ public class SettingsScreen extends BaseAppState {
             nifty.loadControlFile("nifty-default-controls.xml");
         
             nifty.registerSound("btnclick", "Interface/sound/ButtonClick.ogg");
-             nifty.registerMusic("credits", "Interface/music/RPG_Village_1.ogg");
+            nifty.registerMusic("credits", "Interface/music/RPG_Village_1.ogg");
                         
     }
     
@@ -235,24 +235,9 @@ public class SettingsScreen extends BaseAppState {
                             width("220px");  
 //                            interactOnClick("popupApplySettings()");
                               interactOnClick("backToMainMenu()");  
-                            onStartHoverEffect(new HoverEffectBuilder("fade"){{
-                                  length(100);
-                                  effectParameter("start", "#0");
-                                  effectParameter("end", "#f");
-                                  neverStopRendering(true);
-                                          
-                                 }});
-                            
-                            onStartHoverEffect(new HoverEffectBuilder("move"){{      
-                                  effectParameter("mode", "toOffset");
-                                  effectParameter("offsetX", "+15");
-                                    
-                                }});
-                            
-                            onStartHoverEffect(new HoverEffectBuilder("playSound"){{
-                                  effectParameter("sound", "btnclick");
-                                    
-                                }});
+                            onStartHoverEffect(new HoverEffectBuilder("fade"){{length(100); effectParameter("start", "#0"); effectParameter("end", "#f"); neverStopRendering(true); }});
+                            onStartHoverEffect(new HoverEffectBuilder("move"){{effectParameter("mode", "toOffset"); effectParameter("offsetX", "+15");}});
+                            onStartHoverEffect(new HoverEffectBuilder("playSound"){{effectParameter("sound", "btnclick");}});
                           
                         }});
                         
@@ -264,24 +249,9 @@ public class SettingsScreen extends BaseAppState {
                             interactOnClick("popupCancelSettings()");
                             interactOnMouseOver("buttonEffect()");
                             backgroundColor("#0c01");
-                                onStartHoverEffect(new HoverEffectBuilder("playSound"){{
-                                  effectParameter("sound", "btnclick");
-                                    
-                                }});
-
-                             onStartHoverEffect(new HoverEffectBuilder("fade"){{
-                                  length(100);
-                                  effectParameter("start", "#0");
-                                  effectParameter("end", "#f");
-                                  neverStopRendering(true);
-                                          
-                                 }});
-                            
-                            onStartHoverEffect(new HoverEffectBuilder("move"){{      
-                                  effectParameter("mode", "toOffset");
-                                  effectParameter("offsetX", "+15");
-                                    
-                                }});     
+                            onStartHoverEffect(new HoverEffectBuilder("fade"){{length(100); effectParameter("start", "#0"); effectParameter("end", "#f"); neverStopRendering(true); }});
+                            onStartHoverEffect(new HoverEffectBuilder("move"){{effectParameter("mode", "toOffset"); effectParameter("offsetX", "+15");}});
+                            onStartHoverEffect(new HoverEffectBuilder("playSound"){{effectParameter("sound", "btnclick");}});
                                       
                                         
                                     

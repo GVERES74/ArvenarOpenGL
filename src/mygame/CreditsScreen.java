@@ -5,7 +5,6 @@
  */
 package mygame;
 
-
 import com.jme3.app.Application;
 import com.jme3.app.SimpleApplication;
 import com.jme3.app.state.AppStateManager;
@@ -20,10 +19,8 @@ import com.jme3.effect.shapes.EmitterSphereShape;
 import com.jme3.font.BitmapText;
 import com.jme3.input.InputManager;
 import com.jme3.input.KeyInput;
-import com.jme3.input.MouseInput;
 import com.jme3.input.controls.ActionListener;
 import com.jme3.input.controls.KeyTrigger;
-import com.jme3.input.controls.MouseButtonTrigger;
 import com.jme3.light.DirectionalLight;
 import com.jme3.material.Material;
 
@@ -40,13 +37,14 @@ import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
 import com.jme3.water.SimpleWaterProcessor;
 import de.lessvoid.nifty.Nifty;
+import de.lessvoid.nifty.builder.EffectBuilder;
 import de.lessvoid.nifty.builder.HoverEffectBuilder;
 import de.lessvoid.nifty.builder.LayerBuilder;
 import de.lessvoid.nifty.builder.PanelBuilder;
 import de.lessvoid.nifty.builder.ScreenBuilder;
 import de.lessvoid.nifty.builder.TextBuilder;
 import de.lessvoid.nifty.controls.button.builder.ButtonBuilder;
-import de.lessvoid.nifty.effects.Effect;
+import de.lessvoid.nifty.controls.label.builder.LabelBuilder;
     
 
 
@@ -54,7 +52,7 @@ import de.lessvoid.nifty.effects.Effect;
  *
  * @author TE332168
  */
-public class MainMenuScreen extends BaseAppState {
+public class CreditsScreen extends BaseAppState {
     
     
     private SimpleApplication app;
@@ -68,10 +66,10 @@ public class MainMenuScreen extends BaseAppState {
     private Nifty nifty;
     
          
-    private Spatial mainScene;
-    private Node startRootNode = new Node("Main Menu RootNode");
-    private Node startGUINode = new Node("Main Menu GUINode");
-    private AudioNode mainMenuThemePlayer, ambSoundNode, plainSoundNode;
+    private Spatial creditsScene;
+    private Node creditsRootNode = new Node("Credits RootNode");
+    private Node creditsGUINode = new Node("Credits GUINode");
+    private AudioNode creditsThemePlayer, ambSoundNode, plainSoundNode;
     float screenHeight, screenWidth;
     
     BitmapText menuItemText, camPosInfoText;
@@ -91,15 +89,15 @@ public class MainMenuScreen extends BaseAppState {
         screenHeight = app.getCamera().getHeight();
         screenWidth = app.getCamera().getWidth();
         
-        rootNode.attachChild(startRootNode);
-       // rootNode.attachChild(startGUINode);
+        rootNode.attachChild(creditsRootNode);
+       // rootNode.attachChild(creditsGUINode);
        
                           
-        inputManager.deleteMapping(SimpleApplication.INPUT_MAPPING_EXIT); //delete ESC key quit app function
+//        inputManager.deleteMapping(SimpleApplication.INPUT_MAPPING_EXIT); //delete ESC key quit app function
        
         //this.app.getFlyByCamera().setEnabled(false);
                 
-        loadMainScene();
+        loadCreditsScene();
         createWorldLight();
         loadSceneModels();
         createSimpleWater(35, 25, -15f, -1f, -12f);
@@ -109,35 +107,34 @@ public class MainMenuScreen extends BaseAppState {
         createFirePlace();
         createWaterStream();
         createWaterFall();
-        loadMenuMusic();
+        loadCreditsMusic();
         
         loadAmbientSound("Sounds/Ambient/Water/waterstream.ogg", true, true, 0.5f, 23f, -0.5f, -11f);
         loadAmbientSound("Sounds/Ambient/Water/waterfall_01.ogg", true, false, 0.5f, 32f, 2f, -2f);
         loadAmbientSound("Sounds/Ambient/Fire/torchBurning.ogg", true, true, 1.0f, 0f, 0f, 0f);
         
-        createMainMenu();
-        initMenuControls();
-        
+        createCredits();
+                
     //TODO: initialize your AppState, e.g. attach spatials to rootNode
         //this is called on the OpenGL thread after the AppState has been attached
     }
     
         
-        public void loadMainScene(){
-            mainScene = this.app.getAssetManager().loadModel("Scenes/MainMenu/mainMenuScene.j3o");
-            rootNode.attachChild(mainScene);
+        public void loadCreditsScene(){
+            creditsScene = this.app.getAssetManager().loadModel("Scenes/MainMenu/mainMenuScene.j3o");
+            rootNode.attachChild(creditsScene);
             app.getCamera().setLocation(new Vector3f(10f, 2f, 5f));
             app.getCamera().setRotation(new Quaternion().fromAngleAxis(0, Vector3f.UNIT_Y)); //initial camera direction
             
         }
     
-        public void loadMenuMusic(){
+        public void loadCreditsMusic(){
 
-            mainMenuThemePlayer = new AudioNode(assetManager,"Scenes/MainMenu/RPG_Ambient_2.ogg");
-            mainMenuThemePlayer.setLooping(true);
-            mainMenuThemePlayer.setPositional(false);
-            startRootNode.attachChild(mainMenuThemePlayer);
-            mainMenuThemePlayer.play();
+            creditsThemePlayer = new AudioNode(assetManager,"Scenes/MainMenu/RPG_Ambient_2.ogg");
+            creditsThemePlayer.setLooping(true);
+            creditsThemePlayer.setPositional(false);
+            creditsRootNode.attachChild(creditsThemePlayer);
+            creditsThemePlayer.play();
 
         }
         
@@ -150,7 +147,7 @@ public class MainMenuScreen extends BaseAppState {
             ambSoundNode.setMaxDistance(5);
             ambSoundNode.setVolume(vol);
             
-            startRootNode.attachChild(ambSoundNode);
+            creditsRootNode.attachChild(ambSoundNode);
             ambSoundNode.play();
 
         }
@@ -203,13 +200,13 @@ public class MainMenuScreen extends BaseAppState {
             model.setLocalTranslation(xpos, ypos, zpos);
             model.rotate(0, yaw, 0);
             model.setLocalScale(scale);
-            startRootNode.attachChild(model);
+            creditsRootNode.attachChild(model);
         }
     
         public void createWorldLight(){
             DirectionalLight sunLight = new DirectionalLight();
             sunLight.setDirection(new Vector3f(-0.1f, -0.7f, -1.0f).normalizeLocal());
-            startRootNode.addLight(sunLight);
+            creditsRootNode.addLight(sunLight);
         }
     
         public void createPrecipitation(){
@@ -229,7 +226,7 @@ public class MainMenuScreen extends BaseAppState {
             pemitter.setNumParticles(500);
             pemitter.setParticlesPerSec(20);
             pemitter.setShape(new EmitterSphereShape(Vector3f.ZERO,100f));
-            startRootNode.attachChild(pemitter);
+            creditsRootNode.attachChild(pemitter);
             
         }
 
@@ -251,7 +248,7 @@ public class MainMenuScreen extends BaseAppState {
             pemitter.setLocalTranslation(0f, 0.3f, 0f);
             pemitter.setNumParticles(200);
             pemitter.setParticlesPerSec(20);
-            startRootNode.attachChild(pemitter);
+            creditsRootNode.attachChild(pemitter);
             
         }
         
@@ -275,7 +272,7 @@ public class MainMenuScreen extends BaseAppState {
             wstreamEmitter.setNumParticles(300);
             wstreamEmitter.setParticlesPerSec(50);
             wstreamEmitter.setShape(new EmitterBoxShape(new Vector3f(-1f,-0.5f,-1f),new Vector3f(1f,0.5f,1f)));
-            startRootNode.attachChild(wstreamEmitter);
+            creditsRootNode.attachChild(wstreamEmitter);
             
         }
         
@@ -299,14 +296,14 @@ public class MainMenuScreen extends BaseAppState {
             waterfallemitter.setNumParticles(300);
             waterfallemitter.setParticlesPerSec(50);
             waterfallemitter.setShape(new EmitterBoxShape(new Vector3f(-1f,-1f,-1f),new Vector3f(1f,1f,1f)));
-            startRootNode.attachChild(waterfallemitter);
+            creditsRootNode.attachChild(waterfallemitter);
             
         }
         
         public void createSimpleWater(float width, float depth, float posx, float posy, float posz){
             
             SimpleWaterProcessor waterCreator = new SimpleWaterProcessor(assetManager);
-                                 waterCreator.setReflectionScene(mainScene);
+                                 waterCreator.setReflectionScene(creditsScene);
             
             Vector3f waterLocation = new Vector3f(0,-6,0);
             
@@ -320,7 +317,7 @@ public class MainMenuScreen extends BaseAppState {
                      watergeom.setLocalTranslation(posx, posy, posz);
                      watergeom.setShadowMode(RenderQueue.ShadowMode.Receive);
                      watergeom.setMaterial(waterCreator.getMaterial());
-                     startRootNode.attachChild(watergeom);
+                     creditsRootNode.attachChild(watergeom);
     }                 
             
             
@@ -347,61 +344,13 @@ public class MainMenuScreen extends BaseAppState {
                 app.getCamera().setLocation(new Vector3f(camx+moveX, camy, camz+moveZ));
 
         }
-        
-        public void leaveAutoPlay(){
-            
-            mainMenuThemePlayer.stop();
-            rotateCamera(0f, 1,0,Vector3f.UNIT_Y);
-            app.getCamera().setLocation(new Vector3f(2f, 2f, 2f));
-            
-        }
-                        
+                       
              
-        public void createMainMenu(){
+        public void createCredits(){
             app.setDisplayStatView(false); app.setDisplayFps(false);
-
-            createMenuText("Start New Game", 50, screenHeight-50);
-            createMenuText("Game Options", 50, screenHeight-80);
-            createMenuText("Credits", 50, screenHeight-110);
-            createMenuText("Exit Game", 50, screenHeight-140);
- 
-        }
              
-        public void createMenuText(String name, float posx, float posy){
-            menuItemText = new BitmapText(assetManager.loadFont("Interface/Fonts/Antiqua.fnt"), false);
-            menuItemText.setText(name);
-            menuItemText.setSize(24);
-            menuItemText.setLocalTranslation(posx, posy, 0);
-            menuItemText.setColor(ColorRGBA.White);
-            startGUINode.attachChild(menuItemText);
         }
-        
-        
-        public void initMenuControls(){
-        
-            inputManager.addMapping("MBLeft", new MouseButtonTrigger(MouseInput.BUTTON_LEFT));
-            inputManager.addMapping("MenuUp", new KeyTrigger(KeyInput.KEY_UP));
-            inputManager.addMapping("MenuDown", new KeyTrigger(KeyInput.KEY_DOWN));
-            inputManager.addMapping("ExitGame", new KeyTrigger(KeyInput.KEY_ESCAPE));
-            
-            inputManager.addListener(actionListener, "MBLeft", "MenuUp", "MenuDown", "ExitGame");
-        
-        
-        }
-    
-        private final ActionListener actionListener = new ActionListener() {
-            @Override
-            public void onAction(String name, boolean isPressed, float tpf) {
-                switch (name) {
-                    
-                    case "MBLeft": createMenuText("CamDir: "+app.getCamera().getLocation(), 50, screenHeight-200); break;
-                    case "ExitGame": app.getFlyByCamera().setEnabled(false); break;
-                    
-                }
-                             
-            }
-        };
-    
+          
         
     @Override
     public void update(float tpf) {
@@ -413,8 +362,8 @@ public class MainMenuScreen extends BaseAppState {
     
     @Override
     public void cleanup(Application app) {
-        startRootNode.detachAllChildren();
-        startGUINode.detachAllChildren();
+        creditsRootNode.detachAllChildren();
+        creditsGUINode.detachAllChildren();
         
     }    
         
@@ -429,17 +378,47 @@ public class MainMenuScreen extends BaseAppState {
         nifty.loadStyleFile("nifty-default-styles.xml");
         nifty.loadControlFile("nifty-default-controls.xml");
         nifty.registerSound("btnclick", "Interface/sound/ButtonClick.ogg");
-        nifty.registerMusic("credits", "Interface/music/RPG_Village_1.ogg");
         
-        nifty.addScreen("Screen_MainMenu", new ScreenBuilder("Main Menu"){{
+        
+        nifty.addScreen("Screen_Credits", new ScreenBuilder("Game Credits"){{
                 controller(new mygame.MainMenuScreenController());
-                defaultFocusElement("Button_Play");
+                defaultFocusElement("Button_Back");
                 
-                layer(new LayerBuilder("Layer_Menu_ForMain"){{
+                layer(new LayerBuilder("Layer_CreditsText"){{
                     childLayoutVertical();
                     
+                 panel(new PanelBuilder("Panel_Credits"){{
+                        childLayoutVertical();
+                        alignCenter();
+                        valignTop();
+                        height("700px");
+                        width("500px"); 
+                        backgroundColor("#fee3");
+                        
+                    control(new LabelBuilder("creditsLabel") {{
+                                text("Game Design: Gabor Veres");
+                                
+                                height("100%");
+                                width("100%");
+                                alignCenter();
+                                valignCenter();
+                                
+                            
+                    onStartScreenEffect(new EffectBuilder("move") {{
+                       length(5000);
+                       neverStopRendering(true);
+                       
+                       effectParameter("mode", "fromOffset");
+                       effectParameter("offsetY", "700");
+                    }});
+                    }});
+                    }});
+                 }});   
+                
+                layer(new LayerBuilder("Layer_CreditsControls"){{
+                    childLayoutVertical();
                     
-                    panel(new PanelBuilder("Panel_Menu_ForTitle"){{
+                    panel(new PanelBuilder("Panel_Credits_ForTitle"){{
                         childLayoutVertical();
                         alignLeft();
                         valignCenter();
@@ -447,7 +426,7 @@ public class MainMenuScreen extends BaseAppState {
                         width("250px"); 
                         
                             text(new TextBuilder() {{
-                                text("Main Menu");
+                                text("Game Credits");
                                 font("Interface/Fonts/Antiqua.fnt");
                                 height("100%");
                                 width("100%");
@@ -455,65 +434,23 @@ public class MainMenuScreen extends BaseAppState {
                                 valignTop();
                                 
                             }});
-                    }});        
+                    }}); 
                     
-                    panel(new PanelBuilder("Panel_Menu_ForButtons"){{
+                    
+                    panel(new PanelBuilder("Panel_Credits_Back"){{
 //                        childLayoutVertical();
                         childLayoutAbsoluteInside();
                         alignLeft();
                         valignCenter();
-                        height("500px");
+                        height("200px");
                         width("300px"); 
                         padding("10px");
                         
                         backgroundColor("#eee1"); //last digit sets the alpha channel
 //                        style("nifty-panel");
-                                           
-                        
-                        
-                        control(new ButtonBuilder("Button_Play", "Play Game"){{
-//                            alignLeft();
-//                            valignBottom();
-                            x("20px");
-                            y("20px");
-                            height("50px");
-                            width("220px");  
-                            
-                            interactOnClick("startGame()");
-//                            interactOnMouseOver("buttonEffect()");
-                            onStartHoverEffect(new HoverEffectBuilder("fade"){{length(100); effectParameter("start", "#0"); effectParameter("end", "#f"); neverStopRendering(true); }});
-                            onStartHoverEffect(new HoverEffectBuilder("move"){{effectParameter("mode", "toOffset"); effectParameter("offsetX", "+15");}});
-                            onStartHoverEffect(new HoverEffectBuilder("playSound"){{effectParameter("sound", "btnclick");}});
-                            
-                        }});
-                        
-                        control(new ButtonBuilder("Button_Settings", "Game Settings"){{
-                            x("20px");
-                            y("80px");
-                            height("50px");
-                            width("220px");    
-                            interactOnClick("settingsGame(Screen_GameSettings)");
-//                            interactOnMouseOver("buttonEffect()");
-                            backgroundColor("#0c01");
-                            onStartHoverEffect(new HoverEffectBuilder("fade"){{length(100); effectParameter("start", "#0"); effectParameter("end", "#f"); neverStopRendering(true); }});
-                            onStartHoverEffect(new HoverEffectBuilder("move"){{effectParameter("mode", "toOffset"); effectParameter("offsetX", "+15");}});
-                            onStartHoverEffect(new HoverEffectBuilder("playSound"){{effectParameter("sound", "btnclick");}});
-                        }});
-                        
-                        control(new ButtonBuilder("Button_Credits", "Game Credits"){{
-                            x("20px");
-                            y("140px");
-                            height("50px");
-                            width("220px");   
-                            interactOnClick("creditsGame()");
-//                            interactOnMouseOver("buttonEffect()");
-                            backgroundColor("#0c01");
-                            onStartHoverEffect(new HoverEffectBuilder("fade"){{length(100); effectParameter("start", "#0"); effectParameter("end", "#f"); neverStopRendering(true); }});
-                            onStartHoverEffect(new HoverEffectBuilder("move"){{effectParameter("mode", "toOffset"); effectParameter("offsetX", "+15");}});
-                            onStartHoverEffect(new HoverEffectBuilder("playSound"){{effectParameter("sound", "btnclick");}});
-                        }});
+                          
 
-                        control(new ButtonBuilder("Button_Exit", "Exit Game"){{
+                        control(new ButtonBuilder("Button_Back", "Back"){{
                             x("20px");
                             y("200px");
                             height("50px");
@@ -537,7 +474,7 @@ public class MainMenuScreen extends BaseAppState {
                 }}.build(nifty));
         
                 
-               nifty.gotoScreen("Screen_MainMenu");
+               nifty.gotoScreen("Screen_Credits");
         
 
     }
@@ -549,10 +486,4 @@ public class MainMenuScreen extends BaseAppState {
         
     }
 
-    
-        
-
-   
 }
-
-                                  

@@ -40,10 +40,13 @@ public class PlayGame extends SimpleApplication implements AnimEventListener{
 //        MainMenuScreen menuAppState = new MainMenuScreen();
 //            this.stateManager.attach(menuAppState);
 //        
-        SettingsScreen settingsAppState = new SettingsScreen(); 
-            stateManager.attach(settingsAppState);
+//        SettingsScreen settingsAppState = new SettingsScreen(); 
+//            stateManager.attach(settingsAppState);
         
-        
+        CreditsScreen creditsAppState = new CreditsScreen();
+            this.stateManager.attach(creditsAppState);
+
+
          /** Load a Node from a .j3o file */
                   
          BinaryImporter importer = BinaryImporter.getInstance();
