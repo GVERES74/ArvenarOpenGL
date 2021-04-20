@@ -10,7 +10,10 @@ import com.jme3.app.SimpleApplication;
 import com.jme3.app.state.BaseAppState;
 import com.jme3.system.AppSettings;
 import de.lessvoid.nifty.Nifty;
+import de.lessvoid.nifty.controls.CheckBox;
 import de.lessvoid.nifty.controls.DropDown;
+import de.lessvoid.nifty.controls.Label;
+import de.lessvoid.nifty.controls.Slider;
 import de.lessvoid.nifty.screen.Screen;
 import de.lessvoid.nifty.screen.ScreenController;
 import static mygame.PlayGame.main;
@@ -28,12 +31,23 @@ public class SettingsScreenController extends BaseAppState implements ScreenCont
     private AppSettings settings = new AppSettings(true);
     private String mainScreen;
     private DropDown dropdownRes;
+    private CheckBox checkboxFullscreen;
+    private Slider sliderVol;
+    private Label labelSliderVol;
     private int width, height;
     
     @Override
     protected void initialize(Application app) {
-        this .app = (SimpleApplication) app;
+        this.app = (SimpleApplication) app;
+        this.settings = settings; 
     }
+    
+     @Override
+    public void update(float tpf) {
+        
+        labelSliderVol.setText(sliderVol.getValue()+"%");
+    }
+    
 
     @Override
     protected void cleanup(Application app) {
@@ -53,12 +67,20 @@ public class SettingsScreenController extends BaseAppState implements ScreenCont
     @Override
     public void bind(Nifty nifty, Screen screen) {
         this.nifty = nifty;
-
         this.screen = screen;
         
-        dropdownRes = screen.findNiftyControl("resolutions", DropDown.class);
+        dropdownRes = screen.findNiftyControl("dropdown_Resolution", DropDown.class);
         dropdownRes.addItem("1366x768");
         dropdownRes.addItem("1920x1080");
+        
+        dropdownRes.selectItemByIndex(0);
+        
+        checkboxFullscreen = screen.findNiftyControl("cb_Resolution", CheckBox.class);
+        
+        
+        sliderVol = screen.findNiftyControl("slider_Volume", Slider.class);
+        labelSliderVol = screen.findNiftyControl("label_Slider_Volume", Label.class);
+                labelSliderVol.setText(sliderVol.getValue()+"%");
     }
 
     @Override
@@ -76,7 +98,7 @@ public class SettingsScreenController extends BaseAppState implements ScreenCont
         
     }
     
-    public void backToMainMenu(String nextScreen){
+    public void backToMainMenu(){
         System.out.println("Apply Settings button pressed...");
         applySettings();
 //        nifty.gotoScreen(mainScreen);
@@ -93,11 +115,18 @@ public class SettingsScreenController extends BaseAppState implements ScreenCont
             default: width = 1366; height = 768;
             
         }
+        settings.setResolution(width, height);
+        
+//        if (checkboxFullscreen.isChecked()){
+//                settings.setFullscreen(true);
+//        }
     }
     
     public void applySettings(){
         changeSettings();
-        settings.setResolution(width, height);
+        
+        
+        
     }
    
     
