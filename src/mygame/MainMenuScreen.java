@@ -40,7 +40,9 @@ import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
 import com.jme3.water.SimpleWaterProcessor;
 import de.lessvoid.nifty.Nifty;
+import de.lessvoid.nifty.builder.EffectBuilder;
 import de.lessvoid.nifty.builder.HoverEffectBuilder;
+import de.lessvoid.nifty.builder.ImageBuilder;
 import de.lessvoid.nifty.builder.LayerBuilder;
 import de.lessvoid.nifty.builder.PanelBuilder;
 import de.lessvoid.nifty.builder.ScreenBuilder;
@@ -86,8 +88,8 @@ public class MainMenuScreen extends BaseAppState {
         this.stateManager = this.app.getStateManager();
         this.inputManager = this.app.getInputManager();
         this.viewPort     = this.app.getViewPort();
-               
-                                
+        
+                                        
         screenHeight = app.getCamera().getHeight();
         screenWidth = app.getCamera().getWidth();
         
@@ -133,7 +135,7 @@ public class MainMenuScreen extends BaseAppState {
     
         public void loadMenuMusic(){
 
-            mainMenuThemePlayer = new AudioNode(assetManager,"Scenes/MainMenu/RPG_Ambient_2.ogg");
+            mainMenuThemePlayer = new AudioNode(assetManager,"Music/Soundtracks/RPG_Ambient_2.ogg");
             mainMenuThemePlayer.setLooping(true);
             mainMenuThemePlayer.setPositional(false);
             startRootNode.attachChild(mainMenuThemePlayer);
@@ -421,19 +423,18 @@ public class MainMenuScreen extends BaseAppState {
         
     @Override
     protected void onEnable() {
-        NiftyJmeDisplay niftyDisplay = NiftyJmeDisplay.newNiftyJmeDisplay(assetManager, inputManager, audioRenderer, viewPort);
-        nifty = niftyDisplay.getNifty();
+        
+        nifty = PlayGame.niftyDisplay.getNifty();
         app.getFlyByCamera().setDragToRotate(true);
         
-        app.getGuiViewPort().addProcessor(niftyDisplay); 
+        app.getGuiViewPort().addProcessor(PlayGame.niftyDisplay); 
         nifty.loadStyleFile("nifty-default-styles.xml");
         nifty.loadControlFile("nifty-default-controls.xml");
-        nifty.registerSound("btnclick", "Interface/sound/ButtonClick.ogg");
-        nifty.registerMusic("credits", "Interface/music/RPG_Village_1.ogg");
-        
+        nifty.registerSound("btnclick", "Interface/sound/metalClick.ogg");
+                
         nifty.addScreen("Screen_MainMenu", new ScreenBuilder("Main Menu"){{
                 controller(new mygame.MainMenuScreenController());
-                defaultFocusElement("Button_Play");
+                defaultFocusElement("menuimg_Play");
                 
                 layer(new LayerBuilder("Layer_Menu_ForMain"){{
                     childLayoutVertical();
@@ -444,14 +445,14 @@ public class MainMenuScreen extends BaseAppState {
                         alignLeft();
                         valignCenter();
                         height("100px");
-                        width("250px"); 
+                        width("400px"); 
                         
                             text(new TextBuilder() {{
-                                text("Main Menu");
-                                font("Interface/Fonts/Antiqua.fnt");
+                                text("Arvenar - Main Menu");
+                                font("Interface/Fonts/verdana-48-regular.fnt");
                                 height("100%");
                                 width("100%");
-                                alignLeft();
+                                alignCenter();
                                 valignTop();
                                 
                             }});
@@ -462,8 +463,8 @@ public class MainMenuScreen extends BaseAppState {
                         childLayoutAbsoluteInside();
                         alignLeft();
                         valignCenter();
-                        height("500px");
-                        width("300px"); 
+                        height("300px");
+                        width("250px"); 
                         padding("10px");
                         
                         backgroundColor("#eee1"); //last digit sets the alpha channel
@@ -471,69 +472,125 @@ public class MainMenuScreen extends BaseAppState {
                                            
                         
                         
-                        control(new ButtonBuilder("Button_Play", "Play Game"){{
-//                            alignLeft();
-//                            valignBottom();
+                        image(new ImageBuilder("menuimg_Play"){{
+                            filename("Interface/Images/MenuButtons/Button_0_playgame.png");
                             x("20px");
                             y("20px");
-                            height("50px");
-                            width("220px");  
+                            height("40px");
+                            width("150px");  
                             
                             interactOnClick("startGame()");
-//                            interactOnMouseOver("buttonEffect()");
-                            onStartHoverEffect(new HoverEffectBuilder("fade"){{length(100); effectParameter("start", "#0"); effectParameter("end", "#f"); neverStopRendering(true); }});
-                            onStartHoverEffect(new HoverEffectBuilder("move"){{effectParameter("mode", "toOffset"); effectParameter("offsetX", "+15");}});
+                            onStartHoverEffect(new HoverEffectBuilder("changeImage"){{
+                                effectParameter("active", "Interface/Images/MenuButtons/Button_1_playgame.png"); neverStopRendering(true);
+                                effectParameter("inactive", "Interface/Images/MenuButtons/Button_0_playgame.png"); neverStopRendering(true);}});
+                                onStartHoverEffect(new HoverEffectBuilder("move"){{effectParameter("mode", "toOffset"); effectParameter("offsetX", "+10");}});
                             onStartHoverEffect(new HoverEffectBuilder("playSound"){{effectParameter("sound", "btnclick");}});
                             
                         }});
                         
-                        control(new ButtonBuilder("Button_Settings", "Game Settings"){{
+                        image(new ImageBuilder("menuimg_Settings"){{
+                            filename("Interface/Images/MenuButtons/Button_0_settings.png");
                             x("20px");
-                            y("80px");
-                            height("50px");
-                            width("220px");    
-                            interactOnClick("settingsGame(Screen_GameSettings)");
-//                            interactOnMouseOver("buttonEffect()");
+                            y("70px");
+                            height("40px");
+                            width("150px");    
+                            interactOnClick("settingsGame()");
                             backgroundColor("#0c01");
-                            onStartHoverEffect(new HoverEffectBuilder("fade"){{length(100); effectParameter("start", "#0"); effectParameter("end", "#f"); neverStopRendering(true); }});
-                            onStartHoverEffect(new HoverEffectBuilder("move"){{effectParameter("mode", "toOffset"); effectParameter("offsetX", "+15");}});
+                            onStartHoverEffect(new HoverEffectBuilder("changeImage"){{
+                                effectParameter("active", "Interface/Images/MenuButtons/Button_1_settings.png"); neverStopRendering(true);
+                                effectParameter("inactive", "Interface/Images/MenuButtons/Button_0_settings.png"); neverStopRendering(true);}});
+                            onStartHoverEffect(new HoverEffectBuilder("move"){{effectParameter("mode", "toOffset"); effectParameter("offsetX", "+10");}});
                             onStartHoverEffect(new HoverEffectBuilder("playSound"){{effectParameter("sound", "btnclick");}});
                         }});
                         
-                        control(new ButtonBuilder("Button_Credits", "Game Credits"){{
+                        image(new ImageBuilder("menuimg_Credits"){{
+                            filename("Interface/Images/MenuButtons/Button_0_credits.png");
                             x("20px");
-                            y("140px");
-                            height("50px");
-                            width("220px");   
+                            y("120px");
+                            height("40px");
+                            width("150px");   
                             interactOnClick("creditsGame()");
-//                            interactOnMouseOver("buttonEffect()");
                             backgroundColor("#0c01");
-                            onStartHoverEffect(new HoverEffectBuilder("fade"){{length(100); effectParameter("start", "#0"); effectParameter("end", "#f"); neverStopRendering(true); }});
-                            onStartHoverEffect(new HoverEffectBuilder("move"){{effectParameter("mode", "toOffset"); effectParameter("offsetX", "+15");}});
+                            onStartHoverEffect(new HoverEffectBuilder("changeImage"){{
+                                effectParameter("active", "Interface/Images/MenuButtons/Button_1_credits.png"); neverStopRendering(true);
+                                effectParameter("inactive", "Interface/Images/MenuButtons/Button_0_credits.png"); neverStopRendering(true);}});
+                            onStartHoverEffect(new HoverEffectBuilder("move"){{effectParameter("mode", "toOffset"); effectParameter("offsetX", "+10");}});
                             onStartHoverEffect(new HoverEffectBuilder("playSound"){{effectParameter("sound", "btnclick");}});
                         }});
 
-                        control(new ButtonBuilder("Button_Exit", "Exit Game"){{
+                        image(new ImageBuilder("menuimg_Quit"){{
+                            filename("Interface/Images/MenuButtons/Button_0_quit.png");
                             x("20px");
-                            y("200px");
-                            height("50px");
-                            width("220px");    
+                            y("170px");
+                            height("40px");
+                            width("150px");    
                             interactOnClick("quitGame()");
-//                            interactOnMouseOver("buttonEffect()");
                             backgroundColor("#0c01");
-                            onStartHoverEffect(new HoverEffectBuilder("fade"){{length(100); effectParameter("start", "#0"); effectParameter("end", "#f"); neverStopRendering(true); }});
-                            onStartHoverEffect(new HoverEffectBuilder("move"){{effectParameter("mode", "toOffset"); effectParameter("offsetX", "+15");}});
+                            onStartHoverEffect(new HoverEffectBuilder("changeImage"){{
+                                effectParameter("active", "Interface/Images/MenuButtons/Button_1_quit.png"); neverStopRendering(true);
+                                effectParameter("inactive", "Interface/Images/MenuButtons/Button_0_quit.png"); neverStopRendering(true);}});
+                            onStartHoverEffect(new HoverEffectBuilder("move"){{effectParameter("mode", "toOffset"); effectParameter("offsetX", "+10");}});
                             onStartHoverEffect(new HoverEffectBuilder("playSound"){{effectParameter("sound", "btnclick");}});
                         }});
+                        
+                    }});    
                         
 //                        popup(new PopupBuilder("popupExit") {{
 //                            childLayoutCenter();
 //                            backgroundColor("#000a");
 //                        }}.registerPopup(nifty));
-                            
+                          
                         
+         }});
+
+                    layer(new LayerBuilder("Layer_Menu_Logo"){{
+                        childLayoutVertical();
+
+                        panel(new PanelBuilder("Panel_Menu_Logo"){{
+
+                            childLayoutVertical();
+                            alignCenter();
+                            valignCenter();
+                            height("500px");
+                            width("500px"); 
+                            padding("10px");
+                            backgroundColor("#eee1");
+                                                                                     
+                            image(new ImageBuilder("logo_Cat") {{
+                                filename("Interface/Images/greetingcat.png");
+                                alignCenter();
+                                valignTop();
+                                height("20%");
+                                width("20%");
+                                
+                            }});
+                            
+                            text(new TextBuilder() {{
+                                text("A Greeting Cat Production\n 2021 - pre-Alpha");
+                                font("Interface/Fonts/Default.fnt");
+                                height("100%");
+                                width("100%");
+                                alignCenter();
+                                valignCenter();
+                             }});
+                            
+                            onStartScreenEffect(new EffectBuilder("fade") {{
+                            startDelay(5000);
+                            length(2000);
+                            effectParameter("start", "#00");
+                            effectParameter("end", "#ff");
+                            }});
+                            
+//                            onStartScreenEffect(new EffectBuilder("fade") {{
+//                            startDelay(5000);
+//                            length(2000);
+//                            effectParameter("start", "#ff");
+//                            effectParameter("end", "#00");
+//                            neverStopRendering(true);}});
                 }});
-                }});
+                    
+                     
+                }}); //layer logo end
                 }}.build(nifty));
         
                 

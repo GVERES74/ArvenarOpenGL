@@ -40,11 +40,7 @@ public class MainMenuScreenController extends BaseAppState implements ScreenCont
     private Nifty nifty;
     private Screen screen;
     
-        
-
-    SettingsScreen settingsAppState;
     
-
     @Override
     public void initialize(Application app) {
         
@@ -57,10 +53,7 @@ public class MainMenuScreenController extends BaseAppState implements ScreenCont
         this.inputManager = this.app.getInputManager();
         this.viewPort     = this.app.getViewPort();
            
-
-        
-           settingsAppState = new SettingsScreen(); 
-           stateManager.attach(settingsAppState);
+           
     }       
            
     @Override
@@ -108,9 +101,10 @@ public class MainMenuScreenController extends BaseAppState implements ScreenCont
     }
         
         
-    public void settingsGame(String screenId){
+    public void settingsGame(){
         
-        stateManager.attach(settingsAppState);
+        //app.getStateManager().attach(PlayGame.settingsAppState);
+        PlayGame.nifty.gotoScreen("Screen_GameSettings");
 
         System.out.println("Game Settings button pressed...");
        

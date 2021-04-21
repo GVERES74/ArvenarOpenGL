@@ -39,6 +39,7 @@ import com.jme3.water.SimpleWaterProcessor;
 import de.lessvoid.nifty.Nifty;
 import de.lessvoid.nifty.builder.EffectBuilder;
 import de.lessvoid.nifty.builder.HoverEffectBuilder;
+import de.lessvoid.nifty.builder.ImageBuilder;
 import de.lessvoid.nifty.builder.LayerBuilder;
 import de.lessvoid.nifty.builder.PanelBuilder;
 import de.lessvoid.nifty.builder.ScreenBuilder;
@@ -130,7 +131,7 @@ public class CreditsScreen extends BaseAppState {
     
         public void loadCreditsMusic(){
 
-            creditsThemePlayer = new AudioNode(assetManager,"Scenes/MainMenu/RPG_Ambient_2.ogg");
+            creditsThemePlayer = new AudioNode(assetManager,"Music/Soundtracks/RPG_For_Wenches_Ale_and_LOOT.ogg");
             creditsThemePlayer.setLooping(true);
             creditsThemePlayer.setPositional(false);
             creditsRootNode.attachChild(creditsThemePlayer);
@@ -370,14 +371,15 @@ public class CreditsScreen extends BaseAppState {
         
     @Override
     protected void onEnable() {
-        NiftyJmeDisplay niftyDisplay = NiftyJmeDisplay.newNiftyJmeDisplay(assetManager, inputManager, audioRenderer, viewPort);
-        nifty = niftyDisplay.getNifty();
+        
+        nifty = PlayGame.niftyDisplay.getNifty();
         app.getFlyByCamera().setDragToRotate(true);
         
-        app.getGuiViewPort().addProcessor(niftyDisplay); 
+        app.getGuiViewPort().addProcessor(PlayGame.niftyDisplay); 
         nifty.loadStyleFile("nifty-default-styles.xml");
         nifty.loadControlFile("nifty-default-controls.xml");
-        nifty.registerSound("btnclick", "Interface/sound/ButtonClick.ogg");
+        nifty.registerSound("btnclick", "Interface/sound/metalClick.ogg");
+        
         
         
         nifty.addScreen("Screen_Credits", new ScreenBuilder("Game Credits"){{
@@ -427,7 +429,7 @@ public class CreditsScreen extends BaseAppState {
                         
                             text(new TextBuilder() {{
                                 text("Game Credits");
-                                font("Interface/Fonts/Antiqua.fnt");
+                                font("Interface/Fonts/verdana-48-regular.fnt");
                                 height("100%");
                                 width("100%");
                                 alignLeft();
@@ -450,15 +452,17 @@ public class CreditsScreen extends BaseAppState {
 //                        style("nifty-panel");
                           
 
-                        control(new ButtonBuilder("Button_Back", "Back"){{
+                            image(new ImageBuilder() {{
+                            filename("Interface/Images/MenuButtons/Button_0_back.png");
                             x("20px");
                             y("200px");
-                            height("50px");
-                            width("220px");    
+                            height("40px");
+                            width("150px");    
                             interactOnClick("quitGame()");
-//                            interactOnMouseOver("buttonEffect()");
                             backgroundColor("#0c01");
-                            onStartHoverEffect(new HoverEffectBuilder("fade"){{length(100); effectParameter("start", "#0"); effectParameter("end", "#f"); neverStopRendering(true); }});
+                            onStartHoverEffect(new HoverEffectBuilder("changeImage"){{
+                                effectParameter("active", "Interface/Images/MenuButtons/Button_1_back.png"); neverStopRendering(true);
+                                effectParameter("inactive", "Interface/Images/MenuButtons/Button_0_back.png"); neverStopRendering(true);}});
                             onStartHoverEffect(new HoverEffectBuilder("move"){{effectParameter("mode", "toOffset"); effectParameter("offsetX", "+15");}});
                             onStartHoverEffect(new HoverEffectBuilder("playSound"){{effectParameter("sound", "btnclick");}});
                         }});

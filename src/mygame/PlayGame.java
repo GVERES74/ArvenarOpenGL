@@ -4,11 +4,14 @@ import com.jme3.animation.AnimChannel;
 import com.jme3.animation.AnimControl;
 import com.jme3.animation.AnimEventListener;
 import com.jme3.app.SimpleApplication;
+import com.jme3.app.state.AppStateManager;
 
 import com.jme3.export.binary.BinaryImporter;
 import com.jme3.input.controls.AnalogListener;
+import com.jme3.niftygui.NiftyJmeDisplay;
 import com.jme3.renderer.RenderManager;
 import com.jme3.system.AppSettings;
+import de.lessvoid.nifty.Nifty;
 
 /**
  * This is the Main Class of your Game. You should only do initialization here.
@@ -17,8 +20,10 @@ import com.jme3.system.AppSettings;
  */
 public class PlayGame extends SimpleApplication implements AnimEventListener{
        
+    public static Nifty nifty;
+    public static NiftyJmeDisplay niftyDisplay;
+    public static SettingsScreen settingsAppState;
     
-
     public static void main(String[] args) {
                 
         PlayGame app = new PlayGame();
@@ -36,15 +41,16 @@ public class PlayGame extends SimpleApplication implements AnimEventListener{
     @Override
     public void simpleInitApp() {
         
+        niftyDisplay = NiftyJmeDisplay.newNiftyJmeDisplay(assetManager, inputManager, audioRenderer, viewPort);
+        nifty = niftyDisplay.getNifty();
+            
+        viewPort.addProcessor(niftyDisplay); 
         
-//        MainMenuScreen menuAppState = new MainMenuScreen();
-//            this.stateManager.attach(menuAppState);
-//        
-//        SettingsScreen settingsAppState = new SettingsScreen(); 
-//            stateManager.attach(settingsAppState);
-        
-        CreditsScreen creditsAppState = new CreditsScreen();
-            this.stateManager.attach(creditsAppState);
+        MainMenuScreen menuAppState = new MainMenuScreen();   stateManager.attach(menuAppState);
+
+        settingsAppState = new SettingsScreen(); //stateManager.attach(settingsAppState);
+
+        CreditsScreen creditsAppState = new CreditsScreen();  //stateManager.attach(creditsAppState);
 
 
          /** Load a Node from a .j3o file */

@@ -80,6 +80,7 @@ public class SettingsScreenController extends BaseAppState implements ScreenCont
         
         sliderVol = screen.findNiftyControl("slider_Volume", Slider.class);
         labelSliderVol = screen.findNiftyControl("label_Slider_Volume", Label.class);
+                sliderVol.setValue(50f);
                 labelSliderVol.setText(sliderVol.getValue()+"%");
     }
 
