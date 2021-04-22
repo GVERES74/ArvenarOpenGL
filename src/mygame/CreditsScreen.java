@@ -18,9 +18,6 @@ import com.jme3.effect.shapes.EmitterBoxShape;
 import com.jme3.effect.shapes.EmitterSphereShape;
 import com.jme3.font.BitmapText;
 import com.jme3.input.InputManager;
-import com.jme3.input.KeyInput;
-import com.jme3.input.controls.ActionListener;
-import com.jme3.input.controls.KeyTrigger;
 import com.jme3.light.DirectionalLight;
 import com.jme3.material.Material;
 
@@ -44,8 +41,8 @@ import de.lessvoid.nifty.builder.LayerBuilder;
 import de.lessvoid.nifty.builder.PanelBuilder;
 import de.lessvoid.nifty.builder.ScreenBuilder;
 import de.lessvoid.nifty.builder.TextBuilder;
-import de.lessvoid.nifty.controls.button.builder.ButtonBuilder;
 import de.lessvoid.nifty.controls.label.builder.LabelBuilder;
+
     
 
 
@@ -65,7 +62,7 @@ public class CreditsScreen extends BaseAppState {
     private AudioRenderer     audioRenderer;
     private ViewPort          viewPort;
     private Nifty nifty;
-    
+    private PlayGame mainapp;
          
     private Spatial creditsScene;
     private Node creditsRootNode = new Node("Credits RootNode");
@@ -85,8 +82,7 @@ public class CreditsScreen extends BaseAppState {
         this.stateManager = this.app.getStateManager();
         this.inputManager = this.app.getInputManager();
         this.viewPort     = this.app.getViewPort();
-               
-                                
+                                        
         screenHeight = app.getCamera().getHeight();
         screenWidth = app.getCamera().getWidth();
         
@@ -353,32 +349,31 @@ public class CreditsScreen extends BaseAppState {
         }
           
         
-    @Override
-    public void update(float tpf) {
-        //TODO: implement behavior during runtime
-        rotateCamera(-0.1f, 1,tpf,Vector3f.UNIT_Y);
-        moveCamera();
-       
-    }
+        @Override
+        public void update(float tpf) {
+            //TODO: implement behavior during runtime
+            rotateCamera(-0.1f, 1,tpf,Vector3f.UNIT_Y);
+            moveCamera();
+
+        }
     
-    @Override
-    public void cleanup(Application app) {
-        creditsRootNode.detachAllChildren();
-        creditsGUINode.detachAllChildren();
+        @Override
+        public void cleanup(Application app) {
+            creditsRootNode.detachAllChildren();
+            creditsGUINode.detachAllChildren();
+
+        }    
         
-    }    
         
-        
-    @Override
-    protected void onEnable() {
-        
-        nifty = PlayGame.niftyDisplay.getNifty();
-        app.getFlyByCamera().setDragToRotate(true);
-        
-        app.getGuiViewPort().addProcessor(PlayGame.niftyDisplay); 
-        nifty.loadStyleFile("nifty-default-styles.xml");
-        nifty.loadControlFile("nifty-default-controls.xml");
-        nifty.registerSound("btnclick", "Interface/sound/metalClick.ogg");
+        @Override
+        protected void onEnable() {
+
+            nifty = PlayGame.getNiftyDisplay().getNifty();
+            app.getGuiViewPort().addProcessor(PlayGame.getNiftyDisplay());
+
+            nifty.loadStyleFile("nifty-default-styles.xml");
+            nifty.loadControlFile("nifty-default-controls.xml");
+            nifty.registerSound("btnclick", "Interface/sound/metalClick.ogg");
         
         
         

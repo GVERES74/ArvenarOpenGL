@@ -189,8 +189,8 @@ public class GameAppState extends BaseAppState implements AnimEventListener{
         
             if (gameLevel.contains("Taiga")){ 
                 ambsound = "";
-                levelmusic = "Scenes/Taiga/ambient_snow1.ogg";
-                levelmisc = "Scenes/Taiga/footstep_onsnow1.wav";
+                levelmusic = "Music/Soundtracks/RPG_The_Lost_Town.ogg";
+                levelmisc = "Sounds/Human/footstep_onsnow1.wav";
             }        
 
             level = this.app.getAssetManager().loadModel(gameLevel);

@@ -20,20 +20,17 @@ import de.lessvoid.nifty.Nifty;
  */
 public class PlayGame extends SimpleApplication implements AnimEventListener{
        
-    public static Nifty nifty;
-    public static NiftyJmeDisplay niftyDisplay;
-    public static SettingsScreen settingsAppState;
-    
+    private Nifty nifty;
+    private static NiftyJmeDisplay niftyDisplay;
+        
     public static void main(String[] args) {
                 
         PlayGame app = new PlayGame();
         AppSettings settings = new AppSettings(true);
         settings.setResolution(1366, 768);
-                
-        app.start();
-        
+        app.setSettings(settings);        
         settings.setTitle("Arvenar 3D OpenGl");
-        app.setSettings(settings);
+        app.start();
         
         
     }
@@ -43,14 +40,12 @@ public class PlayGame extends SimpleApplication implements AnimEventListener{
         
         niftyDisplay = NiftyJmeDisplay.newNiftyJmeDisplay(assetManager, inputManager, audioRenderer, viewPort);
         nifty = niftyDisplay.getNifty();
-            
         viewPort.addProcessor(niftyDisplay); 
         
-        MainMenuScreen menuAppState = new MainMenuScreen();   stateManager.attach(menuAppState);
-
-        settingsAppState = new SettingsScreen(); //stateManager.attach(settingsAppState);
-
-        CreditsScreen creditsAppState = new CreditsScreen();  //stateManager.attach(creditsAppState);
+        stateManager.attach(new MainMenuScreen());
+//        stateManager.attach(new GameAppState());
+//        stateManager.attach(new SettingsScreen());
+//        stateManager.attach(new CreditsScreen());
 
 
          /** Load a Node from a .j3o file */
@@ -104,6 +99,15 @@ public class PlayGame extends SimpleApplication implements AnimEventListener{
             
 //To change body of generated methods, choose Tools | Templates.
     }
+
+    public static NiftyJmeDisplay getNiftyDisplay() {
+        return niftyDisplay;
+    }
+
+   
+
+   
+     
 
    
 }

@@ -31,7 +31,6 @@ import com.jme3.math.ColorRGBA;
 import com.jme3.math.Plane;
 import com.jme3.math.Quaternion;
 import com.jme3.math.Vector3f;
-import com.jme3.niftygui.NiftyJmeDisplay;
 import com.jme3.renderer.RenderManager;
 import com.jme3.renderer.ViewPort;
 import com.jme3.renderer.queue.RenderQueue;
@@ -47,8 +46,8 @@ import de.lessvoid.nifty.builder.LayerBuilder;
 import de.lessvoid.nifty.builder.PanelBuilder;
 import de.lessvoid.nifty.builder.ScreenBuilder;
 import de.lessvoid.nifty.builder.TextBuilder;
-import de.lessvoid.nifty.controls.button.builder.ButtonBuilder;
-import de.lessvoid.nifty.effects.Effect;
+import de.lessvoid.nifty.screen.ScreenController;
+
     
 
 
@@ -58,8 +57,11 @@ import de.lessvoid.nifty.effects.Effect;
  */
 public class MainMenuScreen extends BaseAppState {
     
+    private Nifty nifty;
+    private ScreenController screenController;
     
-    private SimpleApplication app;
+    
+    private PlayGame app;
     private Node              rootNode;
     private AssetManager      assetManager;
     private AppStateManager   stateManager;
@@ -67,9 +69,8 @@ public class MainMenuScreen extends BaseAppState {
     private RenderManager     renderManager;
     private AudioRenderer     audioRenderer;
     private ViewPort          viewPort;
-    private Nifty nifty;
     
-         
+             
     private Spatial mainScene;
     private Node startRootNode = new Node("Main Menu RootNode");
     private Node startGUINode = new Node("Main Menu GUINode");
@@ -77,26 +78,32 @@ public class MainMenuScreen extends BaseAppState {
     float screenHeight, screenWidth;
     
     BitmapText menuItemText, camPosInfoText;
+
+    public MainMenuScreen() {
+        
+        
+    }
+    
     
     
     @Override
     public void initialize(Application app) {
         
-        this.app = (SimpleApplication) app; // can cast Application to something more specific
+        this.app = (PlayGame) app; // can cast Application to something more specific
         this.rootNode     = this.app.getRootNode();
         this.assetManager = this.app.getAssetManager();
         this.stateManager = this.app.getStateManager();
         this.inputManager = this.app.getInputManager();
         this.viewPort     = this.app.getViewPort();
-        
                                         
         screenHeight = app.getCamera().getHeight();
         screenWidth = app.getCamera().getWidth();
         
         rootNode.attachChild(startRootNode);
        // rootNode.attachChild(startGUINode);
+                      
        
-                          
+        
         inputManager.deleteMapping(SimpleApplication.INPUT_MAPPING_EXIT); //delete ESC key quit app function
        
         //this.app.getFlyByCamera().setEnabled(false);
@@ -424,10 +431,10 @@ public class MainMenuScreen extends BaseAppState {
     @Override
     protected void onEnable() {
         
-        nifty = PlayGame.niftyDisplay.getNifty();
+        nifty = PlayGame.getNiftyDisplay().getNifty();
         app.getFlyByCamera().setDragToRotate(true);
         
-        app.getGuiViewPort().addProcessor(PlayGame.niftyDisplay); 
+        app.getGuiViewPort().addProcessor(PlayGame.getNiftyDisplay()); 
         nifty.loadStyleFile("nifty-default-styles.xml");
         nifty.loadControlFile("nifty-default-controls.xml");
         nifty.registerSound("btnclick", "Interface/sound/metalClick.ogg");
@@ -494,7 +501,7 @@ public class MainMenuScreen extends BaseAppState {
                             y("70px");
                             height("40px");
                             width("150px");    
-                            interactOnClick("settingsGame()");
+                            interactOnClick("settingsGame(Screen_GameSettings)");
                             backgroundColor("#0c01");
                             onStartHoverEffect(new HoverEffectBuilder("changeImage"){{
                                 effectParameter("active", "Interface/Images/MenuButtons/Button_1_settings.png"); neverStopRendering(true);
@@ -547,47 +554,86 @@ public class MainMenuScreen extends BaseAppState {
                         childLayoutVertical();
 
                         panel(new PanelBuilder("Panel_Menu_Logo"){{
-
-                            childLayoutVertical();
+                           
                             alignCenter();
-                            valignCenter();
+                            valignBottom();
                             height("500px");
                             width("500px"); 
                             padding("10px");
                             backgroundColor("#eee1");
+                            childLayoutAbsoluteInside();
+                            onStartScreenEffect(new EffectBuilder("fade") {{
+                            startDelay(1000);
+                                //length(8000);    
+                                effectValue("time", "3000", "value", "0.0");
+                                effectValue("time", "5000", "value", "1.0");
+                                effectValue("time", "10000", "value", "1.0");
+                                effectValue("time", "22000", "value", "0.0");
+                                post(false);
+                                neverStopRendering(true);
+                            }});    
+                            
                                                                                      
                             image(new ImageBuilder("logo_Cat") {{
                                 filename("Interface/Images/greetingcat.png");
-                                alignCenter();
-                                valignTop();
+                                x("200");
+                                y("200");
                                 height("20%");
                                 width("20%");
                                 
+                                onStartScreenEffect(new EffectBuilder("fade") {{ //fade in and fade out effect :)
+                                startDelay(1000);
+                                //length(8000);    
+                                effectValue("time", "3000", "value", "0.0");
+                                effectValue("time", "5000", "value", "1.0");
+                                effectValue("time", "10000", "value", "1.0");
+                                effectValue("time", "12000", "value", "0.0");
+                                post(false);
+                                neverStopRendering(true);
+                                }});
                             }});
                             
                             text(new TextBuilder() {{
+                                text("Greeting Cat Game Studio presents");
+                                font("Interface/Fonts/Default.fnt");
+                                height("100%");
+                                width("100%");
+                                x("200");
+                                y("300");
+                                onStartScreenEffect(new EffectBuilder("fade") {{
+                                startDelay(1000);
+                                //length(8000);    
+                                effectValue("time", "3000", "value", "0.0");
+                                effectValue("time", "5000", "value", "1.0");
+                                effectValue("time", "10000", "value", "1.0");
+                                effectValue("time", "12000", "value", "0.0");
+                                post(false);
+                                neverStopRendering(true);
+                                }});
+                            }});    
+                                
+                             text(new TextBuilder() {{
                                 text("A Greeting Cat Production\n 2021 - pre-Alpha");
                                 font("Interface/Fonts/Default.fnt");
                                 height("100%");
                                 width("100%");
-                                alignCenter();
-                                valignCenter();
-                             }});
-                            
-                            onStartScreenEffect(new EffectBuilder("fade") {{
-                            startDelay(5000);
-                            length(2000);
-                            effectParameter("start", "#00");
-                            effectParameter("end", "#ff");
+                                x("200");
+                                y("300");
+                                onStartScreenEffect(new EffectBuilder("fade") {{
+                                startDelay(12000);
+                                //length(8000);    
+                                effectValue("time", "3000", "value", "0.0");
+                                effectValue("time", "5000", "value", "1.0");
+                                effectValue("time", "9000", "value", "1.0");
+                                effectValue("time", "10000", "value", "0.0");
+                                post(false);
+                                neverStopRendering(true);
+                                }});   
                             }});
+                         
                             
-//                            onStartScreenEffect(new EffectBuilder("fade") {{
-//                            startDelay(5000);
-//                            length(2000);
-//                            effectParameter("start", "#ff");
-//                            effectParameter("end", "#00");
-//                            neverStopRendering(true);}});
-                }});
+                            
+                }}); //panel end
                     
                      
                 }}); //layer logo end

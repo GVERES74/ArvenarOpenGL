@@ -16,7 +16,6 @@ import de.lessvoid.nifty.controls.Label;
 import de.lessvoid.nifty.controls.Slider;
 import de.lessvoid.nifty.screen.Screen;
 import de.lessvoid.nifty.screen.ScreenController;
-import static mygame.PlayGame.main;
 
 /**
  *
@@ -25,10 +24,10 @@ import static mygame.PlayGame.main;
 public class SettingsScreenController extends BaseAppState implements ScreenController {
     
     private SimpleApplication app;
-
+    private AppSettings appSettings;
     private Nifty nifty;
     private Screen screen;
-    private AppSettings settings = new AppSettings(true);
+    
     private String mainScreen;
     private DropDown dropdownRes;
     private CheckBox checkboxFullscreen;
@@ -39,8 +38,7 @@ public class SettingsScreenController extends BaseAppState implements ScreenCont
     @Override
     protected void initialize(Application app) {
         this.app = (SimpleApplication) app;
-        this.settings = settings; 
-    }
+            }
     
      @Override
     public void update(float tpf) {
@@ -68,7 +66,7 @@ public class SettingsScreenController extends BaseAppState implements ScreenCont
     public void bind(Nifty nifty, Screen screen) {
         this.nifty = nifty;
         this.screen = screen;
-        
+                
         dropdownRes = screen.findNiftyControl("dropdown_Resolution", DropDown.class);
         dropdownRes.addItem("1366x768");
         dropdownRes.addItem("1920x1080");
@@ -116,8 +114,8 @@ public class SettingsScreenController extends BaseAppState implements ScreenCont
             default: width = 1366; height = 768;
             
         }
-        settings.setResolution(width, height);
-        
+        appSettings.setResolution(width, height);
+                
 //        if (checkboxFullscreen.isChecked()){
 //                settings.setFullscreen(true);
 //        }
@@ -126,6 +124,7 @@ public class SettingsScreenController extends BaseAppState implements ScreenCont
     public void applySettings(){
         changeSettings();
         
+        this.app.restart();
         
         
     }
