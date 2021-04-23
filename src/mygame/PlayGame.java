@@ -17,12 +17,15 @@ import de.lessvoid.nifty.Nifty;
  * This is the Main Class of your Game. You should only do initialization here.
  * Move your Logic into AppStates or Controls
  * @author normenhansen
- */
-public class PlayGame extends SimpleApplication implements AnimEventListener{
+ */ 
+  https://www.p8tech.com/jmonkey-game-logic-application-states/
+ 
+public class PlayGame extends SimpleApplication{
        
     private Nifty nifty;
     private static NiftyJmeDisplay niftyDisplay;
-        
+    MainMenuScreen mainMenu;
+            
     public static void main(String[] args) {
                 
         PlayGame app = new PlayGame();
@@ -30,6 +33,7 @@ public class PlayGame extends SimpleApplication implements AnimEventListener{
         settings.setResolution(1366, 768);
         app.setSettings(settings);        
         settings.setTitle("Arvenar 3D OpenGl");
+        app.setShowSettings(true); //default jMonkey settings OFF
         app.start();
         
         
@@ -42,7 +46,8 @@ public class PlayGame extends SimpleApplication implements AnimEventListener{
         nifty = niftyDisplay.getNifty();
         viewPort.addProcessor(niftyDisplay); 
         
-        stateManager.attach(new MainMenuScreen());
+        mainMenu = new MainMenuScreen();
+        stateManager.attach(mainMenu);
 //        stateManager.attach(new GameAppState());
 //        stateManager.attach(new SettingsScreen());
 //        stateManager.attach(new CreditsScreen());
@@ -84,30 +89,10 @@ public class PlayGame extends SimpleApplication implements AnimEventListener{
         //not used
     }
     
-    private final AnalogListener analogListener = new AnalogListener(){
-        @Override
-        public void onAnalog(String keyBinding, float value, float tpf){
-            
-                      
-        }
-        };
-        
-       
-
     
-    public void onAnimCycleDone(AnimControl control, AnimChannel npcWalkChannel, String animName) {
-            
-//To change body of generated methods, choose Tools | Templates.
-    }
-
     public static NiftyJmeDisplay getNiftyDisplay() {
         return niftyDisplay;
     }
-
-   
-
-   
-     
 
    
 }

@@ -59,9 +59,8 @@ public class MainMenuScreen extends BaseAppState {
     
     private Nifty nifty;
     private ScreenController screenController;
+    SimpleApplication app;
     
-    
-    private PlayGame app;
     private Node              rootNode;
     private AssetManager      assetManager;
     private AppStateManager   stateManager;
@@ -81,21 +80,17 @@ public class MainMenuScreen extends BaseAppState {
 
     public MainMenuScreen() {
         
-        
     }
-    
-    
+        
     
     @Override
     public void initialize(Application app) {
-        
-        this.app = (PlayGame) app; // can cast Application to something more specific
+        this.app = (SimpleApplication) app;                                        
         this.rootNode     = this.app.getRootNode();
         this.assetManager = this.app.getAssetManager();
         this.stateManager = this.app.getStateManager();
         this.inputManager = this.app.getInputManager();
         this.viewPort     = this.app.getViewPort();
-                                        
         screenHeight = app.getCamera().getHeight();
         screenWidth = app.getCamera().getWidth();
         
@@ -123,8 +118,6 @@ public class MainMenuScreen extends BaseAppState {
         loadAmbientSound("Sounds/Ambient/Water/waterstream.ogg", true, true, 0.5f, 23f, -0.5f, -11f);
         loadAmbientSound("Sounds/Ambient/Water/waterfall_01.ogg", true, false, 0.5f, 32f, 2f, -2f);
         loadAmbientSound("Sounds/Ambient/Fire/torchBurning.ogg", true, true, 1.0f, 0f, 0f, 0f);
-        
-        createMainMenu();
         initMenuControls();
         
     //TODO: initialize your AppState, e.g. attach spatials to rootNode
@@ -133,10 +126,10 @@ public class MainMenuScreen extends BaseAppState {
     
         
         public void loadMainScene(){
-            mainScene = this.app.getAssetManager().loadModel("Scenes/MainMenu/mainMenuScene.j3o");
+            mainScene = app.getAssetManager().loadModel("Scenes/MainMenu/mainMenuScene.j3o");
             rootNode.attachChild(mainScene);
-            app.getCamera().setLocation(new Vector3f(10f, 2f, 5f));
-            app.getCamera().setRotation(new Quaternion().fromAngleAxis(0, Vector3f.UNIT_Y)); //initial camera direction
+            app.getCamera().setLocation(new Vector3f(15f, 3f, 0f));
+            app.getCamera().setRotation(new Quaternion().fromAngleAxis(0.1f, Vector3f.UNIT_X)); //initial camera direction
             
         }
     
@@ -167,7 +160,7 @@ public class MainMenuScreen extends BaseAppState {
         public void loadSceneModels(){
 
 //            createModel("stump_roundDetailed.glb", 17f, 0.1f, -15f, 0f, 4f);
-            createModel("Models/Tree_Pine/snow_pine_tree.obj", "Models/Tree_Pine/pine_snow_full.j3m", 35f, 0.1f, -22, 0f, 0.1f);
+            createModel("Models/Tree_Pine/snow_pine_tree.obj", "Models/Tree_Pine/pine_snow_full.j3m", 30f, 0.1f, -22, 0f, 0.1f);
             createModel("Models/Tree_Pine/snow_pine_tree.obj", "Models/Tree_Pine/pine_snow_half.j3m", -8f, 0.0f, -8f, 0f, 0.1f);
             createModel("Models/Tree_Pine/snow_pine_tree.obj", "Models/Tree_Pine/pine_snow_none.j3m", -20f, 0.0f, -3f, 0f, 0.1f);
             createModel("Models/Grass/grass.glb", "Models/Grass/grass.j3m", 19f, 0.0f, -18f, 0f, 3f);
@@ -187,10 +180,10 @@ public class MainMenuScreen extends BaseAppState {
             
             createModel("Models/Crate/Crate-04.obj", "Models/Crate/wood_crate.j3m", 28f, 0.0f, -20f, 1f, 2f);
             createModel("Models/Crate/Crate-01.obj", "Models/Crate/wood_crate.j3m", 28f, 1.05f, -20f, 3f, 2f);
-            createModel("Models/Crate/Crate-02.obj", "Models/Crate/wood_crate.j3m", 27f, 0.0f, -18f, 6f, 2f);
+            createModel("Models/Crate/Crate-02.obj", "Models/Crate/wood_crate.j3m", 26f, 0.0f, -18f, 6f, 2f);
             createModel("Models/Crate/Crate-03.obj", "Models/Crate/wood_crate.j3m", 27f, 0.0f, -22f, 19f, 2f);
             createModel("Models/Crate/Crate-05.obj", "Models/Crate/wood_crate.j3m", 20f, 0.0f, -8f, 0f, 2f);
-            createModel("Models/Crate/Crate-05.obj", "Models/Crate/wood_crate.j3m", 27f, 0.3f, -18f, 0f, 3f);
+            createModel("Models/Crate/Crate-05.obj", "Models/Crate/wood_crate.j3m", 26f, 0.3f, -18f, 0f, 3f);
             
             createModel("Models/Cage/CageBed.j3o", "Models/Cage/cage.j3m", 25f, 0.0f, -24f, 2f, 1f);
 //            createModel("Models/Trunk/trunk.j3o", "", 5f, 0f, 3f, 90f, 1f);
@@ -230,14 +223,15 @@ public class MainMenuScreen extends BaseAppState {
             pemitter.setImagesY(2);
             pemitter.setLowLife(20f);
             pemitter.setHighLife(30f);
-            pemitter.setStartSize(0.5f);
-            pemitter.setEndSize(1.0f);
-            pemitter.getParticleInfluencer().setInitialVelocity(new Vector3f(0,-20,0));
+            pemitter.setStartSize(0.1f);
+            pemitter.setEndSize(0.5f);
+            pemitter.getParticleInfluencer().setInitialVelocity(new Vector3f(0,-10,0));
             pemitter.getParticleInfluencer().setVelocityVariation(0.5f);
-            pemitter.setLocalTranslation(25f, 50f, 15f);
+            pemitter.setLocalTranslation(0f, 50f, 0f);
             pemitter.setNumParticles(500);
             pemitter.setParticlesPerSec(20);
-            pemitter.setShape(new EmitterSphereShape(Vector3f.ZERO,100f));
+            //pemitter.setShape(new EmitterSphereShape(Vector3f.ZERO,100f));
+            pemitter.setShape(new EmitterBoxShape(new Vector3f(-50f,-50f,-50f),new Vector3f(50f,50f,50f)));
             startRootNode.attachChild(pemitter);
             
         }
@@ -346,9 +340,8 @@ public class MainMenuScreen extends BaseAppState {
         protected void moveCamera(){
             Vector3f camDirection = app.getCamera().getDirection();
             Vector3f camLocation = app.getCamera().getLocation();
-            
-            //float moveX = camDirection.x/1000;
-            float moveX = camDirection.x/800;
+                      
+            float moveX = camDirection.x/500;
             float moveZ = camDirection.z/300;
             float camx = camLocation.x;
             float camz = camLocation.z;
@@ -366,26 +359,7 @@ public class MainMenuScreen extends BaseAppState {
         }
                         
              
-        public void createMainMenu(){
-            app.setDisplayStatView(false); app.setDisplayFps(false);
-
-            createMenuText("Start New Game", 50, screenHeight-50);
-            createMenuText("Game Options", 50, screenHeight-80);
-            createMenuText("Credits", 50, screenHeight-110);
-            createMenuText("Exit Game", 50, screenHeight-140);
- 
-        }
-             
-        public void createMenuText(String name, float posx, float posy){
-            menuItemText = new BitmapText(assetManager.loadFont("Interface/Fonts/Antiqua.fnt"), false);
-            menuItemText.setText(name);
-            menuItemText.setSize(24);
-            menuItemText.setLocalTranslation(posx, posy, 0);
-            menuItemText.setColor(ColorRGBA.White);
-            startGUINode.attachChild(menuItemText);
-        }
-        
-        
+                
         public void initMenuControls(){
         
             inputManager.addMapping("MBLeft", new MouseButtonTrigger(MouseInput.BUTTON_LEFT));
@@ -401,16 +375,11 @@ public class MainMenuScreen extends BaseAppState {
         private final ActionListener actionListener = new ActionListener() {
             @Override
             public void onAction(String name, boolean isPressed, float tpf) {
-                switch (name) {
-                    
-                    case "MBLeft": createMenuText("CamDir: "+app.getCamera().getLocation(), 50, screenHeight-200); break;
-                    case "ExitGame": app.getFlyByCamera().setEnabled(false); break;
-                    
+                
                 }
                              
-            }
-        };
-    
+            };
+            
         
     @Override
     public void update(float tpf) {
@@ -430,7 +399,7 @@ public class MainMenuScreen extends BaseAppState {
         
     @Override
     protected void onEnable() {
-        
+        app.setDisplayStatView(false); app.setDisplayFps(false);
         nifty = PlayGame.getNiftyDisplay().getNifty();
         app.getFlyByCamera().setDragToRotate(true);
         
@@ -443,24 +412,31 @@ public class MainMenuScreen extends BaseAppState {
                 controller(new mygame.MainMenuScreenController());
                 defaultFocusElement("menuimg_Play");
                 
-                layer(new LayerBuilder("Layer_Menu_ForMain"){{
+                layer(new LayerBuilder("Layer_Menu_Main"){{
                     childLayoutVertical();
+                    onStartScreenEffect(new EffectBuilder("fade") {{
+                            startDelay(22000);
+                                length(3000);    
+                                effectParameter("start", "#00");
+                                effectParameter("end", "#ff");
+                                neverStopRendering(true);
+                            }});    
                     
                     
-                    panel(new PanelBuilder("Panel_Menu_ForTitle"){{
+                    panel(new PanelBuilder("Panel_Menu_Title"){{
                         childLayoutVertical();
                         alignLeft();
                         valignCenter();
-                        height("100px");
-                        width("400px"); 
+                        height("150px");
+                        width("400px");
+                        //backgroundColor("#cff5");
                         
-                            text(new TextBuilder() {{
-                                text("Arvenar - Main Menu");
-                                font("Interface/Fonts/verdana-48-regular.fnt");
-                                height("100%");
-                                width("100%");
+                            image(new ImageBuilder("imagelogo_Title") {{
+                                filename("Interface/Images/MenuUI/mainlogo.png");
+                                height("145px");
+                                width("225px"); 
                                 alignCenter();
-                                valignTop();
+                                valignCenter();
                                 
                             }});
                     }});        
@@ -470,72 +446,71 @@ public class MainMenuScreen extends BaseAppState {
                         childLayoutAbsoluteInside();
                         alignLeft();
                         valignCenter();
-                        height("300px");
+                        height("250px");
                         width("250px"); 
-                        padding("10px");
-                        
-                        backgroundColor("#eee1"); //last digit sets the alpha channel
+                                                
+                        //backgroundColor("#eee3"); //last digit sets the alpha channel
 //                        style("nifty-panel");
                                            
                         
                         
                         image(new ImageBuilder("menuimg_Play"){{
-                            filename("Interface/Images/MenuButtons/Button_0_playgame.png");
+                            filename("Interface/Images/MenuUI/button_0_playgame.png");
                             x("20px");
                             y("20px");
-                            height("40px");
+                            height("45px");
                             width("150px");  
                             
                             interactOnClick("startGame()");
                             onStartHoverEffect(new HoverEffectBuilder("changeImage"){{
-                                effectParameter("active", "Interface/Images/MenuButtons/Button_1_playgame.png"); neverStopRendering(true);
-                                effectParameter("inactive", "Interface/Images/MenuButtons/Button_0_playgame.png"); neverStopRendering(true);}});
+                                effectParameter("active", "Interface/Images/MenuUI/button_1_playgame.png"); neverStopRendering(true);
+                                effectParameter("inactive", "Interface/Images/MenuUI/button_0_playgame.png"); neverStopRendering(true);}});
                                 onStartHoverEffect(new HoverEffectBuilder("move"){{effectParameter("mode", "toOffset"); effectParameter("offsetX", "+10");}});
                             onStartHoverEffect(new HoverEffectBuilder("playSound"){{effectParameter("sound", "btnclick");}});
                             
                         }});
                         
                         image(new ImageBuilder("menuimg_Settings"){{
-                            filename("Interface/Images/MenuButtons/Button_0_settings.png");
+                            filename("Interface/Images/MenuUI/button_0_settings.png");
                             x("20px");
                             y("70px");
-                            height("40px");
+                            height("45px");
                             width("150px");    
                             interactOnClick("settingsGame(Screen_GameSettings)");
                             backgroundColor("#0c01");
                             onStartHoverEffect(new HoverEffectBuilder("changeImage"){{
-                                effectParameter("active", "Interface/Images/MenuButtons/Button_1_settings.png"); neverStopRendering(true);
-                                effectParameter("inactive", "Interface/Images/MenuButtons/Button_0_settings.png"); neverStopRendering(true);}});
+                                effectParameter("active", "Interface/Images/MenuUI/button_1_settings.png"); neverStopRendering(true);
+                                effectParameter("inactive", "Interface/Images/MenuUI/button_0_settings.png"); neverStopRendering(true);}});
                             onStartHoverEffect(new HoverEffectBuilder("move"){{effectParameter("mode", "toOffset"); effectParameter("offsetX", "+10");}});
                             onStartHoverEffect(new HoverEffectBuilder("playSound"){{effectParameter("sound", "btnclick");}});
                         }});
                         
                         image(new ImageBuilder("menuimg_Credits"){{
-                            filename("Interface/Images/MenuButtons/Button_0_credits.png");
+                            filename("Interface/Images/MenuUI/button_0_credits.png");
                             x("20px");
                             y("120px");
-                            height("40px");
+                            height("45px");
                             width("150px");   
                             interactOnClick("creditsGame()");
                             backgroundColor("#0c01");
                             onStartHoverEffect(new HoverEffectBuilder("changeImage"){{
-                                effectParameter("active", "Interface/Images/MenuButtons/Button_1_credits.png"); neverStopRendering(true);
-                                effectParameter("inactive", "Interface/Images/MenuButtons/Button_0_credits.png"); neverStopRendering(true);}});
+                                effectParameter("active", "Interface/Images/MenuUI/button_1_credits.png"); neverStopRendering(true);
+                                effectParameter("inactive", "Interface/Images/MenuUI/button_0_credits.png"); neverStopRendering(true);}});
                             onStartHoverEffect(new HoverEffectBuilder("move"){{effectParameter("mode", "toOffset"); effectParameter("offsetX", "+10");}});
                             onStartHoverEffect(new HoverEffectBuilder("playSound"){{effectParameter("sound", "btnclick");}});
                         }});
 
                         image(new ImageBuilder("menuimg_Quit"){{
-                            filename("Interface/Images/MenuButtons/Button_0_quit.png");
+                            filename("Interface/Images/MenuUI/button_0_quit.png");
                             x("20px");
                             y("170px");
-                            height("40px");
+                            height("45px");
                             width("150px");    
                             interactOnClick("quitGame()");
                             backgroundColor("#0c01");
                             onStartHoverEffect(new HoverEffectBuilder("changeImage"){{
-                                effectParameter("active", "Interface/Images/MenuButtons/Button_1_quit.png"); neverStopRendering(true);
-                                effectParameter("inactive", "Interface/Images/MenuButtons/Button_0_quit.png"); neverStopRendering(true);}});
+                                effectParameter("active", "Interface/Images/MenuUI/button_1_quit.png"); neverStopRendering(true);
+                                effectParameter("inactive", "Interface/Images/MenuUI/button_0_quit.png"); neverStopRendering(true);}});
                             onStartHoverEffect(new HoverEffectBuilder("move"){{effectParameter("mode", "toOffset"); effectParameter("offsetX", "+10");}});
                             onStartHoverEffect(new HoverEffectBuilder("playSound"){{effectParameter("sound", "btnclick");}});
                         }});
@@ -551,35 +526,15 @@ public class MainMenuScreen extends BaseAppState {
          }});
 
                     layer(new LayerBuilder("Layer_Menu_Logo"){{
-                        childLayoutVertical();
+                        childLayoutAbsoluteInside();
 
-                        panel(new PanelBuilder("Panel_Menu_Logo"){{
-                           
-                            alignCenter();
-                            valignBottom();
-                            height("500px");
-                            width("500px"); 
-                            padding("10px");
-                            backgroundColor("#eee1");
-                            childLayoutAbsoluteInside();
-                            onStartScreenEffect(new EffectBuilder("fade") {{
-                            startDelay(1000);
-                                //length(8000);    
-                                effectValue("time", "3000", "value", "0.0");
-                                effectValue("time", "5000", "value", "1.0");
-                                effectValue("time", "10000", "value", "1.0");
-                                effectValue("time", "22000", "value", "0.0");
-                                post(false);
-                                neverStopRendering(true);
-                            }});    
-                            
-                                                                                     
                             image(new ImageBuilder("logo_Cat") {{
                                 filename("Interface/Images/greetingcat.png");
-                                x("200");
-                                y("200");
-                                height("20%");
-                                width("20%");
+                                
+                                height("180px");
+                                width("180px");
+                                x("700px");
+                                y("100px");
                                 
                                 onStartScreenEffect(new EffectBuilder("fade") {{ //fade in and fade out effect :)
                                 startDelay(1000);
@@ -594,12 +549,13 @@ public class MainMenuScreen extends BaseAppState {
                             }});
                             
                             text(new TextBuilder() {{
-                                text("Greeting Cat Game Studio presents");
+                                text("Greeting Cat Game Studio presents\n"
+                                        + "Arvenar - Tale of The Forgotten");
                                 font("Interface/Fonts/Default.fnt");
                                 height("100%");
                                 width("100%");
-                                x("200");
-                                y("300");
+                                x("500px");
+                                y("300px");
                                 onStartScreenEffect(new EffectBuilder("fade") {{
                                 startDelay(1000);
                                 //length(8000);    
@@ -611,29 +567,28 @@ public class MainMenuScreen extends BaseAppState {
                                 neverStopRendering(true);
                                 }});
                             }});    
-                                
+                             
                              text(new TextBuilder() {{
-                                text("A Greeting Cat Production\n 2021 - pre-Alpha");
-                                font("Interface/Fonts/Default.fnt");
+                                text("A Greeting Cat Production\n"
+                                        + "Design and programming by Gabor Veres\n"
+                                        + "Powered by OpenGameArt.org\n"
+                                        + "https://opengameart.org");
+                                 font("Interface/Fonts/Default.fnt");
                                 height("100%");
                                 width("100%");
-                                x("200");
-                                y("300");
+                                x("500px");
+                                y("300px");
                                 onStartScreenEffect(new EffectBuilder("fade") {{
                                 startDelay(12000);
                                 //length(8000);    
                                 effectValue("time", "3000", "value", "0.0");
                                 effectValue("time", "5000", "value", "1.0");
-                                effectValue("time", "9000", "value", "1.0");
-                                effectValue("time", "10000", "value", "0.0");
+                                effectValue("time", "10000", "value", "1.0");
+                                effectValue("time", "12000", "value", "0.0");
                                 post(false);
                                 neverStopRendering(true);
-                                }});   
+                                }});
                             }});
-                         
-                            
-                            
-                }}); //panel end
                     
                      
                 }}); //layer logo end
