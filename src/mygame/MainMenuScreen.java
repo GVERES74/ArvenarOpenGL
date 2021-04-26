@@ -8,6 +8,7 @@ package mygame;
 
 import com.jme3.app.Application;
 import com.jme3.app.SimpleApplication;
+import com.jme3.app.state.AbstractAppState;
 import com.jme3.app.state.AppStateManager;
 import com.jme3.app.state.BaseAppState;
 import com.jme3.asset.AssetManager;
@@ -57,9 +58,9 @@ import de.lessvoid.nifty.screen.ScreenController;
  */
 public class MainMenuScreen extends BaseAppState {
     
+    private SimpleApplication app;
     private Nifty nifty;
-    private ScreenController screenController;
-    SimpleApplication app;
+    private SettingsScreen settingsscreen;
     
     private Node              rootNode;
     private AssetManager      assetManager;
@@ -85,19 +86,22 @@ public class MainMenuScreen extends BaseAppState {
     
     @Override
     public void initialize(Application app) {
-        this.app = (SimpleApplication) app;                                        
+        
+        this.app = (SimpleApplication) app;   
+        
         this.rootNode     = this.app.getRootNode();
         this.assetManager = this.app.getAssetManager();
         this.stateManager = this.app.getStateManager();
         this.inputManager = this.app.getInputManager();
         this.viewPort     = this.app.getViewPort();
+        
+        this.settingsscreen = this.stateManager.getState(SettingsScreen.class);
+        
         screenHeight = app.getCamera().getHeight();
         screenWidth = app.getCamera().getWidth();
         
         rootNode.attachChild(startRootNode);
        // rootNode.attachChild(startGUINode);
-                      
-       
         
         inputManager.deleteMapping(SimpleApplication.INPUT_MAPPING_EXIT); //delete ESC key quit app function
        
@@ -119,6 +123,7 @@ public class MainMenuScreen extends BaseAppState {
         loadAmbientSound("Sounds/Ambient/Water/waterfall_01.ogg", true, false, 0.5f, 32f, 2f, -2f);
         loadAmbientSound("Sounds/Ambient/Fire/torchBurning.ogg", true, true, 1.0f, 0f, 0f, 0f);
         initMenuControls();
+        
         
     //TODO: initialize your AppState, e.g. attach spatials to rootNode
         //this is called on the OpenGL thread after the AppState has been attached
@@ -391,14 +396,17 @@ public class MainMenuScreen extends BaseAppState {
     
     @Override
     public void cleanup(Application app) {
+        
         startRootNode.detachAllChildren();
         startGUINode.detachAllChildren();
         
     }    
         
         
+   
     @Override
-    protected void onEnable() {
+    protected void onEnable(){
+    
         app.setDisplayStatView(false); app.setDisplayFps(false);
         nifty = PlayGame.getNiftyDisplay().getNifty();
         app.getFlyByCamera().setDragToRotate(true);
@@ -599,18 +607,14 @@ public class MainMenuScreen extends BaseAppState {
         
 
     }
-    
+
     
 
     @Override
     protected void onDisable() {
-        
-    }
-
     
-        
-
-   
-}
+    }
+    
+ }
 
                                   

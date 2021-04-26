@@ -7,17 +7,12 @@ package mygame;
 
 import com.jme3.app.Application;
 import com.jme3.app.SimpleApplication;
-import com.jme3.app.state.AbstractAppState;
 import com.jme3.app.state.AppStateManager;
 import com.jme3.app.state.BaseAppState;
 import de.lessvoid.nifty.Nifty;
-import de.lessvoid.nifty.controls.Menu;
-import de.lessvoid.nifty.controls.MenuItemActivatedEvent;
 import de.lessvoid.nifty.elements.Element;
-import de.lessvoid.nifty.input.NiftyMouseInputEvent;
 import de.lessvoid.nifty.screen.Screen;
 import de.lessvoid.nifty.screen.ScreenController;
-import de.lessvoid.nifty.tools.SizeValue;
 
 /**
  *
@@ -25,30 +20,30 @@ import de.lessvoid.nifty.tools.SizeValue;
  */
 public class MainMenuScreenController extends BaseAppState implements ScreenController{
     
-    
-    private PlayGame app;
     private Nifty nifty;
     private Screen screen;
+    private SimpleApplication app;
+    private AppStateManager   stateManager;
+    private SettingsScreen settingsScreen;
     
     private Element popup;
             
     @Override
     public void initialize(Application app) {
        
-       this.app = (PlayGame)app;
-        
+       this.app = (SimpleApplication) app;
+       this.settingsScreen = this.stateManager.getState(SettingsScreen.class);
+               
+               
     }       
            
     @Override
     public void update(float tpf) {
         
-        
+         
     }
     
     
-
-    
-
     @Override
     public void bind(Nifty nifty, Screen screen) {
         this.nifty = nifty;
@@ -78,6 +73,9 @@ public class MainMenuScreenController extends BaseAppState implements ScreenCont
         System.out.println("Game Settings button pressed...");
         
        
+        
+        
+       
     }
     
     public void creditsGame(String nextScreen){
@@ -99,7 +97,7 @@ public class MainMenuScreenController extends BaseAppState implements ScreenCont
     }
 
     @Override
-    protected void cleanup(Application app) {
+    protected void cleanup(Application arg0) {
         
     }
 
@@ -112,7 +110,6 @@ public class MainMenuScreenController extends BaseAppState implements ScreenCont
     protected void onDisable() {
         
     }
-    
-    
+
     
 }

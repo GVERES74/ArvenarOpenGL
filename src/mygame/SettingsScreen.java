@@ -49,8 +49,7 @@ public class SettingsScreen extends BaseAppState {
     private ViewPort          viewPort;
     
     private Nifty nifty;
-    private PlayGame mainapp;
-        
+            
     private Screen screen;
     
     private Spatial mainScene;
@@ -83,7 +82,7 @@ public class SettingsScreen extends BaseAppState {
     
     
     @Override
-    protected void cleanup(Application arg0) {
+    protected void cleanup(Application app) {
         
     }
 

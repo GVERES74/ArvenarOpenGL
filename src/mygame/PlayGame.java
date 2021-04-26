@@ -2,37 +2,39 @@ package mygame;
 
 import com.jme3.animation.AnimChannel;
 import com.jme3.animation.AnimControl;
-import com.jme3.animation.AnimEventListener;
 import com.jme3.app.SimpleApplication;
-import com.jme3.app.state.AppStateManager;
 
 import com.jme3.export.binary.BinaryImporter;
-import com.jme3.input.controls.AnalogListener;
 import com.jme3.niftygui.NiftyJmeDisplay;
 import com.jme3.renderer.RenderManager;
 import com.jme3.system.AppSettings;
 import de.lessvoid.nifty.Nifty;
+import java.util.prefs.BackingStoreException;
 
 /**
  * This is the Main Class of your Game. You should only do initialization here.
  * Move your Logic into AppStates or Controls
  * @author normenhansen
  */ 
-  https://www.p8tech.com/jmonkey-game-logic-application-states/
+  //https://www.p8tech.com/jmonkey-game-logic-application-states/
  
 public class PlayGame extends SimpleApplication{
        
     private Nifty nifty;
     private static NiftyJmeDisplay niftyDisplay;
-    MainMenuScreen mainMenu;
+    private MainMenuScreen mainMenu;
+    private SettingsScreen settingsScreen;
+    private CreditsScreen creditsScreen;
             
-    public static void main(String[] args) {
+    public static void main(String[] args) throws BackingStoreException {
                 
         PlayGame app = new PlayGame();
         AppSettings settings = new AppSettings(true);
         settings.setResolution(1366, 768);
         app.setSettings(settings);        
-        settings.setTitle("Arvenar 3D OpenGl");
+        settings.setTitle("Arvenar 3D - OpenGl");
+        settings.setSettingsDialogImage("Interface/Images/greetingcat.png");
+        settings.save("ArvenarGL.cfg");
         app.setShowSettings(true); //default jMonkey settings OFF
         app.start();
         
@@ -46,11 +48,12 @@ public class PlayGame extends SimpleApplication{
         nifty = niftyDisplay.getNifty();
         viewPort.addProcessor(niftyDisplay); 
         
-        mainMenu = new MainMenuScreen();
-        stateManager.attach(mainMenu);
+//        mainMenu = new MainMenuScreen(); stateManager.attach(mainMenu);
+        settingsScreen = new SettingsScreen(); //stateManager.attach(settingsScreen);
+        //creditsScreen = new CreditsScreen(); stateManager.attach(creditsScreen);
 //        stateManager.attach(new GameAppState());
-//        stateManager.attach(new SettingsScreen());
-//        stateManager.attach(new CreditsScreen());
+
+
 
 
          /** Load a Node from a .j3o file */
@@ -83,16 +86,13 @@ public class PlayGame extends SimpleApplication{
     }
     
     
-    
-    public void onAnimChange(AnimControl control, AnimChannel channel, String animName){
-        
-        //not used
-    }
-    
-    
     public static NiftyJmeDisplay getNiftyDisplay() {
         return niftyDisplay;
     }
 
+    public void attachAppState(){
+        stateManager.detach(mainMenu);
+        stateManager.attach(settingsScreen);
+    }
    
 }

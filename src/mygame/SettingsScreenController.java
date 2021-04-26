@@ -38,9 +38,9 @@ public class SettingsScreenController extends BaseAppState implements ScreenCont
     @Override
     protected void initialize(Application app) {
         this.app = (SimpleApplication) app;
-            }
+    }
     
-     @Override
+    @Override
     public void update(float tpf) {
         
         labelSliderVol.setText(sliderVol.getValue()+"%");
@@ -114,7 +114,7 @@ public class SettingsScreenController extends BaseAppState implements ScreenCont
             default: width = 1366; height = 768;
             
         }
-        appSettings.setResolution(width, height);
+        this.appSettings.setResolution(width, height);
                 
 //        if (checkboxFullscreen.isChecked()){
 //                settings.setFullscreen(true);
@@ -123,7 +123,7 @@ public class SettingsScreenController extends BaseAppState implements ScreenCont
     
     public void applySettings(){
         changeSettings();
-        
+        this.app = (SimpleApplication) app;
         this.app.restart();
         
         
