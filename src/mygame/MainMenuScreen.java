@@ -484,7 +484,7 @@ public class MainMenuScreen extends BaseAppState {
                             y("70px");
                             height("45px");
                             width("150px");    
-                            interactOnClick("settingsGame(Screen_GameSettings)");
+                            interactOnClick("settingsGame()");
                             backgroundColor("#0c01");
                             onStartHoverEffect(new HoverEffectBuilder("changeImage"){{
                                 effectParameter("active", "Interface/Images/MenuUI/button_1_settings.png"); neverStopRendering(true);
@@ -605,7 +605,7 @@ public class MainMenuScreen extends BaseAppState {
                 
                nifty.gotoScreen("Screen_MainMenu");
         
-
+               
     }
 
     

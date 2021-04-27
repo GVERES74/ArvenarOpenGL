@@ -123,7 +123,7 @@ public class SettingsScreenController extends BaseAppState implements ScreenCont
     
     public void applySettings(){
         changeSettings();
-        this.app = (SimpleApplication) app;
+        
         this.app.restart();
         
         

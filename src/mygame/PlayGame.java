@@ -20,20 +20,23 @@ import java.util.prefs.BackingStoreException;
  
 public class PlayGame extends SimpleApplication{
        
-    private Nifty nifty;
-    private static NiftyJmeDisplay niftyDisplay;
+    
     private MainMenuScreen mainMenu;
+    
     private SettingsScreen settingsScreen;
     private CreditsScreen creditsScreen;
+    static PlayGame app;
+    static NiftyJmeDisplay niftyDisplay;
+    private Nifty nifty;
             
     public static void main(String[] args) throws BackingStoreException {
                 
-        PlayGame app = new PlayGame();
+        app = new PlayGame();
         AppSettings settings = new AppSettings(true);
         settings.setResolution(1366, 768);
         app.setSettings(settings);        
         settings.setTitle("Arvenar 3D - OpenGl");
-        settings.setSettingsDialogImage("Interface/Images/greetingcat.png");
+        settings.setSettingsDialogImage("Interface/Images/splash.png");
         settings.save("ArvenarGL.cfg");
         app.setShowSettings(true); //default jMonkey settings OFF
         app.start();
@@ -44,15 +47,15 @@ public class PlayGame extends SimpleApplication{
     @Override
     public void simpleInitApp() {
         
-        niftyDisplay = NiftyJmeDisplay.newNiftyJmeDisplay(assetManager, inputManager, audioRenderer, viewPort);
-        nifty = niftyDisplay.getNifty();
+       niftyDisplay = NiftyJmeDisplay.newNiftyJmeDisplay(assetManager, inputManager, audioRenderer, viewPort);
+       nifty = niftyDisplay.getNifty();
         viewPort.addProcessor(niftyDisplay); 
         
-//        mainMenu = new MainMenuScreen(); stateManager.attach(mainMenu);
-        settingsScreen = new SettingsScreen(); //stateManager.attach(settingsScreen);
+        
+        mainMenu = new MainMenuScreen(); stateManager.attach(mainMenu);
+        //settingsScreen = new SettingsScreen(); stateManager.attach(settingsScreen);
         //creditsScreen = new CreditsScreen(); stateManager.attach(creditsScreen);
-//        stateManager.attach(new GameAppState());
-
+        
 
 
 
@@ -90,9 +93,10 @@ public class PlayGame extends SimpleApplication{
         return niftyDisplay;
     }
 
-    public void attachAppState(){
-        stateManager.detach(mainMenu);
-        stateManager.attach(settingsScreen);
+    public static PlayGame getPlayGameApp() {
+        return app;
     }
+
+    
    
 }

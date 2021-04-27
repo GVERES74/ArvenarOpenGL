@@ -23,18 +23,18 @@ public class MainMenuScreenController extends BaseAppState implements ScreenCont
     private Nifty nifty;
     private Screen screen;
     private SimpleApplication app;
-    private AppStateManager   stateManager;
+    private AppStateManager stateManager;
     private SettingsScreen settingsScreen;
-    
+        
     private Element popup;
-            
+    
     @Override
     public void initialize(Application app) {
        
        this.app = (SimpleApplication) app;
-       this.settingsScreen = this.stateManager.getState(SettingsScreen.class);
-               
-               
+       this.stateManager = stateManager;
+       this.settingsScreen = settingsScreen;
+                      
     }       
            
     @Override
@@ -67,27 +67,24 @@ public class MainMenuScreenController extends BaseAppState implements ScreenCont
     }
         
         
-    public void settingsGame(String nextScreen){
+    public void settingsGame() throws InterruptedException{
         
         //nifty.gotoScreen(nextScreen);
         System.out.println("Game Settings button pressed...");
         
        
-        
-        
-       
     }
     
     public void creditsGame(String nextScreen){
-        System.out.println("Play Game button pressed...");
+        System.out.println("Game Credits button pressed...");
         //nifty.gotoScreen(nextScreen);
         
     }
     
     public void quitGame(){
         System.out.println("Game left...");
-        //app.stop();
-        System.exit(0);
+        PlayGame.getPlayGameApp().stop();
+                //System.exit(0);
         
     }
    
