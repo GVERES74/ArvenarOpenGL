@@ -16,7 +16,6 @@ import com.jme3.audio.AudioRenderer;
 import com.jme3.effect.ParticleEmitter;
 import com.jme3.effect.ParticleMesh;
 import com.jme3.effect.shapes.EmitterBoxShape;
-import com.jme3.effect.shapes.EmitterSphereShape;
 import com.jme3.font.BitmapText;
 import com.jme3.input.InputManager;
 import com.jme3.input.KeyInput;
@@ -31,6 +30,7 @@ import com.jme3.math.ColorRGBA;
 import com.jme3.math.Plane;
 import com.jme3.math.Quaternion;
 import com.jme3.math.Vector3f;
+import com.jme3.renderer.Camera;
 import com.jme3.renderer.RenderManager;
 import com.jme3.renderer.ViewPort;
 import com.jme3.renderer.queue.RenderQueue;
@@ -46,7 +46,6 @@ import de.lessvoid.nifty.builder.LayerBuilder;
 import de.lessvoid.nifty.builder.PanelBuilder;
 import de.lessvoid.nifty.builder.ScreenBuilder;
 import de.lessvoid.nifty.builder.TextBuilder;
-import de.lessvoid.nifty.screen.ScreenController;
 
     
 
@@ -57,9 +56,10 @@ import de.lessvoid.nifty.screen.ScreenController;
  */
 public class MainMenuScreen extends BaseAppState {
     
+    private SimpleApplication app;
     private Nifty nifty;
-    private ScreenController screenController;
-    SimpleApplication app;
+    private SettingsScreen settingsScreen;
+    
     
     private Node              rootNode;
     private AssetManager      assetManager;
@@ -68,6 +68,7 @@ public class MainMenuScreen extends BaseAppState {
     private RenderManager     renderManager;
     private AudioRenderer     audioRenderer;
     private ViewPort          viewPort;
+    private Camera camera;
     
              
     private Spatial mainScene;
@@ -78,26 +79,33 @@ public class MainMenuScreen extends BaseAppState {
     
     BitmapText menuItemText, camPosInfoText;
 
-    public MainMenuScreen() {
-        
-    }
+//    public MainMenuScreen() {
+//        
+//    }
         
     
     @Override
     public void initialize(Application app) {
-        this.app = (SimpleApplication) app;                                        
+        
+        this.app = (SimpleApplication) app;   
+        
         this.rootNode     = this.app.getRootNode();
         this.assetManager = this.app.getAssetManager();
         this.stateManager = this.app.getStateManager();
+            
         this.inputManager = this.app.getInputManager();
         this.viewPort     = this.app.getViewPort();
+        this.camera       = this.app.getCamera();
+        
+        settingsScreen = new SettingsScreen();
+        
+        
+        
         screenHeight = app.getCamera().getHeight();
         screenWidth = app.getCamera().getWidth();
         
         rootNode.attachChild(startRootNode);
        // rootNode.attachChild(startGUINode);
-                      
-       
         
         inputManager.deleteMapping(SimpleApplication.INPUT_MAPPING_EXIT); //delete ESC key quit app function
        
@@ -120,16 +128,17 @@ public class MainMenuScreen extends BaseAppState {
         loadAmbientSound("Sounds/Ambient/Fire/torchBurning.ogg", true, true, 1.0f, 0f, 0f, 0f);
         initMenuControls();
         
+        
     //TODO: initialize your AppState, e.g. attach spatials to rootNode
         //this is called on the OpenGL thread after the AppState has been attached
     }
     
         
         public void loadMainScene(){
-            mainScene = app.getAssetManager().loadModel("Scenes/MainMenu/mainMenuScene.j3o");
+            mainScene = assetManager.loadModel("Scenes/MainMenu/mainMenuScene.j3o");
             rootNode.attachChild(mainScene);
-            app.getCamera().setLocation(new Vector3f(15f, 3f, 0f));
-            app.getCamera().setRotation(new Quaternion().fromAngleAxis(0.1f, Vector3f.UNIT_X)); //initial camera direction
+            camera.setLocation(new Vector3f(15f, 3f, 0f));
+            camera.setRotation(new Quaternion().fromAngleAxis(0.1f, Vector3f.UNIT_X)); //initial camera direction
             
         }
     
@@ -331,22 +340,22 @@ public class MainMenuScreen extends BaseAppState {
                             , Vector3f axis){
             
             Quaternion rotate = new Quaternion().fromAngleNormalAxis(rotationSpeed * value * tpf, axis);
-            Quaternion q = rotate.mult(app.getCamera().getRotation());
-            app.getCamera().setRotation(q);
+            Quaternion q = rotate.mult(camera.getRotation());
+            camera.setRotation(q);
               
         }
         
         
         protected void moveCamera(){
-            Vector3f camDirection = app.getCamera().getDirection();
-            Vector3f camLocation = app.getCamera().getLocation();
+            Vector3f camDirection = camera.getDirection();
+            Vector3f camLocation = camera.getLocation();
                       
             float moveX = camDirection.x/500;
             float moveZ = camDirection.z/300;
             float camx = camLocation.x;
             float camz = camLocation.z;
             float camy = camLocation.y;
-                app.getCamera().setLocation(new Vector3f(camx+moveX, camy, camz+moveZ));
+                camera.setLocation(new Vector3f(camx+moveX, camy, camz+moveZ));
 
         }
         
@@ -354,7 +363,7 @@ public class MainMenuScreen extends BaseAppState {
             
             mainMenuThemePlayer.stop();
             rotateCamera(0f, 1,0,Vector3f.UNIT_Y);
-            app.getCamera().setLocation(new Vector3f(2f, 2f, 2f));
+            camera.setLocation(new Vector3f(2f, 2f, 2f));
             
         }
                         
@@ -374,8 +383,19 @@ public class MainMenuScreen extends BaseAppState {
     
         private final ActionListener actionListener = new ActionListener() {
             @Override
-            public void onAction(String name, boolean isPressed, float tpf) {
-                
+            public void onAction(String mappedName, boolean isPressed, float tpf) {
+                switch (mappedName) {
+                    case "ExitGame": 
+                        
+                        if (!stateManager.hasState(settingsScreen)){
+                        stateManager.detach(stateManager.getState(MainMenuScreen.class));
+                        stateManager.attach(settingsScreen);
+                        }
+                        else {
+                        stateManager.detach(settingsScreen);
+//                        stateManager.attach(stateManager.getState(MainMenuScreen.class));
+                        }
+                }
                 }
                              
             };
@@ -391,14 +411,17 @@ public class MainMenuScreen extends BaseAppState {
     
     @Override
     public void cleanup(Application app) {
+        
         startRootNode.detachAllChildren();
         startGUINode.detachAllChildren();
         
     }    
         
         
+   
     @Override
-    protected void onEnable() {
+    protected void onEnable(){
+    
         app.setDisplayStatView(false); app.setDisplayFps(false);
         nifty = PlayGame.getNiftyDisplay().getNifty();
         app.getFlyByCamera().setDragToRotate(true);
@@ -476,7 +499,7 @@ public class MainMenuScreen extends BaseAppState {
                             y("70px");
                             height("45px");
                             width("150px");    
-                            interactOnClick("settingsGame(Screen_GameSettings)");
+                            interactOnClick("settingsGame()");
                             backgroundColor("#0c01");
                             onStartHoverEffect(new HoverEffectBuilder("changeImage"){{
                                 effectParameter("active", "Interface/Images/MenuUI/button_1_settings.png"); neverStopRendering(true);
@@ -597,20 +620,16 @@ public class MainMenuScreen extends BaseAppState {
                 
                nifty.gotoScreen("Screen_MainMenu");
         
-
+               
     }
-    
+
     
 
     @Override
     protected void onDisable() {
         
     }
-
     
-        
-
-   
-}
+ }
 
                                   

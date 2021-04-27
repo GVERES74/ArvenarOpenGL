@@ -16,6 +16,10 @@ import de.lessvoid.nifty.controls.Label;
 import de.lessvoid.nifty.controls.Slider;
 import de.lessvoid.nifty.screen.Screen;
 import de.lessvoid.nifty.screen.ScreenController;
+import java.awt.DisplayMode;
+import java.awt.GraphicsDevice;
+import java.awt.GraphicsEnvironment;
+
 
 /**
  *
@@ -38,9 +42,17 @@ public class SettingsScreenController extends BaseAppState implements ScreenCont
     @Override
     protected void initialize(Application app) {
         this.app = (SimpleApplication) app;
-            }
+                
+        GraphicsDevice device = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
+          DisplayMode[] modes = device.getDisplayModes();
+          int i=0; // note: there are usually several, let's pick the first
+          PlayGame.getPlayGameAppSettings().setResolution(modes[i].getWidth(),modes[i].getHeight());
+          PlayGame.getPlayGameAppSettings().setFrequency(modes[i].getRefreshRate());
+          PlayGame.getPlayGameAppSettings().setBitsPerPixel(modes[i].getBitDepth());
+          PlayGame.getPlayGameAppSettings().setFullscreen(device.isFullScreenSupported());
+    }
     
-     @Override
+    @Override
     public void update(float tpf) {
         
         labelSliderVol.setText(sliderVol.getValue()+"%");
@@ -114,17 +126,18 @@ public class SettingsScreenController extends BaseAppState implements ScreenCont
             default: width = 1366; height = 768;
             
         }
-        appSettings.setResolution(width, height);
+        PlayGame.getPlayGameAppSettings().setResolution(width, height);
                 
-//        if (checkboxFullscreen.isChecked()){
-//                settings.setFullscreen(true);
-//        }
+        
+//                PlayGame.getPlayGameAppSettings().setFullscreen(true);
+                PlayGame.getPlayGameApp().setSettings(PlayGame.getPlayGameAppSettings());
+        
     }
     
     public void applySettings(){
         changeSettings();
         
-        this.app.restart();
+        PlayGame.getPlayGameApp().restart();
         
         
     }

@@ -7,17 +7,16 @@ package mygame;
 
 import com.jme3.app.Application;
 import com.jme3.app.SimpleApplication;
-import com.jme3.app.state.AbstractAppState;
 import com.jme3.app.state.AppStateManager;
 import com.jme3.app.state.BaseAppState;
+import com.jme3.input.InputManager;
+import com.jme3.input.KeyInput;
+import com.jme3.input.controls.ActionListener;
+import com.jme3.input.controls.KeyTrigger;
 import de.lessvoid.nifty.Nifty;
-import de.lessvoid.nifty.controls.Menu;
-import de.lessvoid.nifty.controls.MenuItemActivatedEvent;
 import de.lessvoid.nifty.elements.Element;
-import de.lessvoid.nifty.input.NiftyMouseInputEvent;
 import de.lessvoid.nifty.screen.Screen;
 import de.lessvoid.nifty.screen.ScreenController;
-import de.lessvoid.nifty.tools.SizeValue;
 
 /**
  *
@@ -25,30 +24,31 @@ import de.lessvoid.nifty.tools.SizeValue;
  */
 public class MainMenuScreenController extends BaseAppState implements ScreenController{
     
-    
-    private PlayGame app;
     private Nifty nifty;
     private Screen screen;
-    
+    private SimpleApplication app;
+    private AppStateManager stateManager;
+    private InputManager    inputManager;
+    private SettingsScreen settingsScreen;
+        
     private Element popup;
-            
+    
     @Override
     public void initialize(Application app) {
        
-       this.app = (PlayGame)app;
+       this.app = (SimpleApplication) app;
+       this.stateManager = this.app.getStateManager();
+       this.inputManager = this.app.getInputManager();
+       settingsScreen = new SettingsScreen();
+    }  
         
-    }       
-           
     @Override
     public void update(float tpf) {
         
-        
+         
     }
     
     
-
-    
-
     @Override
     public void bind(Nifty nifty, Screen screen) {
         this.nifty = nifty;
@@ -72,24 +72,25 @@ public class MainMenuScreenController extends BaseAppState implements ScreenCont
     }
         
         
-    public void settingsGame(String nextScreen){
+    public void settingsGame(){
         
         //nifty.gotoScreen(nextScreen);
         System.out.println("Game Settings button pressed...");
+        stateManager.attach(settingsScreen);
         
        
     }
     
     public void creditsGame(String nextScreen){
-        System.out.println("Play Game button pressed...");
+        System.out.println("Game Credits button pressed...");
         //nifty.gotoScreen(nextScreen);
         
     }
     
     public void quitGame(){
         System.out.println("Game left...");
-        //app.stop();
-        System.exit(0);
+        PlayGame.getPlayGameApp().stop();
+                //System.exit(0);
         
     }
    
@@ -99,7 +100,7 @@ public class MainMenuScreenController extends BaseAppState implements ScreenCont
     }
 
     @Override
-    protected void cleanup(Application app) {
+    protected void cleanup(Application arg0) {
         
     }
 
@@ -112,7 +113,6 @@ public class MainMenuScreenController extends BaseAppState implements ScreenCont
     protected void onDisable() {
         
     }
-    
-    
+
     
 }

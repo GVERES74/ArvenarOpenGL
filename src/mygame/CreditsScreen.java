@@ -57,7 +57,7 @@ public class CreditsScreen extends BaseAppState {
     private AudioRenderer     audioRenderer;
     private ViewPort          viewPort;
     private Nifty nifty;
-    private PlayGame mainapp;
+    
          
     private Spatial creditsScene;
     private Node creditsRootNode = new Node("Credits RootNode");
