@@ -208,7 +208,7 @@ public class SettingsScreenController extends BaseAppState implements ScreenCont
     }
     
     public void changeAudioSettings(){
-        PlayGame.getMusicPlayer().setVolume(sliderVol.getValue());
+//        PlayGame.getMusicPlayer().setVolume(sliderVol.getValue());
     }
     
     public void applySettings() throws BackingStoreException {

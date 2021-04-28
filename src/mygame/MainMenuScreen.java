@@ -72,7 +72,7 @@ public class MainMenuScreen extends BaseAppState {
     private Spatial mainScene;
     private Node startRootNode = new Node("Main Menu RootNode");
     private Node startGUINode = new Node("Main Menu GUINode");
-    private AudioNode ambSoundNode, plainSoundNode;
+    private AudioNode musicNode, ambSoundNode, plainSoundNode;
     float screenHeight, screenWidth;
     
     BitmapText menuItemText, camPosInfoText;
@@ -119,7 +119,7 @@ public class MainMenuScreen extends BaseAppState {
         createFirePlace();
         createWaterStream();
         createWaterFall();
-        loadMenuMusic();
+//        loadMenuMusic();
         
         loadAmbientSound("Sounds/Ambient/Water/waterstream.ogg", true, true, 0.5f, 23f, -0.5f, -11f);
         loadAmbientSound("Sounds/Ambient/Water/waterfall_01.ogg", true, false, 0.5f, 32f, 2f, -2f);
@@ -142,11 +142,10 @@ public class MainMenuScreen extends BaseAppState {
     
         public void loadMenuMusic(){
 
-            
-            PlayGame.getMusicPlayer().setLooping(true);
-            PlayGame.getMusicPlayer().setPositional(false);
-            startRootNode.attachChild(PlayGame.getMusicPlayer());
-            PlayGame.getMusicPlayer().play();
+            musicNode.setLooping(true);
+            musicNode.setPositional(false);
+            startRootNode.attachChild(musicNode);
+            musicNode.play();
 
         }
         
@@ -357,13 +356,7 @@ public class MainMenuScreen extends BaseAppState {
 
         }
         
-        public void leaveAutoPlay(){
-            
-            PlayGame.getMusicPlayer().stop();
-            rotateCamera(0f, 1,0,Vector3f.UNIT_Y);
-            camera.setLocation(new Vector3f(2f, 2f, 2f));
-            
-        }
+        
                         
              
                 
@@ -422,6 +415,7 @@ public class MainMenuScreen extends BaseAppState {
         nifty.loadStyleFile("nifty-default-styles.xml");
         nifty.loadControlFile("nifty-default-controls.xml");
         nifty.registerSound("btnclick", "Interface/sound/metalClick.ogg");
+        nifty.registerMusic("maintheme", "Music/Soundtracks/RPG_Ambient_2.ogg");
                 
         nifty.addScreen("Screen_MainMenu", new ScreenBuilder("Main Menu"){{
                 controller(new mygame.MainMenuScreenController());
@@ -429,6 +423,10 @@ public class MainMenuScreen extends BaseAppState {
                 
                 layer(new LayerBuilder("Layer_Menu_Main"){{
                     childLayoutVertical();
+                    onStartScreenEffect(new EffectBuilder("playSound") {{
+                            effectParameter("sound", "maintheme");
+                            }});    
+                    
                     onStartScreenEffect(new EffectBuilder("fade") {{
                             startDelay(22000);
                                 length(3000);    

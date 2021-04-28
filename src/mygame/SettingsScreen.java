@@ -68,7 +68,8 @@ public class SettingsScreen extends BaseAppState {
         this.inputManager = this.app.getInputManager();
         this.viewPort     = this.app.getViewPort();
         screenWidth = PlayGame.getPlayGameAppSettings().getWidth();
-                                            
+        
+                                                    
     }
     
     @Override
@@ -84,6 +85,7 @@ public class SettingsScreen extends BaseAppState {
 
      @Override
     protected void onEnable() {
+        
         app.setDisplayStatView(false); app.setDisplayFps(false);
         nifty = PlayGame.getNiftyDisplay().getNifty();
             app.getGuiViewPort().addProcessor(PlayGame.getNiftyDisplay());
@@ -91,7 +93,7 @@ public class SettingsScreen extends BaseAppState {
             nifty.loadControlFile("nifty-default-controls.xml");
         
             nifty.registerSound("btnclick", "Interface/sound/metalClick.ogg");
-            nifty.registerMusic("credits", "Interface/music/ambient_snow1.ogg");
+            nifty.registerMusic("settingstheme", "Music/Soundtracks/RPG_Ambient_4.ogg");
             app.getFlyByCamera().setDragToRotate(true);
         
             nifty.addScreen("Screen_GameSettings", new ScreenBuilder("Game Settings"){{
@@ -103,7 +105,7 @@ public class SettingsScreen extends BaseAppState {
                         
                     
                     onStartScreenEffect(new EffectBuilder("playSound") {{
-                        effectParameter("sound", "credits");
+                        effectParameter("sound", "settingstheme");
                     }}); 
                 
                     image(new ImageBuilder() {{
@@ -313,5 +315,7 @@ public class SettingsScreen extends BaseAppState {
     protected void onDisable() {
         
     }
+    
+    
     
 }

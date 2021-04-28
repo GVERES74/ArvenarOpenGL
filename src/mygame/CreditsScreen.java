@@ -15,7 +15,6 @@ import com.jme3.audio.AudioRenderer;
 import com.jme3.effect.ParticleEmitter;
 import com.jme3.effect.ParticleMesh;
 import com.jme3.effect.shapes.EmitterBoxShape;
-import com.jme3.effect.shapes.EmitterSphereShape;
 import com.jme3.font.BitmapText;
 import com.jme3.input.InputManager;
 import com.jme3.light.DirectionalLight;
@@ -92,7 +91,7 @@ public class CreditsScreen extends BaseAppState {
         loadCreditsScene();
         createWorldLight();
         createPrecipitation();
-        loadCreditsMusic();
+//        loadCreditsMusic();
         loadAmbientSound("Sounds/Ambient/Animals/birds.ogg", true, false, 1.0f, 0f, 0f, 0f);
     
     }
