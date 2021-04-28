@@ -29,8 +29,7 @@ public class MainMenuScreenController extends BaseAppState implements ScreenCont
     private SimpleApplication app;
     private AppStateManager stateManager;
     private InputManager    inputManager;
-    private SettingsScreen settingsScreen;
-        
+            
     private Element popup;
     
     @Override
@@ -39,7 +38,6 @@ public class MainMenuScreenController extends BaseAppState implements ScreenCont
        this.app = (SimpleApplication) app;
        this.stateManager = this.app.getStateManager();
        this.inputManager = this.app.getInputManager();
-       settingsScreen = new SettingsScreen();
     }  
         
     @Override
@@ -76,8 +74,7 @@ public class MainMenuScreenController extends BaseAppState implements ScreenCont
         
         //nifty.gotoScreen(nextScreen);
         System.out.println("Game Settings button pressed...");
-        stateManager.attach(settingsScreen);
-        
+               
        
     }
     

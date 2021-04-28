@@ -8,7 +8,6 @@ package mygame;
 
 import com.jme3.app.Application;
 import com.jme3.app.SimpleApplication;
-import com.jme3.app.state.AbstractAppState;
 import com.jme3.app.state.AppStateManager;
 import com.jme3.app.state.BaseAppState;
 import com.jme3.asset.AssetManager;
@@ -59,8 +58,6 @@ public class MainMenuScreen extends BaseAppState {
     
     private SimpleApplication app;
     private Nifty nifty;
-    private SettingsScreen settingsScreen;
-    
     
     private Node              rootNode;
     private AssetManager      assetManager;
@@ -75,7 +72,7 @@ public class MainMenuScreen extends BaseAppState {
     private Spatial mainScene;
     private Node startRootNode = new Node("Main Menu RootNode");
     private Node startGUINode = new Node("Main Menu GUINode");
-    private AudioNode mainMenuThemePlayer, ambSoundNode, plainSoundNode;
+    private AudioNode ambSoundNode, plainSoundNode;
     float screenHeight, screenWidth;
     
     BitmapText menuItemText, camPosInfoText;
@@ -98,7 +95,7 @@ public class MainMenuScreen extends BaseAppState {
         this.viewPort     = this.app.getViewPort();
         this.camera       = this.app.getCamera();
         
-        settingsScreen = new SettingsScreen();
+        
         
         
         
@@ -145,11 +142,11 @@ public class MainMenuScreen extends BaseAppState {
     
         public void loadMenuMusic(){
 
-            mainMenuThemePlayer = new AudioNode(assetManager,"Music/Soundtracks/RPG_Ambient_2.ogg");
-            mainMenuThemePlayer.setLooping(true);
-            mainMenuThemePlayer.setPositional(false);
-            startRootNode.attachChild(mainMenuThemePlayer);
-            mainMenuThemePlayer.play();
+            
+            PlayGame.getMusicPlayer().setLooping(true);
+            PlayGame.getMusicPlayer().setPositional(false);
+            startRootNode.attachChild(PlayGame.getMusicPlayer());
+            PlayGame.getMusicPlayer().play();
 
         }
         
@@ -362,7 +359,7 @@ public class MainMenuScreen extends BaseAppState {
         
         public void leaveAutoPlay(){
             
-            mainMenuThemePlayer.stop();
+            PlayGame.getMusicPlayer().stop();
             rotateCamera(0f, 1,0,Vector3f.UNIT_Y);
             camera.setLocation(new Vector3f(2f, 2f, 2f));
             
@@ -388,14 +385,8 @@ public class MainMenuScreen extends BaseAppState {
                 switch (mappedName) {
                     case "ExitGame": 
                         
-                        if (!stateManager.hasState(settingsScreen)){
-                        stateManager.detach(stateManager.getState(MainMenuScreen.class));
-                        stateManager.attach(settingsScreen);
-                        }
-                        else {
-                        stateManager.detach(settingsScreen);
-//                        stateManager.attach(stateManager.getState(MainMenuScreen.class));
-                        }
+                        //stateManager.attach(settingsScreen);
+                        
                 }
                 }
                              
@@ -456,9 +447,9 @@ public class MainMenuScreen extends BaseAppState {
                         //backgroundColor("#cff5");
                         
                             image(new ImageBuilder("imagelogo_Title") {{
-                                filename("Interface/Images/MenuUI/mainlogo.png");
-                                height("145px");
-                                width("225px"); 
+                                filename("Interface/Images/MenuUI/mainlogo1.png");
+                                height("180px");
+                                width("380px"); 
                                 alignCenter();
                                 valignCenter();
                                 
@@ -557,7 +548,7 @@ public class MainMenuScreen extends BaseAppState {
                                 
                                 height("180px");
                                 width("180px");
-                                x("700px");
+                                x("600px");
                                 y("100px");
                                 
                                 onStartScreenEffect(new EffectBuilder("fade") {{ //fade in and fade out effect :)
@@ -574,7 +565,7 @@ public class MainMenuScreen extends BaseAppState {
                             
                             text(new TextBuilder() {{
                                 text("Greeting Cat Game Studio presents\n"
-                                        + "Arvenar - Tale of The Forgotten");
+                                        + "Arvenar - The Lost Traveller");
                                 font("Interface/Fonts/Default.fnt");
                                 height("100%");
                                 width("100%");
@@ -595,6 +586,8 @@ public class MainMenuScreen extends BaseAppState {
                              text(new TextBuilder() {{
                                 text("A Greeting Cat Production\n"
                                         + "Design and programming by Gabor Veres\n"
+                                        + "Powered by jMonkeyEngine3.0\n"
+                                        + "Powered by NiftyGUI\n"
                                         + "Powered by OpenGameArt.org\n"
                                         + "https://opengameart.org");
                                  font("Interface/Fonts/Default.fnt");

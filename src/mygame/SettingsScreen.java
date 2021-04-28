@@ -49,19 +49,14 @@ public class SettingsScreen extends BaseAppState {
     private ViewPort          viewPort;
     
     private Nifty nifty;
-            
     private Screen screen;
-    
     private Spatial mainScene;
+    
+    int screenWidth;
     
     private Node settingsRootNode = new Node("Game Settings RootNode");
     private Node settingsGUINode = new Node("Game Settings GUINode");
 
-    public SettingsScreen() {
-    }
-    
-    
-    
     
     @Override
     public void initialize(Application app) {
@@ -72,12 +67,13 @@ public class SettingsScreen extends BaseAppState {
         this.stateManager = this.app.getStateManager();
         this.inputManager = this.app.getInputManager();
         this.viewPort     = this.app.getViewPort();
+        screenWidth = PlayGame.getPlayGameAppSettings().getWidth();
                                             
     }
     
     @Override
     public void update(float tpf) {
-        //TODO: implement behavior during runtime
+        
     }
     
     
@@ -95,6 +91,7 @@ public class SettingsScreen extends BaseAppState {
             nifty.loadControlFile("nifty-default-controls.xml");
         
             nifty.registerSound("btnclick", "Interface/sound/metalClick.ogg");
+            nifty.registerMusic("credits", "Interface/music/ambient_snow1.ogg");
             app.getFlyByCamera().setDragToRotate(true);
         
             nifty.addScreen("Screen_GameSettings", new ScreenBuilder("Game Settings"){{
@@ -103,17 +100,21 @@ public class SettingsScreen extends BaseAppState {
                 
                 layer(new LayerBuilder("Layer_Settings_AllItems"){{
                     childLayoutAbsoluteInside();
+                        
                     
                     onStartScreenEffect(new EffectBuilder("playSound") {{
                         effectParameter("sound", "credits");
                     }}); 
                 
-//                    image(new ImageBuilder() {{
-//                        filename("Interface/background-new.png");
-//                    }});
+                    image(new ImageBuilder() {{
+                        filename("Interface/Images/background-new.png");
+                        height("100%");
+                        width("100%");
+                    }});
                     
                      panel(new PanelBuilder("Panel_Settings_Title"){{
-                        childLayoutAbsoluteInside(); //!! please remember if you want to set child x / y positions manually
+                        
+                         childLayoutAbsoluteInside(); //!! please remember if you want to set child x / y positions manually
                         padding("10px");
                         x("20px");
                         y("20px");
@@ -130,6 +131,7 @@ public class SettingsScreen extends BaseAppState {
                                 x("20px");
                                 y("20px");
                                 
+                                
                             }});
                     }});        
                     
@@ -137,8 +139,9 @@ public class SettingsScreen extends BaseAppState {
                     control(new TabGroupBuilder("TabGroup_Settings"){{
                             width("500px");
                             height("500px");
-                            x("400px");
+                            x(String.valueOf(screenWidth/2-250));
                             y("100px");
+                            
                             backgroundColor("#ffc1");
                         
                             
@@ -173,6 +176,35 @@ public class SettingsScreen extends BaseAppState {
                                         width("200px");
                                         x("150px");
                                         y("100px");
+
+                                    }});
+                                    
+                                    
+                                    control(new LabelBuilder("label_BitDepth") {{
+                                        text("Bit Depth");   
+                                        x("20px");
+                                        y("140px");    
+
+                                    }});
+//
+                                    control(new DropDownBuilder("dropdown_BitDepth") {{
+                                        width("80px");
+                                        x("150px");
+                                        y("140px");
+
+                                    }});
+                                    
+                                    control(new LabelBuilder("label_RefreshRate") {{
+                                        text("Screen refresh rate");   
+                                        x("20px");
+                                        y("180px");    
+
+                                    }});
+//
+                                    control(new DropDownBuilder("dropdown_RefreshRate") {{
+                                        width("80px");
+                                        x("150px");
+                                        y("180px");
 
                                     }});
                             }});

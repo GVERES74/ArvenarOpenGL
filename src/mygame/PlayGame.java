@@ -1,8 +1,7 @@
 package mygame;
 
-import com.jme3.animation.AnimChannel;
-import com.jme3.animation.AnimControl;
 import com.jme3.app.SimpleApplication;
+import com.jme3.audio.AudioNode;
 
 import com.jme3.export.binary.BinaryImporter;
 import com.jme3.niftygui.NiftyJmeDisplay;
@@ -27,6 +26,7 @@ public class PlayGame extends SimpleApplication{
     static AppSettings settings;
     static NiftyJmeDisplay niftyDisplay;
     private Nifty nifty;
+    private static AudioNode musicPlayer;
             
     public static void main(String[] args) throws BackingStoreException {
                 
@@ -49,12 +49,12 @@ public class PlayGame extends SimpleApplication{
        niftyDisplay = NiftyJmeDisplay.newNiftyJmeDisplay(assetManager, inputManager, audioRenderer, viewPort);
        nifty = niftyDisplay.getNifty();
        viewPort.addProcessor(niftyDisplay); 
-       
-              
-        
-        mainMenu = new MainMenuScreen(); stateManager.attach(mainMenu);
-        
+       mainMenu = new MainMenuScreen(); stateManager.attach(mainMenu);
+//        stateManager.attach(new SettingsScreen());
          /** Load a Node from a .j3o file */
+         
+         
+         musicPlayer = new AudioNode(assetManager,"Music/Soundtracks/RPG_Ambient_2.ogg");
                   
          BinaryImporter importer = BinaryImporter.getInstance();
          importer.setAssetManager(assetManager);
@@ -96,8 +96,12 @@ public class PlayGame extends SimpleApplication{
         return settings;
     }
 
-    
+    public static AudioNode getMusicPlayer() {
+        return musicPlayer;
+    }
 
+    
+    
     
     
     
