@@ -1,6 +1,7 @@
 package mygame;
 
 import com.jme3.app.SimpleApplication;
+import com.jme3.app.state.AppState;
 import com.jme3.audio.AudioNode;
 
 import com.jme3.export.binary.BinaryImporter;
@@ -15,17 +16,19 @@ import java.util.prefs.BackingStoreException;
  * Move your Logic into AppStates or Controls
  * @author normenhansen
  */ 
-  //https://www.p8tech.com/jmonkey-game-logic-application-states/
- 
+   
 public class PlayGame extends SimpleApplication{
        
-    
-    private MainMenuScreen mainMenu;
-        
     static PlayGame app;
     static AppSettings settings;
     static NiftyJmeDisplay niftyDisplay;
     private Nifty nifty;
+    public static MainMenuScreen mainMenu_screen;
+    public static SettingsScreen settings_screen;
+    public static CreditsScreen credits_screen;
+    
+    public static AudioNode musicPlayer, soundPlayer;
+    
                 
     public static void main(String[] args) throws BackingStoreException {
                 
@@ -48,8 +51,10 @@ public class PlayGame extends SimpleApplication{
        niftyDisplay = NiftyJmeDisplay.newNiftyJmeDisplay(assetManager, inputManager, audioRenderer, viewPort);
        nifty = niftyDisplay.getNifty();
        viewPort.addProcessor(niftyDisplay); 
-//       mainMenu = new MainMenuScreen(); stateManager.attach(mainMenu);
-        stateManager.attach(new SettingsScreen());
+//       mainMenu_screen = new MainMenuScreen(); stateManager.attach(mainMenu_screen);
+       settings_screen = new SettingsScreen();
+       credits_screen = new CreditsScreen(); stateManager.attach(credits_screen);
+
          /** Load a Node from a .j3o file */
          
                            
@@ -92,8 +97,32 @@ public class PlayGame extends SimpleApplication{
     public static AppSettings getPlayGameAppSettings() {
         return settings;
     }
-
-           
     
+    public static void playMusic(String filepath){
+        musicPlayer = new AudioNode(app.getAssetManager(), filepath);
+        musicPlayer.setDirectional(false);
+        musicPlayer.setPositional(false);
+        musicPlayer.setLooping(true);
+        app.getRootNode().attachChild(musicPlayer);
+        musicPlayer.play();
+    }
+
+    public static void playSound(String filepath, boolean directional, boolean positional, boolean looping, float volume, float xpos, float ypos, float zpos){
+        soundPlayer = new AudioNode(app.getAssetManager(), filepath);
+        soundPlayer.setDirectional(directional);
+        soundPlayer.setPositional(positional);
+        soundPlayer.setLooping(looping);
+        soundPlayer.setVolume(volume);
+        app.getRootNode().attachChild(soundPlayer);
+        soundPlayer.play();
+    }
+    
+    public static void attachAppState(AppState appstate){
+        app.getStateManager().attach(appstate);
+    }
+       
+    public static void detachAppState(AppState appstate){
+        app.getStateManager().detach(appstate);
+    }
    
 }

@@ -80,11 +80,13 @@ public class SettingsScreen extends BaseAppState {
     
     @Override
     protected void cleanup(Application app) {
-        
+        System.out.println("SettingsScreen cleanup called.....");
     }
 
      @Override
     protected void onEnable() {
+        
+        PlayGame.playMusic("Music/Soundtracks/RPG_Ambient_4.ogg");
         
         app.setDisplayStatView(false); app.setDisplayFps(false);
         nifty = PlayGame.getNiftyDisplay().getNifty();
@@ -93,7 +95,7 @@ public class SettingsScreen extends BaseAppState {
             nifty.loadControlFile("nifty-default-controls.xml");
         
             nifty.registerSound("btnclick", "Interface/sound/metalClick.ogg");
-            nifty.registerMusic("settingstheme", "Music/Soundtracks/RPG_Ambient_4.ogg");
+//            nifty.registerMusic("settingstheme", "Music/Soundtracks/RPG_Ambient_4.ogg");
             app.getFlyByCamera().setDragToRotate(true);
         
             nifty.addScreen("Screen_GameSettings", new ScreenBuilder("Game Settings"){{
@@ -104,12 +106,12 @@ public class SettingsScreen extends BaseAppState {
                     childLayoutAbsoluteInside();
                         
                     
-                    onStartScreenEffect(new EffectBuilder("playSound") {{
-                        effectParameter("sound", "settingstheme");
-                    }}); 
+//                    onStartScreenEffect(new EffectBuilder("playSound") {{
+//                        effectParameter("sound", "settingstheme");
+//                    }}); 
                 
                     image(new ImageBuilder() {{
-                        filename("Interface/Images/background-new.png");
+                        filename("Interface/Images/background_settings.png");
                         height("100%");
                         width("100%");
                     }});
@@ -117,9 +119,9 @@ public class SettingsScreen extends BaseAppState {
                      panel(new PanelBuilder("Panel_Settings_Title"){{
                         
                          childLayoutAbsoluteInside(); //!! please remember if you want to set child x / y positions manually
-                        padding("10px");
-                        x("20px");
-                        y("20px");
+                        
+                        x("100px");
+                        y("30px");
 
                         height("100px");
                         width("250px"); 
@@ -262,7 +264,7 @@ public class SettingsScreen extends BaseAppState {
                             y("20px");
                             height("40px");
                             width("150px");  
-                            interactOnClick("backToMainMenu()");  
+                            interactOnClick("popupApplySettings()");  
                             onStartHoverEffect(new HoverEffectBuilder("changeImage"){{
                                 effectParameter("active", "Interface/Images/MenuUI/button_1_apply.png"); neverStopRendering(true);
                                 effectParameter("inactive", "Interface/Images/MenuUI/button_0_apply.png"); neverStopRendering(true);}});
@@ -271,18 +273,18 @@ public class SettingsScreen extends BaseAppState {
                           
                         }});
                         
-                        image(new ImageBuilder("settings_Cancel"){{
-                            filename("Interface/Images/MenuUI/button_0_cancel.png");
+                        image(new ImageBuilder("settings_Back"){{
+                            filename("Interface/Images/MenuUI/button_0_back.png");
                             x("20px");
                             y("70px");
                             height("40px");
                             width("150px");    
-                            interactOnClick("popupCancelSettings()");
+                            interactOnClick("backToMainMenu()");
                             interactOnMouseOver("buttonEffect()");
                             backgroundColor("#0c01");
                             onStartHoverEffect(new HoverEffectBuilder("changeImage"){{
-                                effectParameter("active", "Interface/Images/MenuUI/button_1_cancel.png"); neverStopRendering(true);
-                                effectParameter("inactive", "Interface/Images/MenuUI/button_0_cancel.png"); neverStopRendering(true);}});
+                                effectParameter("active", "Interface/Images/MenuUI/button_1_back.png"); neverStopRendering(true);
+                                effectParameter("inactive", "Interface/Images/MenuUI/button_0_back.png"); neverStopRendering(true);}});
                             onStartHoverEffect(new HoverEffectBuilder("move"){{effectParameter("mode", "toOffset"); effectParameter("offsetX", "+15");}});
                             onStartHoverEffect(new HoverEffectBuilder("playSound"){{effectParameter("sound", "btnclick");}});
                                       

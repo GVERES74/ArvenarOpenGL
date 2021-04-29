@@ -46,6 +46,8 @@ import de.lessvoid.nifty.builder.LayerBuilder;
 import de.lessvoid.nifty.builder.PanelBuilder;
 import de.lessvoid.nifty.builder.ScreenBuilder;
 import de.lessvoid.nifty.builder.TextBuilder;
+import static mygame.PlayGame.app;
+import static mygame.PlayGame.soundPlayer;
 
     
 
@@ -67,12 +69,13 @@ public class MainMenuScreen extends BaseAppState {
     private AudioRenderer     audioRenderer;
     private ViewPort          viewPort;
     private Camera camera;
+    private AudioNode soundPlayer;
     
              
     private Spatial mainScene;
     private Node startRootNode = new Node("Main Menu RootNode");
     private Node startGUINode = new Node("Main Menu GUINode");
-    private AudioNode musicNode, ambSoundNode, plainSoundNode;
+    
     float screenHeight, screenWidth;
     
     BitmapText menuItemText, camPosInfoText;
@@ -119,11 +122,9 @@ public class MainMenuScreen extends BaseAppState {
         createFirePlace();
         createWaterStream();
         createWaterFall();
-//        loadMenuMusic();
         
-        loadAmbientSound("Sounds/Ambient/Water/waterstream.ogg", true, true, 0.5f, 23f, -0.5f, -11f);
-        loadAmbientSound("Sounds/Ambient/Water/waterfall_01.ogg", true, false, 0.5f, 32f, 2f, -2f);
-        loadAmbientSound("Sounds/Ambient/Fire/torchBurning.ogg", true, true, 1.0f, 0f, 0f, 0f);
+        loadAmbientSound();
+        
         initMenuControls();
         
         
@@ -133,7 +134,7 @@ public class MainMenuScreen extends BaseAppState {
     
         
         public void loadMainScene(){
-            mainScene = assetManager.loadModel("Scenes/MainMenu/mainMenuScene.j3o");
+            mainScene = assetManager.loadModel("Scenes/S0_Snowenar/S0M0_walley.j3o");
             rootNode.attachChild(mainScene);
             camera.setLocation(new Vector3f(15f, 3f, 0f));
             camera.setRotation(new Quaternion().fromAngleAxis(0.1f, Vector3f.UNIT_X)); //initial camera direction
@@ -142,31 +143,21 @@ public class MainMenuScreen extends BaseAppState {
     
         public void loadMenuMusic(){
 
-            musicNode.setLooping(true);
-            musicNode.setPositional(false);
-            startRootNode.attachChild(musicNode);
-            musicNode.play();
+            PlayGame.playMusic("Music/Soundtracks/RPG_Ambient_2.ogg");
 
         }
         
-        public void loadAmbientSound(String file, Boolean looping, Boolean positional, float vol, float posx, float posy, float posz){
+        public void loadAmbientSound(){
 
-            ambSoundNode = new AudioNode(assetManager, file);
-            ambSoundNode.setLooping(looping);
-            ambSoundNode.setPositional(positional);
-            ambSoundNode.setLocalTranslation(posx, posy, posz);
-            ambSoundNode.setMaxDistance(5);
-            ambSoundNode.setVolume(vol);
-            
-            startRootNode.attachChild(ambSoundNode);
-            ambSoundNode.play();
-
+            playSound("Sounds/Ambient/Water/waterstream.ogg", false, true, true, 0.5f, 23f, -0.5f, -11f);
+            playSound("Sounds/Ambient/Water/waterfall_01.ogg", false, false, true, 0.5f, 32f, 2f, -2f); 
+            playSound("Sounds/Ambient/Fire/torchBurning.ogg", false, true, true, 1.0f, 0f, 0f, 0f); 
         }
     
         public void loadSceneModels(){
 
 //            createModel("stump_roundDetailed.glb", 17f, 0.1f, -15f, 0f, 4f);
-            createModel("Models/Tree_Pine/snow_pine_tree.obj", "Models/Tree_Pine/pine_snow_full.j3m", 30f, 0.1f, -22, 0f, 0.1f);
+            createModel("Models/Tree_Pine/snow_pine_tree.obj", "Models/Tree_Pine/pine_snow_full.j3m", 30f, 0.1f, -28, 0f, 0.1f);
             createModel("Models/Tree_Pine/snow_pine_tree.obj", "Models/Tree_Pine/pine_snow_half.j3m", -8f, 0.0f, -8f, 0f, 0.1f);
             createModel("Models/Tree_Pine/snow_pine_tree.obj", "Models/Tree_Pine/pine_snow_none.j3m", -20f, 0.0f, -3f, 0f, 0.1f);
             createModel("Models/Grass/grass.glb", "Models/Grass/grass.j3m", 19f, 0.0f, -18f, 0f, 3f);
@@ -358,16 +349,22 @@ public class MainMenuScreen extends BaseAppState {
         
         
                         
-             
+        public void playSound(String filepath, boolean directional, boolean positional, boolean looping, float volume, float xpos, float ypos, float zpos){
+        soundPlayer = new AudioNode(assetManager, filepath);
+        soundPlayer.setDirectional(directional);
+        soundPlayer.setPositional(positional);
+        soundPlayer.setLooping(looping);
+        soundPlayer.setVolume(volume);
+        startRootNode.attachChild(soundPlayer);
+        soundPlayer.play();
+    }     
                 
         public void initMenuControls(){
         
-            inputManager.addMapping("MBLeft", new MouseButtonTrigger(MouseInput.BUTTON_LEFT));
-            inputManager.addMapping("MenuUp", new KeyTrigger(KeyInput.KEY_UP));
-            inputManager.addMapping("MenuDown", new KeyTrigger(KeyInput.KEY_DOWN));
-            inputManager.addMapping("ExitGame", new KeyTrigger(KeyInput.KEY_ESCAPE));
             
-            inputManager.addListener(actionListener, "MBLeft", "MenuUp", "MenuDown", "ExitGame");
+            inputManager.addMapping("SkipIntro", new KeyTrigger(KeyInput.KEY_ESCAPE));
+            
+            inputManager.addListener(actionListener, "SkipIntro");
         
         
         }
@@ -376,7 +373,7 @@ public class MainMenuScreen extends BaseAppState {
             @Override
             public void onAction(String mappedName, boolean isPressed, float tpf) {
                 switch (mappedName) {
-                    case "ExitGame": 
+                    case "SkipIntro": 
                         
                         //stateManager.attach(settingsScreen);
                         
@@ -396,17 +393,16 @@ public class MainMenuScreen extends BaseAppState {
     
     @Override
     public void cleanup(Application app) {
-        
+        System.out.println("MainMenuScreen cleanup called.....");
         startRootNode.detachAllChildren();
-        startGUINode.detachAllChildren();
-        
+
     }    
         
         
    
     @Override
     protected void onEnable(){
-    
+        loadMenuMusic();
         app.setDisplayStatView(false); app.setDisplayFps(false);
         nifty = PlayGame.getNiftyDisplay().getNifty();
         app.getFlyByCamera().setDragToRotate(true);
@@ -415,7 +411,7 @@ public class MainMenuScreen extends BaseAppState {
         nifty.loadStyleFile("nifty-default-styles.xml");
         nifty.loadControlFile("nifty-default-controls.xml");
         nifty.registerSound("btnclick", "Interface/sound/metalClick.ogg");
-        nifty.registerMusic("maintheme", "Music/Soundtracks/RPG_Ambient_2.ogg");
+//        nifty.registerMusic("maintheme", "Music/Soundtracks/RPG_Ambient_2.ogg");
                 
         nifty.addScreen("Screen_MainMenu", new ScreenBuilder("Main Menu"){{
                 controller(new mygame.MainMenuScreenController());
@@ -423,9 +419,9 @@ public class MainMenuScreen extends BaseAppState {
                 
                 layer(new LayerBuilder("Layer_Menu_Main"){{
                     childLayoutVertical();
-                    onStartScreenEffect(new EffectBuilder("playSound") {{
-                            effectParameter("sound", "maintheme");
-                            }});    
+//                    onStartScreenEffect(new EffectBuilder("playSound") {{
+//                            effectParameter("sound", "maintheme");
+//                            }});    
                     
                     onStartScreenEffect(new EffectBuilder("fade") {{
                             startDelay(22000);

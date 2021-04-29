@@ -139,16 +139,17 @@ public class SettingsScreenController extends BaseAppState implements ScreenCont
             for (DisplayMode dm: modes){
                             
               dropdownResolution.addItem(dm.getWidth()+"x"+dm.getHeight()+"/"+dm.getBitDepth()+"bpp@"+dm.getRefreshRate()+"Hz");
-              dropdownBitDepth.addItem(dm.getBitDepth());
-              dropdownRefreshRate.addItem(dm.getRefreshRate());
-              
-              
               
         }  
-              //dropdownResolution.selectItemByIndex(hashsetdmodes.size()-1);
-              dropdownResolution.selectItemByIndex(modes.length-1);
-              dropdownBitDepth.selectItemByIndex(0);
-              dropdownRefreshRate.selectItemByIndex(0);
+              
+            dropdownBitDepth.addItem(16);
+            dropdownBitDepth.addItem(24);
+            dropdownRefreshRate.addItem(60);
+            dropdownRefreshRate.addItem(75);
+                       
+            dropdownResolution.selectItemByIndex(modes.length-1);
+            dropdownBitDepth.selectItemByIndex(0);
+            dropdownRefreshRate.selectItemByIndex(0);
         
     }
     
@@ -175,20 +176,24 @@ public class SettingsScreenController extends BaseAppState implements ScreenCont
         
     }
     
-    public void popupApplySettings(){
+    public void popupApplySettings() throws BackingStoreException{
         
-        
+        applySettings();
     }
     
      public void popupCancelSettings(){
-        PlayGame.getPlayGameApp().stop();
+        
         
     }
     
-    public void backToMainMenu() throws BackingStoreException{
-        System.out.println("Apply Settings button pressed...");
-        applySettings();
-//        nifty.gotoScreen(mainScreen);
+    public void backToMainMenu(){
+        System.out.println("back button pressed...");
+        
+//      nifty.gotoScreen(mainScreen);
+        PlayGame.attachAppState(PlayGame.mainMenu_screen);
+        PlayGame.detachAppState(PlayGame.settings_screen);
+        PlayGame.musicPlayer.stop();
+        
             
     }
     
@@ -208,7 +213,7 @@ public class SettingsScreenController extends BaseAppState implements ScreenCont
     }
     
     public void changeAudioSettings(){
-//        PlayGame.getMusicPlayer().setVolume(sliderVol.getValue());
+        PlayGame.musicPlayer.setVolume(sliderVol.getValue());
     }
     
     public void applySettings() throws BackingStoreException {

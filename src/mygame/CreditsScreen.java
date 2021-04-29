@@ -10,7 +10,6 @@ import com.jme3.app.SimpleApplication;
 import com.jme3.app.state.AppStateManager;
 import com.jme3.app.state.BaseAppState;
 import com.jme3.asset.AssetManager;
-import com.jme3.audio.AudioNode;
 import com.jme3.audio.AudioRenderer;
 import com.jme3.effect.ParticleEmitter;
 import com.jme3.effect.ParticleMesh;
@@ -61,7 +60,7 @@ public class CreditsScreen extends BaseAppState {
     private Spatial creditsScene;
     private Node creditsRootNode = new Node("Credits RootNode");
     private Node creditsGUINode = new Node("Credits GUINode");
-    private AudioNode creditsThemePlayer, ambSoundNode, plainSoundNode;
+    
     float screenHeight, screenWidth;
     
     BitmapText menuItemText, camPosInfoText;
@@ -91,8 +90,8 @@ public class CreditsScreen extends BaseAppState {
         loadCreditsScene();
         createWorldLight();
         createPrecipitation();
-//        loadCreditsMusic();
-        loadAmbientSound("Sounds/Ambient/Animals/birds.ogg", true, false, 1.0f, 0f, 0f, 0f);
+        loadCreditsMusic();
+        
     
     }
     
@@ -107,29 +106,11 @@ public class CreditsScreen extends BaseAppState {
     
         public void loadCreditsMusic(){
 
-            creditsThemePlayer = new AudioNode(assetManager,"Music/Soundtracks/RPG_For_Wenches_Ale_and_LOOT.ogg");
-            creditsThemePlayer.setLooping(true);
-            creditsThemePlayer.setPositional(false);
-            creditsRootNode.attachChild(creditsThemePlayer);
-            creditsThemePlayer.play();
+            PlayGame.playMusic("Music/Soundtracks/RPG_Ambient_3.ogg");
 
         }
         
-        public void loadAmbientSound(String file, Boolean looping, Boolean positional, float vol, float posx, float posy, float posz){
-
-            ambSoundNode = new AudioNode(assetManager, file);
-            ambSoundNode.setLooping(looping);
-            ambSoundNode.setPositional(positional);
-            ambSoundNode.setLocalTranslation(posx, posy, posz);
-            ambSoundNode.setMaxDistance(5);
-            ambSoundNode.setVolume(vol);
-            
-            creditsRootNode.attachChild(ambSoundNode);
-            ambSoundNode.play();
-
-        }
-    
-       
+        
         public void createWorldLight(){
             DirectionalLight sunLight = new DirectionalLight();
             sunLight.setDirection(new Vector3f(0f, 0f, 0f).normalizeLocal());
@@ -196,8 +177,8 @@ public class CreditsScreen extends BaseAppState {
     
         @Override
         public void cleanup(Application app) {
+            System.out.println("CreditsScreen cleanup called.....");
             creditsRootNode.detachAllChildren();
-            creditsGUINode.detachAllChildren();
 
         }    
         
@@ -215,39 +196,53 @@ public class CreditsScreen extends BaseAppState {
                 
         
             nifty.addScreen("Screen_Credits", new ScreenBuilder("Game Credits"){{
-                controller(new mygame.MainMenuScreenController());
+                controller(new mygame.CreditsScreenController());
                 defaultFocusElement("Button_Back");
                 
                 layer(new LayerBuilder("Layer_CreditsText"){{
                     childLayoutVertical();
                     
-                 panel(new PanelBuilder("Panel_Credits"){{
-                        childLayoutVertical();
-                        alignCenter();
-                        valignTop();
-                        height("700px");
-                        width("500px"); 
-                        backgroundColor("#fee3");
-                        
-                    control(new LabelBuilder("creditsLabel") {{
-                                text("Game Design: Gabor Veres");
-                                
+                                           
+                        text(new TextBuilder() {{
+                                text("Arvenar - The Lost Traveller");
+                                font("Interface/Fonts/Default.fnt");
                                 height("100%");
                                 width("100%");
                                 alignCenter();
                                 valignCenter();
                                 
-                            
-                    onStartScreenEffect(new EffectBuilder("move") {{
-                       length(5000);
-                       neverStopRendering(true);
-                       
-                       effectParameter("mode", "fromOffset");
-                       effectParameter("offsetY", "1000");
-                    }});
-                    }});
-                    }});
-                 }});   
+                                onStartScreenEffect(new EffectBuilder("fade") {{
+                                startDelay(1000);
+                                //length(8000);    
+                                effectValue("time", "3000", "value", "0.0");
+                                effectValue("time", "5000", "value", "1.0");
+                                effectValue("time", "10000", "value", "1.0");
+                                effectValue("time", "12000", "value", "0.0");
+                                post(false);
+                                neverStopRendering(true);
+                                }});
+                            }});  // text1 end  
+                             
+                             text(new TextBuilder() {{
+                                text("A Greeting Cat Production");
+                                font("Interface/Fonts/Default.fnt");
+                                height("100%");
+                                width("100%");
+                                alignCenter();
+                                valignCenter();
+                                onStartScreenEffect(new EffectBuilder("fade") {{
+                                startDelay(2000);
+                                //length(8000);    
+                                effectValue("time", "3000", "value", "0.0");
+                                effectValue("time", "5000", "value", "1.0");
+                                effectValue("time", "10000", "value", "1.0");
+                                effectValue("time", "12000", "value", "0.0");
+                                post(false);
+                                neverStopRendering(true);
+                                }});
+                            }}); // text2 end    
+                    
+                }}); //layer end  
                 
                 layer(new LayerBuilder("Layer_CreditsControls"){{
                     childLayoutAbsoluteInside();
@@ -285,7 +280,7 @@ public class CreditsScreen extends BaseAppState {
                             valignCenter();
                             height("40px");
                             width("150px");    
-                            interactOnClick("quitGame()");
+                            interactOnClick("backToMainMenu()");
                             
                             onStartHoverEffect(new HoverEffectBuilder("changeImage"){{
                                 effectParameter("active", "Interface/Images/MenuUI/button_1_back.png"); neverStopRendering(true);
