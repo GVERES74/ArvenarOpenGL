@@ -203,11 +203,11 @@ public class CreditsScreen extends BaseAppState {
                     childLayoutVertical();
                     
                                            
-                        text(new TextBuilder() {{
+                        control(new LabelBuilder("ctext1") {{
                                 text("Arvenar - The Lost Traveller");
                                 font("Interface/Fonts/Default.fnt");
-                                height("100%");
-                                width("100%");
+                                height("20%");
+                                width("20%");
                                 alignCenter();
                                 valignCenter();
                                 
@@ -223,15 +223,15 @@ public class CreditsScreen extends BaseAppState {
                                 }});
                             }});  // text1 end  
                              
-                             text(new TextBuilder() {{
+                             control(new LabelBuilder("ctext2") {{
                                 text("A Greeting Cat Production");
                                 font("Interface/Fonts/Default.fnt");
-                                height("100%");
-                                width("100%");
+                                height("20%");
+                                width("20%");
                                 alignCenter();
                                 valignCenter();
                                 onStartScreenEffect(new EffectBuilder("fade") {{
-                                startDelay(2000);
+                                startDelay(12000);
                                 //length(8000);    
                                 effectValue("time", "3000", "value", "0.0");
                                 effectValue("time", "5000", "value", "1.0");
@@ -241,6 +241,28 @@ public class CreditsScreen extends BaseAppState {
                                 neverStopRendering(true);
                                 }});
                             }}); // text2 end    
+                             
+                            control(new LabelBuilder("ctext3") {{
+                                text("Created by Gabor Veres\n"
+                                    + "Design by Gabor Veres\n"
+                                    + "Programmed by Gabor Veres");
+                                font("Interface/Fonts/Default.fnt");
+                                height("20%");
+                                width("20%");
+                                alignCenter();
+                                valignCenter();
+                                onStartScreenEffect(new EffectBuilder("fade") {{
+                                startDelay(20000);
+                                //length(8000);    
+                                effectValue("time", "3000", "value", "0.0");
+                                effectValue("time", "5000", "value", "1.0");
+                                effectValue("time", "10000", "value", "1.0");
+                                effectValue("time", "12000", "value", "0.0");
+                                post(false);
+                                neverStopRendering(true);
+                                }});
+                            }}); // text3 end   
+                             
                     
                 }}); //layer end  
                 
