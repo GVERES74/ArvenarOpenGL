@@ -10,11 +10,13 @@ import com.jme3.animation.AnimControl;
 import com.jme3.animation.AnimEventListener;
 import com.jme3.app.Application;
 import com.jme3.app.SimpleApplication;
-import com.jme3.app.state.AbstractAppState;
 import com.jme3.app.state.AppStateManager;
 import com.jme3.app.state.BaseAppState;
+import com.jme3.asset.AssetManager;
 import com.jme3.audio.AudioData;
+import com.jme3.audio.AudioData.DataType;
 import com.jme3.audio.AudioNode;
+import com.jme3.audio.AudioRenderer;
 import com.jme3.bullet.BulletAppState;
 import com.jme3.bullet.collision.shapes.CapsuleCollisionShape;
 import com.jme3.bullet.collision.shapes.CollisionShape;
@@ -23,20 +25,28 @@ import com.jme3.bullet.control.RigidBodyControl;
 import com.jme3.bullet.util.CollisionShapeFactory;
 import com.jme3.effect.ParticleEmitter;
 import com.jme3.effect.ParticleMesh;
+import com.jme3.effect.shapes.EmitterBoxShape;
 import com.jme3.effect.shapes.EmitterSphereShape;
 import com.jme3.font.BitmapText;
+import com.jme3.input.InputManager;
 import com.jme3.input.KeyInput;
 import com.jme3.input.controls.ActionListener;
 import com.jme3.input.controls.AnalogListener;
 import com.jme3.input.controls.KeyTrigger;
 import com.jme3.light.DirectionalLight;
 import com.jme3.material.Material;
+import com.jme3.math.Plane;
 import com.jme3.math.Vector3f;
+import com.jme3.renderer.Camera;
+import com.jme3.renderer.RenderManager;
+import com.jme3.renderer.ViewPort;
+import com.jme3.renderer.queue.RenderQueue;
 import com.jme3.scene.Geometry;
 import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
 import com.jme3.scene.shape.Sphere;
 import com.jme3.util.TangentBinormalGenerator;
+import com.jme3.water.SimpleWaterProcessor;
 
 /**
  *
@@ -48,14 +58,20 @@ public class GameAppState extends BaseAppState implements AnimEventListener{
     
     Node npcPlayer;
     Geometry sphereGeo;
-    private AudioNode levelMusic;
-    private AudioNode levelAmbientSound;
-    private AudioNode levelMiscSound;
-    public String ambsound, levelmusic, levelmisc; 
     
+    private Node              rootNode;
+    private AssetManager      assetManager;
+    private AppStateManager   stateManager;
+    private InputManager      inputManager;
+    private RenderManager     renderManager;
+    private AudioRenderer     audioRenderer;
+    private ViewPort          viewPort;
+    private Camera camera;
+    private AudioNode soundPlayer;
+    private AudioNode playsoundonce;
         
     private Spatial level;
-    private BulletAppState appState;
+    private BulletAppState bulletAppState;
     private RigidBodyControl landScape;
     
     private CharacterControl firstPersonPlayer;
@@ -67,21 +83,29 @@ public class GameAppState extends BaseAppState implements AnimEventListener{
     private AnimChannel npcWalkChannel;
     private AnimControl control;
     
-    ParticleEmitter precipitationParticleEmitter;
+    ParticleEmitter particle1;
     
     
     @Override
     public void initialize(Application app) {
         
-        this.app = (SimpleApplication) app;
-        //TODO: initialize your AppState, e.g. attach spatials to rootNode
-        //this is called on the OpenGL thread after the AppState has been attached
-         appState = new BulletAppState();
-        app.getStateManager().attach(appState);
-                      
+        this.app = (SimpleApplication) app;   
+        this.rootNode     = this.app.getRootNode();
+        this.assetManager = this.app.getAssetManager();
+        this.stateManager = this.app.getStateManager();
+            
+        this.inputManager = this.app.getInputManager();
+        this.viewPort     = this.app.getViewPort();
+        this.camera       = this.app.getCamera();
+        bulletAppState = new BulletAppState();
+        
+        app.getStateManager().attach(bulletAppState);
+        
+        this.app.getFlyByCamera().setDragToRotate(true);
                         
         //createRock();
-        loadScene("Scenes/Taiga/sceneTaiga.j3o");
+        loadScene("Scenes/S2_Summerdale/S2M0_shore.j3o");
+        createSimpleWater(1500f, 1500f, 0, -1, 0);
         loadAudio();
         createPrecipitationParticleEffects();
         setCollisionPhysics();
@@ -103,7 +127,7 @@ public class GameAppState extends BaseAppState implements AnimEventListener{
         
         
             npcPlayer = (Node)this.app.getAssetManager().loadModel("Models/Oto/OtoOldAnim.j3o");
-            npcPlayer.setLocalTranslation(-25, 5, -15);
+            npcPlayer.setLocalTranslation(0, 0, 0);
             //npcPlayer.scale(1f);
 
             this.app.getRootNode().attachChild(npcPlayer);
@@ -129,8 +153,8 @@ public class GameAppState extends BaseAppState implements AnimEventListener{
                 firstPersonPlayer = new CharacterControl(capsulePlayer, 0.05f);
                 firstPersonPlayer.setJumpSpeed(20);
                 firstPersonPlayer.setFallSpeed(30);
-                appState.getPhysicsSpace().add(landScape);
-                appState.getPhysicsSpace().add(firstPersonPlayer);
+                bulletAppState.getPhysicsSpace().add(landScape);
+                bulletAppState.getPhysicsSpace().add(firstPersonPlayer);
 
         }
     
@@ -162,37 +186,52 @@ public class GameAppState extends BaseAppState implements AnimEventListener{
     
         public void createPrecipitationParticleEffects(){
         
-            precipitationParticleEmitter = new ParticleEmitter("Emitter", ParticleMesh.Type.Triangle, 30);
+            particle1 = new ParticleEmitter("Emitter", ParticleMesh.Type.Triangle, 30);
             Material precipitationMaterial = new Material(this.app.getAssetManager(), "Common/MatDefs/Misc/Particle.j3md");
             precipitationMaterial.setTexture("Texture", this.app.getAssetManager().loadTexture("Effects/Explosion/flame.png"));
-            precipitationParticleEmitter.setMaterial(precipitationMaterial);
-            precipitationParticleEmitter.setImagesX(2);
-            precipitationParticleEmitter.setImagesY(2);
-            precipitationParticleEmitter.getParticleInfluencer().setInitialVelocity(new Vector3f(0,-30,0));
-            precipitationParticleEmitter.setLocalTranslation(0, 50, 0);
-            precipitationParticleEmitter.setStartSize(0.5f);
-            precipitationParticleEmitter.setEndSize(1.0f);
-            precipitationParticleEmitter.setGravity(0,1,0);
-            precipitationParticleEmitter.setLowLife(10f);
-            precipitationParticleEmitter.setHighLife(30f);
-            precipitationParticleEmitter.setNumParticles(1500);
-            precipitationParticleEmitter.setParticlesPerSec(50);
+            particle1.setMaterial(precipitationMaterial);
+            particle1.setImagesX(2);
+            particle1.setImagesY(2);
+            particle1.getParticleInfluencer().setInitialVelocity(new Vector3f(-1,-1,0));
+            particle1.getParticleInfluencer().setVelocityVariation(1.0f);
+            particle1.setLocalTranslation(0, 50, 0);
+            particle1.setStartSize(0.5f);
+            particle1.setEndSize(1.0f);
+            //particle1.setGravity(1,1,1);
+            particle1.setLowLife(10f);
+            particle1.setHighLife(30f);
+            particle1.setNumParticles(200);
+            particle1.setParticlesPerSec(10);
 
-            precipitationParticleEmitter.setShape(new EmitterSphereShape(Vector3f.ZERO,100f));
-
-            precipitationParticleEmitter.getParticleInfluencer().setVelocityVariation(0.5f);
-            this.app.getRootNode().attachChild(precipitationParticleEmitter);
+            particle1.setShape(new EmitterBoxShape(new Vector3f(-50f,-50f,-50f),new Vector3f(50f,50f,50f)));
+           
+            this.app.getRootNode().attachChild(particle1);
 
         }
+        
+        
+        public void createSimpleWater(float xwidth, float zdepth, float posx, float posy, float posz){
+            
+            SimpleWaterProcessor waterCreator = new SimpleWaterProcessor(assetManager);
+                                 waterCreator.setReflectionScene(level);
+            
+            Vector3f waterLocation = new Vector3f(0,-6,0);
+            
+            waterCreator.setPlane(new Plane(Vector3f.UNIT_Y, waterLocation.dot(Vector3f.UNIT_Y)));
+            viewPort.addProcessor(waterCreator);
+            waterCreator.setWaterDepth(40);
+            waterCreator.setDistortionScale(0.05f);
+            waterCreator.setWaveSpeed(0.05f);
+                                    
+            Geometry watergeom = waterCreator.createWaterGeometry(xwidth, zdepth);
+                     watergeom.setLocalTranslation(posx, posy, posz);
+                     watergeom.setShadowMode(RenderQueue.ShadowMode.Receive);
+                     watergeom.setMaterial(waterCreator.getMaterial());
+                     rootNode.attachChild(watergeom);
+    }                 
     
         public void loadScene(String gameLevel){
         
-            if (gameLevel.contains("Taiga")){ 
-                ambsound = "";
-                levelmusic = "Music/Soundtracks/RPG_The_Lost_Town.ogg";
-                levelmisc = "Sounds/Human/footstep_onsnow1.wav";
-            }        
-
             level = this.app.getAssetManager().loadModel(gameLevel);
 
             level.setLocalScale(2f);        
@@ -204,29 +243,28 @@ public class GameAppState extends BaseAppState implements AnimEventListener{
     
         private void loadAudio(){
         
-            if (ambsound !=""){
-            levelAmbientSound = new AudioNode(this.app.getAssetManager(), ambsound, AudioData.DataType.Stream); 
-            levelAmbientSound.setLooping(true);
-            levelAmbientSound.setPositional(true);
-            levelAmbientSound.setVolume(2);
-            this.app.getRootNode().attachChild(levelAmbientSound);
-            levelAmbientSound.play();
-            }
-
-            levelMusic = new AudioNode(this.app.getAssetManager(), levelmusic, AudioData.DataType.Stream); 
-            levelMusic.setLooping(false);
-            levelMusic.setPositional(false);
-            levelMusic.setVolume(2);
-            this.app.getRootNode().attachChild(levelMusic);
-            levelMusic.play();
-
-            levelMiscSound = new AudioNode(this.app.getAssetManager(), levelmisc, AudioData.DataType.Buffer); 
-            levelMiscSound.setLooping(true);
-            levelMiscSound.setPositional(false);
-            levelMiscSound.setVolume(2);
-            this.app.getRootNode().attachChild(levelMiscSound);
-
-            showGuiText("Now playing: "+levelmusic, 650, 700);
+            PlayGame.playMusic("Music/Soundtracks/Peaceful_Place.ogg");
+            playSound("Sounds/Ambient/Animals/birds.ogg", false, false, true, 0.5f, 0f, 0f, 0f);
+            
+        }
+        
+        public void playSound(String filepath, boolean directional, boolean positional, boolean looping, float volume, float xpos, float ypos, float zpos){
+        soundPlayer = new AudioNode(assetManager, filepath);
+        soundPlayer.setDirectional(directional);
+        soundPlayer.setPositional(positional);
+        soundPlayer.setLooping(looping);
+        soundPlayer.setVolume(volume);
+        rootNode.attachChild(soundPlayer);
+        soundPlayer.play();
+        }
+        
+        public void playSoundInstance(String file){
+            playsoundonce = new AudioNode(assetManager, file, DataType.Buffer);
+            playsoundonce.setPositional(false);
+            playsoundonce.setLooping(false);
+            playsoundonce.setVolume(0.5f);
+            rootNode.attachChild(playsoundonce);
+            playsoundonce.playInstance();
         }
         
         private void initKeyEvent(){
@@ -258,7 +296,7 @@ public class GameAppState extends BaseAppState implements AnimEventListener{
         firstPersonPlayer.setWalkDirection(walkDirection);
         this.app.getCamera().setLocation(firstPersonPlayer.getPhysicsLocation());
         
-        precipitationParticleEmitter.setLocalTranslation(
+        particle1.setLocalTranslation(
                 new Vector3f(
                         firstPersonPlayer.getPhysicsLocation().x, 
                         50, 
@@ -278,9 +316,10 @@ public class GameAppState extends BaseAppState implements AnimEventListener{
                 }
                 
                 if (keyPressed) {   
-                    levelMiscSound.play();}
+                    //playSoundInstance("Sounds/Human/footstep_onsnow1.wav");
+                }
                 else if (!keyPressed){
-                    levelMiscSound.stop();
+                    
                 }
                 
             }
@@ -291,7 +330,7 @@ public class GameAppState extends BaseAppState implements AnimEventListener{
         
         @Override
             public void onAnalog(String keyBinding, float value, float tpf) {
-            
+            playSoundInstance("Sounds/Human/footstep_onsnow1.wav");
         }
         };
         

@@ -200,14 +200,22 @@ public class CreditsScreen extends BaseAppState {
                 defaultFocusElement("Button_Back");
                 
                 layer(new LayerBuilder("Layer_CreditsText"){{
-                    childLayoutVertical();
+                    childLayoutCenter();
                     
-                                           
+                    
+                    panel(new PanelBuilder("Panel_CreditsTexts"){{
+                        height("50%");
+                        width("50%"); 
+                        alignCenter();
+                        valignCenter();
+                        backgroundColor("#0f02");
+                        childLayoutCenter();                       
+                        
                         text(new TextBuilder() {{
                                 text("Arvenar - The Lost Traveller");
                                 font("Interface/Fonts/Default.fnt");
-                                height("100%");
-                                width("100%");
+                                height("20px");
+                                width("200px");
                                 alignCenter();
                                 valignCenter();
                                 
@@ -226,12 +234,12 @@ public class CreditsScreen extends BaseAppState {
                              text(new TextBuilder() {{
                                 text("A Greeting Cat Production");
                                 font("Interface/Fonts/Default.fnt");
-                                height("100%");
-                                width("100%");
+                                height("20px");
+                                width("200px");
                                 alignCenter();
                                 valignCenter();
                                 onStartScreenEffect(new EffectBuilder("fade") {{
-                                startDelay(2000);
+                                startDelay(10000);
                                 //length(8000);    
                                 effectValue("time", "3000", "value", "0.0");
                                 effectValue("time", "5000", "value", "1.0");
@@ -241,7 +249,7 @@ public class CreditsScreen extends BaseAppState {
                                 neverStopRendering(true);
                                 }});
                             }}); // text2 end    
-                    
+                    }}); //panel end
                 }}); //layer end  
                 
                 layer(new LayerBuilder("Layer_CreditsControls"){{

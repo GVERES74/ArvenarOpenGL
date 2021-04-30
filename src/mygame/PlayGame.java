@@ -26,6 +26,8 @@ public class PlayGame extends SimpleApplication{
     public static MainMenuScreen mainMenu_screen;
     public static SettingsScreen settings_screen;
     public static CreditsScreen credits_screen;
+    public static PausedScreen paused_screen;
+    public static GameAppState gameplayState;
     
     public static AudioNode musicPlayer, soundPlayer;
     
@@ -52,8 +54,10 @@ public class PlayGame extends SimpleApplication{
        nifty = niftyDisplay.getNifty();
        viewPort.addProcessor(niftyDisplay); 
 //       mainMenu_screen = new MainMenuScreen(); stateManager.attach(mainMenu_screen);
-       settings_screen = new SettingsScreen();
-       credits_screen = new CreditsScreen(); stateManager.attach(credits_screen);
+//       settings_screen = new SettingsScreen();
+//       credits_screen = new CreditsScreen(); stateManager.attach(credits_screen);
+        paused_screen = new PausedScreen(); stateManager.attach(paused_screen);
+        //gameplayState = new GameAppState(); stateManager.attach(gameplayState);
 
          /** Load a Node from a .j3o file */
          
