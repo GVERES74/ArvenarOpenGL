@@ -231,7 +231,7 @@ public class CreditsScreen extends BaseAppState {
                                 }});
                             }});  // text1 end  
                              
-                             text(new TextBuilder() {{
+                             control(new LabelBuilder("ctext2") {{
                                 text("A Greeting Cat Production");
                                 font("Interface/Fonts/Default.fnt");
                                 height("20px");
