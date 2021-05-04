@@ -13,7 +13,6 @@ import com.jme3.app.SimpleApplication;
 import com.jme3.app.state.AppStateManager;
 import com.jme3.app.state.BaseAppState;
 import com.jme3.asset.AssetManager;
-import com.jme3.audio.AudioData;
 import com.jme3.audio.AudioData.DataType;
 import com.jme3.audio.AudioNode;
 import com.jme3.audio.AudioRenderer;
@@ -26,7 +25,6 @@ import com.jme3.bullet.util.CollisionShapeFactory;
 import com.jme3.effect.ParticleEmitter;
 import com.jme3.effect.ParticleMesh;
 import com.jme3.effect.shapes.EmitterBoxShape;
-import com.jme3.effect.shapes.EmitterSphereShape;
 import com.jme3.font.BitmapText;
 import com.jme3.input.InputManager;
 import com.jme3.input.KeyInput;
@@ -35,7 +33,6 @@ import com.jme3.input.controls.AnalogListener;
 import com.jme3.input.controls.KeyTrigger;
 import com.jme3.light.DirectionalLight;
 import com.jme3.material.Material;
-import com.jme3.math.Plane;
 import com.jme3.math.Vector3f;
 import com.jme3.renderer.Camera;
 import com.jme3.renderer.RenderManager;
@@ -101,11 +98,12 @@ public class GameAppState extends BaseAppState implements AnimEventListener{
         
         app.getStateManager().attach(bulletAppState);
         
-        this.app.getFlyByCamera().setDragToRotate(true);
+        this.app.getFlyByCamera().setDragToRotate(false);
+        inputManager.deleteMapping(SimpleApplication.INPUT_MAPPING_EXIT); //delete ESC key quit app function
                         
         //createRock();
         loadScene("Scenes/S2_Summerdale/S2M0_shore.j3o");
-        createSimpleWater(1500f, 1500f, 0, -1, 0);
+        createSimpleWater(1600f, 1600f, -800, -6, 800);
         loadAudio();
         createPrecipitationParticleEffects();
         setCollisionPhysics();
@@ -127,7 +125,7 @@ public class GameAppState extends BaseAppState implements AnimEventListener{
         
         
             npcPlayer = (Node)this.app.getAssetManager().loadModel("Models/Oto/OtoOldAnim.j3o");
-            npcPlayer.setLocalTranslation(0, 0, 0);
+            npcPlayer.setLocalTranslation(0, 3, 0);
             //npcPlayer.scale(1f);
 
             this.app.getRootNode().attachChild(npcPlayer);
@@ -138,7 +136,7 @@ public class GameAppState extends BaseAppState implements AnimEventListener{
             npcWalkChannel.setAnim("Walk");
 
             firstPersonPlayer.setGravity(new Vector3f(0,-30f,0));
-            firstPersonPlayer.setPhysicsLocation(new Vector3f(20,10,10));
+            firstPersonPlayer.setPhysicsLocation(new Vector3f(-100,5,0));
         
         }
     
@@ -215,13 +213,13 @@ public class GameAppState extends BaseAppState implements AnimEventListener{
             SimpleWaterProcessor waterCreator = new SimpleWaterProcessor(assetManager);
                                  waterCreator.setReflectionScene(level);
             
-            Vector3f waterLocation = new Vector3f(0,-6,0);
+            //Vector3f waterLocation = new Vector3f(-500,-6,-500);
             
-            waterCreator.setPlane(new Plane(Vector3f.UNIT_Y, waterLocation.dot(Vector3f.UNIT_Y)));
+            //waterCreator.setPlane(new Plane(Vector3f.UNIT_Y, waterLocation.dot(Vector3f.UNIT_Y)));
             viewPort.addProcessor(waterCreator);
             waterCreator.setWaterDepth(40);
-            waterCreator.setDistortionScale(0.05f);
-            waterCreator.setWaveSpeed(0.05f);
+            waterCreator.setDistortionScale(0.1f);
+            waterCreator.setWaveSpeed(-0.01f);
                                     
             Geometry watergeom = waterCreator.createWaterGeometry(xwidth, zdepth);
                      watergeom.setLocalTranslation(posx, posy, posz);
@@ -243,15 +241,16 @@ public class GameAppState extends BaseAppState implements AnimEventListener{
     
         private void loadAudio(){
         
-            PlayGame.playMusic("Music/Soundtracks/Peaceful_Place.ogg");
-            playSound("Sounds/Ambient/Animals/birds.ogg", false, false, true, 0.5f, 0f, 0f, 0f);
-            
+//            PlayGame.playMusic("Music/Soundtracks/Peaceful_Place.ogg");
+            playSound("Sounds/Ambient/Animals/Seagull.wav", false, false, false, 0.5f, -1000f, 0f, 1000f);
+            playSound("Sound/Environment/Ocean Waves.ogg", false, true, true, 0.5f, -1000f, 0f, 1000f);
         }
         
         public void playSound(String filepath, boolean directional, boolean positional, boolean looping, float volume, float xpos, float ypos, float zpos){
-        soundPlayer = new AudioNode(assetManager, filepath);
+        soundPlayer = new AudioNode(assetManager, filepath, DataType.Stream);
         soundPlayer.setDirectional(directional);
         soundPlayer.setPositional(positional);
+        soundPlayer.setLocalTranslation(xpos, ypos, zpos);
         soundPlayer.setLooping(looping);
         soundPlayer.setVolume(volume);
         rootNode.attachChild(soundPlayer);
@@ -274,8 +273,9 @@ public class GameAppState extends BaseAppState implements AnimEventListener{
             this.app.getInputManager().addMapping("StrafeLeft", new KeyTrigger(KeyInput.KEY_A));
             this.app.getInputManager().addMapping("StrafeRight", new KeyTrigger(KeyInput.KEY_D));
             this.app.getInputManager().addMapping("Jump", new KeyTrigger(KeyInput.KEY_SPACE));
+            this.app.getInputManager().addMapping("PauseGame", new KeyTrigger(KeyInput.KEY_ESCAPE));
 
-            this.app.getInputManager().addListener(actionListener, "Forward", "Backward", "StrafeLeft", "StrafeRight", "Jump");
+            this.app.getInputManager().addListener(actionListener, "Forward", "Backward", "StrafeLeft", "StrafeRight", "Jump", "PauseGame");
             
         }
         
@@ -313,10 +313,11 @@ public class GameAppState extends BaseAppState implements AnimEventListener{
                     case "StrafeLeft": keyA = keyPressed; break;
                     case "StrafeRight": keyD = keyPressed; break;
                     case "Jump": if (keyPressed) {firstPersonPlayer.jump(new Vector3f(0,20f,0));}; break;
+                    case "PauseGame": onDisable(); break;
                 }
                 
                 if (keyPressed) {   
-                    //playSoundInstance("Sounds/Human/footstep_onsnow1.wav");
+                    playSoundInstance("Sounds/Human/footstep_onsnow1.wav");
                 }
                 else if (!keyPressed){
                     
@@ -362,6 +363,6 @@ public class GameAppState extends BaseAppState implements AnimEventListener{
 
     @Override
     protected void onDisable() {
-        
+        PlayGame.attachAppState(PlayGame.paused_screen);
     }
 }

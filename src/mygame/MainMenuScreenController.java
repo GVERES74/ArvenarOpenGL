@@ -63,9 +63,11 @@ public class MainMenuScreenController extends BaseAppState implements ScreenCont
         
     }
     
-    public void startGame(String nextScreen){
+    public void startGame(){
         System.out.println("Play Game button pressed...");
         //nifty.gotoScreen(nextScreen);
+        PlayGame.detachAppState(PlayGame.mainMenu_screen);
+        PlayGame.attachAppState(PlayGame.gameplayState);
         
     }
         

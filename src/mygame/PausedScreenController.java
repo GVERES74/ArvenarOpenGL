@@ -6,7 +6,12 @@
 package mygame;
 
 import com.jme3.app.Application;
+import com.jme3.app.SimpleApplication;
 import com.jme3.app.state.BaseAppState;
+import com.jme3.input.InputManager;
+import com.jme3.input.KeyInput;
+import com.jme3.input.controls.ActionListener;
+import com.jme3.input.controls.KeyTrigger;
 import de.lessvoid.nifty.Nifty;
 import de.lessvoid.nifty.screen.Screen;
 import de.lessvoid.nifty.screen.ScreenController;
@@ -19,17 +24,18 @@ import de.lessvoid.nifty.screen.ScreenController;
  */
 public class PausedScreenController extends BaseAppState implements ScreenController{
 
-
-    @Override
+    private SimpleApplication app;
+    private InputManager inputManager;
+    private Nifty nifty;
+    private Screen screen;
     
-
+    
+    @Override
     protected void initialize(Application app) {
     
-        //It is technically safe to do all initialization and cleanup in the         
-        //onEnable()/onDisable() methods. Choosing to use initialize() and         
-        //cleanup() for this is a matter of performance specifics for the         
-        //implementor.        
-        //TODO: initialize your AppState, e.g. attach spatials to rootNode    
+       this.inputManager = this.app.getInputManager();
+       //inputManager.deleteMapping(SimpleApplication.INPUT_MAPPING_EXIT); //delete ESC key quit app function
+       
     }
 
     @Override
@@ -47,7 +53,8 @@ public class PausedScreenController extends BaseAppState implements ScreenContro
     
     @Override
     protected void onDisable() {
-    
+        
+       
     }
     
     @Override
@@ -58,7 +65,8 @@ public class PausedScreenController extends BaseAppState implements ScreenContro
 
     @Override
     public void bind(Nifty nifty, Screen screen) {
-        
+        this.nifty = nifty;
+        this.screen = screen;
     }
 
     @Override
@@ -70,5 +78,27 @@ public class PausedScreenController extends BaseAppState implements ScreenContro
     public void onEndScreen() {
         
     }
+    
+    public void settingsGame(){
+        
+        //nifty.gotoScreen(nextScreen);
+        System.out.println("Game Settings button pressed...");
+        //PlayGame.musicPlayer.stop();
+        
+        PlayGame.detachAppState(PlayGame.paused_screen);
+        PlayGame.attachAppState(PlayGame.settings_screen);
+        
+    }
+    
+    public void backToMainMenu(){
+        System.out.println("back button pressed...");
+        PlayGame.detachAppState(PlayGame.paused_screen);
+//      nifty.gotoScreen(mainScreen);
+             
+            
+    }
+    
+    
+    
 
 }

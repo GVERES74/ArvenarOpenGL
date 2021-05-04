@@ -12,10 +12,12 @@ import com.jme3.app.state.BaseAppState;
 import com.jme3.asset.AssetManager;
 import com.jme3.audio.AudioRenderer;
 import com.jme3.input.InputManager;
+import com.jme3.input.KeyInput;
+import com.jme3.input.controls.ActionListener;
+import com.jme3.input.controls.KeyTrigger;
 import com.jme3.renderer.RenderManager;
 import com.jme3.renderer.ViewPort;
 import com.jme3.scene.Node;
-import com.jme3.scene.Spatial;
 import de.lessvoid.nifty.Nifty;
 import de.lessvoid.nifty.builder.HoverEffectBuilder;
 import de.lessvoid.nifty.builder.ImageBuilder;
@@ -23,12 +25,6 @@ import de.lessvoid.nifty.builder.LayerBuilder;
 import de.lessvoid.nifty.builder.PanelBuilder;
 import de.lessvoid.nifty.builder.ScreenBuilder;
 import de.lessvoid.nifty.builder.TextBuilder;
-import de.lessvoid.nifty.controls.checkbox.builder.CheckboxBuilder;
-import de.lessvoid.nifty.controls.dropdown.builder.DropDownBuilder;
-import de.lessvoid.nifty.controls.label.builder.LabelBuilder;
-import de.lessvoid.nifty.controls.slider.builder.SliderBuilder;
-import de.lessvoid.nifty.controls.tabs.builder.TabBuilder;
-import de.lessvoid.nifty.controls.tabs.builder.TabGroupBuilder;
 import de.lessvoid.nifty.screen.Screen;
 
 
@@ -66,7 +62,7 @@ public class PausedScreen extends BaseAppState {
         this.viewPort     = this.app.getViewPort();
         screenWidth = PlayGame.getPlayGameAppSettings().getWidth();
         
-                                                    
+        initInputControls();                                            
     }
     
     @Override
@@ -146,7 +142,7 @@ public class PausedScreen extends BaseAppState {
                             height("37px");
                             width("147px");  
                             
-                            interactOnClick("");
+                            interactOnClick("settingsGame()");
                             onStartHoverEffect(new HoverEffectBuilder("changeImage"){{
                                 effectParameter("active", "Interface/Images/MenuUI/button_1_pausedmenu_gamesettings.png"); neverStopRendering(true);
                                 effectParameter("inactive", "Interface/Images/MenuUI/button_0_pausedmenu_gamesettings.png"); neverStopRendering(true);}});
@@ -279,14 +275,32 @@ public class PausedScreen extends BaseAppState {
                 
                 nifty.gotoScreen("Screen_PausedMenu");
     }
-    
-   
+      
 
 
     @Override
     protected void onDisable() {
-        
+        PlayGame.detachAppState(PlayGame.paused_screen);
+        //nifty.removeScreen("Screen_PausedMenu");
     }
+    
+    public void initInputControls(){
+        
+        this.inputManager.addMapping("Unpause", new KeyTrigger(KeyInput.KEY_ESCAPE));
+        this.inputManager.addListener(actionListener, "Unpause");
+               
+        }
+    
+        private final ActionListener actionListener = new ActionListener() {
+            @Override
+            public void onAction(String mappedName, boolean isPressed, float tpf) {
+                switch (mappedName) {
+                    case "Unpause": onDisable(); System.out.println(mappedName+" key pressed"); break;
+                       
+                }
+                }
+                             
+            };
     
     
     

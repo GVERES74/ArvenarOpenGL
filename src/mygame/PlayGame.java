@@ -53,11 +53,11 @@ public class PlayGame extends SimpleApplication{
        niftyDisplay = NiftyJmeDisplay.newNiftyJmeDisplay(assetManager, inputManager, audioRenderer, viewPort);
        nifty = niftyDisplay.getNifty();
        viewPort.addProcessor(niftyDisplay); 
-//       mainMenu_screen = new MainMenuScreen(); stateManager.attach(mainMenu_screen);
-//       settings_screen = new SettingsScreen();
-//       credits_screen = new CreditsScreen(); stateManager.attach(credits_screen);
-        paused_screen = new PausedScreen(); stateManager.attach(paused_screen);
-        //gameplayState = new GameAppState(); stateManager.attach(gameplayState);
+       mainMenu_screen = new MainMenuScreen(); //stateManager.attach(mainMenu_screen);
+       settings_screen = new SettingsScreen();
+       credits_screen = new CreditsScreen(); //stateManager.attach(credits_screen);
+        paused_screen = new PausedScreen(); //stateManager.attach(paused_screen);
+        gameplayState = new GameAppState(); stateManager.attach(gameplayState);
 
          /** Load a Node from a .j3o file */
          
@@ -128,5 +128,7 @@ public class PlayGame extends SimpleApplication{
     public static void detachAppState(AppState appstate){
         app.getStateManager().detach(appstate);
     }
+    
+    
    
 }
