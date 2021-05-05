@@ -118,6 +118,7 @@ public class PlayGame extends SimpleApplication{
         soundPlayer.setLooping(looping);
         soundPlayer.setVolume(volume);
         app.getRootNode().attachChild(soundPlayer);
+        //audioRenderer.playSource(soundPlayer);
         soundPlayer.play();
     }
     

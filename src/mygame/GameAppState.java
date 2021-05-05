@@ -33,7 +33,10 @@ import com.jme3.input.controls.AnalogListener;
 import com.jme3.input.controls.KeyTrigger;
 import com.jme3.light.DirectionalLight;
 import com.jme3.material.Material;
+import com.jme3.math.FastMath;
+import com.jme3.math.Vector2f;
 import com.jme3.math.Vector3f;
+import com.jme3.post.FilterPostProcessor;
 import com.jme3.renderer.Camera;
 import com.jme3.renderer.RenderManager;
 import com.jme3.renderer.ViewPort;
@@ -44,6 +47,7 @@ import com.jme3.scene.Spatial;
 import com.jme3.scene.shape.Sphere;
 import com.jme3.util.TangentBinormalGenerator;
 import com.jme3.water.SimpleWaterProcessor;
+import com.jme3.water.WaterFilter;
 
 /**
  *
@@ -81,6 +85,13 @@ public class GameAppState extends BaseAppState implements AnimEventListener{
     private AnimControl control;
     
     ParticleEmitter particle1;
+    //for Post process water effectprocessor
+    private FilterPostProcessor ppFilter;
+    private WaterFilter ppWaterFilter;
+    private Vector3f ppLightDir = new Vector3f(-4.9f, -1.3f, 5.9f); // same as light source
+    private float ppInitialWaterHeight = 0.5f; // choose a value for your scene
+    private float waveTime = 0.0f;
+    private float ppWaterHeight = 0.0f;
     
     
     @Override
@@ -90,20 +101,23 @@ public class GameAppState extends BaseAppState implements AnimEventListener{
         this.rootNode     = this.app.getRootNode();
         this.assetManager = this.app.getAssetManager();
         this.stateManager = this.app.getStateManager();
-            
         this.inputManager = this.app.getInputManager();
         this.viewPort     = this.app.getViewPort();
         this.camera       = this.app.getCamera();
         bulletAppState = new BulletAppState();
-        
         app.getStateManager().attach(bulletAppState);
         
         this.app.getFlyByCamera().setDragToRotate(false);
+        
         inputManager.deleteMapping(SimpleApplication.INPUT_MAPPING_EXIT); //delete ESC key quit app function
+        this.app.setDisplayStatView(false); this.app.setDisplayFps(true);
+               
                         
         //createRock();
         loadScene("Scenes/S2_Summerdale/S2M0_shore.j3o");
-        createSimpleWater(1600f, 1600f, -800, -6, 800);
+        loadSceneModels();
+        //createSimpleWater(1600f, 1600f, -800, -6, 800);
+        createAdvancedWater();
         loadAudio();
         createPrecipitationParticleEffects();
         setCollisionPhysics();
@@ -113,6 +127,27 @@ public class GameAppState extends BaseAppState implements AnimEventListener{
         
     }
         
+        public void loadSceneModels(){
+
+//            createModel("stump_roundDetailed.glb", 17f, 0.1f, -15f, 0f, 4f);
+            createModel("Models/Boat/boat_small.obj", "", 30f, 2f, 320f, 0f, 0.1f, 1f);
+            createModel("Models/Shack/small_shack.FBX", "Models/Shack/small_shack.j3m", -650f, 7f, 250f, 1f, -1.55f, 3f);
+            
+        }   
+    
+        public void createModel(String modelfile, String custmatfile, float xpos, float ypos, float zpos, float yaw, float pitch, float scale){
+            Spatial model = assetManager.loadModel(modelfile);
+                        
+            if(custmatfile !=""){   
+            model.setMaterial(assetManager.loadMaterial(custmatfile));
+            }                    
+            model.setLocalTranslation(xpos, ypos, zpos);
+            model.rotate(pitch, yaw, 0);
+            model.setLocalScale(scale);
+            rootNode.attachChild(model);
+        }
+    
+    
         public void addAmbientLight(){
         
             DirectionalLight sun = new DirectionalLight();
@@ -125,7 +160,7 @@ public class GameAppState extends BaseAppState implements AnimEventListener{
         
         
             npcPlayer = (Node)this.app.getAssetManager().loadModel("Models/Oto/OtoOldAnim.j3o");
-            npcPlayer.setLocalTranslation(0, 3, 0);
+            npcPlayer.setLocalTranslation(0, 10, 0);
             //npcPlayer.scale(1f);
 
             this.app.getRootNode().attachChild(npcPlayer);
@@ -136,7 +171,7 @@ public class GameAppState extends BaseAppState implements AnimEventListener{
             npcWalkChannel.setAnim("Walk");
 
             firstPersonPlayer.setGravity(new Vector3f(0,-30f,0));
-            firstPersonPlayer.setPhysicsLocation(new Vector3f(-100,5,0));
+            firstPersonPlayer.setPhysicsLocation(new Vector3f(0,10,250));
         
         }
     
@@ -156,18 +191,7 @@ public class GameAppState extends BaseAppState implements AnimEventListener{
 
         }
     
-        public void createRock(){
         
-            Sphere sphereMesh = new Sphere(30,30, 2f);
-            sphereGeo = new Geometry("Shiny rock", sphereMesh);
-            sphereMesh.setTextureMode(Sphere.TextureMode.Projected);
-            TangentBinormalGenerator.generate(sphereMesh);
-
-            sphereGeo.setMaterial((Material) this.app.getAssetManager().loadMaterial("Materials/ShinyMaterialCustomized.j3m") );
-            sphereGeo.setLocalTranslation(4, 4, -3);
-            this.app.getRootNode().attachChild(sphereGeo);
-
-        }
 
     
         public void showGuiText(String text, int posx, int posy){
@@ -207,6 +231,26 @@ public class GameAppState extends BaseAppState implements AnimEventListener{
 
         }
         
+        public void createAdvancedWater(){
+            //post process water
+        ppFilter = new FilterPostProcessor(assetManager);
+        ppWaterFilter = new WaterFilter(rootNode, ppLightDir);
+        ppWaterFilter.setWaterHeight(ppInitialWaterHeight);
+        ppWaterFilter.setWindDirection(new Vector2f(0.0f,1.0f));     
+        ppWaterFilter.setNormalScale(0.5f);
+        ppWaterFilter.setFoamHardness(0.5f);
+        ppWaterFilter.setFoamExistence(new Vector3f(0.5f,1f,1f));
+        ppFilter.addFilter(ppWaterFilter);
+        viewPort.addProcessor(ppFilter);
+        
+        }
+        
+        public void updateAdvancedWater(float tpf){
+            
+            waveTime += tpf;
+            ppWaterHeight = (float) Math.cos(((waveTime * 0.6f) % FastMath.TWO_PI)) * 1.0f;
+            ppWaterFilter.setWaterHeight(ppInitialWaterHeight + ppWaterHeight);
+        }
         
         public void createSimpleWater(float xwidth, float zdepth, float posx, float posy, float posz){
             
@@ -217,7 +261,7 @@ public class GameAppState extends BaseAppState implements AnimEventListener{
             
             //waterCreator.setPlane(new Plane(Vector3f.UNIT_Y, waterLocation.dot(Vector3f.UNIT_Y)));
             viewPort.addProcessor(waterCreator);
-            waterCreator.setWaterDepth(40);
+            waterCreator.setWaterDepth(50);
             waterCreator.setDistortionScale(0.1f);
             waterCreator.setWaveSpeed(-0.01f);
                                     
@@ -231,8 +275,9 @@ public class GameAppState extends BaseAppState implements AnimEventListener{
         public void loadScene(String gameLevel){
         
             level = this.app.getAssetManager().loadModel(gameLevel);
-
-            level.setLocalScale(2f);        
+            level.setLocalScale(2f);
+            level.setLocalTranslation(0f, 3f, 0f);
+            
             this.app.getRootNode().attachChild(level);
 
             showGuiText("Level: "+gameLevel, 500, 650);
@@ -241,9 +286,9 @@ public class GameAppState extends BaseAppState implements AnimEventListener{
     
         private void loadAudio(){
         
-//            PlayGame.playMusic("Music/Soundtracks/Peaceful_Place.ogg");
-            playSound("Sounds/Ambient/Animals/Seagull.wav", false, false, false, 0.5f, -1000f, 0f, 1000f);
-            playSound("Sound/Environment/Ocean Waves.ogg", false, true, true, 0.5f, -1000f, 0f, 1000f);
+            PlayGame.playMusic("Music/Soundtracks/Peaceful_Place.ogg");
+            playSound("Sounds/Ambient/Animals/ocean_seagull.ogg", false, false, true, 0.5f, -1000f, 0f, 1000f);
+            
         }
         
         public void playSound(String filepath, boolean directional, boolean positional, boolean looping, float volume, float xpos, float ypos, float zpos){
@@ -283,6 +328,7 @@ public class GameAppState extends BaseAppState implements AnimEventListener{
     @Override
     public void update(float tpf) {
         //TODO: implement behavior during runtime
+        updateAdvancedWater(tpf);
         
         camDir.set(this.app.getCamera().getDirection().multLocal(0.6f));
         camLeft.set(this.app.getCamera().getLeft().multLocal(0.4f));
@@ -295,6 +341,8 @@ public class GameAppState extends BaseAppState implements AnimEventListener{
         
         firstPersonPlayer.setWalkDirection(walkDirection);
         this.app.getCamera().setLocation(firstPersonPlayer.getPhysicsLocation());
+        
+        npcPlayer.move(npcPlayer.getLocalTranslation().x*0.01f, 0, npcPlayer.getLocalTranslation().z*0.01f);
         
         particle1.setLocalTranslation(
                 new Vector3f(

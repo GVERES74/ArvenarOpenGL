@@ -47,7 +47,7 @@ public class SettingsScreenController extends BaseAppState implements ScreenCont
     private DropDown dropdownResolution;
     private DropDown dropdownBitDepth;
     private DropDown dropdownRefreshRate;
-    private CheckBox checkboxFullscreen;
+    private CheckBox checkboxFullscreen, checkboxShowFps;
     private Slider sliderVol;
     private Label labelSliderVol;
     private int width, height;
@@ -108,7 +108,7 @@ public class SettingsScreenController extends BaseAppState implements ScreenCont
     
     
     public void initGamePlaySettings(){
-        
+        PlayGame.app.setDisplayFps(checkboxShowFps.isChecked());
     }
     
     
@@ -168,6 +168,7 @@ public class SettingsScreenController extends BaseAppState implements ScreenCont
         dropdownRefreshRate = screen.findNiftyControl("dropdown_RefreshRate", DropDown.class);
         
         checkboxFullscreen = screen.findNiftyControl("cb_Fullscreen", CheckBox.class);
+        checkboxShowFps = screen.findNiftyControl("cb_ShowFps", CheckBox.class);
         
         sliderVol = screen.findNiftyControl("slider_Volume", Slider.class);
         sliderVol.setValue(50f);
@@ -197,6 +198,13 @@ public class SettingsScreenController extends BaseAppState implements ScreenCont
             
     }
     
+    public void changeGamePlaySettings(){
+        
+        if (checkboxShowFps.isChecked()){
+            PlayGame.app.setDisplayFps(true);
+        }
+    }
+    
     public void changeVideoSettings(){
         
         int selectedResolution = dropdownResolution.getSelectedIndex();
@@ -217,6 +225,7 @@ public class SettingsScreenController extends BaseAppState implements ScreenCont
     }
     
     public void applySettings() throws BackingStoreException {
+        changeGamePlaySettings();
         changeVideoSettings();
         saveSettings();
         PlayGame.getPlayGameApp().restart();

@@ -150,7 +150,20 @@ public class SettingsScreen extends BaseAppState {
                         
                             
                         control(new TabBuilder("tab_GameplaySettings", "Gameplay"){{
-                            
+                            childLayoutAbsoluteInside();     
+                                
+                                    control(new LabelBuilder("label_ShowFps") {{
+                                        text("Show FPS");   
+                                        x("20px");
+                                        y("60px");  
+                                                                                
+                                    }});
+                                
+                                    control(new CheckboxBuilder("cb_ShowFps") {{
+
+                                        x("100px");
+                                        y("60px");   
+                                    }});
                         }});
                         
                         control(new TabBuilder("tab_VideoSettings", "Video"){{
