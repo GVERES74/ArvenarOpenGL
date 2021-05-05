@@ -108,7 +108,7 @@ public class SettingsScreenController extends BaseAppState implements ScreenCont
     
     
     public void initGamePlaySettings(){
-        PlayGame.app.setDisplayFps(checkboxShowFps.isChecked());
+        
     }
     
     
@@ -189,9 +189,7 @@ public class SettingsScreenController extends BaseAppState implements ScreenCont
     
     public void backToMainMenu(){
         System.out.println("back button pressed...");
-        
-//      nifty.gotoScreen(mainScreen);
-        PlayGame.attachAppState(PlayGame.mainMenu_screen);
+            
         PlayGame.detachAppState(PlayGame.settings_screen);
         PlayGame.musicPlayer.stop();
         
@@ -202,6 +200,10 @@ public class SettingsScreenController extends BaseAppState implements ScreenCont
         
         if (checkboxShowFps.isChecked()){
             PlayGame.app.setDisplayFps(true);
+        }
+        
+        else if (!checkboxShowFps.isChecked()){
+            PlayGame.app.setDisplayFps(false);
         }
     }
     

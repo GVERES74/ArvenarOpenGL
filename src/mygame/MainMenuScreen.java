@@ -403,7 +403,7 @@ public class MainMenuScreen extends BaseAppState {
     @Override
     protected void onEnable(){
         loadMenuMusic();
-        app.setDisplayStatView(false); app.setDisplayFps(false);
+        app.setDisplayStatView(false); 
         nifty = PlayGame.getNiftyDisplay().getNifty();
         app.getFlyByCamera().setDragToRotate(true);
         

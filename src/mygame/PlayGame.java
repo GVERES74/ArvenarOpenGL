@@ -50,11 +50,13 @@ public class PlayGame extends SimpleApplication{
     @Override
     public void simpleInitApp() {
         
-       niftyDisplay = NiftyJmeDisplay.newNiftyJmeDisplay(assetManager, inputManager, audioRenderer, viewPort);
+       
+        app.setDisplayFps(false); app.setDisplayStatView(false);
+        niftyDisplay = NiftyJmeDisplay.newNiftyJmeDisplay(assetManager, inputManager, audioRenderer, viewPort);
        nifty = niftyDisplay.getNifty();
        viewPort.addProcessor(niftyDisplay); 
        mainMenu_screen = new MainMenuScreen(); //stateManager.attach(mainMenu_screen);
-       settings_screen = new SettingsScreen();
+       settings_screen = new SettingsScreen();  //stateManager.attach(settings_screen);
        credits_screen = new CreditsScreen(); //stateManager.attach(credits_screen);
         paused_screen = new PausedScreen(); //stateManager.attach(paused_screen);
         gameplayState = new GameAppState(); stateManager.attach(gameplayState);

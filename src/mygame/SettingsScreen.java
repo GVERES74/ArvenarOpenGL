@@ -17,7 +17,6 @@ import com.jme3.renderer.ViewPort;
 import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
 import de.lessvoid.nifty.Nifty;
-import de.lessvoid.nifty.builder.EffectBuilder;
 import de.lessvoid.nifty.builder.HoverEffectBuilder;
 import de.lessvoid.nifty.builder.ImageBuilder;
 import de.lessvoid.nifty.builder.LayerBuilder;
@@ -86,9 +85,10 @@ public class SettingsScreen extends BaseAppState {
      @Override
     protected void onEnable() {
         
-        PlayGame.playMusic("Music/Soundtracks/RPG_Ambient_4.ogg");
+//        PlayGame.playMusic("Music/Soundtracks/RPG_Ambient_4.ogg");
+            PlayGame.gameplayState.setEnabled(false);
         
-        app.setDisplayStatView(false); app.setDisplayFps(false);
+        
         nifty = PlayGame.getNiftyDisplay().getNifty();
             app.getGuiViewPort().addProcessor(PlayGame.getNiftyDisplay());
             nifty.loadStyleFile("nifty-default-styles.xml");
@@ -328,7 +328,7 @@ public class SettingsScreen extends BaseAppState {
 
     @Override
     protected void onDisable() {
-        
+        nifty.removeScreen("Screen_GameSettings");
     }
     
     

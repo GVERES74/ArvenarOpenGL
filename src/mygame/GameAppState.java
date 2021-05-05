@@ -110,8 +110,7 @@ public class GameAppState extends BaseAppState implements AnimEventListener{
         this.app.getFlyByCamera().setDragToRotate(false);
         
         inputManager.deleteMapping(SimpleApplication.INPUT_MAPPING_EXIT); //delete ESC key quit app function
-        this.app.setDisplayStatView(false); this.app.setDisplayFps(true);
-               
+                      
                         
         //createRock();
         loadScene("Scenes/S2_Summerdale/S2M0_shore.j3o");
@@ -342,7 +341,7 @@ public class GameAppState extends BaseAppState implements AnimEventListener{
         firstPersonPlayer.setWalkDirection(walkDirection);
         this.app.getCamera().setLocation(firstPersonPlayer.getPhysicsLocation());
         
-        npcPlayer.move(npcPlayer.getLocalTranslation().x*0.01f, 0, npcPlayer.getLocalTranslation().z*0.01f);
+        npcPlayer.setLocalTranslation(npcPlayer.getLocalTranslation().x+0.01f/800, 0, npcPlayer.getLocalTranslation().z+0.01f/500);
         
         particle1.setLocalTranslation(
                 new Vector3f(
@@ -411,6 +410,8 @@ public class GameAppState extends BaseAppState implements AnimEventListener{
 
     @Override
     protected void onDisable() {
-        PlayGame.attachAppState(PlayGame.paused_screen);
+        
+            PlayGame.attachAppState(PlayGame.paused_screen);
+        
     }
 }

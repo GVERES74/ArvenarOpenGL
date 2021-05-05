@@ -9,9 +9,6 @@ import com.jme3.app.Application;
 import com.jme3.app.SimpleApplication;
 import com.jme3.app.state.BaseAppState;
 import com.jme3.input.InputManager;
-import com.jme3.input.KeyInput;
-import com.jme3.input.controls.ActionListener;
-import com.jme3.input.controls.KeyTrigger;
 import de.lessvoid.nifty.Nifty;
 import de.lessvoid.nifty.screen.Screen;
 import de.lessvoid.nifty.screen.ScreenController;
@@ -81,19 +78,18 @@ public class PausedScreenController extends BaseAppState implements ScreenContro
     
     public void settingsGame(){
         
-        //nifty.gotoScreen(nextScreen);
+        
         System.out.println("Game Settings button pressed...");
         //PlayGame.musicPlayer.stop();
         
-        PlayGame.detachAppState(PlayGame.paused_screen);
         PlayGame.attachAppState(PlayGame.settings_screen);
         
     }
     
     public void backToMainMenu(){
         System.out.println("back button pressed...");
-        PlayGame.detachAppState(PlayGame.paused_screen);
-//      nifty.gotoScreen(mainScreen);
+        PlayGame.detachAppState(PlayGame.paused_screen); //also calls screen's onDisable() method
+
              
             
     }

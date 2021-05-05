@@ -28,6 +28,7 @@ import de.lessvoid.nifty.builder.TextBuilder;
 import de.lessvoid.nifty.screen.Screen;
 
 
+
 /**
  *
  * @author TE332168
@@ -62,7 +63,7 @@ public class PausedScreen extends BaseAppState {
         this.viewPort     = this.app.getViewPort();
         screenWidth = PlayGame.getPlayGameAppSettings().getWidth();
         
-        initInputControls();                                            
+//        initInputControls();                                            
     }
     
     @Override
@@ -79,7 +80,7 @@ public class PausedScreen extends BaseAppState {
      @Override
     protected void onEnable() {
                 
-        app.setDisplayStatView(false); app.setDisplayFps(false);
+        
         nifty = PlayGame.getNiftyDisplay().getNifty();
             app.getGuiViewPort().addProcessor(PlayGame.getNiftyDisplay());
             nifty.loadStyleFile("nifty-default-styles.xml");
@@ -280,8 +281,10 @@ public class PausedScreen extends BaseAppState {
 
     @Override
     protected void onDisable() {
-        PlayGame.detachAppState(PlayGame.paused_screen);
-        //nifty.removeScreen("Screen_PausedMenu");
+
+        nifty.removeScreen("Screen_PausedMenu"); 
+        nifty.exit();
+        
     }
     
     public void initInputControls(){
@@ -295,7 +298,7 @@ public class PausedScreen extends BaseAppState {
             @Override
             public void onAction(String mappedName, boolean isPressed, float tpf) {
                 switch (mappedName) {
-                    case "Unpause": onDisable(); System.out.println(mappedName+" key pressed"); break;
+                    case "Unpause": System.out.println(mappedName+" key pressed"); break;
                        
                 }
                 }
