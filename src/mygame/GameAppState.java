@@ -33,6 +33,7 @@ import com.jme3.input.controls.AnalogListener;
 import com.jme3.input.controls.KeyTrigger;
 import com.jme3.light.DirectionalLight;
 import com.jme3.material.Material;
+import com.jme3.math.ColorRGBA;
 import com.jme3.math.FastMath;
 import com.jme3.math.Vector2f;
 import com.jme3.math.Vector3f;
@@ -116,6 +117,7 @@ public class GameAppState extends BaseAppState implements AnimEventListener{
         createAdvancedWater();
         loadAudio();
         createPrecipitationParticleEffects();
+        createFirePlace();
         setCollisionPhysics();
         initKeyEvent();
         addAmbientLight();
@@ -132,10 +134,22 @@ public class GameAppState extends BaseAppState implements AnimEventListener{
             createModel("Models/Tree/StrangePalmOld.j3o", "", -650f, 5f, 270f, 1f, 0f, 1f);
             createModel("Models/Tree/StrangePalmCurved.j3o", "", -630f, 5f, 300f, 1f, 0f, 2f);
             createModel("Models/Tree/StrangeCoconutTreeCurved.j3o", "", -630f, 5f, 320f, 1f, 0f, 5f);
-            
             createModel("Models/House/MVK_Houses_01.j3o", "Models/House/MVK_Houses_01.j3m", 0f, 7f, -600f, -1f, 0f, 10f);
             
+            createModel("Models/Campfire/campfire_logs.obj", "Models/Campfire/campfire_logs.j3m", -620f, 7f, 250f, 1f, 0f, 5f);
+            createModel("Models/Campfire/campfire_stones.obj", "Models/Campfire/campfire_stones.j3m", -620f, 7f, 250f, 1f, 0, 5f);
+                        
+            createModel("Models/Crate/Crate-04.obj", "Models/Crate/wood_crate.j3m", -640f, 7f, 260f, 1f, 0f, 5f);
+            createModel("Models/Crate/Crate-01.obj", "Models/Crate/wood_crate.j3m", -640f, 7f, 270f, 1f, 0f, 5f);
+            createModel("Models/Crate/Crate-02.obj", "Models/Crate/wood_crate.j3m", -640f, 7f, 275f, 1f, 0f, 5f);
+            createModel("Models/Crate/Crate-03.obj", "Models/Crate/wood_crate.j3m", -640f, 7f, 280f, 1f, 0f, 5f);
+            createModel("Models/Crate/Crate-05.obj", "Models/Crate/wood_crate.j3m", -640f, 7f, 265f, 1f, 0f, 5f);
+            createModel("Models/Crate/Crate-05.obj", "Models/Crate/wood_crate.j3m", -635f, 7f, 255f, 1f, 0f, 5f);
             
+            createModel("Models/Cage/CageBed.j3o", "Models/Cage/cage.j3m", -650f, 7f, 300f, -2f, 0f, 3f);
+//            
+            createModel("Models/Barrel/mini_wood_barrel.obj", "Models/Barrel/wood_barrel.j3m", -645f, 7f, 237f, 1f, 0f, 0.05f);
+            createModel("Models/Barrel/mini_wood_barrel.obj", "Models/Barrel/wood_barrel.j3m", -640f, 7f, 237f, 1f, 0f, 0.05f);
         }   
     
         public void createModel(String modelfile, String custmatfile, float xpos, float ypos, float zpos, float yaw, float pitch, float scale){
@@ -234,6 +248,29 @@ public class GameAppState extends BaseAppState implements AnimEventListener{
 
         }
         
+        public void createFirePlace(){
+            ParticleEmitter pemitter = new ParticleEmitter("Emitter", ParticleMesh.Type.Triangle, 30);
+            Material dropMaterial = new Material(assetManager, "Common/MatDefs/Misc/Particle.j3md");
+            dropMaterial.setTexture("Texture", assetManager.loadTexture("Effects/Explosion/flame.png"));
+            pemitter.setMaterial(dropMaterial);
+            pemitter.setImagesX(2);
+            pemitter.setImagesY(2);
+            pemitter.setEndColor(  new ColorRGBA(1f, 0f, 0f, 1f));   // red
+            pemitter.setStartColor(new ColorRGBA(1f, 1f, 0f, 0.5f)); // yellow
+            pemitter.setLowLife(1.5f);
+            pemitter.setHighLife(4.5f);
+            pemitter.setStartSize(0.5f);
+            pemitter.setEndSize(0.1f);
+            pemitter.getParticleInfluencer().setInitialVelocity(new Vector3f(0,1,0));
+            pemitter.getParticleInfluencer().setVelocityVariation(0.3f);
+            pemitter.setLocalTranslation(-620f, 7.5f, 250f);
+            
+            pemitter.setNumParticles(200);
+            pemitter.setParticlesPerSec(20);
+            this.app.getRootNode().attachChild(pemitter);
+            
+        }
+        
         public void createAdvancedWater(){
             //post process water
         ppFilter = new FilterPostProcessor(assetManager);
@@ -290,9 +327,9 @@ public class GameAppState extends BaseAppState implements AnimEventListener{
     
         private void loadAudio(){
         
-            PlayGame.playMusic("Music/Soundtracks/Peaceful_Place.ogg");
-            playSound("Sounds/Ambient/Animals/ocean_seagull.ogg", false, false, true, 0.5f, -1000f, 0f, 1000f);
-            
+//            PlayGame.playMusic("Music/Soundtracks/Peaceful_Place.ogg");
+            playSound("Sounds/Ambient/Animals/ocean_seagull_mono.ogg", false, true, true, 0.5f, 0f, 0f, 500f);
+            playSound("Sounds/Ambient/Fire/torchBurning.ogg", false, true, true, 1.5f, 620f, 7f, 250f); 
         }
         
         public void playSound(String filepath, boolean directional, boolean positional, boolean looping, float volume, float xpos, float ypos, float zpos){
@@ -302,6 +339,7 @@ public class GameAppState extends BaseAppState implements AnimEventListener{
         soundPlayer.setLocalTranslation(xpos, ypos, zpos);
         soundPlayer.setLooping(looping);
         soundPlayer.setVolume(volume);
+//        soundPlayer.setMaxDistance(300f);
         rootNode.attachChild(soundPlayer);
         soundPlayer.play();
         }
@@ -376,6 +414,7 @@ public class GameAppState extends BaseAppState implements AnimEventListener{
                                         } else
                                       if (PlayGame.getPlayGameApp().getStateManager().hasState(PlayGame.paused_screen)&&!keyPressed){ 
                                            PlayGame.detachAppState(PlayGame.paused_screen);
+                                           
                                            
                                            System.out.println("Unpaused");
                                         }  break;   

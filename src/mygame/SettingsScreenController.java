@@ -229,6 +229,7 @@ public class SettingsScreenController extends BaseAppState implements ScreenCont
         changeGamePlaySettings();
         changeVideoSettings();
         saveSettings();
+        
         PlayGame.getPlayGameApp().restart();
         
     }

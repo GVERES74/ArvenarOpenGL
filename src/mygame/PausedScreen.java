@@ -121,8 +121,16 @@ public class PausedScreen extends BaseAppState {
 //                        width("100%");
 //                    }});
                     
+                    panel(new PanelBuilder("Panel_Paused_Background"){{
+                        childLayoutAbsoluteInside();
+                        height("80%");
+                        width("80%");
+                        x("50px");
+                        y("50px");
+                        backgroundColor("#ee02");
+                        
                      panel(new PanelBuilder("Panel_Paused_Title"){{
-                       backgroundColor("#ff02");  
+//                       backgroundColor("#ff02");  
                         x("50px");
                         y("20px");
                         height("100px");
@@ -143,7 +151,7 @@ public class PausedScreen extends BaseAppState {
                                
                     panel(new PanelBuilder("Panel_Paused_MenuButtons"){{
                       
-                      backgroundColor("#0f02");
+//                      backgroundColor("#0f02");
                         
                         x("50px");
                         y("120px");
@@ -263,7 +271,7 @@ public class PausedScreen extends BaseAppState {
                             width("150px");    
                             interactOnClick("backToGame()");
                             interactOnMouseOver("buttonEffect()");
-                            backgroundColor("#0c01");
+//                            backgroundColor("#0c01");
                             onStartHoverEffect(new HoverEffectBuilder("changeImage"){{
                                 effectParameter("active", "Interface/Images/MenuUI/button_1_back.png"); neverStopRendering(true);
                                 effectParameter("inactive", "Interface/Images/MenuUI/button_0_back.png"); neverStopRendering(true);}});
@@ -280,7 +288,7 @@ public class PausedScreen extends BaseAppState {
                             width("150px");    
                             interactOnClick("backToMainMenu()");
                             interactOnMouseOver("buttonEffect()");
-                            backgroundColor("#0c01");
+//                            backgroundColor("#0c01");
                             onStartHoverEffect(new HoverEffectBuilder("changeImage"){{
                                 effectParameter("active", "Interface/Images/MenuUI/button_1_quit.png"); neverStopRendering(true);
                                 effectParameter("inactive", "Interface/Images/MenuUI/button_0_quit.png"); neverStopRendering(true);}});
@@ -295,7 +303,7 @@ public class PausedScreen extends BaseAppState {
 //                            backgroundColor("#000a");
 //                        }}.registerPopup(nifty));
                             
-                        
+                      }});  
                 
                 }});
                 }}.build(nifty));

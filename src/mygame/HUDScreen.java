@@ -33,7 +33,7 @@ public class HUDScreen extends BaseAppState {
         
         this.app = (SimpleApplication) app;
         screenWidth = PlayGame.getPlayGameAppSettings().getWidth()-200;
-        screenHeight = PlayGame.getPlayGameAppSettings().getHeight()-200;
+        screenHeight = PlayGame.getPlayGameAppSettings().getHeight()/2;
         
         createHUDScreen();
         
@@ -72,7 +72,7 @@ public class HUDScreen extends BaseAppState {
     
     @Override
     public void update(float tpf) {
-        
+       
         //TODO: implement behavior during runtime    
     }
     
@@ -145,8 +145,9 @@ public class HUDScreen extends BaseAppState {
                    
                     panel(new PanelBuilder("Panel_HUD_Minimap"){{
                         //backgroundColor("#ee02");  
-                        y(SizeValue.px(screenHeight));
-                        x("50px");
+//                        y(SizeValue.px(screenHeight));
+                        x("40px");
+                        y("70%"); //minimap position as per screen resolution
                         height("255px");
                         width("255px");
                         childLayoutAbsoluteInside();
@@ -170,5 +171,6 @@ public class HUDScreen extends BaseAppState {
                 }}.build(nifty));
                         
                 nifty.gotoScreen("Screen_HUD");
+                System.out.println(screenHeight);
     }
 }
