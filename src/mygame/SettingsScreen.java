@@ -67,7 +67,7 @@ public class SettingsScreen extends BaseAppState {
         this.inputManager = this.app.getInputManager();
         this.viewPort     = this.app.getViewPort();
         screenWidth = PlayGame.getPlayGameAppSettings().getWidth();
-        
+        createSettingsGUI();
                                                     
     }
     
@@ -85,9 +85,19 @@ public class SettingsScreen extends BaseAppState {
      @Override
     protected void onEnable() {
         
-//        PlayGame.playMusic("Music/Soundtracks/RPG_Ambient_4.ogg");
-            PlayGame.gameplayState.setEnabled(false);
+       
+    }
+    
+    @Override
+    protected void onDisable() {
+        nifty.removeScreen("Screen_GameSettings");
+        PlayGame.ingameHud.enableHud(); //ez csak itt van, máshol nem kell meghívni
+        app.getFlyByCamera().setDragToRotate(false); //mouse freelook
+    }
+    
+    public void createSettingsGUI(){
         
+        app.getFlyByCamera().setDragToRotate(true);
         
         nifty = PlayGame.getNiftyDisplay().getNifty();
             app.getGuiViewPort().addProcessor(PlayGame.getNiftyDisplay());
@@ -96,7 +106,7 @@ public class SettingsScreen extends BaseAppState {
         
             nifty.registerSound("btnclick", "Interface/sound/metalClick.ogg");
 //            nifty.registerMusic("settingstheme", "Music/Soundtracks/RPG_Ambient_4.ogg");
-            app.getFlyByCamera().setDragToRotate(true);
+            
         
             nifty.addScreen("Screen_GameSettings", new ScreenBuilder("Game Settings"){{
                 controller(new mygame.SettingsScreenController());
@@ -322,15 +332,5 @@ public class SettingsScreen extends BaseAppState {
                 
                 nifty.gotoScreen("Screen_GameSettings");
     }
-    
-   
-
-
-    @Override
-    protected void onDisable() {
-        nifty.removeScreen("Screen_GameSettings");
-    }
-    
-    
     
 }

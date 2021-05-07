@@ -44,10 +44,10 @@ import com.jme3.renderer.queue.RenderQueue;
 import com.jme3.scene.Geometry;
 import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
-import com.jme3.scene.shape.Sphere;
-import com.jme3.util.TangentBinormalGenerator;
+import com.jme3.texture.Image;
 import com.jme3.water.SimpleWaterProcessor;
 import com.jme3.water.WaterFilter;
+import de.lessvoid.nifty.screen.Screen;
 
 /**
  *
@@ -74,7 +74,7 @@ public class GameAppState extends BaseAppState implements AnimEventListener{
     private Spatial level;
     private BulletAppState bulletAppState;
     private RigidBodyControl landScape;
-    
+            
     private CharacterControl firstPersonPlayer;
     private Vector3f walkDirection = new Vector3f();
     private Vector3f camDir = new Vector3f();
@@ -88,7 +88,7 @@ public class GameAppState extends BaseAppState implements AnimEventListener{
     //for Post process water effectprocessor
     private FilterPostProcessor ppFilter;
     private WaterFilter ppWaterFilter;
-    private Vector3f ppLightDir = new Vector3f(-4.9f, -1.3f, 5.9f); // same as light source
+    private Vector3f ppLightDir = new Vector3f(5.0f, -1.0f, -5f); // same as light source
     private float ppInitialWaterHeight = 0.5f; // choose a value for your scene
     private float waveTime = 0.0f;
     private float ppWaterHeight = 0.0f;
@@ -106,12 +106,9 @@ public class GameAppState extends BaseAppState implements AnimEventListener{
         this.camera       = this.app.getCamera();
         bulletAppState = new BulletAppState();
         app.getStateManager().attach(bulletAppState);
-        
-        this.app.getFlyByCamera().setDragToRotate(false);
-        
+                
         inputManager.deleteMapping(SimpleApplication.INPUT_MAPPING_EXIT); //delete ESC key quit app function
-                      
-                        
+                
         //createRock();
         loadScene("Scenes/S2_Summerdale/S2M0_shore.j3o");
         loadSceneModels();
@@ -127,10 +124,17 @@ public class GameAppState extends BaseAppState implements AnimEventListener{
     }
         
         public void loadSceneModels(){
-
-//            createModel("stump_roundDetailed.glb", 17f, 0.1f, -15f, 0f, 4f);
+            createModel("Models/Boat/boat_crashed.j3o", "", 300f, 0f, 900f, -1f, 0f, 30f);
             createModel("Models/Boat/boat_small.obj", "", 30f, 2f, 320f, 0f, 0.1f, 1f);
             createModel("Models/Shack/small_shack.FBX", "Models/Shack/small_shack.j3m", -650f, 7f, 250f, 1f, -1.55f, 3f);
+            createModel("Models/Tree/StrangeCoconutTreeYoung.j3o", "", -650f, 5f, 220f, 1f, 0f, 15f);
+            createModel("Models/Tree/StrangePalm.j3o", "", -650f, 5f, 200f, 1f, 0f, 15f);
+            createModel("Models/Tree/StrangePalmOld.j3o", "", -650f, 5f, 270f, 1f, 0f, 1f);
+            createModel("Models/Tree/StrangePalmCurved.j3o", "", -630f, 5f, 300f, 1f, 0f, 2f);
+            createModel("Models/Tree/StrangeCoconutTreeCurved.j3o", "", -630f, 5f, 320f, 1f, 0f, 5f);
+            
+            createModel("Models/House/MVK_Houses_01.j3o", "Models/House/MVK_Houses_01.j3m", 0f, 7f, -600f, -1f, 0f, 10f);
+            
             
         }   
     
@@ -159,7 +163,7 @@ public class GameAppState extends BaseAppState implements AnimEventListener{
         
         
             npcPlayer = (Node)this.app.getAssetManager().loadModel("Models/Oto/OtoOldAnim.j3o");
-            npcPlayer.setLocalTranslation(0, 10, 0);
+            npcPlayer.setLocalTranslation(0, 11, 0);
             //npcPlayer.scale(1f);
 
             this.app.getRootNode().attachChild(npcPlayer);
@@ -234,6 +238,7 @@ public class GameAppState extends BaseAppState implements AnimEventListener{
             //post process water
         ppFilter = new FilterPostProcessor(assetManager);
         ppWaterFilter = new WaterFilter(rootNode, ppLightDir);
+        ppWaterFilter.setSunScale(2f);
         ppWaterFilter.setWaterHeight(ppInitialWaterHeight);
         ppWaterFilter.setWindDirection(new Vector2f(0.0f,1.0f));     
         ppWaterFilter.setNormalScale(0.5f);
@@ -327,6 +332,7 @@ public class GameAppState extends BaseAppState implements AnimEventListener{
     @Override
     public void update(float tpf) {
         //TODO: implement behavior during runtime
+        
         updateAdvancedWater(tpf);
         
         camDir.set(this.app.getCamera().getDirection().multLocal(0.6f));
@@ -341,7 +347,7 @@ public class GameAppState extends BaseAppState implements AnimEventListener{
         firstPersonPlayer.setWalkDirection(walkDirection);
         this.app.getCamera().setLocation(firstPersonPlayer.getPhysicsLocation());
         
-        npcPlayer.setLocalTranslation(npcPlayer.getLocalTranslation().x+0.01f/800, 0, npcPlayer.getLocalTranslation().z+0.01f/500);
+        npcPlayer.move(0.001f, 0, 0.001f);
         
         particle1.setLocalTranslation(
                 new Vector3f(
@@ -359,8 +365,20 @@ public class GameAppState extends BaseAppState implements AnimEventListener{
                     case "Backward": keyS = keyPressed; break;
                     case "StrafeLeft": keyA = keyPressed; break;
                     case "StrafeRight": keyD = keyPressed; break;
-                    case "Jump": if (keyPressed) {firstPersonPlayer.jump(new Vector3f(0,20f,0));}; break;
-                    case "PauseGame": onDisable(); break;
+                    case "Jump": if (keyPressed) {firstPersonPlayer.jump(new Vector3f(0,20f,0));
+                                 decreasePlayerHealth(); 
+                                  }; 
+                            
+                         break;
+                    case "PauseGame": if (!PlayGame.getPlayGameApp().getStateManager().hasState(PlayGame.paused_screen) &&!keyPressed){ 
+                                           PlayGame.attachAppState(PlayGame.paused_screen);
+                                           System.out.println("Paused");
+                                        } else
+                                      if (PlayGame.getPlayGameApp().getStateManager().hasState(PlayGame.paused_screen)&&!keyPressed){ 
+                                           PlayGame.detachAppState(PlayGame.paused_screen);
+                                           
+                                           System.out.println("Unpaused");
+                                        }  break;   
                 }
                 
                 if (keyPressed) {   
@@ -388,9 +406,8 @@ public class GameAppState extends BaseAppState implements AnimEventListener{
     public void cleanup(Application app) {
                 
         this.app.getRootNode().detachAllChildren();
-        //TODO: clean up what you initialized in the initialize method,
-        //e.g. remove all spatials from rootNode
-        //this is called on the OpenGL thread after the AppState has been detached
+        System.out.println("GameAppState cleanup called.....");
+        
         }
 
     @Override
@@ -405,13 +422,22 @@ public class GameAppState extends BaseAppState implements AnimEventListener{
 
     @Override
     protected void onEnable() {
-        
+        app.getFlyByCamera().setDragToRotate(false); //mouse freelook
+        System.out.print("GameAppState onEnable() called......");
+        this.app.getStateManager().attach(PlayGame.ingameHud);
     }
 
     @Override
     protected void onDisable() {
+               
+        this.app.getFlyByCamera().setDragToRotate(true);
         
-            PlayGame.attachAppState(PlayGame.paused_screen);
+        System.out.print("GameAppState onDisable() called......");
+        
+    }
+    
+    public void decreasePlayerHealth(){
+        new HUDScreenController().updateHealth();
         
     }
 }

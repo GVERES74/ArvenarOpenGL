@@ -46,11 +46,8 @@ public class PausedScreen extends BaseAppState {
     
     private Nifty nifty;
     private Screen screen;
-        
+                
     int screenWidth;
-    
-    private Node pausedRootNode = new Node("Paused Screen RootNode");
-    
     
     @Override
     public void initialize(Application app) {
@@ -62,8 +59,9 @@ public class PausedScreen extends BaseAppState {
         this.inputManager = this.app.getInputManager();
         this.viewPort     = this.app.getViewPort();
         screenWidth = PlayGame.getPlayGameAppSettings().getWidth();
-        
-//        initInputControls();                                            
+                
+        createPausedScreen();
+
     }
     
     @Override
@@ -79,7 +77,25 @@ public class PausedScreen extends BaseAppState {
 
      @Override
     protected void onEnable() {
-                
+        
+    }
+      
+
+
+    @Override
+    protected void onDisable() {
+
+       nifty.removeScreen("Screen_PausedMenu");
+       PlayGame.ingameHud.enableHud(); //ez csak itt van, máshol nem kell meghívni
+       
+       app.getFlyByCamera().setDragToRotate(false); //mouse freelook
+                        
+    }
+    
+    
+    public void createPausedScreen(){
+        
+        app.getFlyByCamera().setDragToRotate(true);
         
         nifty = PlayGame.getNiftyDisplay().getNifty();
             app.getGuiViewPort().addProcessor(PlayGame.getNiftyDisplay());
@@ -87,8 +103,7 @@ public class PausedScreen extends BaseAppState {
             nifty.loadControlFile("nifty-default-controls.xml");
         
             nifty.registerSound("btnclick", "Interface/sound/metalClick.ogg");
-            app.getFlyByCamera().setDragToRotate(true);
-        
+                   
             nifty.addScreen("Screen_PausedMenu", new ScreenBuilder("Game Paused"){{
                 controller(new mygame.PausedScreenController());
                 defaultFocusElement("settings_Apply");
@@ -246,7 +261,7 @@ public class PausedScreen extends BaseAppState {
                             y("70px");
                             height("40px");
                             width("150px");    
-                            interactOnClick("backToMainMenu()");
+                            interactOnClick("backToGame()");
                             interactOnMouseOver("buttonEffect()");
                             backgroundColor("#0c01");
                             onStartHoverEffect(new HoverEffectBuilder("changeImage"){{
@@ -254,13 +269,25 @@ public class PausedScreen extends BaseAppState {
                                 effectParameter("inactive", "Interface/Images/MenuUI/button_0_back.png"); neverStopRendering(true);}});
                             onStartHoverEffect(new HoverEffectBuilder("move"){{effectParameter("mode", "toOffset"); effectParameter("offsetX", "+15");}});
                             onStartHoverEffect(new HoverEffectBuilder("playSound"){{effectParameter("sound", "btnclick");}});
-                                      
-                                        
-                                    
-                                
+                              
                         }});
+                        
+                        image(new ImageBuilder("settings_Exit"){{
+                            filename("Interface/Images/MenuUI/button_0_quit.png");
+                            x("20px");
+                            y("120px");
+                            height("40px");
+                            width("150px");    
+                            interactOnClick("backToMainMenu()");
+                            interactOnMouseOver("buttonEffect()");
+                            backgroundColor("#0c01");
+                            onStartHoverEffect(new HoverEffectBuilder("changeImage"){{
+                                effectParameter("active", "Interface/Images/MenuUI/button_1_quit.png"); neverStopRendering(true);
+                                effectParameter("inactive", "Interface/Images/MenuUI/button_0_quit.png"); neverStopRendering(true);}});
+                            onStartHoverEffect(new HoverEffectBuilder("move"){{effectParameter("mode", "toOffset"); effectParameter("offsetX", "+15");}});
+                            onStartHoverEffect(new HoverEffectBuilder("playSound"){{effectParameter("sound", "btnclick");}});
+                            }});
                         }});
-                    
                     
                         
 //                        popup(new PopupBuilder("popupExit") {{
@@ -272,39 +299,9 @@ public class PausedScreen extends BaseAppState {
                 
                 }});
                 }}.build(nifty));
-        
-                
+                        
                 nifty.gotoScreen("Screen_PausedMenu");
     }
-      
-
-
-    @Override
-    protected void onDisable() {
-
-        nifty.removeScreen("Screen_PausedMenu"); 
-        nifty.exit();
-        
-    }
-    
-    public void initInputControls(){
-        
-        this.inputManager.addMapping("Unpause", new KeyTrigger(KeyInput.KEY_ESCAPE));
-        this.inputManager.addListener(actionListener, "Unpause");
-               
-        }
-    
-        private final ActionListener actionListener = new ActionListener() {
-            @Override
-            public void onAction(String mappedName, boolean isPressed, float tpf) {
-                switch (mappedName) {
-                    case "Unpause": System.out.println(mappedName+" key pressed"); break;
-                       
-                }
-                }
-                             
-            };
-    
     
     
 }
