@@ -26,12 +26,15 @@ public class PlayGame extends SimpleApplication{
     static AppSettings settings;
     static NiftyJmeDisplay niftyDisplay;
     private Nifty nifty;
+    
+    public static GameAppState gameplayState;
+    
     public static MainMenuScreen mainMenu_screen;
     public static SettingsScreen settings_screen;
     public static CreditsScreen credits_screen;
     public static PausedScreen paused_screen;
-    public static GameAppState gameplayState;
     public static HUDScreen ingameHud;
+    public static MapViewScreen mapview_screen;
         
     public static AudioNode musicPlayer, soundPlayer;
     
@@ -59,11 +62,13 @@ public class PlayGame extends SimpleApplication{
            niftyDisplay = NiftyJmeDisplay.newNiftyJmeDisplay(assetManager, inputManager, audioRenderer, viewPort);
            nifty = niftyDisplay.getNifty();
            viewPort.addProcessor(niftyDisplay); 
+           
            mainMenu_screen = new MainMenuScreen(); //stateManager.attach(mainMenu_screen);
            settings_screen = new SettingsScreen();  //stateManager.attach(settings_screen);
            credits_screen = new CreditsScreen(); //stateManager.attach(credits_screen);
            paused_screen = new PausedScreen(); //stateManager.attach(paused_screen);
-           ingameHud = new HUDScreen();
+           ingameHud = new HUDScreen();          //stateManager.attach(ingameHud);
+           mapview_screen = new MapViewScreen();
            gameplayState = new GameAppState(); stateManager.attach(gameplayState);
 
 
@@ -138,5 +143,5 @@ public class PlayGame extends SimpleApplication{
         app.getStateManager().detach(appstate);
     }
     
-   
+       
 }

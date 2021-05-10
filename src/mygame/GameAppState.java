@@ -361,8 +361,10 @@ public class GameAppState extends BaseAppState implements AnimEventListener{
             this.app.getInputManager().addMapping("StrafeRight", new KeyTrigger(KeyInput.KEY_D));
             this.app.getInputManager().addMapping("Jump", new KeyTrigger(KeyInput.KEY_SPACE));
             this.app.getInputManager().addMapping("PauseGame", new KeyTrigger(KeyInput.KEY_ESCAPE));
+            this.app.getInputManager().addMapping("MapView", new KeyTrigger(KeyInput.KEY_M));
+            
 
-            this.app.getInputManager().addListener(actionListener, "Forward", "Backward", "StrafeLeft", "StrafeRight", "Jump", "PauseGame");
+            this.app.getInputManager().addListener(actionListener, "Forward", "Backward", "StrafeLeft", "StrafeRight", "Jump", "PauseGame", "MapView");
             
         }
         
@@ -405,19 +407,22 @@ public class GameAppState extends BaseAppState implements AnimEventListener{
                     case "StrafeRight": keyD = keyPressed; break;
                     case "Jump": if (keyPressed) {firstPersonPlayer.jump(new Vector3f(0,20f,0));
                                  decreasePlayerHealth(); 
-                                  }; 
-                            
-                         break;
+                                  }; break;
                     case "PauseGame": if (!PlayGame.getPlayGameApp().getStateManager().hasState(PlayGame.paused_screen) &&!keyPressed){ 
                                            PlayGame.attachAppState(PlayGame.paused_screen);
-                                           System.out.println("Paused");
+                                                                                 
+                                           System.out.println("Paused"+PlayGame.getNiftyDisplay().getNifty().getAllScreensName());
                                         } else
                                       if (PlayGame.getPlayGameApp().getStateManager().hasState(PlayGame.paused_screen)&&!keyPressed){ 
-                                           PlayGame.detachAppState(PlayGame.paused_screen);
-                                           
-                                           
+                                          PlayGame.detachAppState(PlayGame.paused_screen);
+                                          
                                            System.out.println("Unpaused");
-                                        }  break;   
+                                        }  break;  
+                                        
+                    case "MapView": if (!PlayGame.getPlayGameApp().getStateManager().hasState(PlayGame.mapview_screen) &&!keyPressed){
+                                        PlayGame.attachAppState(PlayGame.mapview_screen);}
+                                    else if (!keyPressed){
+                                        PlayGame.detachAppState(PlayGame.mapview_screen);}
                 }
                 
                 if (keyPressed) {   

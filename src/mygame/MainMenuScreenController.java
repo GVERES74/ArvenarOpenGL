@@ -10,9 +10,6 @@ import com.jme3.app.SimpleApplication;
 import com.jme3.app.state.AppStateManager;
 import com.jme3.app.state.BaseAppState;
 import com.jme3.input.InputManager;
-import com.jme3.input.KeyInput;
-import com.jme3.input.controls.ActionListener;
-import com.jme3.input.controls.KeyTrigger;
 import de.lessvoid.nifty.Nifty;
 import de.lessvoid.nifty.elements.Element;
 import de.lessvoid.nifty.screen.Screen;
@@ -65,7 +62,7 @@ public class MainMenuScreenController extends BaseAppState implements ScreenCont
     
     public void startGame(){
         System.out.println("Play Game button pressed...");
-        //nifty.gotoScreen(nextScreen);
+        
         PlayGame.detachAppState(PlayGame.mainMenu_screen);
         PlayGame.attachAppState(PlayGame.gameplayState);
         
@@ -80,6 +77,7 @@ public class MainMenuScreenController extends BaseAppState implements ScreenCont
         
         PlayGame.detachAppState(PlayGame.mainMenu_screen);
         PlayGame.attachAppState(PlayGame.settings_screen);
+        //PlayGame.getNiftyDisplay().getNifty().gotoScreen("Screen_GameSettings");
         
                
        

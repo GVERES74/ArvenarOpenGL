@@ -226,7 +226,7 @@ public class PausedScreen extends BaseAppState {
                             y("220px");
                             height("37px");
                             width("147px");     
-                            interactOnClick("");
+                            interactOnClick("showMap()");
                             backgroundColor("#0c01");
                             onStartHoverEffect(new HoverEffectBuilder("changeImage"){{
                                 effectParameter("active", "Interface/Images/MenuUI/button_1_pausedmenu_worldmap.png"); neverStopRendering(true);
@@ -309,6 +309,11 @@ public class PausedScreen extends BaseAppState {
                 }}.build(nifty));
                         
                 nifty.gotoScreen("Screen_PausedMenu");
+    }
+    
+    public void enablePausedMenu(){
+        
+       nifty.gotoScreen("Screen_PausedMenu");
     }
     
     

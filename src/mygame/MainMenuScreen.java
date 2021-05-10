@@ -19,10 +19,8 @@ import com.jme3.effect.shapes.EmitterBoxShape;
 import com.jme3.font.BitmapText;
 import com.jme3.input.InputManager;
 import com.jme3.input.KeyInput;
-import com.jme3.input.MouseInput;
 import com.jme3.input.controls.ActionListener;
 import com.jme3.input.controls.KeyTrigger;
-import com.jme3.input.controls.MouseButtonTrigger;
 import com.jme3.light.DirectionalLight;
 import com.jme3.material.Material;
 
@@ -46,8 +44,6 @@ import de.lessvoid.nifty.builder.LayerBuilder;
 import de.lessvoid.nifty.builder.PanelBuilder;
 import de.lessvoid.nifty.builder.ScreenBuilder;
 import de.lessvoid.nifty.builder.TextBuilder;
-import static mygame.PlayGame.app;
-import static mygame.PlayGame.soundPlayer;
 
     
 
@@ -97,10 +93,6 @@ public class MainMenuScreen extends BaseAppState {
         this.inputManager = this.app.getInputManager();
         this.viewPort     = this.app.getViewPort();
         this.camera       = this.app.getCamera();
-        
-        
-        
-        
         
         screenHeight = app.getCamera().getHeight();
         screenWidth = app.getCamera().getWidth();
@@ -395,6 +387,7 @@ public class MainMenuScreen extends BaseAppState {
     public void cleanup(Application app) {
         System.out.println("MainMenuScreen cleanup called.....");
         startRootNode.detachAllChildren();
+        rootNode.detachChild(mainScene);
 
     }    
         

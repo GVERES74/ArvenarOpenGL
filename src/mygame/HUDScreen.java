@@ -45,8 +45,7 @@ public class HUDScreen extends BaseAppState {
     }
     @Override
     protected void cleanup(Application app) {
-    
-
+        
         //TODO: clean up what you initialized in the initialize method,        
         //e.g. remove all spatials from rootNode    
     }
