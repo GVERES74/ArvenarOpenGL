@@ -104,6 +104,7 @@ public class PausedScreenController extends BaseAppState implements ScreenContro
         System.out.println("back button pressed...");
         PlayGame.detachAppState(PlayGame.paused_screen); //also calls screen's onDisable() method
         PlayGame.detachAppState(PlayGame.gameplayState);
+        System.exit(0);
         
     }
     

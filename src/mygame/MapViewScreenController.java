@@ -25,7 +25,7 @@ public class MapViewScreenController extends BaseAppState implements ScreenContr
     private Nifty nifty;
     private Screen screen;
     private Element mapholder;
-    private Element world_map, local_map; 
+    private Element world_map, local_map, selected_map, map_zoomin, map_zoomout; 
     
     
     @Override
@@ -85,12 +85,17 @@ public class MapViewScreenController extends BaseAppState implements ScreenContr
         local_map = screen.findElementById("img_LocalMap");
         world_map = screen.findElementById("img_WorldMap");
         mapholder = screen.findElementById("Panel_MapView_MapHolder");
+        map_zoomin = screen.findElementById("btn_mapview_ZoomIn");
+        map_zoomout = screen.findElementById("btn_mapview_ZoomOut");
     }
 
     @Override
     public void onStartScreen() {
-        mapholder.addChild(local_map);
-        mapholder.addChild(world_map);
+        mapholder.addChild(local_map); //add local map to the screen
+        mapholder.addChild(world_map); //add world map to the screen
+        local_map.setVisible(false); //hide local map until it is selected
+        selected_map = world_map;
+        mapholder.setClipChildren(true);
     }
 
     @Override
@@ -99,15 +104,36 @@ public class MapViewScreenController extends BaseAppState implements ScreenContr
     }
     
     public void showLocalMap(){
+        selected_map = local_map;
+        
         local_map.setVisible(true);
         world_map.setVisible(false);
-        System.out.println("Local Map");
+        
+        System.out.println("Local Map selected");
     }
     
     public void showWorldMap(){
+        selected_map = world_map;
+        
         local_map.setVisible(false);
         world_map.setVisible(true);
-        System.out.println("World Map");
+        System.out.println("World Map selected");
+    }
+    
+        
+    public void zoomInMap(){
+       selected_map.setHeight((int) (selected_map.getHeight()+50));
+       selected_map.setWidth((int) (selected_map.getWidth()+50));
+       System.out.println("Map zoom in");
+    }
+    
+    public void zoomOutMap(){
+       if (selected_map.getHeight()>= mapholder.getHeight()){
+       selected_map.setHeight((int)(selected_map.getHeight()-50));
+       selected_map.setWidth((int) (selected_map.getWidth()-50));
+       }
+        
+        System.out.println("Map zoom out");
     }
     
     public void backToGame(){

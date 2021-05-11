@@ -23,6 +23,7 @@ import de.lessvoid.nifty.builder.PanelBuilder;
 import de.lessvoid.nifty.builder.ScreenBuilder;
 import de.lessvoid.nifty.builder.TextBuilder;
 import de.lessvoid.nifty.screen.Screen;
+import de.lessvoid.nifty.tools.SizeValue;
 
 /**
  *  
@@ -42,6 +43,7 @@ public class MapViewScreen extends BaseAppState {
     
     private Nifty nifty;
     private Screen screen;
+    private int screenHeight;
     
     @Override
     protected void initialize(Application app) {
@@ -52,12 +54,13 @@ public class MapViewScreen extends BaseAppState {
         this.stateManager = this.app.getStateManager();
         this.inputManager = this.app.getInputManager();
         this.viewPort     = this.app.getViewPort();
+        
+        screenHeight = PlayGame.getPlayGameAppSettings().getHeight()-100;
     }
 
     @Override
     protected void cleanup(Application app) {
-    
-    
+        
         //TODO: clean up what you initialized in the initialize method,        
         //e.g. remove all spatials from rootNode    
     }
@@ -86,8 +89,7 @@ public class MapViewScreen extends BaseAppState {
     
     @Override
     public void update(float tpf) {
-    
-    
+        
         //TODO: implement behavior during runtime    
     }
     
@@ -112,31 +114,22 @@ public class MapViewScreen extends BaseAppState {
 //                    onStartScreenEffect(new EffectBuilder("playSound") {{
 //                        effectParameter("sound", "settingstheme");
 //                    }}); 
-                
-//                    image(new ImageBuilder() {{
-//                        filename("Interface/Images/background_settings.png");
-//                        height("100%");
-//                        width("100%");
-//                    }});
-                    
-                    panel(new PanelBuilder("Panel_MapView_Background"){{
-                        childLayoutAbsoluteInside();
-                        height("100%");
-                        width("100%");
-                        //x("50px");
-                        //y("50px");
-                        backgroundColor("#ee02");
+                    image(new ImageBuilder("img_MapBackground") {{
+                            filename("Interface/Images/bkg_pirate_table.jpg");
+                            height("100%");
+                            width("100%");
+                            }});
                         
                     panel(new PanelBuilder("Panel_MapView_Title"){{
 //                       backgroundColor("#ff02");  
                         x("20px");
                         y("20px");
                         height("100px");
-                        width("250px");
+                        width("300px");
                         childLayoutCenter();
                                                 
                             text(new TextBuilder() {{
-                                text("World Map");
+                                text("Map of Arvenar");
                                 font("Interface/Fonts/verdana-48-regular.fnt");
                                 height("100%");
                                 width("100%");
@@ -147,19 +140,19 @@ public class MapViewScreen extends BaseAppState {
                     }});
                      
                     panel(new PanelBuilder("Panel_MapView_MapHolder"){{
-//                      
-                        x("500px");
+                      padding("20px");
+                        x("300px");
                         y("20px");
-                        height("80%");
-                        width("80%");
+                        height("90%");
+                        width("65%");
                         childLayoutCenter();
                             image(new ImageBuilder("img_WorldMap") {{
-                            filename("Interface/Images/Map/world_map.png");
+                            filename("Interface/Images/Map/caribbean.jpg");
                             height("100%");
                             width("100%");
                             }});
                             image(new ImageBuilder("img_LocalMap") {{
-                            filename("Interface/Images/Map/local_map.png");
+                            filename("Interface/Images/Map/localmap.png");
                             height("100%");
                             width("100%");
                             }});
@@ -167,16 +160,13 @@ public class MapViewScreen extends BaseAppState {
                     }});
                                
                     panel(new PanelBuilder("Panel_MapView_ViewButtons"){{
-                      
-//                      backgroundColor("#0f02");
-                        
                         x("50px");
                         y("120px");
                         height("500px");
                         width("500px"); 
                         childLayoutAbsoluteInside();
                                                                      
-                            image(new ImageBuilder("mapview_LocalMap"){{
+                            image(new ImageBuilder("btn_mapview_LocalMap"){{
                             filename("Interface/Images/MenuUI/button_0_localmap.png");
                             x("20px");
                             y("20px");
@@ -190,9 +180,9 @@ public class MapViewScreen extends BaseAppState {
                                 onStartHoverEffect(new HoverEffectBuilder("move"){{effectParameter("mode", "toOffset"); effectParameter("offsetX", "+10");}});
                             onStartHoverEffect(new HoverEffectBuilder("playSound"){{effectParameter("sound", "btnclick");}});
                             
-                        }});
+                            }});
                         
-                        image(new ImageBuilder("mapview_WorldMap"){{
+                            image(new ImageBuilder("btn_mapview_WorldMap"){{
                             filename("Interface/Images/MenuUI/button_0_worldmap.png");
                             x("20px");
                             y("70px");
@@ -206,9 +196,49 @@ public class MapViewScreen extends BaseAppState {
                                 onStartHoverEffect(new HoverEffectBuilder("move"){{effectParameter("mode", "toOffset"); effectParameter("offsetX", "+10");}});
                             onStartHoverEffect(new HoverEffectBuilder("playSound"){{effectParameter("sound", "btnclick");}});
                             
-                        }});
-                                                
                             }});
+                        }});    
+                            
+                    panel(new PanelBuilder("Panel_MapView_ZoomButtons"){{
+                        x("500px");
+                        y(SizeValue.px(screenHeight));
+                        height("100px");
+                        width("300px"); 
+                        childLayoutAbsoluteInside();
+                            
+                            image(new ImageBuilder("btn_mapview_ZoomIn"){{
+                            filename("Interface/Images/Map/button_0_zoomin.png");
+                            x("5px");
+                            y("5px");
+                            height("37px");
+                            width("147px");  
+                            
+                            interactOnClick("zoomInMap()");
+                            onStartHoverEffect(new HoverEffectBuilder("changeImage"){{
+                                effectParameter("active", "Interface/Images/Map/button_1_zoomin.png"); neverStopRendering(true);
+                                effectParameter("inactive", "Interface/Images/Map/button_0_zoomin.png"); neverStopRendering(true);}});
+                                onStartHoverEffect(new HoverEffectBuilder("move"){{effectParameter("mode", "toOffset"); effectParameter("offsetX", "+10");}});
+                            onStartHoverEffect(new HoverEffectBuilder("playSound"){{effectParameter("sound", "btnclick");}});
+                            
+                            }});
+                            
+                            image(new ImageBuilder("btn_mapview_ZoomOut"){{
+                            filename("Interface/Images/Map/button_0_zoomout.png");
+                            x("180px");
+                            y("5px");
+                            height("37px");
+                            width("147px");  
+                            
+                            interactOnClick("zoomOutMap()");
+                            onStartHoverEffect(new HoverEffectBuilder("changeImage"){{
+                                effectParameter("active", "Interface/Images/Map/button_1_zoomout.png"); neverStopRendering(true);
+                                effectParameter("inactive", "Interface/Images/Map/button_0_zoomout.png"); neverStopRendering(true);}});
+                                onStartHoverEffect(new HoverEffectBuilder("move"){{effectParameter("mode", "toOffset"); effectParameter("offsetX", "+10");}});
+                            onStartHoverEffect(new HoverEffectBuilder("playSound"){{effectParameter("sound", "btnclick");}});
+                            
+                            }});
+                                                
+                        }});
                    
                    
                     panel(new PanelBuilder("Panel_Paused_ScreenButtons"){{
@@ -236,9 +266,8 @@ public class MapViewScreen extends BaseAppState {
                             onStartHoverEffect(new HoverEffectBuilder("playSound"){{effectParameter("sound", "btnclick");}});
                               
                         }});
-                        
-                        }});
-                      }});  
+                      
+                    }});  
                 
                 }});
                 }}.build(nifty));

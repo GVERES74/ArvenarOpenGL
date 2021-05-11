@@ -321,13 +321,13 @@ public class GameAppState extends BaseAppState implements AnimEventListener{
             
             this.app.getRootNode().attachChild(level);
 
-            showGuiText("Level: "+gameLevel, 500, 650);
+            //showGuiText("Level: "+gameLevel, 500, 650);
              
         }
     
         private void loadAudio(){
         
-//            PlayGame.playMusic("Music/Soundtracks/Peaceful_Place.ogg");
+            PlayGame.playMusic("Music/Soundtracks/Peaceful_Place.ogg");
             playSound("Sounds/Ambient/Animals/ocean_seagull_mono.ogg", false, true, true, 0.5f, 0f, 0f, 500f);
             playSound("Sounds/Ambient/Fire/torchBurning.ogg", false, true, true, 1.5f, 620f, 7f, 250f); 
         }

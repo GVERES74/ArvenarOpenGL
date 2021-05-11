@@ -115,11 +115,11 @@ public class PausedScreen extends BaseAppState {
 //                        effectParameter("sound", "settingstheme");
 //                    }}); 
                 
-//                    image(new ImageBuilder() {{
-//                        filename("Interface/Images/background_settings.png");
-//                        height("100%");
-//                        width("100%");
-//                    }});
+                   image(new ImageBuilder("img_MapBackground") {{
+                            filename("Interface/Images/bkg_pirate_table.jpg");
+                            height("100%");
+                            width("100%");
+                            }});
                     
                     panel(new PanelBuilder("Panel_Paused_Background"){{
                         childLayoutAbsoluteInside();
@@ -127,10 +127,10 @@ public class PausedScreen extends BaseAppState {
                         width("80%");
                         x("50px");
                         y("50px");
-                        backgroundColor("#ee02");
+                        
                         
                      panel(new PanelBuilder("Panel_Paused_Title"){{
-//                       backgroundColor("#ff02");  
+//                       
                         x("50px");
                         y("20px");
                         height("100px");
@@ -151,8 +151,6 @@ public class PausedScreen extends BaseAppState {
                                
                     panel(new PanelBuilder("Panel_Paused_MenuButtons"){{
                       
-//                      backgroundColor("#0f02");
-                        
                         x("50px");
                         y("120px");
                         height("500px");
