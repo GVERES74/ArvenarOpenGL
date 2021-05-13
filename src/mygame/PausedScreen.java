@@ -12,9 +12,6 @@ import com.jme3.app.state.BaseAppState;
 import com.jme3.asset.AssetManager;
 import com.jme3.audio.AudioRenderer;
 import com.jme3.input.InputManager;
-import com.jme3.input.KeyInput;
-import com.jme3.input.controls.ActionListener;
-import com.jme3.input.controls.KeyTrigger;
 import com.jme3.renderer.RenderManager;
 import com.jme3.renderer.ViewPort;
 import com.jme3.scene.Node;
@@ -26,6 +23,7 @@ import de.lessvoid.nifty.builder.PanelBuilder;
 import de.lessvoid.nifty.builder.ScreenBuilder;
 import de.lessvoid.nifty.builder.TextBuilder;
 import de.lessvoid.nifty.screen.Screen;
+import de.lessvoid.nifty.tools.SizeValue;
 
 
 
@@ -47,7 +45,7 @@ public class PausedScreen extends BaseAppState {
     private Nifty nifty;
     private Screen screen;
                 
-    int screenWidth;
+    int screenWidth, screenHeight;
     
     @Override
     public void initialize(Application app) {
@@ -59,6 +57,7 @@ public class PausedScreen extends BaseAppState {
         this.inputManager = this.app.getInputManager();
         this.viewPort     = this.app.getViewPort();
         screenWidth = PlayGame.getPlayGameAppSettings().getWidth();
+        screenHeight = PlayGame.getPlayGameAppSettings().getHeight();
                 
         createPausedScreen();
 
@@ -115,23 +114,15 @@ public class PausedScreen extends BaseAppState {
 //                        effectParameter("sound", "settingstheme");
 //                    }}); 
                 
-                   image(new ImageBuilder("img_MapBackground") {{
+                   image(new ImageBuilder() {{
                             filename("Interface/Images/bkg_pirate_table.jpg");
                             height("100%");
                             width("100%");
                             }});
-                    
-                    panel(new PanelBuilder("Panel_Paused_Background"){{
-                        childLayoutAbsoluteInside();
-                        height("80%");
-                        width("80%");
-                        x("50px");
-                        y("50px");
                         
-                        
-                     panel(new PanelBuilder("Panel_Paused_Title"){{
+                    panel(new PanelBuilder("Panel_Paused_Title"){{
 //                       
-                        x("50px");
+                        x("20px");
                         y("20px");
                         height("100px");
                         width("250px");
@@ -155,12 +146,10 @@ public class PausedScreen extends BaseAppState {
                         y("120px");
                         height("500px");
                         width("500px"); 
-                        childLayoutAbsoluteInside();
+                        childLayoutVertical();
                                                                      
                             image(new ImageBuilder("pausedmenuimg_gamesettings"){{
                             filename("Interface/Images/MenuUI/button_0_pausedmenu_gamesettings.png");
-                            x("20px");
-                            y("20px");
                             height("37px");
                             width("147px");  
                             
@@ -190,8 +179,6 @@ public class PausedScreen extends BaseAppState {
                         
                         image(new ImageBuilder("pausedmenuimg_Character"){{
                             filename("Interface/Images/MenuUI/button_0_pausedmenu_character.png");
-                            x("20px");
-                            y("120px");
                             height("37px");
                             width("147px");   
                             interactOnClick("");
@@ -205,8 +192,6 @@ public class PausedScreen extends BaseAppState {
 
                         image(new ImageBuilder("pausedmenuimg_Mission"){{
                             filename("Interface/Images/MenuUI/button_0_pausedmenu_mission.png");
-                            x("20px");
-                            y("170px");
                             height("37px");
                             width("147px");     
                             interactOnClick("");
@@ -220,8 +205,6 @@ public class PausedScreen extends BaseAppState {
                         
                         image(new ImageBuilder("pausedmenuimg_Worldmap"){{
                             filename("Interface/Images/MenuUI/button_0_pausedmenu_worldmap.png");
-                            x("20px");
-                            y("220px");
                             height("37px");
                             width("147px");     
                             interactOnClick("showMap()");
@@ -238,18 +221,16 @@ public class PausedScreen extends BaseAppState {
                    
                     panel(new PanelBuilder("Panel_Paused_ScreenButtons"){{
 //                      
-                        childLayoutAbsoluteInside();
-                        padding("10px");
+                        childLayoutVertical();
+                        
                         x("50px");
-                        y("520px");
+                        y(SizeValue.px(screenHeight-300));
                         height("200px");
                         width("300px"); 
                                                 
                         
                         image(new ImageBuilder("settings_Apply"){{
                             filename("Interface/Images/MenuUI/button_0_apply.png");
-                            x("20px");
-                            y("20px");
                             height("40px");
                             width("150px");  
                             interactOnClick("popupApplySettings()");  
@@ -263,8 +244,6 @@ public class PausedScreen extends BaseAppState {
                         
                         image(new ImageBuilder("settings_Back"){{
                             filename("Interface/Images/MenuUI/button_0_back.png");
-                            x("20px");
-                            y("70px");
                             height("40px");
                             width("150px");    
                             interactOnClick("backToGame()");
@@ -280,8 +259,6 @@ public class PausedScreen extends BaseAppState {
                         
                         image(new ImageBuilder("settings_Exit"){{
                             filename("Interface/Images/MenuUI/button_0_quit.png");
-                            x("20px");
-                            y("120px");
                             height("40px");
                             width("150px");    
                             interactOnClick("backToMainMenu()");
@@ -294,15 +271,7 @@ public class PausedScreen extends BaseAppState {
                             onStartHoverEffect(new HoverEffectBuilder("playSound"){{effectParameter("sound", "btnclick");}});
                             }});
                         }});
-                    
-                        
-//                        popup(new PopupBuilder("popupExit") {{
-//                            childLayoutCenter();
-//                            backgroundColor("#000a");
-//                        }}.registerPopup(nifty));
-                            
-                      }});  
-                
+                      
                 }});
                 }}.build(nifty));
                         

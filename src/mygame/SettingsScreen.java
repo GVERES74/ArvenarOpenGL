@@ -30,6 +30,7 @@ import de.lessvoid.nifty.controls.slider.builder.SliderBuilder;
 import de.lessvoid.nifty.controls.tabs.builder.TabBuilder;
 import de.lessvoid.nifty.controls.tabs.builder.TabGroupBuilder;
 import de.lessvoid.nifty.screen.Screen;
+import de.lessvoid.nifty.tools.SizeValue;
 
 
 /**
@@ -51,7 +52,7 @@ public class SettingsScreen extends BaseAppState {
     private Screen screen;
     private Spatial mainScene;
     
-    int screenWidth;
+    int screenWidth, screenHeight;
     
     private Node settingsRootNode = new Node("Game Settings RootNode");
     private Node settingsGUINode = new Node("Game Settings GUINode");
@@ -67,6 +68,7 @@ public class SettingsScreen extends BaseAppState {
         this.inputManager = this.app.getInputManager();
         this.viewPort     = this.app.getViewPort();
         screenWidth = PlayGame.getPlayGameAppSettings().getWidth();
+        screenHeight = PlayGame.getPlayGameAppSettings().getHeight();
         createSettingsGUI();
                                                     
     }
@@ -121,17 +123,15 @@ public class SettingsScreen extends BaseAppState {
 //                    }}); 
                 
                     image(new ImageBuilder() {{
-                        filename("Interface/Images/background_settings.png");
+                        filename("Interface/Images/bkg_pirate_table.jpg");
                         height("100%");
                         width("100%");
                     }});
                     
                      panel(new PanelBuilder("Panel_Settings_Title"){{
-                        
-                         childLayoutAbsoluteInside(); //!! please remember if you want to set child x / y positions manually
-                        
-                        x("100px");
-                        y("30px");
+                        childLayoutCenter();
+                        x("20px");
+                        y("20px");
 
                         height("100px");
                         width("250px"); 
@@ -141,10 +141,6 @@ public class SettingsScreen extends BaseAppState {
                                 font("Interface/Fonts/Antiqua.fnt");
                                 height("100%");
                                 width("100%");
-                                padding("10px");
-                                x("20px");
-                                y("20px");
-                                
                                 
                             }});
                     }});        
@@ -272,19 +268,14 @@ public class SettingsScreen extends BaseAppState {
                 }});    
                    
                     panel(new PanelBuilder("Panel_Settings_ScreenButtons"){{
-//                        childLayoutVertical();
-                        childLayoutAbsoluteInside();
-                        padding("10px");
                         x("50px");
-                        y("520px");
+                        y(SizeValue.px(screenHeight-300));
                         height("200px");
                         width("300px"); 
-                                                
+                        childLayoutVertical();                        
                         
                         image(new ImageBuilder("settings_Apply"){{
                             filename("Interface/Images/MenuUI/button_0_apply.png");
-                            x("20px");
-                            y("20px");
                             height("40px");
                             width("150px");  
                             interactOnClick("popupApplySettings()");  
@@ -298,8 +289,6 @@ public class SettingsScreen extends BaseAppState {
                         
                         image(new ImageBuilder("settings_Back"){{
                             filename("Interface/Images/MenuUI/button_0_back.png");
-                            x("20px");
-                            y("70px");
                             height("40px");
                             width("150px");    
                             interactOnClick("backToMainMenu()");
@@ -316,15 +305,6 @@ public class SettingsScreen extends BaseAppState {
                                 
                         }});
                         }});
-                    
-                    
-                        
-//                        popup(new PopupBuilder("popupExit") {{
-//                            childLayoutCenter();
-//                            backgroundColor("#000a");
-//                        }}.registerPopup(nifty));
-                            
-                        
                 
                 }});
                 }}.build(nifty));

@@ -8,11 +8,12 @@ package mygame;
 import com.jme3.app.Application;
 import com.jme3.app.state.BaseAppState;
 import de.lessvoid.nifty.Nifty;
-import de.lessvoid.nifty.controls.NiftyControl;
+import de.lessvoid.nifty.controls.ScrollPanel;
+
 import de.lessvoid.nifty.elements.Element;
+import de.lessvoid.nifty.layout.align.VerticalAlign;
 import de.lessvoid.nifty.screen.Screen;
 import de.lessvoid.nifty.screen.ScreenController;
-import java.io.File;
 
 /**
  *  
@@ -24,8 +25,9 @@ public class MapViewScreenController extends BaseAppState implements ScreenContr
 
     private Nifty nifty;
     private Screen screen;
-    private Element mapholder;
+    private ScrollPanel scrollPanelMapViewer;
     private Element world_map, local_map, selected_map, map_zoomin, map_zoomout; 
+    private Element map_up, map_down, map_left, map_right;
     
     
     @Override
@@ -72,7 +74,7 @@ public class MapViewScreenController extends BaseAppState implements ScreenContr
     
     @Override
     public void update(float tpf) {
-    
+        
     
         //TODO: implement behavior during runtime    
     }
@@ -84,18 +86,23 @@ public class MapViewScreenController extends BaseAppState implements ScreenContr
         
         local_map = screen.findElementById("img_LocalMap");
         world_map = screen.findElementById("img_WorldMap");
-        mapholder = screen.findElementById("Panel_MapView_MapHolder");
+        scrollPanelMapViewer = screen.findNiftyControl("ScrollPanel_MapView_MapHolder", ScrollPanel.class);
         map_zoomin = screen.findElementById("btn_mapview_ZoomIn");
         map_zoomout = screen.findElementById("btn_mapview_ZoomOut");
     }
 
     @Override
     public void onStartScreen() {
-        mapholder.addChild(local_map); //add local map to the screen
-        mapholder.addChild(world_map); //add world map to the screen
+        scrollPanelMapViewer.getElement().addChild(local_map); //add local map to the screen
+        scrollPanelMapViewer.getElement().addChild(world_map); //add world map to the screen
         local_map.setVisible(false); //hide local map until it is selected
         selected_map = world_map;
-        mapholder.setClipChildren(true);
+        
+        scrollPanelMapViewer.setEnabled(false);
+                        
+        scrollPanelMapViewer.getElement().setClipChildren(true);
+        
+        
     }
 
     @Override
@@ -124,16 +131,48 @@ public class MapViewScreenController extends BaseAppState implements ScreenContr
     public void zoomInMap(){
        selected_map.setHeight((int) (selected_map.getHeight()+50));
        selected_map.setWidth((int) (selected_map.getWidth()+50));
+       
+       scrollPanelMapViewer.setEnabled(selected_map.getHeight() > scrollPanelMapViewer.getHeight());
+       
        System.out.println("Map zoom in");
     }
     
     public void zoomOutMap(){
-       if (selected_map.getHeight()>= mapholder.getHeight()){
+       if (selected_map.getHeight()>= scrollPanelMapViewer.getHeight()){
        selected_map.setHeight((int)(selected_map.getHeight()-50));
        selected_map.setWidth((int) (selected_map.getWidth()-50));
+       scrollPanelMapViewer.setEnabled(selected_map.getHeight() > scrollPanelMapViewer.getHeight());
        }
         
         System.out.println("Map zoom out");
+    }
+    
+    public void mapUp(){
+       //if (selected_map.getHeight()>= scrollPanelMapViewer.getHeight()){
+        scrollPanelMapViewer.setVerticalPos(scrollPanelMapViewer.getVerticalPos()-10);
+           
+       //}
+    }
+    
+    public void mapDown(){
+       //if (selected_map.getHeight()>= scrollPanelMapViewer.getHeight()){
+        scrollPanelMapViewer.setVerticalPos(scrollPanelMapViewer.getVerticalPos()+10);
+           
+       //}
+    }
+    
+    public void mapLeft(){
+       //if (selected_map.getHeight()>= scrollPanelMapViewer.getHeight()){
+        scrollPanelMapViewer.setHorizontalPos(scrollPanelMapViewer.getHorizontalPos()-10);
+           
+       //}
+    }
+    
+    public void mapRight(){
+       //if (selected_map.getHeight()>= scrollPanelMapViewer.getHeight()){
+        scrollPanelMapViewer.setHorizontalPos(scrollPanelMapViewer.getHorizontalPos()+10);
+           
+       //}
     }
     
     public void backToGame(){
