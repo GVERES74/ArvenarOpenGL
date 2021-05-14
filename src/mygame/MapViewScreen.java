@@ -58,6 +58,9 @@ public class MapViewScreen extends BaseAppState {
         
         screenHeight = PlayGame.getPlayGameAppSettings().getHeight();
         screenWidth = PlayGame.getPlayGameAppSettings().getWidth();
+        
+        ScrollPanelBuilder scrollpanel = new ScrollPanelBuilder("scroll");
+        
     }
 
     @Override
@@ -145,22 +148,34 @@ public class MapViewScreen extends BaseAppState {
                       
                         x("300px");
                         y("20px");
-                        width("70%");
-                        height("70%");
+                        width(SizeValue.px((int) (screenWidth/1.5)));
+                        height(SizeValue.px((int) (screenHeight/1.5)));
                         set("horizontal", "true");
                         set("vertical", "true");
-                        childLayoutCenter();
-                            image(new ImageBuilder("img_WorldMap") {{
-                            filename("Interface/Images/Map/caribbean.jpg");
-                            height("100%");
-                            width("100%");
-                            }});
-                            image(new ImageBuilder("img_LocalMap") {{
-                            filename("Interface/Images/Map/localmap.png");
-                            height("120%");
-                            width("120%");
-                            }});
+                        childLayoutOverlay();
                         
+                        panel(new PanelBuilder("Panel_MapView_MapImage"){{
+                        height("150%"); //panel must be oversized as well!!
+                        width("150%"); 
+                        childLayoutCenter();
+                        interactOnMouseWheel("enlargeMap()");
+                        
+                            image(new ImageBuilder("img_LocalMap") {{
+                                filename("Interface/Images/Map/localmap.jpg");
+                                height("100%");
+                                width("100%");
+                                alignCenter();
+                                valignCenter();
+                                }});    
+                            image(new ImageBuilder("img_WorldMap") {{
+                                filename("Interface/Images/Map/caribbean.jpg");
+                                height("100%");
+                                width("100%");
+                                alignCenter();
+                                valignCenter();
+                        }});
+                            
+                    }});    
                     }});
                                
                     panel(new PanelBuilder("Panel_MapView_ViewButtons"){{

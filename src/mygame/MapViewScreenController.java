@@ -7,11 +7,11 @@ package mygame;
 
 import com.jme3.app.Application;
 import com.jme3.app.state.BaseAppState;
+import com.jme3.input.event.MouseMotionEvent;
 import de.lessvoid.nifty.Nifty;
 import de.lessvoid.nifty.controls.ScrollPanel;
 
 import de.lessvoid.nifty.elements.Element;
-import de.lessvoid.nifty.layout.align.VerticalAlign;
 import de.lessvoid.nifty.screen.Screen;
 import de.lessvoid.nifty.screen.ScreenController;
 
@@ -26,19 +26,14 @@ public class MapViewScreenController extends BaseAppState implements ScreenContr
     private Nifty nifty;
     private Screen screen;
     private ScrollPanel scrollPanelMapViewer;
+    private Element panelMapViewer;
     private Element world_map, local_map, selected_map, map_zoomin, map_zoomout; 
     private Element map_up, map_down, map_left, map_right;
-    
+        
     
     @Override
     protected void initialize(Application app) {
-    
         
-        //It is technically safe to do all initialization and cleanup in the         
-        //onEnable()/onDisable() methods. Choosing to use initialize() and         
-        //cleanup() for this is a matter of performance specifics for the         
-        //implementor.        
-        //TODO: initialize your AppState, e.g. attach spatials to rootNode    
     }
 
     @Override
@@ -86,6 +81,7 @@ public class MapViewScreenController extends BaseAppState implements ScreenContr
         
         local_map = screen.findElementById("img_LocalMap");
         world_map = screen.findElementById("img_WorldMap");
+        panelMapViewer = screen.findElementById("Panel_MapView_MapImage");  
         scrollPanelMapViewer = screen.findNiftyControl("ScrollPanel_MapView_MapHolder", ScrollPanel.class);
         map_zoomin = screen.findElementById("btn_mapview_ZoomIn");
         map_zoomout = screen.findElementById("btn_mapview_ZoomOut");
@@ -93,16 +89,11 @@ public class MapViewScreenController extends BaseAppState implements ScreenContr
 
     @Override
     public void onStartScreen() {
-        scrollPanelMapViewer.getElement().addChild(local_map); //add local map to the screen
-        scrollPanelMapViewer.getElement().addChild(world_map); //add world map to the screen
-        local_map.setVisible(false); //hide local map until it is selected
+        scrollPanelMapViewer.setAutoScroll(ScrollPanel.AutoScroll.OFF); //must off to work the scrollbars!!
         selected_map = world_map;
-        
+        local_map.setVisible(false);
         scrollPanelMapViewer.setEnabled(false);
-                        
         scrollPanelMapViewer.getElement().setClipChildren(true);
-        
-        
     }
 
     @Override
@@ -112,67 +103,63 @@ public class MapViewScreenController extends BaseAppState implements ScreenContr
     
     public void showLocalMap(){
         selected_map = local_map;
-        
         local_map.setVisible(true);
         world_map.setVisible(false);
-        
         System.out.println("Local Map selected");
     }
     
     public void showWorldMap(){
         selected_map = world_map;
-        
-        local_map.setVisible(false);
         world_map.setVisible(true);
+        local_map.setVisible(false);
         System.out.println("World Map selected");
     }
     
         
     public void zoomInMap(){
-       selected_map.setHeight((int) (selected_map.getHeight()+50));
-       selected_map.setWidth((int) (selected_map.getWidth()+50));
-       
+       setSeaMapSize(50);
        scrollPanelMapViewer.setEnabled(selected_map.getHeight() > scrollPanelMapViewer.getHeight());
        
-       System.out.println("Map zoom in");
     }
     
     public void zoomOutMap(){
-       if (selected_map.getHeight()>= scrollPanelMapViewer.getHeight()){
-       selected_map.setHeight((int)(selected_map.getHeight()-50));
-       selected_map.setWidth((int) (selected_map.getWidth()-50));
+       setSeaMapSize(-50);
        scrollPanelMapViewer.setEnabled(selected_map.getHeight() > scrollPanelMapViewer.getHeight());
-       }
-        
-        System.out.println("Map zoom out");
+       
     }
     
     public void mapUp(){
-       //if (selected_map.getHeight()>= scrollPanelMapViewer.getHeight()){
+      
         scrollPanelMapViewer.setVerticalPos(scrollPanelMapViewer.getVerticalPos()-10);
            
-       //}
+      
     }
     
     public void mapDown(){
-       //if (selected_map.getHeight()>= scrollPanelMapViewer.getHeight()){
+      
         scrollPanelMapViewer.setVerticalPos(scrollPanelMapViewer.getVerticalPos()+10);
            
-       //}
+      
     }
     
     public void mapLeft(){
-       //if (selected_map.getHeight()>= scrollPanelMapViewer.getHeight()){
+      
         scrollPanelMapViewer.setHorizontalPos(scrollPanelMapViewer.getHorizontalPos()-10);
            
-       //}
+      
     }
     
     public void mapRight(){
-       //if (selected_map.getHeight()>= scrollPanelMapViewer.getHeight()){
+      
         scrollPanelMapViewer.setHorizontalPos(scrollPanelMapViewer.getHorizontalPos()+10);
            
-       //}
+      
+    }
+    
+    public void enlargeMap(){
+
+        setSeaMapSize(50);
+        
     }
     
     public void backToGame(){
@@ -182,5 +169,15 @@ public class MapViewScreenController extends BaseAppState implements ScreenContr
         
         //also calls screen's onDisable() method
                 
+    }
+    
+    public void setSeaMapSize(int count){
+       selected_map.setHeight((int) (selected_map.getHeight()+count));
+       selected_map.setWidth((int) (selected_map.getWidth()+count));
+       if(selected_map.getHeight() < scrollPanelMapViewer.getHeight()){
+           selected_map.setHeight(scrollPanelMapViewer.getHeight());
+           selected_map.setWidth(scrollPanelMapViewer.getWidth());
+       }
+              
     }
 }

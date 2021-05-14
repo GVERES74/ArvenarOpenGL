@@ -172,4 +172,9 @@ public class HUDScreen extends BaseAppState {
                 nifty.gotoScreen("Screen_HUD");
                 System.out.println(screenHeight);
     }
+    
+    public void decreasePlayerHealthBar(){
+        int healthpoints = nifty.getCurrentScreen().findElementById("HUD_PlayerHealthValueBar").getWidth();
+                nifty.getCurrentScreen().findElementById("HUD_PlayerHealthValueBar").setWidth(healthpoints-10);
+    }
 }

@@ -94,6 +94,8 @@ public class GameAppState extends BaseAppState implements AnimEventListener{
     private float waveTime = 0.0f;
     private float ppWaterHeight = 0.0f;
     
+    private int playerhp = 100;
+    
     
     @Override
     public void initialize(Application app) {
@@ -328,8 +330,8 @@ public class GameAppState extends BaseAppState implements AnimEventListener{
         private void loadAudio(){
         
             PlayGame.playMusic("Music/Soundtracks/Peaceful_Place.ogg");
-            playSound("Sounds/Ambient/Animals/ocean_seagull_mono.ogg", false, true, true, 0.5f, 0f, 0f, 500f);
-            playSound("Sounds/Ambient/Fire/torchBurning.ogg", false, true, true, 1.5f, 620f, 7f, 250f); 
+            playSound("Sounds/Ambient/Animals/ocean_seagull_mono.ogg", false, true, true, 1.5f, 0f, 0f, 500f);
+            playSound("Sounds/Ambient/Fire/torchBurning.ogg", false, true, true, 1.5f, -620f, 7f, 250f); 
         }
         
         public void playSound(String filepath, boolean directional, boolean positional, boolean looping, float volume, float xpos, float ypos, float zpos){
@@ -360,11 +362,12 @@ public class GameAppState extends BaseAppState implements AnimEventListener{
             this.app.getInputManager().addMapping("StrafeLeft", new KeyTrigger(KeyInput.KEY_A));
             this.app.getInputManager().addMapping("StrafeRight", new KeyTrigger(KeyInput.KEY_D));
             this.app.getInputManager().addMapping("Jump", new KeyTrigger(KeyInput.KEY_SPACE));
+            this.app.getInputManager().addMapping("Crouch", new KeyTrigger(KeyInput.KEY_LCONTROL));
             this.app.getInputManager().addMapping("PauseGame", new KeyTrigger(KeyInput.KEY_ESCAPE));
             this.app.getInputManager().addMapping("MapView", new KeyTrigger(KeyInput.KEY_M));
             
 
-            this.app.getInputManager().addListener(actionListener, "Forward", "Backward", "StrafeLeft", "StrafeRight", "Jump", "PauseGame", "MapView");
+            this.app.getInputManager().addListener(actionListener, "Forward", "Backward", "StrafeLeft", "StrafeRight", "Jump", "Crouch", "PauseGame", "MapView");
             
         }
         
@@ -372,7 +375,7 @@ public class GameAppState extends BaseAppState implements AnimEventListener{
     @Override
     public void update(float tpf) {
         //TODO: implement behavior during runtime
-        
+        if (playerhp < 20) showGuiText("You are dead..", 500, 650); ;
         updateAdvancedWater(tpf);
         
         camDir.set(this.app.getCamera().getDirection().multLocal(0.6f));
@@ -408,21 +411,18 @@ public class GameAppState extends BaseAppState implements AnimEventListener{
                     case "Jump": if (keyPressed) {firstPersonPlayer.jump(new Vector3f(0,20f,0));
                                  decreasePlayerHealth(); 
                                   }; break;
+                    case "Crouch": if (keyPressed) {camera.setLocation(new Vector3f(camera.getLocation().x,camera.getLocation().y-2, camera.getLocation().z));}
+                                    break;
+                                                     
                     case "PauseGame": if (!PlayGame.getPlayGameApp().getStateManager().hasState(PlayGame.paused_screen) &&!keyPressed){ 
                                            PlayGame.attachAppState(PlayGame.paused_screen);
-                                                                                 
-                                           System.out.println("Paused"+PlayGame.getNiftyDisplay().getNifty().getAllScreensName());
-                                        } else
-                                      if (PlayGame.getPlayGameApp().getStateManager().hasState(PlayGame.paused_screen)&&!keyPressed){ 
-                                          PlayGame.detachAppState(PlayGame.paused_screen);
-                                          
-                                           System.out.println("Unpaused");
-                                        }  break;  
+                                        } else if (!keyPressed){
+                                          PlayGame.detachAppState(PlayGame.paused_screen);} break;  
                                         
                     case "MapView": if (!PlayGame.getPlayGameApp().getStateManager().hasState(PlayGame.mapview_screen) &&!keyPressed){
                                         PlayGame.attachAppState(PlayGame.mapview_screen);}
                                     else if (!keyPressed){
-                                        PlayGame.detachAppState(PlayGame.mapview_screen);}
+                                        PlayGame.detachAppState(PlayGame.mapview_screen);} break;
                 }
                 
                 if (keyPressed) {   
@@ -481,7 +481,7 @@ public class GameAppState extends BaseAppState implements AnimEventListener{
     }
     
     public void decreasePlayerHealth(){
-        new HUDScreenController().updateHealth();
-        
+        PlayGame.ingameHud.decreasePlayerHealthBar();
+        playerhp -=10;
     }
 }

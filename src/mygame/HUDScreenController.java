@@ -88,8 +88,6 @@ public class HUDScreenController extends BaseAppState implements ScreenControlle
         
     }
     
-    public void updateHealth(){
-        //imghealthbarvalue.setWidth(SizeValue.px(100));
-    }
+   
     
 }
