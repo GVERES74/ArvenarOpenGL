@@ -45,10 +45,8 @@ import com.jme3.renderer.queue.RenderQueue;
 import com.jme3.scene.Geometry;
 import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
-import com.jme3.texture.Image;
 import com.jme3.water.SimpleWaterProcessor;
 import com.jme3.water.WaterFilter;
-import de.lessvoid.nifty.screen.Screen;
 
 /**
  *
@@ -89,7 +87,7 @@ public class GameAppState extends BaseAppState implements AnimEventListener{
     //for Post process water effectprocessor
     private FilterPostProcessor ppFilter;
     private WaterFilter ppWaterFilter;
-    private Vector3f ppLightDir = new Vector3f(5.0f, -1.0f, -5f); // same as light source
+    private Vector3f ppLightDir = new Vector3f(7.0f, -1.0f, -4.0f); // same as light source
     private float ppInitialWaterHeight = 0.5f; // choose a value for your scene
     private float waveTime = 0.0f;
     private float ppWaterHeight = 0.0f;
@@ -112,7 +110,7 @@ public class GameAppState extends BaseAppState implements AnimEventListener{
                 
         inputManager.deleteMapping(SimpleApplication.INPUT_MAPPING_EXIT); //delete ESC key quit app function
                 
-        //createRock();
+        
         loadScene("Scenes/S2_Summerdale/S2M0_shore.j3o");
         loadSceneModels();
         //createSimpleWater(1600f, 1600f, -800, -6, 800);
@@ -149,7 +147,8 @@ public class GameAppState extends BaseAppState implements AnimEventListener{
             createModel("Models/Crate/Crate-05.obj", "Models/Crate/wood_crate.j3m", -635f, 7f, 255f, 1f, 0f, 5f);
             
             createModel("Models/Cage/CageBed.j3o", "Models/Cage/cage.j3m", -650f, 7f, 300f, -2f, 0f, 3f);
-//            
+            
+            
             createModel("Models/Barrel/mini_wood_barrel.obj", "Models/Barrel/wood_barrel.j3m", -645f, 7f, 237f, 1f, 0f, 0.05f);
             createModel("Models/Barrel/mini_wood_barrel.obj", "Models/Barrel/wood_barrel.j3m", -640f, 7f, 237f, 1f, 0f, 0.05f);
         }   
@@ -170,7 +169,7 @@ public class GameAppState extends BaseAppState implements AnimEventListener{
         public void addAmbientLight(){
         
             DirectionalLight sun = new DirectionalLight();
-            sun.setDirection(new Vector3f(-0.3f, -0.7f, -3.0f));
+            sun.setDirection(new Vector3f(-0.5f, -1f, -3.0f));
             this.app.getRootNode().addLight(sun);
         }
     

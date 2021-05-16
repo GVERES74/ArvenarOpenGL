@@ -11,7 +11,6 @@ import de.lessvoid.nifty.Nifty;
 import de.lessvoid.nifty.controls.NiftyControl;
 import de.lessvoid.nifty.screen.Screen;
 import de.lessvoid.nifty.screen.ScreenController;
-import de.lessvoid.nifty.tools.SizeValue;
 
 /**
  *  

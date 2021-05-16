@@ -7,7 +7,6 @@ package mygame;
 
 import com.jme3.app.Application;
 import com.jme3.app.state.BaseAppState;
-import com.jme3.input.event.MouseMotionEvent;
 import de.lessvoid.nifty.Nifty;
 import de.lessvoid.nifty.controls.ScrollPanel;
 
