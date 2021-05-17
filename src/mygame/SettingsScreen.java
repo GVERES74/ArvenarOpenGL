@@ -69,6 +69,8 @@ public class SettingsScreen extends BaseAppState {
         this.viewPort     = this.app.getViewPort();
         screenWidth = PlayGame.getPlayGameAppSettings().getWidth();
         screenHeight = PlayGame.getPlayGameAppSettings().getHeight();
+        inputManager.deleteMapping(SimpleApplication.INPUT_MAPPING_EXIT); //delete ESC key quit app function
+        
         createSettingsGUI();
                                                     
     }
@@ -86,15 +88,14 @@ public class SettingsScreen extends BaseAppState {
 
      @Override
     protected void onEnable() {
-        
+        enableSettingsScreen();
        
     }
     
     @Override
     protected void onDisable() {
-        nifty.removeScreen("Screen_GameSettings");
-        PlayGame.ingameHud.enableHud(); //ez csak itt van, máshol nem kell meghívni
-        app.getFlyByCamera().setDragToRotate(false); //mouse freelook
+        disableSettingsScreen();
+        
     }
     
     public void createSettingsGUI(){
@@ -312,5 +313,19 @@ public class SettingsScreen extends BaseAppState {
                 
                 nifty.gotoScreen("Screen_GameSettings");
     }
+    
+     public void enableSettingsScreen(){
+         
+        nifty.gotoScreen("Screen_GameSettings");
+        app.getFlyByCamera().setDragToRotate(true);
+     }
+     
+     public void disableSettingsScreen(){
+         
+        nifty.removeScreen("Screen_GameSettings");
+        app.getFlyByCamera().setDragToRotate(false);
+        PlayGame.getNiftyDisplay().getNifty().gotoScreen("Screen_HUD");
+     }
+     
     
 }

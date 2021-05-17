@@ -55,7 +55,7 @@ public class HUDScreen extends BaseAppState {
     @Override
     protected void onEnable() {
         
-            
+           enableHUDScreen(); 
         //Called when the state is fully enabled, ie: is attached and         
         //isEnabled() is true or when the setEnabled() status changes after the         
         //state is attached.    
@@ -64,6 +64,7 @@ public class HUDScreen extends BaseAppState {
     @Override
     protected void onDisable() {
        
+        disableHUDScreen();
         //Called when the state was previously enabled but is now disabled         
         //either because setEnabled(false) was called or the state is being         
         //cleaned up.    
@@ -75,11 +76,7 @@ public class HUDScreen extends BaseAppState {
         //TODO: implement behavior during runtime    
     }
     
-    public void enableHud(){
-        
-       nifty.gotoScreen("Screen_HUD");
-    }
-    
+       
     
     public void createHUDScreen(){
         
@@ -171,6 +168,18 @@ public class HUDScreen extends BaseAppState {
                         
                 nifty.gotoScreen("Screen_HUD");
                 System.out.println(screenHeight);
+    }
+    
+    public void enableHUDScreen(){
+        nifty.gotoScreen("Screen_HUD");
+        app.getFlyByCamera().setDragToRotate(false);
+        
+    }
+    
+    public void disableHUDScreen(){
+        nifty.removeScreen("Screen_HUD");
+        app.getFlyByCamera().setDragToRotate(true);
+        
     }
     
     public void decreasePlayerHealthBar(){

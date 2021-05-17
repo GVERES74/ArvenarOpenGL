@@ -58,6 +58,7 @@ public class PausedScreen extends BaseAppState {
         this.viewPort     = this.app.getViewPort();
         screenWidth = PlayGame.getPlayGameAppSettings().getWidth();
         screenHeight = PlayGame.getPlayGameAppSettings().getHeight();
+        inputManager.deleteMapping(SimpleApplication.INPUT_MAPPING_EXIT); //delete ESC key quit app function
                 
         createPausedScreen();
 
@@ -76,7 +77,7 @@ public class PausedScreen extends BaseAppState {
 
      @Override
     protected void onEnable() {
-        
+        enablePausedScreen();
     }
       
 
@@ -84,10 +85,7 @@ public class PausedScreen extends BaseAppState {
     @Override
     protected void onDisable() {
 
-       nifty.removeScreen("Screen_PausedMenu");
-       PlayGame.ingameHud.enableHud(); //ez csak itt van, máshol nem kell meghívni
-       
-       app.getFlyByCamera().setDragToRotate(false); //mouse freelook
+       disablePausedScreen();
                         
     }
     
@@ -278,10 +276,13 @@ public class PausedScreen extends BaseAppState {
                 nifty.gotoScreen("Screen_PausedMenu");
     }
     
-    public void enablePausedMenu(){
-        
-       nifty.gotoScreen("Screen_PausedMenu");
+    public void enablePausedScreen(){
+        nifty.gotoScreen("Screen_PausedMenu");
+        app.getFlyByCamera().setDragToRotate(true);
     }
     
-    
+    public void disablePausedScreen(){
+        nifty.removeScreen("Screen_PausedMenu");
+        app.getFlyByCamera().setDragToRotate(false);
+    }
 }

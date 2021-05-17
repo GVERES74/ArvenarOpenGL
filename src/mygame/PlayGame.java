@@ -5,9 +5,6 @@ import com.jme3.app.state.AppState;
 import com.jme3.audio.AudioNode;
 
 import com.jme3.export.binary.BinaryImporter;
-import com.jme3.input.KeyInput;
-import com.jme3.input.controls.ActionListener;
-import com.jme3.input.controls.KeyTrigger;
 import com.jme3.niftygui.NiftyJmeDisplay;
 import com.jme3.renderer.RenderManager;
 import com.jme3.system.AppSettings;
@@ -25,7 +22,7 @@ public class PlayGame extends SimpleApplication{
     static PlayGame app;
     static AppSettings settings;
     static NiftyJmeDisplay niftyDisplay;
-    private Nifty nifty;
+    private static Nifty nifty;
     
     public static GameAppState gameplayState;
     
@@ -141,6 +138,12 @@ public class PlayGame extends SimpleApplication{
        
     public static void detachAppState(AppState appstate){
         app.getStateManager().detach(appstate);
+    }
+    
+    public static void switchNiftyScreen(String removeid, String gotoid){
+        
+        nifty.removeScreen(removeid);
+        nifty.gotoScreen(gotoid);
     }
     
        

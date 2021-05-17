@@ -58,8 +58,11 @@ public class MapViewScreen extends BaseAppState {
         
         screenHeight = PlayGame.getPlayGameAppSettings().getHeight();
         screenWidth = PlayGame.getPlayGameAppSettings().getWidth();
+        inputManager.deleteMapping(SimpleApplication.INPUT_MAPPING_EXIT); //delete ESC key quit app function
         
-        ScrollPanelBuilder scrollpanel = new ScrollPanelBuilder("scroll");
+        //ScrollPanelBuilder scrollpanel = new ScrollPanelBuilder("scroll");
+        
+        createMapViewScreen();
         
     }
 
@@ -75,7 +78,8 @@ public class MapViewScreen extends BaseAppState {
     //graph attachment or input listener attachment.    
     @Override
     protected void onEnable() {
-        createMapViewScreen();
+        
+        enableMapViewScreen();
         //Called when the state is fully enabled, ie: is attached and         
         //isEnabled() is true or when the setEnabled() status changes after the         
         //state is attached.    
@@ -83,10 +87,8 @@ public class MapViewScreen extends BaseAppState {
     
     @Override
     protected void onDisable() {
-    
-        nifty.removeScreen("Screen_MapScreen");
-        app.getFlyByCamera().setDragToRotate(false);
-        PlayGame.ingameHud.enableHud();
+        
+        disableMapViewScreen();
             //Called when the state was previously enabled but is now disabled         
         //either because setEnabled(false) was called or the state is being         
         //cleaned up.    
@@ -358,8 +360,15 @@ public class MapViewScreen extends BaseAppState {
                 nifty.gotoScreen("Screen_MapScreen");
     }
     
-    public void enableMapView(){
+    public void enableMapViewScreen(){
+        PlayGame.app.getFlyByCamera().setDragToRotate(true);
         nifty.gotoScreen("Screen_MapScreen");
+    }
+    
+    public void disableMapViewScreen(){
+        PlayGame.app.getFlyByCamera().setDragToRotate(false);
+        nifty.removeScreen("Screen_MapScreen");
+        PlayGame.getNiftyDisplay().getNifty().gotoScreen("Screen_HUD");
     }
        
 }

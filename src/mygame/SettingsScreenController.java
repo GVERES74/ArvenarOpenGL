@@ -188,8 +188,10 @@ public class SettingsScreenController extends BaseAppState implements ScreenCont
     }
     
     public void backToMainMenu(){
-        System.out.println("back button pressed...");
+        System.out.println("Back button pressed...");
+        
         PlayGame.detachAppState(PlayGame.settings_screen);
+        
         
         //PlayGame.musicPlayer.stop();
             

@@ -66,6 +66,7 @@ public class MainMenuScreenController extends BaseAppState implements ScreenCont
         PlayGame.detachAppState(PlayGame.mainMenu_screen);
         PlayGame.attachAppState(PlayGame.gameplayState);
         
+        
     }
         
         
@@ -75,19 +76,15 @@ public class MainMenuScreenController extends BaseAppState implements ScreenCont
         System.out.println("Game Settings button pressed...");
         PlayGame.musicPlayer.stop();
         
-        PlayGame.detachAppState(PlayGame.mainMenu_screen);
         PlayGame.attachAppState(PlayGame.settings_screen);
-        //PlayGame.getNiftyDisplay().getNifty().gotoScreen("Screen_GameSettings");
         
-               
-       
     }
     
     public void creditsGame(){
         System.out.println("Game Credits button pressed...");
         //nifty.gotoScreen(nextScreen);
         PlayGame.musicPlayer.stop();
-        PlayGame.detachAppState(PlayGame.mainMenu_screen);
+        
         PlayGame.attachAppState(PlayGame.credits_screen);
                 
         

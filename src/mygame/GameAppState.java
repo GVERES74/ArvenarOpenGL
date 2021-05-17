@@ -374,7 +374,8 @@ public class GameAppState extends BaseAppState implements AnimEventListener{
     @Override
     public void update(float tpf) {
         //TODO: implement behavior during runtime
-        if (playerhp < 20) showGuiText("You are dead..", 500, 650); ;
+        if (playerhp < 2) showGuiText("You are dead..", 500, 650); ;
+        
         updateAdvancedWater(tpf);
         
         camDir.set(this.app.getCamera().getDirection().multLocal(0.6f));
@@ -389,7 +390,7 @@ public class GameAppState extends BaseAppState implements AnimEventListener{
         firstPersonPlayer.setWalkDirection(walkDirection);
         this.app.getCamera().setLocation(firstPersonPlayer.getPhysicsLocation());
         
-        npcPlayer.move(0.001f, 0, 0.001f);
+        npcPlayer.move(0.01f, 0, 0.01f);
         
         particle1.setLocalTranslation(
                 new Vector3f(
@@ -465,9 +466,10 @@ public class GameAppState extends BaseAppState implements AnimEventListener{
 
     @Override
     protected void onEnable() {
-        app.getFlyByCamera().setDragToRotate(false); //mouse freelook
+        PlayGame.attachAppState(PlayGame.ingameHud);
+        
         System.out.print("GameAppState onEnable() called......");
-        this.app.getStateManager().attach(PlayGame.ingameHud);
+        
     }
 
     @Override

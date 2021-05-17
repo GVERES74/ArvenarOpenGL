@@ -118,6 +118,7 @@ public class MainMenuScreen extends BaseAppState {
         loadAmbientSound();
         
         initMenuControls();
+        createMainMenu();
         
         
     //TODO: initialize your AppState, e.g. attach spatials to rootNode
@@ -386,8 +387,8 @@ public class MainMenuScreen extends BaseAppState {
     @Override
     public void cleanup(Application app) {
         System.out.println("MainMenuScreen cleanup called.....");
-        startRootNode.detachAllChildren();
-        rootNode.detachChild(mainScene);
+       // startRootNode.detachAllChildren();
+       // rootNode.detachChild(mainScene);
 
     }    
         
@@ -395,6 +396,17 @@ public class MainMenuScreen extends BaseAppState {
    
     @Override
     protected void onEnable(){
+        enableMainMenuScreen();       
+    }
+
+
+    @Override
+    protected void onDisable() {
+        disableMainMenuScreen();
+        
+    }
+    
+    public void createMainMenu(){
         loadMenuMusic();
         app.setDisplayStatView(false); 
         nifty = PlayGame.getNiftyDisplay().getNifty();
@@ -601,15 +613,17 @@ public class MainMenuScreen extends BaseAppState {
                 
                nifty.gotoScreen("Screen_MainMenu");
         
-               
-    }
-
-    
-
-    @Override
-    protected void onDisable() {
-    
         
+    }
+    
+    public void enableMainMenuScreen(){
+        nifty.gotoScreen("Screen_MainMenu");
+        app.getFlyByCamera().setDragToRotate(true);
+    }
+    
+    public void disableMainMenuScreen(){
+        nifty.removeScreen("Screen_MainMenu");
+        app.getFlyByCamera().setDragToRotate(false);
     }
  }
 
