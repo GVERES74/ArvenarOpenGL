@@ -23,6 +23,7 @@ import de.lessvoid.nifty.builder.LayerBuilder;
 import de.lessvoid.nifty.builder.PanelBuilder;
 import de.lessvoid.nifty.builder.ScreenBuilder;
 import de.lessvoid.nifty.builder.TextBuilder;
+import de.lessvoid.nifty.controls.Slider;
 import de.lessvoid.nifty.controls.checkbox.builder.CheckboxBuilder;
 import de.lessvoid.nifty.controls.dropdown.builder.DropDownBuilder;
 import de.lessvoid.nifty.controls.label.builder.LabelBuilder;
@@ -72,7 +73,7 @@ public class SettingsScreen extends BaseAppState {
         inputManager.deleteMapping(SimpleApplication.INPUT_MAPPING_EXIT); //delete ESC key quit app function
         
         createSettingsGUI();
-                                                    
+                  
     }
     
     @Override
@@ -235,24 +236,55 @@ public class SettingsScreen extends BaseAppState {
                         
                         control(new TabBuilder("tab_AudioSettings", "Audio"){{
                                 childLayoutAbsoluteInside();    
-                                    control(new LabelBuilder("label_Volume") {{
-                                        text("Volume");   
+                                    control(new LabelBuilder("label_MusicVolume") {{
+                                        text("Music Volume");   
                                         x("20px");
                                         y("60px");  
                                                                                 
                                     }});
                                     
-                                    control(new SliderBuilder("slider_Volume", false){{
+                                    control(new SliderBuilder("slider_MusicVolume", false){{
                                         width("200px");
                                         x("120px");
                                         y("60px");
+                                        min(0.0f);
+                                        max(100f);
+                                        initial(50.0f);
+                                        stepSize(10f);
+                                        buttonStepSize(10f);
                                     }});
                                     
-                                    control(new LabelBuilder("label_Slider_Volume") {{
+                                    control(new LabelBuilder("label_Slider_MusicVolume") {{
                                         text("%");
                                         width("50px");
                                         x("340px");
                                         y("60px");  
+                                                                                
+                                    }});
+                                    
+                                    control(new LabelBuilder("label_SoundVolume") {{
+                                        text("Sound Volume");   
+                                        x("20px");
+                                        y("100px");  
+                                                                                
+                                    }});
+                                    
+                                    control(new SliderBuilder("slider_SoundVolume", false){{
+                                        width("200px");
+                                        x("120px");
+                                        y("100px");
+                                        min(0.0f);
+                                        max(100f);
+                                        initial(50.0f);
+                                        stepSize(10f);
+                                        buttonStepSize(10f);
+                                    }});
+                                    
+                                    control(new LabelBuilder("label_Slider_SoundVolume") {{
+                                        text("%");
+                                        width("50px");
+                                        x("340px");
+                                        y("100px");  
                                                                                 
                                     }});
                                                                  

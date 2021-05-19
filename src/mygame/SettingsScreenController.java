@@ -11,10 +11,12 @@ import com.jme3.app.state.AppStateManager;
 import com.jme3.app.state.BaseAppState;
 import com.jme3.system.AppSettings;
 import de.lessvoid.nifty.Nifty;
+import de.lessvoid.nifty.NiftyEventSubscriber;
 import de.lessvoid.nifty.controls.CheckBox;
 import de.lessvoid.nifty.controls.DropDown;
 import de.lessvoid.nifty.controls.Label;
 import de.lessvoid.nifty.controls.Slider;
+import de.lessvoid.nifty.controls.SliderChangedEvent;
 import de.lessvoid.nifty.controls.Tab;
 import de.lessvoid.nifty.controls.TabGroup;
 import de.lessvoid.nifty.screen.Screen;
@@ -22,9 +24,9 @@ import de.lessvoid.nifty.screen.ScreenController;
 import java.awt.DisplayMode;
 import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
-import java.util.Arrays;
 import java.util.HashSet;
 import java.util.prefs.BackingStoreException;
+import javax.annotation.Nonnull;
 
 
 /**
@@ -48,8 +50,8 @@ public class SettingsScreenController extends BaseAppState implements ScreenCont
     private DropDown dropdownBitDepth;
     private DropDown dropdownRefreshRate;
     private CheckBox checkboxFullscreen, checkboxShowFps;
-    private Slider sliderVol;
-    private Label labelSliderVol;
+    private Slider sliderMusicVol, sliderSoundVol;
+    private Label labelSliderMusicVol, labelSliderSoundVol;
     private int width, height;
     
     HashSet<DisplayMode> hashsetdmodes =new HashSet<DisplayMode>();
@@ -63,7 +65,8 @@ public class SettingsScreenController extends BaseAppState implements ScreenCont
     @Override
     public void update(float tpf) {
         
-        labelSliderVol.setText(sliderVol.getValue()+"%");
+        labelSliderMusicVol.setText(sliderMusicVol.getValue()+"%");
+        labelSliderSoundVol.setText(sliderSoundVol.getValue()+"%");
     }
     
 
@@ -168,12 +171,16 @@ public class SettingsScreenController extends BaseAppState implements ScreenCont
         dropdownRefreshRate = screen.findNiftyControl("dropdown_RefreshRate", DropDown.class);
         
         checkboxFullscreen = screen.findNiftyControl("cb_Fullscreen", CheckBox.class);
+        checkboxFullscreen.setChecked(PlayGame.getPlayGameAppSettings().isFullscreen());
         checkboxShowFps = screen.findNiftyControl("cb_ShowFps", CheckBox.class);
         
-        sliderVol = screen.findNiftyControl("slider_Volume", Slider.class);
-        sliderVol.setValue(50f);
-        labelSliderVol = screen.findNiftyControl("label_Slider_Volume", Label.class);
-        labelSliderVol.setText(sliderVol.getValue()+"%");
+        sliderMusicVol = screen.findNiftyControl("slider_MusicVolume", Slider.class);
+        labelSliderMusicVol = screen.findNiftyControl("label_Slider_MusicVolume", Label.class);
+        labelSliderMusicVol.setText((int)sliderMusicVol.getValue()+"%");
+        
+        sliderSoundVol = screen.findNiftyControl("slider_SoundVolume", Slider.class);
+        labelSliderSoundVol = screen.findNiftyControl("label_Slider_SoundVolume", Label.class);
+        labelSliderSoundVol.setText((int)sliderSoundVol.getValue()+"%");
         
     }
     
@@ -224,7 +231,8 @@ public class SettingsScreenController extends BaseAppState implements ScreenCont
     }
     
     public void changeAudioSettings(){
-        PlayGame.musicPlayer.setVolume(sliderVol.getValue());
+        PlayGame.musicPlayer.setVolume(sliderMusicVol.getValue());
+        PlayGame.soundPlayer.setVolume(sliderSoundVol.getValue());
     }
     
     public void applySettings() throws BackingStoreException {
@@ -238,5 +246,20 @@ public class SettingsScreenController extends BaseAppState implements ScreenCont
    
     public void saveSettings() throws BackingStoreException{
         PlayGame.getPlayGameAppSettings().save("com/foo/ArvenarGL");
+    }
+    
+    @NiftyEventSubscriber(id="slider_MusicVolume")
+    public void onMusicVolumeSliderChanged(final String id, @Nonnull final SliderChangedEvent sliderChangedEvent) {
+                       
+        labelSliderMusicVol.setText((int)sliderMusicVol.getValue()+"%");
+        PlayGame.musicPlayer.setVolume(sliderMusicVol.getValue()/100); //values 0.0f - 1.0f !!
+        
+    }
+    
+     @NiftyEventSubscriber(id="slider_SoundVolume")
+    public void onSoundVolumeSliderChanged(final String id, @Nonnull final SliderChangedEvent sliderChangedEvent) {
+                      
+        labelSliderSoundVol.setText((int)sliderSoundVol.getValue()+"%");
+        PlayGame.soundPlayer.setVolume(sliderSoundVol.getValue()/100); //values 0.0f - 1.0f !!
     }
 }

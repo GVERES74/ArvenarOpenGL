@@ -1,5 +1,6 @@
 package mygame;
 
+import Levels.S2M0_shore;
 import com.jme3.app.SimpleApplication;
 import com.jme3.app.state.AppState;
 import com.jme3.audio.AudioNode;
@@ -20,11 +21,12 @@ import java.util.prefs.BackingStoreException;
 public class PlayGame extends SimpleApplication{
        
     static PlayGame app;
-    static AppSettings settings;
+    static AppSettings appsettings;
     static NiftyJmeDisplay niftyDisplay;
     private static Nifty nifty;
     
     public static GameAppState gameplayState;
+    public S2M0_shore levelS1M0;
     
     public static MainMenuScreen mainMenu_screen;
     public static SettingsScreen settings_screen;
@@ -39,12 +41,12 @@ public class PlayGame extends SimpleApplication{
     public static void main(String[] args) throws BackingStoreException {
                 
         app = new PlayGame();
-        settings = new AppSettings(true);
-        settings.setResolution(1366, 768);
-        app.setSettings(settings);        
-        settings.setTitle("Arvenar 3D - OpenGl");
-        settings.setSettingsDialogImage("Interface/Images/splash.png");
-        settings.save("ArvenarGL.cfg");
+        appsettings = new AppSettings(true);
+        appsettings.setResolution(1366, 768);
+        app.setSettings(appsettings);        
+        appsettings.setTitle("Arvenar 3D - OpenGl");
+        appsettings.setSettingsDialogImage("Interface/Images/splash.png");
+        appsettings.save("ArvenarGL.cfg");
         app.setShowSettings(true); //default jMonkey settings OFF
         app.start();
         
@@ -67,6 +69,8 @@ public class PlayGame extends SimpleApplication{
            ingameHud = new HUDScreen();          //stateManager.attach(ingameHud);
            mapview_screen = new MapViewScreen();
            gameplayState = new GameAppState(); stateManager.attach(gameplayState);
+           
+           levelS1M0 = new S2M0_shore(); //stateManager.attach(levelS1M0);
 
 
          /** Load a Node from a .j3o file */
@@ -82,7 +86,6 @@ public class PlayGame extends SimpleApplication{
 //         } catch (IOException ex) {
 //           Logger.getLogger(PlayGame.class.getName()).log(Level.SEVERE, "No saved node loaded.", ex);
 //                 } 
-
        
     }
     
@@ -109,7 +112,7 @@ public class PlayGame extends SimpleApplication{
     }
 
     public static AppSettings getPlayGameAppSettings() {
-        return settings;
+        return appsettings;
     }
     
     public static void playMusic(String filepath){
