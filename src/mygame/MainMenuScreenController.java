@@ -82,10 +82,20 @@ public class MainMenuScreenController extends BaseAppState implements ScreenCont
     
     public void creditsGame(){
         System.out.println("Game Credits button pressed...");
-        //nifty.gotoScreen(nextScreen);
+        
         PlayGame.musicPlayer.stop();
         
         PlayGame.attachAppState(PlayGame.credits_screen);
+                
+        
+    }
+    
+    public void gameExtras(){
+        System.out.println("Game Extras button pressed...");
+        
+        //PlayGame.musicPlayer.stop();
+                
+        PlayGame.attachAppState(PlayGame.extras_screen);
                 
         
     }

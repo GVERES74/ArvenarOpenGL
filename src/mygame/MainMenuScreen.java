@@ -460,7 +460,7 @@ public class MainMenuScreen extends BaseAppState {
                         childLayoutAbsoluteInside();
                         alignLeft();
                         valignCenter();
-                        height("250px");
+                        height("300px");
                         width("250px"); 
                                                 
                         //backgroundColor("#eee3"); //last digit sets the alpha channel
@@ -514,10 +514,25 @@ public class MainMenuScreen extends BaseAppState {
                             onStartHoverEffect(new HoverEffectBuilder("playSound"){{effectParameter("sound", "btnclick");}});
                         }});
 
+                        image(new ImageBuilder("menuimg_Extras"){{
+                            filename("Interface/Images/MenuUI/button_0_extras.png");
+                            x("20px");
+                            y("170px");
+                            height("45px");
+                            width("150px");    
+                            interactOnClick("gameExtras()");
+                            backgroundColor("#0c01");
+                            onStartHoverEffect(new HoverEffectBuilder("changeImage"){{
+                                effectParameter("active", "Interface/Images/MenuUI/button_1_extras.png"); neverStopRendering(true);
+                                effectParameter("inactive", "Interface/Images/MenuUI/button_0_extras.png"); neverStopRendering(true);}});
+                            onStartHoverEffect(new HoverEffectBuilder("move"){{effectParameter("mode", "toOffset"); effectParameter("offsetX", "+10");}});
+                            onStartHoverEffect(new HoverEffectBuilder("playSound"){{effectParameter("sound", "btnclick");}});
+                        }});
+                        
                         image(new ImageBuilder("menuimg_Quit"){{
                             filename("Interface/Images/MenuUI/button_0_quit.png");
                             x("20px");
-                            y("170px");
+                            y("220px");
                             height("45px");
                             width("150px");    
                             interactOnClick("quitGame()");

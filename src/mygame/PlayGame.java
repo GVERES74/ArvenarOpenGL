@@ -34,6 +34,7 @@ public class PlayGame extends SimpleApplication{
     public static PausedScreen paused_screen;
     public static HUDScreen ingameHud;
     public static MapViewScreen mapview_screen;
+    public static ExtrasScreen extras_screen;
         
     public static AudioNode musicPlayer, soundPlayer;
     
@@ -65,10 +66,11 @@ public class PlayGame extends SimpleApplication{
            mainMenu_screen = new MainMenuScreen(); //stateManager.attach(mainMenu_screen);
            settings_screen = new SettingsScreen();  //stateManager.attach(settings_screen);
            credits_screen = new CreditsScreen(); //stateManager.attach(credits_screen);
+           extras_screen = new ExtrasScreen(); stateManager.attach(extras_screen);
            paused_screen = new PausedScreen(); //stateManager.attach(paused_screen);
            ingameHud = new HUDScreen();          //stateManager.attach(ingameHud);
            mapview_screen = new MapViewScreen();
-           gameplayState = new GameAppState(); stateManager.attach(gameplayState);
+           gameplayState = new GameAppState(); //stateManager.attach(gameplayState);
            
            levelS1M0 = new S2M0_shore(); //stateManager.attach(levelS1M0);
 
@@ -120,9 +122,11 @@ public class PlayGame extends SimpleApplication{
         musicPlayer.setDirectional(false);
         musicPlayer.setPositional(false);
         musicPlayer.setLooping(true);
+        musicPlayer.stop();
         app.getRootNode().attachChild(musicPlayer);
         musicPlayer.play();
-    }
+        }
+    
 
     public static void playSound(String filepath, boolean directional, boolean positional, boolean looping, float volume, float xpos, float ypos, float zpos){
         soundPlayer = new AudioNode(app.getAssetManager(), filepath);
