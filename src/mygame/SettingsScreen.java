@@ -140,7 +140,7 @@ public class SettingsScreen extends BaseAppState {
                         
                             text(new TextBuilder() {{
                                 text("Game Settings");
-                                font("Interface/Fonts/Antiqua.fnt");
+                                font("Interface/Fonts/verdana-48-regular.fnt");
                                 height("100%");
                                 width("100%");
                                 

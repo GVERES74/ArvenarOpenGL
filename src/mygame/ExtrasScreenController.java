@@ -37,7 +37,7 @@ public class ExtrasScreenController extends BaseAppState implements ScreenContro
     
     private Label labelSelectMusic;
     private String musicFilesPath = "Music/Soundtracks/";
-    
+    private Label nowPlayingTitle;    
     
     @Override
     protected void initialize(Application app) {
@@ -49,7 +49,8 @@ public class ExtrasScreenController extends BaseAppState implements ScreenContro
         //cleanup() for this is a matter of performance specifics for the         
         //implementor.        
         //TODO: initialize your AppState, e.g. attach spatials to rootNode 
-        System.out.println("Init Extras done.....");
+        
+        
     }
 
     @Override
@@ -67,6 +68,7 @@ public class ExtrasScreenController extends BaseAppState implements ScreenContro
     @Override
     public void update(float tpf) {
     
+        
     
         //TODO: implement behavior during runtime    
     }
@@ -83,6 +85,8 @@ public class ExtrasScreenController extends BaseAppState implements ScreenContro
     @Override
     public void onStartScreen() { //itt kell inicializálni a screen-t!! Különben pl. üres ListBox-ot kapsz.
         loadMusicFiles();
+        System.out.println("Init Extras done.....");
+                
     }
 
     @Override
@@ -92,7 +96,7 @@ public class ExtrasScreenController extends BaseAppState implements ScreenContro
     
     private void initExtrasScreenControls(){
         dropdownSelectMusic = screen.findNiftyControl("dropdown_MusicTheme", DropDown.class);
-        
+        nowPlayingTitle = screen.findNiftyControl("text_PlayingTitle", Label.class);
     }
     
     public void initTabGroup(){
@@ -107,11 +111,29 @@ public class ExtrasScreenController extends BaseAppState implements ScreenContro
     private void loadMusicFiles(){
         System.out.println("Music list loaded.....");
         String[] oggfiles = {
+                "RPG_Ambient_4.ogg",
+                "RPG - Mabels Crystal.ogg",
+                "RPG - The Great Collapse.ogg",
+                "RPG - The Path to Agartha (FadeOut).ogg",
+                "RPG - The Path to Agartha (Loopable).ogg",
+                "The Last Sylph.ogg",
+                "RPG_-_Misty_Mountains.ogg",
+                "RPG_Ambient_3.ogg",
+                "RPG - The Mysterious Companion.ogg",
+                "RPG_Ambient_4_The_Dark_Wood_.ogg",
+                "RPG_Title_1.ogg",
+                "RPG_Never_Go_Full_Bard.ogg",
+                "RPG - A Long Way From Home.ogg",
+                "Audience.ogg",
+                "Loop_Kings_Feast.wav",
+                "RPG - The Secret Within The Silent Woods.ogg",
                 "Peaceful_Place.ogg",
                 "RPG_Village_1.ogg",
                 "RPG_Ambient_2.ogg",
                 "RPG_For_Wenches_Ale_and_LOOT.ogg",
-                "RPG_The_Lost_Town.ogg"};
+                "RPG_The_Lost_Town.ogg",
+                "ambient_snow1.ogg",
+                "forest.wav"};
         
         for (String s: oggfiles){
         dropdownSelectMusic.addItem(s);}
@@ -124,6 +146,7 @@ public class ExtrasScreenController extends BaseAppState implements ScreenContro
         
         PlayGame.musicPlayer.stop();
         PlayGame.playMusic(musicFilesPath+dropdownSelectMusic.getSelection());
+        nowPlayingTitle.setText(dropdownSelectMusic.getSelection().toString());
         System.out.println("Playmusic clicked");
     }
     
@@ -145,6 +168,8 @@ public class ExtrasScreenController extends BaseAppState implements ScreenContro
         //PlayGame.musicPlayer.stop();
             
     }
+     
+    
 
     @Override
     protected void onEnable() {

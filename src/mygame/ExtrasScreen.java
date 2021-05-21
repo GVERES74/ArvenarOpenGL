@@ -84,6 +84,7 @@ public class ExtrasScreen extends BaseAppState {
      @Override
     protected void onEnable() {
         enableExtrasScreen();
+        PlayGame.playMusic("Music/Soundtracks/RPG - The Great Collapse.ogg");
        
     }
     
@@ -134,7 +135,7 @@ public class ExtrasScreen extends BaseAppState {
                         
                             text(new TextBuilder() {{
                                 text("Game Extras");
-                                font("Interface/Fonts/Antiqua.fnt");
+                                font("Interface/Fonts/verdana-48-regular.fnt");
                                 height("100%");
                                 width("100%");
                                 
@@ -152,49 +153,88 @@ public class ExtrasScreen extends BaseAppState {
                         
                             
                         control(new TabBuilder("tab_Extras_MPlayer", "Music Player"){{
-                            childLayoutAbsoluteInside();     
-                                
-                                    control(new LabelBuilder("label_SelectMusic") {{
-                                        text("Select Music");   
-                                        x("20px");
-                                        y("60px");  
-                                                                                
-                                    }});
-                                
-                                    control(new DropDownBuilder("dropdown_MusicTheme") {{
-                                        width("200px");
-                                        x("150px");
-                                        y("60px");
+                            childLayoutVertical();     
+                                 
+                                    panel(new PanelBuilder("Panel_Extras_MusicThemeTitle"){{
+                                    alignCenter();
+                                    valignTop();
+                                    height("10%");
+                                    width("80%"); 
+                                    backgroundColor("#ccc1");
+                                    childLayoutHorizontal();    
+                                            control(new LabelBuilder("text_nowPlaying", "Now playing:") {{
+                                                alignLeft();
+                                                valignCenter();
+                                                
+                                                font("Interface/Fonts/Default.fnt");
+                                                height("100%");
+                                                width("30%");
 
-                                    }});
+                                            }});
+
+
+                                            control(new LabelBuilder("text_PlayingTitle", "No music loaded..") {{
+                                                alignLeft();
+                                                valignCenter();
+                                                font("Interface/Fonts/Default.fnt");
+                                                height("100%");
+                                                width("70%");
+
+                                            }});
                                     
-                                    image(new ImageBuilder("img_PlayMusic"){{
-                                    filename("Interface/Images/ExtrasUI/mplayer_play.png");
-                                    height("34px");
-                                    width("36px"); 
-                                    x("150px");
-                                    y("100px");
-                                    interactOnClick("playMusic()");
-                                    //interactOnMouseOver("buttonEffect()");
-                                    }});
+                                    }}); //panel for music title
                                     
-                                    image(new ImageBuilder("img_stopMusic"){{
-                                    filename("Interface/Images/ExtrasUI/mplayer_stop.png");
-                                    height("34px");
-                                    width("36px"); 
-                                    x("200px");
-                                    y("100px");
-                                    interactOnClick("stopMusic()");
-                                    //interactOnMouseOver("buttonEffect()");
-                                    }});
-                                    
+                                    panel(new PanelBuilder("Panel_Extras_MusicPlayerControls"){{
+                                    alignCenter();
+                                    valignCenter();
+                                    height("50%");
+                                    width("80%"); 
+                                    backgroundColor("#cfc1");
+                                    childLayoutAbsoluteInside();                                      
+                                            control(new LabelBuilder("label_SelectMusic") {{
+                                                text("Select Music");
+                                                font("Interface/Fonts/Default.fnt");
+                                                x("10px");
+                                                y("100px");  
+
+                                            }});
+
+                                            control(new DropDownBuilder("dropdown_MusicTheme") {{
+                                                width("200px");
+                                                x("100px");
+                                                y("10px");
+
+                                            }});
+
+                                            image(new ImageBuilder("img_PlayMusic"){{
+                                            filename("Interface/Images/ExtrasUI/mplayer_play.png");
+                                            height("34px");
+                                            width("36px"); 
+                                            x("100px");
+                                            y("50px");
+                                            visibleToMouse(true);
+                                            interactOnClick("playMusic()");
+                                            //interactOnMouseOver("buttonEffect()");
+                                            }});
+
+                                            image(new ImageBuilder("img_stopMusic"){{
+                                            filename("Interface/Images/ExtrasUI/mplayer_stop.png");
+                                            height("34px");
+                                            width("36px"); 
+                                            x("150px");
+                                            y("50px");
+                                            visibleToMouse(true);
+                                            interactOnClick("stopMusic()");
+                                            //interactOnMouseOver("buttonEffect()");
+                                            }});
+                                }}); //panel for music player controls                
                         }});
                         
                         control(new TabBuilder("tab_Extras_StoryBook", "Story Book"){{
                                 childLayoutAbsoluteInside();     
                                 
                                     control(new LabelBuilder("label_Fullscreen") {{
-                                        text("Fullscreen");   
+                                        text("text");   
                                         x("20px");
                                         y("60px");  
                                                                                 
@@ -207,7 +247,7 @@ public class ExtrasScreen extends BaseAppState {
                                     }});
 //                            
                                     control(new LabelBuilder("label_Resolution") {{
-                                        text("Display Resolution");   
+                                        text("text");   
                                         x("20px");
                                         y("100px");    
 
@@ -221,39 +261,13 @@ public class ExtrasScreen extends BaseAppState {
                                     }});
                                     
                                     
-                                    control(new LabelBuilder("label_BitDepth") {{
-                                        text("Bit Depth");   
-                                        x("20px");
-                                        y("140px");    
-
-                                    }});
-//
-                                    control(new DropDownBuilder("dropdown_BitDepth") {{
-                                        width("80px");
-                                        x("150px");
-                                        y("140px");
-
-                                    }});
                                     
-                                    control(new LabelBuilder("label_RefreshRate") {{
-                                        text("Screen refresh rate");   
-                                        x("20px");
-                                        y("180px");    
-
-                                    }});
-//
-                                    control(new DropDownBuilder("dropdown_RefreshRate") {{
-                                        width("80px");
-                                        x("150px");
-                                        y("180px");
-
-                                    }});
                             }});
                         
-                        control(new TabBuilder("tab_AudioSettings", "Audio"){{
+                        control(new TabBuilder("tab_AudioSettings", "Empty"){{
                                 childLayoutAbsoluteInside();    
                                     control(new LabelBuilder("label_MusicVolume") {{
-                                        text("Music Volume");   
+                                        text("text");   
                                         x("20px");
                                         y("60px");  
                                                                                 
@@ -269,44 +283,10 @@ public class ExtrasScreen extends BaseAppState {
                                         stepSize(10f);
                                         buttonStepSize(10f);
                                     }});
-                                    
-                                    control(new LabelBuilder("label_Slider_MusicVolume") {{
-                                        text("%");
-                                        width("50px");
-                                        x("340px");
-                                        y("60px");  
-                                                                                
-                                    }});
-                                    
-                                    control(new LabelBuilder("label_SoundVolume") {{
-                                        text("Sound Volume");   
-                                        x("20px");
-                                        y("100px");  
-                                                                                
-                                    }});
-                                    
-                                    control(new SliderBuilder("slider_SoundVolume", false){{
-                                        width("200px");
-                                        x("120px");
-                                        y("100px");
-                                        min(0.0f);
-                                        max(100f);
-                                        initial(50.0f);
-                                        stepSize(10f);
-                                        buttonStepSize(10f);
-                                    }});
-                                    
-                                    control(new LabelBuilder("label_Slider_SoundVolume") {{
-                                        text("%");
-                                        width("50px");
-                                        x("340px");
-                                        y("100px");  
-                                                                                
-                                    }});
                                                                  
                         }});
                         
-                        control(new TabBuilder("tab_ControlSettings", "Controls"){{
+                        control(new TabBuilder("tab_ControlSettings", "empty"){{
                             
                                     x("0px");  
                                     y("0px");
