@@ -103,7 +103,7 @@ public class ExtrasScreen extends BaseAppState {
             nifty.loadStyleFile("nifty-default-styles.xml");
             nifty.loadControlFile("nifty-default-controls.xml");
         
-            nifty.registerSound("btnclick", "Interface/sound/metalClick.ogg");
+            nifty.registerSound("btnclick", "Interface/sound/click.wav");
 //            nifty.registerMusic("settingstheme", "Music/Soundtracks/RPG_Ambient_4.ogg");
             
         
@@ -148,16 +148,16 @@ public class ExtrasScreen extends BaseAppState {
                             height("500px");
                             x(String.valueOf(screenWidth/2-250));
                             y("100px");
-                            
                             backgroundColor("#ffc1");
-                        
+                            
                             
                         control(new TabBuilder("tab_Extras_MPlayer", "Music Player"){{
-                            childLayoutVertical();     
+                            childLayoutAbsoluteInside();
+                            
                                  
                                     panel(new PanelBuilder("Panel_Extras_MusicThemeTitle"){{
-                                    alignCenter();
-                                    valignTop();
+                                    x("50px");
+                                    y("20px");
                                     height("10%");
                                     width("80%"); 
                                     backgroundColor("#ccc1");
@@ -165,11 +165,10 @@ public class ExtrasScreen extends BaseAppState {
                                             control(new LabelBuilder("text_nowPlaying", "Now playing:") {{
                                                 alignLeft();
                                                 valignCenter();
-                                                
                                                 font("Interface/Fonts/Default.fnt");
                                                 height("100%");
                                                 width("30%");
-
+                                               
                                             }});
 
 
@@ -185,47 +184,64 @@ public class ExtrasScreen extends BaseAppState {
                                     }}); //panel for music title
                                     
                                     panel(new PanelBuilder("Panel_Extras_MusicPlayerControls"){{
-                                    alignCenter();
-                                    valignCenter();
+                                    x("50px");
+                                    y("100px");
                                     height("50%");
                                     width("80%"); 
-                                    backgroundColor("#cfc1");
+                                    backgroundColor("#fff3");
                                     childLayoutAbsoluteInside();                                      
                                             control(new LabelBuilder("label_SelectMusic") {{
                                                 text("Select Music");
                                                 font("Interface/Fonts/Default.fnt");
                                                 x("10px");
-                                                y("100px");  
+                                                y("30px");  
 
                                             }});
 
                                             control(new DropDownBuilder("dropdown_MusicTheme") {{
                                                 width("200px");
-                                                x("100px");
-                                                y("10px");
+                                                x("150px");
+                                                y("30px");
 
                                             }});
 
                                             image(new ImageBuilder("img_PlayMusic"){{
-                                            filename("Interface/Images/ExtrasUI/mplayer_play.png");
-                                            height("34px");
-                                            width("36px"); 
+                                            filename("Interface/Images/ExtrasUI/mplayer_play_0.png");
+                                            height("50px");
+                                            width("50px"); 
                                             x("100px");
-                                            y("50px");
+                                            y("150px");
                                             visibleToMouse(true);
                                             interactOnClick("playMusic()");
-                                            //interactOnMouseOver("buttonEffect()");
+                                            onStartHoverEffect(new HoverEffectBuilder("changeImage"){{
+                                            effectParameter("active", "Interface/Images/ExtrasUI/mplayer_play_1.png"); neverStopRendering(true);
+                                            effectParameter("inactive", "Interface/Images/ExtrasUI/mplayer_play_0.png"); neverStopRendering(true);}});
                                             }});
 
                                             image(new ImageBuilder("img_stopMusic"){{
-                                            filename("Interface/Images/ExtrasUI/mplayer_stop.png");
-                                            height("34px");
-                                            width("36px"); 
+                                            filename("Interface/Images/ExtrasUI/mplayer_stop_0.png");
+                                            height("50px");
+                                            width("50px"); 
                                             x("150px");
-                                            y("50px");
+                                            y("151px");
                                             visibleToMouse(true);
                                             interactOnClick("stopMusic()");
-                                            //interactOnMouseOver("buttonEffect()");
+                                            onStartHoverEffect(new HoverEffectBuilder("changeImage"){{
+                                            effectParameter("active", "Interface/Images/ExtrasUI/mplayer_stop_1.png"); neverStopRendering(true);
+                                            effectParameter("inactive", "Interface/Images/ExtrasUI/mplayer_stop_0.png"); neverStopRendering(true);}});
+                                            }});
+                                            
+                                            image(new ImageBuilder("img_pauseMusic"){{
+                                            filename("Interface/Images/ExtrasUI/mplayer_pause_0.png");
+                                            height("50px");
+                                            width("50px"); 
+                                            x("200px");
+                                            y("150px");
+                                            visibleToMouse(true);
+                                            interactOnClick("pauseMusic()");
+                                            onStartHoverEffect(new HoverEffectBuilder("changeImage"){{
+                                            effectParameter("active", "Interface/Images/ExtrasUI/mplayer_pause_1.png"); neverStopRendering(true);
+                                            effectParameter("inactive", "Interface/Images/ExtrasUI/mplayer_pause_0.png"); neverStopRendering(true);}});
                                             }});
                                 }}); //panel for music player controls                
                         }});

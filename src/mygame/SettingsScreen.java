@@ -108,7 +108,7 @@ public class SettingsScreen extends BaseAppState {
             nifty.loadStyleFile("nifty-default-styles.xml");
             nifty.loadControlFile("nifty-default-controls.xml");
         
-            nifty.registerSound("btnclick", "Interface/sound/metalClick.ogg");
+            nifty.registerSound("btnclick", "Interface/sound/click.wav");
 //            nifty.registerMusic("settingstheme", "Music/Soundtracks/RPG_Ambient_4.ogg");
             
         

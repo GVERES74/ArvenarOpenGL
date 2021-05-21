@@ -415,7 +415,7 @@ public class MainMenuScreen extends BaseAppState {
         app.getGuiViewPort().addProcessor(PlayGame.getNiftyDisplay()); 
         nifty.loadStyleFile("nifty-default-styles.xml");
         nifty.loadControlFile("nifty-default-controls.xml");
-        nifty.registerSound("btnclick", "Interface/sound/metalClick.ogg");
+        nifty.registerSound("btnclick", "Interface/sound/click.wav");
 //        nifty.registerMusic("maintheme", "Music/Soundtracks/RPG_Ambient_2.ogg");
                 
         nifty.addScreen("Screen_MainMenu", new ScreenBuilder("Main Menu"){{

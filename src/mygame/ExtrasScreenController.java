@@ -136,7 +136,8 @@ public class ExtrasScreenController extends BaseAppState implements ScreenContro
                 "forest.wav"};
         
         for (String s: oggfiles){
-        dropdownSelectMusic.addItem(s);}
+        dropdownSelectMusic.addItem(s);
+        }
         
         dropdownSelectMusic.selectItemByIndex(0);
         
@@ -157,6 +158,13 @@ public class ExtrasScreenController extends BaseAppState implements ScreenContro
         
     }
     
+    public void pauseMusic(){
+        
+        PlayGame.musicPlayer.pause();
+        
+        System.out.println("Music paused...");
+        
+    }
     
      public void backToMainMenu(){
         System.out.println("Back button pressed...");
