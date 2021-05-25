@@ -11,6 +11,7 @@ import de.lessvoid.nifty.Nifty;
 import de.lessvoid.nifty.controls.ScrollPanel;
 
 import de.lessvoid.nifty.elements.Element;
+import de.lessvoid.nifty.layout.align.HorizontalAlign;
 import de.lessvoid.nifty.screen.Screen;
 import de.lessvoid.nifty.screen.ScreenController;
 
@@ -24,7 +25,7 @@ public class MapViewScreenController extends BaseAppState implements ScreenContr
 
     private Nifty nifty;
     private Screen screen;
-    private ScrollPanel scrollPanelMapViewer;
+//    private ScrollPanel scrollPanelMapViewer;
     private Element panelMapViewer;
     private Element world_map, local_map, selected_map, map_zoomin, map_zoomout; 
     private Element map_up, map_down, map_left, map_right;
@@ -81,18 +82,18 @@ public class MapViewScreenController extends BaseAppState implements ScreenContr
         local_map = screen.findElementById("img_LocalMap");
         world_map = screen.findElementById("img_WorldMap");
         panelMapViewer = screen.findElementById("Panel_MapView_MapImage");  
-        scrollPanelMapViewer = screen.findNiftyControl("ScrollPanel_MapView_MapHolder", ScrollPanel.class);
+//        scrollPanelMapViewer = screen.findNiftyControl("ScrollPanel_MapView_MapHolder", ScrollPanel.class);
         map_zoomin = screen.findElementById("btn_mapview_ZoomIn");
         map_zoomout = screen.findElementById("btn_mapview_ZoomOut");
     }
 
     @Override
     public void onStartScreen() {
-        scrollPanelMapViewer.setAutoScroll(ScrollPanel.AutoScroll.OFF); //must off to work the scrollbars!!
+//        scrollPanelMapViewer.setAutoScroll(ScrollPanel.AutoScroll.OFF); //must off to get work the scrollbars!!
         selected_map = world_map;
         local_map.setVisible(false);
-        scrollPanelMapViewer.setEnabled(false);
-        scrollPanelMapViewer.getElement().setClipChildren(true);
+        panelMapViewer.setClipChildren(true);
+//        scrollPanelMapViewer.getElement().setClipChildren(true);
     }
 
     @Override
@@ -117,49 +118,49 @@ public class MapViewScreenController extends BaseAppState implements ScreenContr
         
     public void zoomInMap(){
        setSeaMapSize(50);
-       scrollPanelMapViewer.setEnabled(selected_map.getHeight() > scrollPanelMapViewer.getHeight());
+//       scrollPanelMapViewer.setEnabled(selected_map.getHeight() > scrollPanelMapViewer.getHeight());
        
     }
     
     public void zoomOutMap(){
        setSeaMapSize(-50);
-       scrollPanelMapViewer.setEnabled(selected_map.getHeight() > scrollPanelMapViewer.getHeight());
+//       scrollPanelMapViewer.setEnabled(selected_map.getHeight() > scrollPanelMapViewer.getHeight());
        
     }
     
     public void mapUp(){
       
-        scrollPanelMapViewer.setVerticalPos(scrollPanelMapViewer.getVerticalPos()-10);
+//        scrollPanelMapViewer.setVerticalPos(scrollPanelMapViewer.getVerticalPos()-10);
            
       
     }
     
     public void mapDown(){
       
-        scrollPanelMapViewer.setVerticalPos(scrollPanelMapViewer.getVerticalPos()+10);
+//        scrollPanelMapViewer.setVerticalPos(scrollPanelMapViewer.getVerticalPos()+10);
            
       
     }
     
     public void mapLeft(){
       
-        scrollPanelMapViewer.setHorizontalPos(scrollPanelMapViewer.getHorizontalPos()-10);
+//        scrollPanelMapViewer.setHorizontalPos(scrollPanelMapViewer.getHorizontalPos()-10);
            
       
     }
     
     public void mapRight(){
       
-        scrollPanelMapViewer.setHorizontalPos(scrollPanelMapViewer.getHorizontalPos()+10);
+//        scrollPanelMapViewer.setHorizontalPos(scrollPanelMapViewer.getHorizontalPos()+10);
            
       
     }
     
-    public void enlargeMap(){
-
-        setSeaMapSize(50);
-        
-    }
+//    public void enlargeMap(){
+//
+//        setSeaMapSize(50);
+//        
+//    }
     
     public void backToGame(){
         System.out.println("Back button pressed...");
@@ -173,9 +174,10 @@ public class MapViewScreenController extends BaseAppState implements ScreenContr
     public void setSeaMapSize(int count){
        selected_map.setHeight((int) (selected_map.getHeight()+count));
        selected_map.setWidth((int) (selected_map.getWidth()+count));
-       if(selected_map.getHeight() < scrollPanelMapViewer.getHeight()){
-           selected_map.setHeight(scrollPanelMapViewer.getHeight());
-           selected_map.setWidth(scrollPanelMapViewer.getWidth());
+       if(selected_map.getHeight() < panelMapViewer.getHeight()){
+           selected_map.setHeight(panelMapViewer.getHeight());
+           selected_map.setWidth(panelMapViewer.getWidth());
+           
        }
               
     }

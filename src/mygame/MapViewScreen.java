@@ -116,111 +116,67 @@ public class MapViewScreen extends BaseAppState {
                 defaultFocusElement("settings_CloseMap");
                 
                 layer(new LayerBuilder("Layer_MapView"){{
-                    childLayoutAbsoluteInside();
+                    childLayoutCenter();
+                    
                     
 //                    onStartScreenEffect(new EffectBuilder("playSound") {{
 //                        effectParameter("sound", "settingstheme");
 //                    }}); 
                     image(new ImageBuilder() {{
-                            filename("Interface/Images/bkg_pirate_table.jpg");
+                            filename("Interface/Images/Map/map_background.png");
                             height("100%");
                             width("100%");
                             }});
                         
-                    panel(new PanelBuilder("Panel_MapView_Title"){{
-//                       backgroundColor("#ff02");  
-                        x("20px");
-                        y("20px");
-                        height("100px");
-                        width("300px");
-                        childLayoutCenter();
-                                                
-                            text(new TextBuilder() {{
-                                text("Map of Arvenar");
-                                font("Interface/Fonts/verdana-48-regular.fnt");
-                                height("100%");
-                                width("100%");
-                                alignCenter();
-                                valignCenter();
-                                                                                                
-                            }});
-                    }});
-                     
-                    control(new ScrollPanelBuilder("ScrollPanel_MapView_MapHolder"){{
-                      
-                        x("300px");
-                        y("20px");
-                        width(SizeValue.px((int) (screenWidth/1.5)));
-                        height(SizeValue.px((int) (screenHeight/1.5)));
-                        set("horizontal", "true");
-                        set("vertical", "true");
-                        childLayoutOverlay();
-                        
-                        panel(new PanelBuilder("Panel_MapView_MapImage"){{
-                        height("150%"); //panel must be oversized as well!!
-                        width("150%"); 
-                        childLayoutCenter();
-                        interactOnMouseWheel("enlargeMap()");
-                        
-                            image(new ImageBuilder("img_LocalMap") {{
-                                filename("Interface/Images/Map/localmap.jpg");
-                                height("100%");
-                                width("100%");
-                                alignCenter();
-                                valignCenter();
-                                }});    
-                            image(new ImageBuilder("img_WorldMap") {{
-                                filename("Interface/Images/Map/caribbean.jpg");
-                                height("100%");
-                                width("100%");
-                                alignCenter();
-                                valignCenter();
-                        }});
-                            
-                    }});    
-                    }});
                                
-                    panel(new PanelBuilder("Panel_MapView_ViewButtons"){{
-                        x("50px");
-                        y("120px");
-                        height("500px");
-                        width("500px"); 
+                    panel(new PanelBuilder("Panel_MapView_Buttons"){{
+                        alignLeft();
+                        valignCenter();
+                        height("80%");
+                        width("30%"); 
+                        padding("20px");
                         childLayoutVertical();
+                        backgroundColor("#ffc1");
                                                                      
+                    
+                        panel(new PanelBuilder("Panel_MapView_SelectMap"){{
+                        height("20%");
+                        width("100%"); 
+                        childLayoutVertical();
+                                 
                             image(new ImageBuilder("btn_mapview_LocalMap"){{
-                            filename("Interface/Images/MenuUI/button_0_localmap.png");
-                            height("37px");
-                            width("147px");  
-                            
-                            interactOnClick("showLocalMap()");
-                            onStartHoverEffect(new HoverEffectBuilder("changeImage"){{
-                                effectParameter("active", "Interface/Images/MenuUI/button_1_localmap.png"); neverStopRendering(true);
-                                effectParameter("inactive", "Interface/Images/MenuUI/button_0_localmap.png"); neverStopRendering(true);}});
-                                onStartHoverEffect(new HoverEffectBuilder("move"){{effectParameter("mode", "toOffset"); effectParameter("offsetX", "+10");}});
-                            onStartHoverEffect(new HoverEffectBuilder("playSound"){{effectParameter("sound", "btnclick");}});
-                            
-                            }});
+                                filename("Interface/Images/MenuUI/button_0_localmap.png");
+                                height("37px");
+                                width("147px");  
+
+                                interactOnClick("showLocalMap()");
+                                onStartHoverEffect(new HoverEffectBuilder("changeImage"){{
+                                    effectParameter("active", "Interface/Images/MenuUI/button_1_localmap.png"); neverStopRendering(true);
+                                    effectParameter("inactive", "Interface/Images/MenuUI/button_0_localmap.png"); neverStopRendering(true);}});
+                                    onStartHoverEffect(new HoverEffectBuilder("move"){{effectParameter("mode", "toOffset"); effectParameter("offsetX", "+10");}});
+                                onStartHoverEffect(new HoverEffectBuilder("playSound"){{effectParameter("sound", "btnclick");}});
+
+                                }});
                         
-                            image(new ImageBuilder("btn_mapview_WorldMap"){{
-                            filename("Interface/Images/MenuUI/button_0_worldmap.png");
-                            height("37px");
-                            width("147px");  
-                            
-                            interactOnClick("showWorldMap()");
-                            onStartHoverEffect(new HoverEffectBuilder("changeImage"){{
-                                effectParameter("active", "Interface/Images/MenuUI/button_1_worldmap.png"); neverStopRendering(true);
-                                effectParameter("inactive", "Interface/Images/MenuUI/button_0_worldmap.png"); neverStopRendering(true);}});
-                                onStartHoverEffect(new HoverEffectBuilder("move"){{effectParameter("mode", "toOffset"); effectParameter("offsetX", "+10");}});
-                            onStartHoverEffect(new HoverEffectBuilder("playSound"){{effectParameter("sound", "btnclick");}});
-                            
-                            }});
-                        }});    
+                                image(new ImageBuilder("btn_mapview_WorldMap"){{
+                                filename("Interface/Images/MenuUI/button_0_worldmap.png");
+                                height("37px");
+                                width("147px");  
+
+                                interactOnClick("showWorldMap()");
+                                onStartHoverEffect(new HoverEffectBuilder("changeImage"){{
+                                    effectParameter("active", "Interface/Images/MenuUI/button_1_worldmap.png"); neverStopRendering(true);
+                                    effectParameter("inactive", "Interface/Images/MenuUI/button_0_worldmap.png"); neverStopRendering(true);}});
+                                    onStartHoverEffect(new HoverEffectBuilder("move"){{effectParameter("mode", "toOffset"); effectParameter("offsetX", "+10");}});
+                                onStartHoverEffect(new HoverEffectBuilder("playSound"){{effectParameter("sound", "btnclick");}});
+
+                                }});
+                        }});  //end SelectMap panel  
                             
                     panel(new PanelBuilder("Panel_MapView_ZoomButtons"){{
-                        x(SizeValue.px(screenWidth-200));
-                        y(SizeValue.px(screenHeight/3));
-                        height("100px");
-                        width("150px"); 
+                        alignLeft();
+                        height("20%");
+                        width("100%"); 
                         childLayoutVertical();
                                                     
                             image(new ImageBuilder("btn_mapview_ZoomIn"){{
@@ -256,10 +212,10 @@ public class MapViewScreen extends BaseAppState {
                     
                     //map directions
                         panel(new PanelBuilder("Panel_MapView_DirectionButtons"){{
-                        x(SizeValue.px(screenWidth-200));
-                        y(SizeValue.px(screenHeight/2));
-                        height("150px");
-                        width("150px"); 
+                        alignLeft();
+                        
+                        height("30%");
+                        width("100%"); 
                         childLayoutAbsoluteInside();
                                                     
                             image(new ImageBuilder("btn_mapview_MoveUp"){{
@@ -327,14 +283,10 @@ public class MapViewScreen extends BaseAppState {
                             }});
                                                 
                         }});
-                   
-                   
-                    panel(new PanelBuilder("Panel_MapView_ScreenButtons"){{
-
-                        x("50px");
-                        y(SizeValue.px(screenHeight-300));
-                        height("200px");
-                        width("300px"); 
+                        
+                        panel(new PanelBuilder("Panel_MapView_ScreenButtons"){{
+                        height("20%");
+                        width("100%"); 
                         childLayoutVertical();
                         
                         image(new ImageBuilder("settings_Back"){{
@@ -352,8 +304,43 @@ public class MapViewScreen extends BaseAppState {
                               
                         }});
                       
-                    }});  
-                
+                    }}); 
+                        
+                    }});    
+                        
+//                        control(new ScrollPanelBuilder("ScrollPanel_MapView_MapHolder"){{
+//                        x("200px");
+//                        y("50px");
+//                        width("80%");
+//                        height("80%");
+//                        set("horizontal", "false");
+//                        set("vertical", "false");
+//                        //childLayoutOverlay();
+//                        //backgroundColor("#0009");
+                                                
+                        panel(new PanelBuilder("Panel_MapView_MapImage"){{
+                        height("80%"); 
+                        width("80%");
+                        alignCenter();
+                        childLayoutCenter();
+                        
+                        interactOnMouseWheel("enlargeMap()");
+                        
+                            image(new ImageBuilder("img_LocalMap") {{
+                                filename("Interface/Images/Map/map_local.png");
+                                height("100%");
+                                width("100%");
+                                }});    
+                            image(new ImageBuilder("img_WorldMap") {{
+                                filename("Interface/Images/Map/caribbean.png");
+                                height("100%");
+                                width("100%");
+                                }});
+                            
+                    }});    
+//                    }}); //ScrollPanel end
+                        
+                                   
                 }});
                 }}.build(nifty));
                         

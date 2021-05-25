@@ -113,7 +113,7 @@ public class PausedScreen extends BaseAppState {
 //                    }}); 
                 
                    image(new ImageBuilder() {{
-                            filename("Interface/Images/bkg_pirate_table.jpg");
+                            filename("Interface/Images/book.png");
                             height("100%");
                             width("100%");
                             }});
@@ -140,16 +140,16 @@ public class PausedScreen extends BaseAppState {
                                
                     panel(new PanelBuilder("Panel_Paused_MenuButtons"){{
                       
-                        x("50px");
+                        x("80px");
                         y("120px");
-                        height("500px");
-                        width("500px"); 
+                        height("50%");
+                        width("30%"); 
                         childLayoutVertical();
                                                                      
                             image(new ImageBuilder("pausedmenuimg_gamesettings"){{
                             filename("Interface/Images/MenuUI/button_0_pausedmenu_gamesettings.png");
-                            height("37px");
-                            width("147px");  
+                            height("100px");
+                            width("500px");  
                             
                             interactOnClick("settingsGame()");
                             onStartHoverEffect(new HoverEffectBuilder("changeImage"){{
@@ -162,10 +162,9 @@ public class PausedScreen extends BaseAppState {
                         
                         image(new ImageBuilder("pausedmenuimg_Inventory"){{
                             filename("Interface/Images/MenuUI/button_0_pausedmenu_inventory.png");
-                            x("20px");
-                            y("70px");
-                            height("37px");
-                            width("147px");    
+                                                        
+                            height("100px");
+                            width("500px");    
                             interactOnClick("");
                             backgroundColor("#0c01");
                             onStartHoverEffect(new HoverEffectBuilder("changeImage"){{
@@ -177,8 +176,8 @@ public class PausedScreen extends BaseAppState {
                         
                         image(new ImageBuilder("pausedmenuimg_Character"){{
                             filename("Interface/Images/MenuUI/button_0_pausedmenu_character.png");
-                            height("37px");
-                            width("147px");   
+                            height("100px");
+                            width("500px");   
                             interactOnClick("");
                             backgroundColor("#0c01");
                             onStartHoverEffect(new HoverEffectBuilder("changeImage"){{
@@ -190,8 +189,8 @@ public class PausedScreen extends BaseAppState {
 
                         image(new ImageBuilder("pausedmenuimg_Mission"){{
                             filename("Interface/Images/MenuUI/button_0_pausedmenu_mission.png");
-                            height("37px");
-                            width("147px");     
+                            height("100px");
+                            width("500px");     
                             interactOnClick("");
                             backgroundColor("#0c01");
                             onStartHoverEffect(new HoverEffectBuilder("changeImage"){{
@@ -203,8 +202,8 @@ public class PausedScreen extends BaseAppState {
                         
                         image(new ImageBuilder("pausedmenuimg_Worldmap"){{
                             filename("Interface/Images/MenuUI/button_0_pausedmenu_worldmap.png");
-                            height("37px");
-                            width("147px");     
+                            height("100px");
+                            width("500px");     
                             interactOnClick("showMap()");
                             backgroundColor("#0c01");
                             onStartHoverEffect(new HoverEffectBuilder("changeImage"){{
@@ -222,7 +221,7 @@ public class PausedScreen extends BaseAppState {
                         childLayoutVertical();
                         
                         x("50px");
-                        y(SizeValue.px(screenHeight-300));
+                        y(SizeValue.px(screenHeight-200));
                         height("200px");
                         width("300px"); 
                                                 
@@ -284,5 +283,6 @@ public class PausedScreen extends BaseAppState {
     public void disablePausedScreen(){
         nifty.removeScreen("Screen_PausedMenu");
         app.getFlyByCamera().setDragToRotate(false);
+        
     }
 }
