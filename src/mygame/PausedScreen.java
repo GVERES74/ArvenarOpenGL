@@ -141,15 +141,26 @@ public class PausedScreen extends BaseAppState {
                     panel(new PanelBuilder("Panel_Paused_MenuButtons"){{
                       
                         x("150px");
-                        y("120px");
+                        y("80px");
                         height("50%");
                         width("30%"); 
                         childLayoutAbsoluteInside();
                         
+                        text(new TextBuilder() {{
+                                text("MOTHER'S BOOK");
+                                font("Interface/Fonts/verdana-48-regular.fnt");
+                                height("20%");
+                                width("100%");
+                                x("70px");                            
+                                y("10px"); 
+                                
+                                                                                                
+                        }});
+                        
                         image(new ImageBuilder("pausedmenuimg_Inventory"){{
                             filename("Interface/Images/MenuUI/button_0_pausedmenu_inventory.png");
                             x("70px");                            
-                            y("10px");                            
+                            y("80px");                            
                             height("60px");
                             width("300px");    
                             interactOnClick("");
@@ -164,7 +175,7 @@ public class PausedScreen extends BaseAppState {
                         image(new ImageBuilder("pausedmenuimg_Character"){{
                             filename("Interface/Images/MenuUI/button_0_pausedmenu_character.png");
                             x("75px");                            
-                            y("80px");                            
+                            y("150px");                            
                             height("60px");
                             width("300px");      
                             interactOnClick("");
@@ -178,8 +189,8 @@ public class PausedScreen extends BaseAppState {
 
                         image(new ImageBuilder("pausedmenuimg_Mission"){{
                             filename("Interface/Images/MenuUI/button_0_pausedmenu_mission.png");
-                            x("35px");                            
-                            y("150px");                            
+                            x("30px");                            
+                            y("220px");                            
                             height("60px");
                             width("300px");     
                             interactOnClick("");
@@ -194,7 +205,7 @@ public class PausedScreen extends BaseAppState {
                         image(new ImageBuilder("pausedmenuimg_Worldmap"){{
                             filename("Interface/Images/MenuUI/button_0_pausedmenu_worldmap.png");
                             x("10px");                            
-                            y("220px");                            
+                            y("290px");                            
                             height("60px");
                             width("300px");       
                             interactOnClick("showMap()");
@@ -232,8 +243,8 @@ public class PausedScreen extends BaseAppState {
                     panel(new PanelBuilder("Panel_Paused_ScreenButtons"){{
                         childLayoutHorizontal();
                         x("150px");
-                        y(SizeValue.px(screenHeight-50));
-                        height("250px");
+                        y(SizeValue.px(screenHeight-150));
+                        height("70px");
                         width("600px"); 
                                                 
                         
