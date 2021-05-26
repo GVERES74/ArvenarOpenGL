@@ -140,31 +140,18 @@ public class PausedScreen extends BaseAppState {
                                
                     panel(new PanelBuilder("Panel_Paused_MenuButtons"){{
                       
-                        x("80px");
+                        x("150px");
                         y("120px");
                         height("50%");
                         width("30%"); 
-                        childLayoutVertical();
-                                                                     
-                            image(new ImageBuilder("pausedmenuimg_gamesettings"){{
-                            filename("Interface/Images/MenuUI/button_0_pausedmenu_gamesettings.png");
-                            height("100px");
-                            width("500px");  
-                            
-                            interactOnClick("settingsGame()");
-                            onStartHoverEffect(new HoverEffectBuilder("changeImage"){{
-                                effectParameter("active", "Interface/Images/MenuUI/button_1_pausedmenu_gamesettings.png"); neverStopRendering(true);
-                                effectParameter("inactive", "Interface/Images/MenuUI/button_0_pausedmenu_gamesettings.png"); neverStopRendering(true);}});
-                                onStartHoverEffect(new HoverEffectBuilder("move"){{effectParameter("mode", "toOffset"); effectParameter("offsetX", "+10");}});
-                            onStartHoverEffect(new HoverEffectBuilder("playSound"){{effectParameter("sound", "btnclick");}});
-                            
-                        }});
+                        childLayoutAbsoluteInside();
                         
                         image(new ImageBuilder("pausedmenuimg_Inventory"){{
                             filename("Interface/Images/MenuUI/button_0_pausedmenu_inventory.png");
-                                                        
-                            height("100px");
-                            width("500px");    
+                            x("70px");                            
+                            y("10px");                            
+                            height("60px");
+                            width("300px");    
                             interactOnClick("");
                             backgroundColor("#0c01");
                             onStartHoverEffect(new HoverEffectBuilder("changeImage"){{
@@ -176,8 +163,10 @@ public class PausedScreen extends BaseAppState {
                         
                         image(new ImageBuilder("pausedmenuimg_Character"){{
                             filename("Interface/Images/MenuUI/button_0_pausedmenu_character.png");
-                            height("100px");
-                            width("500px");   
+                            x("75px");                            
+                            y("80px");                            
+                            height("60px");
+                            width("300px");      
                             interactOnClick("");
                             backgroundColor("#0c01");
                             onStartHoverEffect(new HoverEffectBuilder("changeImage"){{
@@ -189,8 +178,10 @@ public class PausedScreen extends BaseAppState {
 
                         image(new ImageBuilder("pausedmenuimg_Mission"){{
                             filename("Interface/Images/MenuUI/button_0_pausedmenu_mission.png");
-                            height("100px");
-                            width("500px");     
+                            x("35px");                            
+                            y("150px");                            
+                            height("60px");
+                            width("300px");     
                             interactOnClick("");
                             backgroundColor("#0c01");
                             onStartHoverEffect(new HoverEffectBuilder("changeImage"){{
@@ -202,8 +193,10 @@ public class PausedScreen extends BaseAppState {
                         
                         image(new ImageBuilder("pausedmenuimg_Worldmap"){{
                             filename("Interface/Images/MenuUI/button_0_pausedmenu_worldmap.png");
-                            height("100px");
-                            width("500px");     
+                            x("10px");                            
+                            y("220px");                            
+                            height("60px");
+                            width("300px");       
                             interactOnClick("showMap()");
                             backgroundColor("#0c01");
                             onStartHoverEffect(new HoverEffectBuilder("changeImage"){{
@@ -213,57 +206,76 @@ public class PausedScreen extends BaseAppState {
                             onStartHoverEffect(new HoverEffectBuilder("playSound"){{effectParameter("sound", "btnclick");}});
                         }});
                         
-                            }});
+                        }}); //end panel menuitems
+                    
+                    
+                    panel(new PanelBuilder("Panel_Paused_MenuItemHints"){{
+                        x("750px");
+                        y("80px");
+                        height("80%");
+                        width("35%"); 
+                        childLayoutVertical();
+                        //backgroundColor("#00f1");
+                        
+                        text(new TextBuilder("title_hint"){{
+                            text("${CALL.getMenuItemHintText()}");
+                            font("Interface/Fonts/verdana-48-regular.fnt");
+                            height("90%");
+                            width("90%");
+                            alignCenter();
+                            valignCenter();
+                            
+                        }});
+                    }}); //end panel hintcontent   
                    
                    
                     panel(new PanelBuilder("Panel_Paused_ScreenButtons"){{
-//                      
-                        childLayoutVertical();
-                        
-                        x("50px");
-                        y(SizeValue.px(screenHeight-200));
-                        height("200px");
-                        width("300px"); 
+                        childLayoutHorizontal();
+                        x("150px");
+                        y(SizeValue.px(screenHeight-50));
+                        height("250px");
+                        width("600px"); 
                                                 
                         
-                        image(new ImageBuilder("settings_Apply"){{
-                            filename("Interface/Images/MenuUI/button_0_apply.png");
+                        image(new ImageBuilder("pausedmenuimg_gamesettings"){{
+                            filename("Interface/Images/MenuUI/button_0_pausedmenu_gamesettings.png");
                             height("40px");
-                            width("150px");  
-                            interactOnClick("popupApplySettings()");  
+                            width("200px");      
+                            
+                            interactOnClick("settingsGame()");
                             onStartHoverEffect(new HoverEffectBuilder("changeImage"){{
-                                effectParameter("active", "Interface/Images/MenuUI/button_1_apply.png"); neverStopRendering(true);
-                                effectParameter("inactive", "Interface/Images/MenuUI/button_0_apply.png"); neverStopRendering(true);}});
-                            onStartHoverEffect(new HoverEffectBuilder("move"){{effectParameter("mode", "toOffset"); effectParameter("offsetX", "+15");}});
+                                effectParameter("active", "Interface/Images/MenuUI/button_1_pausedmenu_gamesettings.png"); neverStopRendering(true);
+                                effectParameter("inactive", "Interface/Images/MenuUI/button_0_pausedmenu_gamesettings.png"); neverStopRendering(true);}});
+                                onStartHoverEffect(new HoverEffectBuilder("move"){{effectParameter("mode", "toOffset"); effectParameter("offsetX", "+10");}});
                             onStartHoverEffect(new HoverEffectBuilder("playSound"){{effectParameter("sound", "btnclick");}});
                           
                         }});
                         
-                        image(new ImageBuilder("settings_Back"){{
-                            filename("Interface/Images/MenuUI/button_0_back.png");
+                        image(new ImageBuilder("pausedmenu_Back"){{
+                            filename("Interface/Images/MenuUI/button_0_pausedmenu_back.png");
                             height("40px");
-                            width("150px");    
+                            width("200px");    
                             interactOnClick("backToGame()");
                             interactOnMouseOver("buttonEffect()");
 //                            backgroundColor("#0c01");
                             onStartHoverEffect(new HoverEffectBuilder("changeImage"){{
-                                effectParameter("active", "Interface/Images/MenuUI/button_1_back.png"); neverStopRendering(true);
-                                effectParameter("inactive", "Interface/Images/MenuUI/button_0_back.png"); neverStopRendering(true);}});
+                                effectParameter("active", "Interface/Images/MenuUI/button_1_pausedmenu_back.png"); neverStopRendering(true);
+                                effectParameter("inactive", "Interface/Images/MenuUI/button_0_pausedmenu_back.png"); neverStopRendering(true);}});
                             onStartHoverEffect(new HoverEffectBuilder("move"){{effectParameter("mode", "toOffset"); effectParameter("offsetX", "+15");}});
                             onStartHoverEffect(new HoverEffectBuilder("playSound"){{effectParameter("sound", "btnclick");}});
                               
                         }});
                         
-                        image(new ImageBuilder("settings_Exit"){{
-                            filename("Interface/Images/MenuUI/button_0_quit.png");
+                        image(new ImageBuilder("pausedmenu_Exit"){{
+                            filename("Interface/Images/MenuUI/button_0_pausedmenu_quit.png");
                             height("40px");
-                            width("150px");    
+                            width("200px");    
                             interactOnClick("backToMainMenu()");
                             interactOnMouseOver("buttonEffect()");
 //                            backgroundColor("#0c01");
                             onStartHoverEffect(new HoverEffectBuilder("changeImage"){{
-                                effectParameter("active", "Interface/Images/MenuUI/button_1_quit.png"); neverStopRendering(true);
-                                effectParameter("inactive", "Interface/Images/MenuUI/button_0_quit.png"); neverStopRendering(true);}});
+                                effectParameter("active", "Interface/Images/MenuUI/button_1_pausedmenu_quit.png"); neverStopRendering(true);
+                                effectParameter("inactive", "Interface/Images/MenuUI/button_0_pausedmenu_quit.png"); neverStopRendering(true);}});
                             onStartHoverEffect(new HoverEffectBuilder("move"){{effectParameter("mode", "toOffset"); effectParameter("offsetX", "+15");}});
                             onStartHoverEffect(new HoverEffectBuilder("playSound"){{effectParameter("sound", "btnclick");}});
                             }});

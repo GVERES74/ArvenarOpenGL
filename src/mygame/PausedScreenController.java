@@ -81,8 +81,6 @@ public class PausedScreenController extends BaseAppState implements ScreenContro
         PlayGame.detachAppState(PlayGame.paused_screen);
         System.out.println("Game Settings button pressed...");
         //PlayGame.musicPlayer.stop();
-                
-
         
     }
     
@@ -91,6 +89,23 @@ public class PausedScreenController extends BaseAppState implements ScreenContro
         PlayGame.attachAppState(PlayGame.mapview_screen);
         PlayGame.detachAppState(PlayGame.paused_screen);
         
+    }
+    
+    
+    public String getMenuItemHintText(){
+        String content = 
+                "<< Abandoned Shore >>\n"
+                + "You woke up dizzy\n"
+                + "and feeling sick\n"
+                + "on an abandoned shore.\n"
+                + "The only thing you found\n"
+                + "in the sand, was a diary,\n"
+                + "written by your mother,\n"
+                + "who had died long ago.\n"
+                + "You felt strange and\n"
+                + "were afraid of something\n"
+                + "was not right here...";
+        return content;
     }
     
     public void backToGame(){
