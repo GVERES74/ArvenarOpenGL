@@ -16,6 +16,7 @@ import com.jme3.renderer.RenderManager;
 import com.jme3.renderer.ViewPort;
 import com.jme3.scene.Node;
 import de.lessvoid.nifty.Nifty;
+import de.lessvoid.nifty.builder.EffectBuilder;
 import de.lessvoid.nifty.builder.HoverEffectBuilder;
 import de.lessvoid.nifty.builder.ImageBuilder;
 import de.lessvoid.nifty.builder.LayerBuilder;
@@ -100,6 +101,8 @@ public class PausedScreen extends BaseAppState {
             nifty.loadControlFile("nifty-default-controls.xml");
         
             nifty.registerSound("btnclick", "Interface/sound/click.wav");
+            nifty.registerSound("openbook", "Interface/sound/BookFlip1.wav");
+            nifty.registerSound("closebook", "Interface/sound/BookFlip10.wav");
                    
             nifty.addScreen("Screen_PausedMenu", new ScreenBuilder("Game Paused"){{
                 controller(new mygame.PausedScreenController());
@@ -108,9 +111,13 @@ public class PausedScreen extends BaseAppState {
                 layer(new LayerBuilder("Layer_Settings_AllItems"){{
                     childLayoutAbsoluteInside();
                     
-//                    onStartScreenEffect(new EffectBuilder("playSound") {{
-//                        effectParameter("sound", "settingstheme");
-//                    }}); 
+                    onStartScreenEffect(new EffectBuilder("playSound") {{
+                        effectParameter("sound", "openbook");
+                    }}); 
+                    
+                    onEndScreenEffect(new EffectBuilder("playSound") {{
+                        effectParameter("sound", "closebook");
+                    }}); 
                 
                    image(new ImageBuilder() {{
                             filename("Interface/Images/book.png");
@@ -140,27 +147,24 @@ public class PausedScreen extends BaseAppState {
                                
                     panel(new PanelBuilder("Panel_Paused_MenuButtons"){{
                       
-                        x("150px");
+                        x(SizeValue.px(screenWidth/9));
                         y("80px");
                         height("50%");
                         width("30%"); 
-                        childLayoutAbsoluteInside();
+                        childLayoutVertical();
                         
                         text(new TextBuilder() {{
                                 text("MOTHER'S BOOK");
                                 font("Interface/Fonts/verdana-48-regular.fnt");
+                                color("#0009");
                                 height("20%");
                                 width("100%");
-                                x("70px");                            
-                                y("10px"); 
-                                
+                                alignCenter();
                                                                                                 
                         }});
                         
                         image(new ImageBuilder("pausedmenuimg_Inventory"){{
                             filename("Interface/Images/MenuUI/button_0_pausedmenu_inventory.png");
-                            x("70px");                            
-                            y("80px");                            
                             height("60px");
                             width("300px");    
                             interactOnClick("");
@@ -174,8 +178,6 @@ public class PausedScreen extends BaseAppState {
                         
                         image(new ImageBuilder("pausedmenuimg_Character"){{
                             filename("Interface/Images/MenuUI/button_0_pausedmenu_character.png");
-                            x("75px");                            
-                            y("150px");                            
                             height("60px");
                             width("300px");      
                             interactOnClick("");
@@ -189,8 +191,6 @@ public class PausedScreen extends BaseAppState {
 
                         image(new ImageBuilder("pausedmenuimg_Mission"){{
                             filename("Interface/Images/MenuUI/button_0_pausedmenu_mission.png");
-                            x("30px");                            
-                            y("220px");                            
                             height("60px");
                             width("300px");     
                             interactOnClick("");
@@ -204,8 +204,6 @@ public class PausedScreen extends BaseAppState {
                         
                         image(new ImageBuilder("pausedmenuimg_Worldmap"){{
                             filename("Interface/Images/MenuUI/button_0_pausedmenu_worldmap.png");
-                            x("10px");                            
-                            y("290px");                            
                             height("60px");
                             width("300px");       
                             interactOnClick("showMap()");
@@ -221,18 +219,19 @@ public class PausedScreen extends BaseAppState {
                     
                     
                     panel(new PanelBuilder("Panel_Paused_MenuItemHints"){{
-                        x("750px");
+                        x(SizeValue.px(screenWidth/2));
                         y("80px");
                         height("80%");
-                        width("35%"); 
-                        childLayoutVertical();
+                        width("40%"); 
+                        childLayoutCenter();
                         //backgroundColor("#00f1");
                         
                         text(new TextBuilder("title_hint"){{
                             text("${CALL.getMenuItemHintText()}");
                             font("Interface/Fonts/verdana-48-regular.fnt");
-                            height("90%");
-                            width("90%");
+                            color("#00f9");
+                            height("100%");
+                            width("100%");
                             alignCenter();
                             valignCenter();
                             
@@ -242,7 +241,7 @@ public class PausedScreen extends BaseAppState {
                    
                     panel(new PanelBuilder("Panel_Paused_ScreenButtons"){{
                         childLayoutHorizontal();
-                        x("150px");
+                        x(SizeValue.px(screenWidth/9));
                         y(SizeValue.px(screenHeight-150));
                         height("70px");
                         width("600px"); 

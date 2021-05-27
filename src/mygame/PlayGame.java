@@ -67,10 +67,10 @@ public class PlayGame extends SimpleApplication{
            settings_screen = new SettingsScreen();  //stateManager.attach(settings_screen);
            credits_screen = new CreditsScreen(); //stateManager.attach(credits_screen);
            extras_screen = new ExtrasScreen(); //stateManager.attach(extras_screen);
-           paused_screen = new PausedScreen(); stateManager.attach(paused_screen);
+           paused_screen = new PausedScreen(); //stateManager.attach(paused_screen);
            ingameHud = new HUDScreen();          //stateManager.attach(ingameHud);
            mapview_screen = new MapViewScreen();
-//           gameplayState = new GameAppState(); stateManager.attach(gameplayState);
+           gameplayState = new GameAppState(); stateManager.attach(gameplayState);
            
            levelS1M0 = new S2M0_shore(); //stateManager.attach(levelS1M0);
 

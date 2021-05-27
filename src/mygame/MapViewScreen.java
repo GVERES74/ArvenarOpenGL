@@ -16,6 +16,7 @@ import com.jme3.renderer.RenderManager;
 import com.jme3.renderer.ViewPort;
 import com.jme3.scene.Node;
 import de.lessvoid.nifty.Nifty;
+import de.lessvoid.nifty.builder.EffectBuilder;
 import de.lessvoid.nifty.builder.HoverEffectBuilder;
 import de.lessvoid.nifty.builder.ImageBuilder;
 import de.lessvoid.nifty.builder.LayerBuilder;
@@ -110,6 +111,7 @@ public class MapViewScreen extends BaseAppState {
             nifty.loadControlFile("nifty-default-controls.xml");
         
             nifty.registerSound("btnclick", "Interface/sound/click.wav");
+            nifty.registerSound("openmap", "Interface/sound/book_flip_2.ogg");
                    
             nifty.addScreen("Screen_MapScreen", new ScreenBuilder("View Map"){{
                 controller(new mygame.MapViewScreenController());
@@ -119,9 +121,15 @@ public class MapViewScreen extends BaseAppState {
                     childLayoutCenter();
                     
                     
-//                    onStartScreenEffect(new EffectBuilder("playSound") {{
-//                        effectParameter("sound", "settingstheme");
-//                    }}); 
+                    onStartScreenEffect(new EffectBuilder("playSound") {{
+                        effectParameter("sound", "openmap");
+                    }}); 
+                    
+                    onEndScreenEffect(new EffectBuilder("playSound") {{
+                        effectParameter("sound", "openmap");
+                    }}); 
+                        
+                    
                     image(new ImageBuilder() {{
                             filename("Interface/Images/Map/map_background.png");
                             height("100%");
@@ -348,12 +356,12 @@ public class MapViewScreen extends BaseAppState {
     }
     
     public void enableMapViewScreen(){
-        PlayGame.app.getFlyByCamera().setDragToRotate(true);
+        app.getFlyByCamera().setDragToRotate(true);
         nifty.gotoScreen("Screen_MapScreen");
     }
     
     public void disableMapViewScreen(){
-        PlayGame.app.getFlyByCamera().setDragToRotate(false);
+        app.getFlyByCamera().setDragToRotate(false);
         nifty.removeScreen("Screen_MapScreen");
         PlayGame.getNiftyDisplay().getNifty().gotoScreen("Screen_HUD");
     }
