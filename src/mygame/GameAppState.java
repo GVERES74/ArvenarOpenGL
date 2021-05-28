@@ -21,22 +21,24 @@ import com.jme3.bullet.collision.shapes.CollisionShape;
 import com.jme3.bullet.control.CharacterControl;
 import com.jme3.bullet.control.RigidBodyControl;
 import com.jme3.bullet.util.CollisionShapeFactory;
+import com.jme3.collision.CollisionResults;
 import com.jme3.font.BitmapText;
 import com.jme3.input.InputManager;
 import com.jme3.input.KeyInput;
+import com.jme3.input.MouseInput;
 import com.jme3.input.controls.ActionListener;
 import com.jme3.input.controls.AnalogListener;
 import com.jme3.input.controls.KeyTrigger;
+import com.jme3.input.controls.MouseButtonTrigger;
 import com.jme3.light.DirectionalLight;
+import com.jme3.math.Ray;
 import com.jme3.math.Vector3f;
 import com.jme3.renderer.Camera;
 import com.jme3.renderer.RenderManager;
 import com.jme3.renderer.ViewPort;
-import com.jme3.renderer.queue.RenderQueue;
 import com.jme3.scene.Geometry;
 import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
-import com.jme3.water.SimpleWaterProcessor;
 
 /**
  *
@@ -64,6 +66,8 @@ public class GameAppState extends BaseAppState implements AnimEventListener{
     private RigidBodyControl landScape;
             
     public CharacterControl firstPersonPlayer;
+    public HUDScreenController hud;
+    
     private Vector3f walkDirection = new Vector3f();
     private Vector3f camDir = new Vector3f();
     private Vector3f camLeft = new Vector3f();
@@ -75,6 +79,7 @@ public class GameAppState extends BaseAppState implements AnimEventListener{
     S2M0_shore levelS2M0; 
     
     private int playerhp = 100;
+    public String target = "Valami";
     
     
     @Override
@@ -90,6 +95,7 @@ public class GameAppState extends BaseAppState implements AnimEventListener{
         
         inputManager.deleteMapping(SimpleApplication.INPUT_MAPPING_EXIT); //delete ESC key quit app function
         bulletAppState = new BulletAppState();
+        hud = new HUDScreenController();
         app.getStateManager().attach(bulletAppState);
         
         //init levels
@@ -161,29 +167,6 @@ public class GameAppState extends BaseAppState implements AnimEventListener{
 
         }
 
-    
-        
-        //not used right now
-        public void createSimpleWater(float xwidth, float zdepth, float posx, float posy, float posz){
-            
-            SimpleWaterProcessor waterCreator = new SimpleWaterProcessor(assetManager);
-                                 waterCreator.setReflectionScene(level);
-            
-            //Vector3f waterLocation = new Vector3f(-500,-6,-500);
-            
-            //waterCreator.setPlane(new Plane(Vector3f.UNIT_Y, waterLocation.dot(Vector3f.UNIT_Y)));
-            viewPort.addProcessor(waterCreator);
-            waterCreator.setWaterDepth(50);
-            waterCreator.setDistortionScale(0.1f);
-            waterCreator.setWaveSpeed(-0.01f);
-                                    
-            Geometry watergeom = waterCreator.createWaterGeometry(xwidth, zdepth);
-                     watergeom.setLocalTranslation(posx, posy, posz);
-                     watergeom.setShadowMode(RenderQueue.ShadowMode.Receive);
-                     watergeom.setMaterial(waterCreator.getMaterial());
-                     rootNode.attachChild(watergeom);
-    }                 
-     
         private void initKeyEvent(){
         
             this.app.getInputManager().addMapping("Forward", new KeyTrigger(KeyInput.KEY_W));
@@ -195,8 +178,11 @@ public class GameAppState extends BaseAppState implements AnimEventListener{
             this.app.getInputManager().addMapping("PauseGame", new KeyTrigger(KeyInput.KEY_ESCAPE));
             this.app.getInputManager().addMapping("MapView", new KeyTrigger(KeyInput.KEY_M));
             
+            this.app.getInputManager().addMapping("lookat_target", new MouseButtonTrigger(MouseInput.BUTTON_LEFT));
+            
 
             this.app.getInputManager().addListener(actionListener, "Forward", "Backward", "StrafeLeft", "StrafeRight", "Jump", "Crouch", "PauseGame", "MapView");
+            this.app.getInputManager().addListener(analogListener, "lookat_target");
             
         }
         
@@ -234,7 +220,7 @@ public class GameAppState extends BaseAppState implements AnimEventListener{
                     case "Jump": if (keyPressed) {firstPersonPlayer.jump(new Vector3f(0,20f,0));
                                  decreasePlayerHealth(); 
                                   }; break;
-                    case "Crouch": if (keyPressed) {camera.setLocation(new Vector3f(camera.getLocation().x,camera.getLocation().y-2, camera.getLocation().z));}
+                    case "Crouch": if (keyPressed) {}
                                     break;
                                                      
                     case "PauseGame": if (!PlayGame.getPlayGameApp().getStateManager().hasState(PlayGame.paused_screen) &&!keyPressed){ 
@@ -263,7 +249,20 @@ public class GameAppState extends BaseAppState implements AnimEventListener{
         
         @Override
             public void onAnalog(String keyBinding, float value, float tpf) {
-            
+                if(keyBinding.equals("lookat_target")){
+                    CollisionResults results = new CollisionResults();
+                    Ray ray = new Ray(camera.getLocation(), camera.getDirection());
+                    rootNode.collideWith(ray, results);
+                    for (int i = 0; i < results.size(); i++) {
+                   // For each "hit", we know distance, impact point, geometry.
+                    float dist = results.getCollision(i).getDistance();
+                    Vector3f pt = results.getCollision(i).getContactPoint();
+                    target = results.getCollision(i).getGeometry().getName();
+                    System.out.println("It is just a " + target);
+                    hud.popupDialogBox(target);
+                    }
+                    
+                }
         }
         };
         
@@ -316,6 +315,10 @@ public class GameAppState extends BaseAppState implements AnimEventListener{
         this.app.getRootNode().attachChild(level);
         app.getStateManager().attach(levelid);
         
+    }
+    
+    public String getTargetName(){
+        return "Kivan a lóláb";
     }
     
     

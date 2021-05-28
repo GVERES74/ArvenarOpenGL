@@ -7,13 +7,16 @@ package mygame;
 
 import com.jme3.app.Application;
 import com.jme3.app.state.BaseAppState;
+import com.jme3.input.event.MouseMotionEvent;
 import de.lessvoid.nifty.Nifty;
-import de.lessvoid.nifty.controls.ScrollPanel;
-
+import de.lessvoid.nifty.NiftyEventSubscriber;
+import de.lessvoid.nifty.controls.SliderChangedEvent;
 import de.lessvoid.nifty.elements.Element;
-import de.lessvoid.nifty.layout.align.HorizontalAlign;
+import de.lessvoid.nifty.input.NiftyMouseInputEvent;
 import de.lessvoid.nifty.screen.Screen;
 import de.lessvoid.nifty.screen.ScreenController;
+import de.lessvoid.nifty.tools.SizeValue;
+import javax.annotation.Nonnull;
 
 /**
  *  
@@ -115,6 +118,21 @@ public class MapViewScreenController extends BaseAppState implements ScreenContr
         System.out.println("World Map selected");
     }
     
+    public void zoomCurrentMap(final Element element, @Nonnull final NiftyMouseInputEvent mwevent){
+       
+        int mouseWheel = mwevent.getMouseWheel();
+        
+        System.out.println("MouseWheel: "+mouseWheel);
+            if (mouseWheel < 0){
+            zoomOutMap();
+            }
+            if (mouseWheel > 0){
+            zoomInMap();
+            }
+        
+//       scrollPanelMapViewer.setEnabled(selected_map.getHeight() > scrollPanelMapViewer.getHeight());
+     
+    }
         
     public void zoomInMap(){
        setSeaMapSize(50);
@@ -129,7 +147,7 @@ public class MapViewScreenController extends BaseAppState implements ScreenContr
     }
     
     public void mapUp(){
-      
+        
 //        scrollPanelMapViewer.setVerticalPos(scrollPanelMapViewer.getVerticalPos()-10);
            
       
@@ -174,11 +192,16 @@ public class MapViewScreenController extends BaseAppState implements ScreenContr
     public void setSeaMapSize(int count){
        selected_map.setHeight((int) (selected_map.getHeight()+count));
        selected_map.setWidth((int) (selected_map.getWidth()+count));
-       if(selected_map.getHeight() < panelMapViewer.getHeight()){
+        if(selected_map.getHeight() < panelMapViewer.getHeight()){
            selected_map.setHeight(panelMapViewer.getHeight());
            selected_map.setWidth(panelMapViewer.getWidth());
+        }   
            
-       }
-              
+        if(selected_map.getHeight() > panelMapViewer.getHeight()+500){
+           selected_map.setHeight(panelMapViewer.getHeight()+500);
+           selected_map.setWidth(panelMapViewer.getWidth()+500);
+        }
     }
+    
+        
 }

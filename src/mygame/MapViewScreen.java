@@ -134,7 +134,7 @@ public class MapViewScreen extends BaseAppState {
                             filename("Interface/Images/Map/map_background.png");
                             height("100%");
                             width("100%");
-                            }});
+                    }});
                         
                                
                     panel(new PanelBuilder("Panel_MapView_Buttons"){{
@@ -234,6 +234,7 @@ public class MapViewScreen extends BaseAppState {
                             width("40px");  
                             
                             interactOnClick("mapUp()");
+                            
                             onStartHoverEffect(new HoverEffectBuilder("changeImage"){{
                                 effectParameter("active", "Interface/Images/Map/btn_mapup_1.png"); neverStopRendering(true);
                                 effectParameter("inactive", "Interface/Images/Map/btn_mapup_0.png"); neverStopRendering(true);}});
@@ -328,11 +329,10 @@ public class MapViewScreen extends BaseAppState {
                                                 
                         panel(new PanelBuilder("Panel_MapView_MapImage"){{
                         height("80%"); 
-                        width("80%");
+                        width("70%");
                         alignCenter();
                         childLayoutCenter();
-                        
-                        interactOnMouseWheel("enlargeMap()");
+                        interactOnMouseWheel("zoomCurrentMap()");
                         
                             image(new ImageBuilder("img_LocalMap") {{
                                 filename("Interface/Images/Map/map_local.png");

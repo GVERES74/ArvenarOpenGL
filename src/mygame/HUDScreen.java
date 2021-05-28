@@ -13,6 +13,8 @@ import de.lessvoid.nifty.builder.ImageBuilder;
 import de.lessvoid.nifty.builder.LayerBuilder;
 import de.lessvoid.nifty.builder.PanelBuilder;
 import de.lessvoid.nifty.builder.ScreenBuilder;
+import de.lessvoid.nifty.builder.TextBuilder;
+import de.lessvoid.nifty.controls.label.builder.LabelBuilder;
 import de.lessvoid.nifty.tools.SizeValue;
 
 /**
@@ -32,8 +34,8 @@ public class HUDScreen extends BaseAppState {
     protected void initialize(Application app) {
         
         this.app = (SimpleApplication) app;
-        screenWidth = PlayGame.getPlayGameAppSettings().getWidth()-200;
-        screenHeight = PlayGame.getPlayGameAppSettings().getHeight()/2;
+        screenWidth = PlayGame.getPlayGameAppSettings().getWidth();
+        screenHeight = PlayGame.getPlayGameAppSettings().getHeight();
         
         createHUDScreen();
         
@@ -155,12 +157,25 @@ public class HUDScreen extends BaseAppState {
                             height("250px");
                             width("250px");                          
                             }}); 
+                    }});
+                    
+                    panel(new PanelBuilder("Panel_HUD_DialogBox"){{
+                        backgroundColor("#fc02");  
+                        y(SizeValue.px(screenHeight/2));
+                        x(SizeValue.px(screenWidth/2));
+                        height("100px");
+                        width("300px");
+                        childLayoutCenter();
+                        
+                            control(new LabelBuilder("HUD_DialogText"){{
+                                text("${CALL.getTargetName()}");
+                                font("Interface/Fonts/Default.fnt");
+                                height("100%");
+                                width("100%");                          
+                                }}); 
                      }});    
-//                        popup(new PopupBuilder("popupExit") {{
-//                            childLayoutCenter();
-//                            backgroundColor("#000a");
-//                        }}.registerPopup(nifty));
-                            
+                    
+
                         
                 
                 }});
