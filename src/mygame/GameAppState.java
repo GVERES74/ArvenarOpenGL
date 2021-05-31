@@ -63,10 +63,11 @@ public class GameAppState extends BaseAppState implements AnimEventListener{
         
     private Spatial level;
     private BulletAppState bulletAppState;
+    
     private RigidBodyControl landScape;
             
     public CharacterControl firstPersonPlayer;
-    public HUDScreenController hud;
+    
     
     private Vector3f walkDirection = new Vector3f();
     private Vector3f camDir = new Vector3f();
@@ -94,9 +95,13 @@ public class GameAppState extends BaseAppState implements AnimEventListener{
         this.camera       = this.app.getCamera();
         
         inputManager.deleteMapping(SimpleApplication.INPUT_MAPPING_EXIT); //delete ESC key quit app function
+        
         bulletAppState = new BulletAppState();
-        hud = new HUDScreenController();
+                
         app.getStateManager().attach(bulletAppState);
+        
+        
+        
         
         //init levels
         levelS2M0 = new S2M0_shore();
@@ -181,8 +186,8 @@ public class GameAppState extends BaseAppState implements AnimEventListener{
             this.app.getInputManager().addMapping("lookat_target", new MouseButtonTrigger(MouseInput.BUTTON_LEFT));
             
 
-            this.app.getInputManager().addListener(actionListener, "Forward", "Backward", "StrafeLeft", "StrafeRight", "Jump", "Crouch", "PauseGame", "MapView");
-            this.app.getInputManager().addListener(analogListener, "lookat_target");
+            this.app.getInputManager().addListener(actionListener, "Forward", "Backward", "StrafeLeft", "StrafeRight", "Jump", "Crouch", "PauseGame", "MapView", "lookat_target");
+            //this.app.getInputManager().addListener(analogListener, "lookat_target");
             
         }
         
@@ -232,6 +237,27 @@ public class GameAppState extends BaseAppState implements AnimEventListener{
                                         PlayGame.attachAppState(PlayGame.mapview_screen);}
                                     else if (!keyPressed){
                                         PlayGame.detachAppState(PlayGame.mapview_screen);} break;
+                                        
+                    case "lookat_target": if (keyPressed){
+                    CollisionResults results = new CollisionResults();
+                    Ray ray = new Ray(camera.getLocation(), camera.getDirection());
+                    rootNode.collideWith(ray, results);
+                        for (int i = 0; i < results.size(); i++) {
+                       // For each "hit", we know distance, impact point, geometry.
+                        float dist = results.getCollision(i).getDistance();
+                        Vector3f pt = results.getCollision(i).getContactPoint();
+                        target = results.getCollision(0).getGeometry().getName();
+                        PlayGame.ingameHud.showLookAtDialog(true,target);
+                        System.out.println("This is just a "+target);
+
+                        }
+                    
+                    } 
+                    
+                    else if (!keyPressed){
+                        PlayGame.ingameHud.showLookAtDialog(false,"");
+                    }
+                        break;                    
                 }
                 
                 if (keyPressed) {   
@@ -246,23 +272,9 @@ public class GameAppState extends BaseAppState implements AnimEventListener{
          
          
         private AnalogListener analogListener = new AnalogListener(){
-        
-        @Override
+            @Override
             public void onAnalog(String keyBinding, float value, float tpf) {
-                if(keyBinding.equals("lookat_target")){
-                    CollisionResults results = new CollisionResults();
-                    Ray ray = new Ray(camera.getLocation(), camera.getDirection());
-                    rootNode.collideWith(ray, results);
-                    for (int i = 0; i < results.size(); i++) {
-                   // For each "hit", we know distance, impact point, geometry.
-                    float dist = results.getCollision(i).getDistance();
-                    Vector3f pt = results.getCollision(i).getContactPoint();
-                    target = results.getCollision(i).getGeometry().getName();
-                    System.out.println("It is just a " + target);
-                    hud.popupDialogBox(target);
-                    }
-                    
-                }
+             
         }
         };
         
@@ -317,9 +329,6 @@ public class GameAppState extends BaseAppState implements AnimEventListener{
         
     }
     
-    public String getTargetName(){
-        return "Kivan a lóláb";
-    }
-    
+        
     
 }

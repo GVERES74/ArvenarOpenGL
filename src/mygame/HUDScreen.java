@@ -14,6 +14,8 @@ import de.lessvoid.nifty.builder.LayerBuilder;
 import de.lessvoid.nifty.builder.PanelBuilder;
 import de.lessvoid.nifty.builder.ScreenBuilder;
 import de.lessvoid.nifty.builder.TextBuilder;
+import de.lessvoid.nifty.controls.Label;
+import de.lessvoid.nifty.controls.NiftyControl;
 import de.lessvoid.nifty.controls.label.builder.LabelBuilder;
 import de.lessvoid.nifty.tools.SizeValue;
 
@@ -37,6 +39,7 @@ public class HUDScreen extends BaseAppState {
         screenWidth = PlayGame.getPlayGameAppSettings().getWidth();
         screenHeight = PlayGame.getPlayGameAppSettings().getHeight();
         
+        
         createHUDScreen();
         
             //It is technically safe to do all initialization and cleanup in the         
@@ -58,6 +61,7 @@ public class HUDScreen extends BaseAppState {
     protected void onEnable() {
         
            enableHUDScreen(); 
+           
         //Called when the state is fully enabled, ie: is attached and         
         //isEnabled() is true or when the setEnabled() status changes after the         
         //state is attached.    
@@ -160,15 +164,16 @@ public class HUDScreen extends BaseAppState {
                     }});
                     
                     panel(new PanelBuilder("Panel_HUD_DialogBox"){{
-                        backgroundColor("#fc02");  
-                        y(SizeValue.px(screenHeight/2));
-                        x(SizeValue.px(screenWidth/2));
+                        backgroundColor("#ffc3");  
+                        y(SizeValue.px(screenHeight-300));
+                        x(SizeValue.px(screenWidth/2-250));
                         height("100px");
-                        width("300px");
+                        width("500px");
+                        
                         childLayoutCenter();
                         
                             control(new LabelBuilder("HUD_DialogText"){{
-                                text("${CALL.getTargetName()}");
+                                
                                 font("Interface/Fonts/Default.fnt");
                                 height("100%");
                                 width("100%");                          
@@ -200,5 +205,12 @@ public class HUDScreen extends BaseAppState {
     public void decreasePlayerHealthBar(){
         int healthpoints = nifty.getCurrentScreen().findElementById("HUD_PlayerHealthValueBar").getWidth();
                 nifty.getCurrentScreen().findElementById("HUD_PlayerHealthValueBar").setWidth(healthpoints-10);
+    }
+    
+    public void showLookAtDialog(Boolean enabled, String text){
+        nifty.getCurrentScreen().findNiftyControl("Panel_HUD_DialogBox", NiftyControl.class).setEnabled(enabled);
+        nifty.getCurrentScreen().findNiftyControl("HUD_DialogText", Label.class).setEnabled(enabled);
+        nifty.getCurrentScreen().findNiftyControl("HUD_DialogText", Label.class).setText("This is just a "+text);
+        
     }
 }

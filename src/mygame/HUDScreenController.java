@@ -9,13 +9,13 @@ import com.jme3.app.Application;
 import com.jme3.app.SimpleApplication;
 import com.jme3.app.state.AppStateManager;
 import com.jme3.app.state.BaseAppState;
-import com.jme3.font.BitmapText;
 import de.lessvoid.nifty.Nifty;
 import de.lessvoid.nifty.controls.Label;
 import de.lessvoid.nifty.controls.NiftyControl;
 import de.lessvoid.nifty.elements.Element;
 import de.lessvoid.nifty.screen.Screen;
 import de.lessvoid.nifty.screen.ScreenController;
+import de.lessvoid.nifty.tools.SizeValue;
 
 /**
  *  
@@ -27,17 +27,18 @@ public class HUDScreenController extends BaseAppState implements ScreenControlle
 
  private Nifty nifty;
  private Screen screen;
- private NiftyControl imghealthbarvalue, dialogPanel;
- private Label dialogText;
+ private NiftyControl imghealthbarvalue;
+ 
+  
  private SimpleApplication app;
  private AppStateManager stateManager;
- public String targetName = "It is just a ";
+ 
     
     @Override
     protected void initialize(Application app) {
       this.app = (SimpleApplication) app;
       this.stateManager = this.app.getStateManager();
-        
+      
     }
  
     @Override
@@ -73,7 +74,10 @@ public class HUDScreenController extends BaseAppState implements ScreenControlle
     
     @Override
     public void update(float tpf) {
-            popupDialogBox(targetName);
+            
+            //targetName = stateManager.getState(GameAppState.class).getTargetName();
+            //popupDialogBox();
+            
         //TODO: implement behavior during runtime    
     }
 
@@ -83,13 +87,13 @@ public class HUDScreenController extends BaseAppState implements ScreenControlle
         this.screen = screen;
         
         imghealthbarvalue = screen.findNiftyControl("HUD_PlayerHealthValueBar", NiftyControl.class);
-        dialogPanel = screen.findNiftyControl("Panel_HUD_DialogBox", NiftyControl.class);
-        dialogText = screen.findNiftyControl("HUD_DialogText", Label.class);
+        
+        
     }
 
     @Override
     public void onStartScreen() {
-        //dialogPanel.setEnabled(false);
+        
     }
 
     @Override
@@ -97,20 +101,5 @@ public class HUDScreenController extends BaseAppState implements ScreenControlle
         
     }
 
-    public void popupDialogBox(String dialogtext){
-//        dialogPanel.setEnabled(true);
-        targetName = dialogtext;
-       //System.out.println("DialogfromGame: "+dialogtext);
         
-        
-    }
-    
-    public String getTargetName(){
-        return targetName;
-    }
-    
-    
-    
-   
-    
 }
