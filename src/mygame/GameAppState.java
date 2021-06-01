@@ -242,16 +242,12 @@ public class GameAppState extends BaseAppState implements AnimEventListener{
                     CollisionResults results = new CollisionResults();
                     Ray ray = new Ray(camera.getLocation(), camera.getDirection());
                     rootNode.collideWith(ray, results);
-                        for (int i = 0; i < results.size(); i++) {
-                       // For each "hit", we know distance, impact point, geometry.
-                        float dist = results.getCollision(i).getDistance();
-                        Vector3f pt = results.getCollision(i).getContactPoint();
-                        target = results.getCollision(0).getGeometry().getName();
+                        if (results.size() > 0){
+                        target = results.getClosestCollision().getGeometry().getName();
+                        }
                         PlayGame.ingameHud.showLookAtDialog(true,target);
                         System.out.println("This is just a "+target);
 
-                        }
-                    
                     } 
                     
                     else if (!keyPressed){

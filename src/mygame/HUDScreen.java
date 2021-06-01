@@ -13,10 +13,8 @@ import de.lessvoid.nifty.builder.ImageBuilder;
 import de.lessvoid.nifty.builder.LayerBuilder;
 import de.lessvoid.nifty.builder.PanelBuilder;
 import de.lessvoid.nifty.builder.ScreenBuilder;
-import de.lessvoid.nifty.builder.TextBuilder;
-import de.lessvoid.nifty.controls.Label;
-import de.lessvoid.nifty.controls.NiftyControl;
 import de.lessvoid.nifty.controls.label.builder.LabelBuilder;
+import de.lessvoid.nifty.screen.Screen;
 import de.lessvoid.nifty.tools.SizeValue;
 
 /**
@@ -29,6 +27,8 @@ public class HUDScreen extends BaseAppState {
 
     private SimpleApplication app;
     private Nifty nifty;
+    private Screen hudscreen;
+    
     private int screenWidth, screenHeight;
     
     
@@ -94,6 +94,7 @@ public class HUDScreen extends BaseAppState {
             nifty.loadControlFile("nifty-default-controls.xml");
         
             //nifty.registerSound("btnclick", "Interface/sound/metalClick.ogg");
+                                    
                    
             nifty.addScreen("Screen_HUD", new ScreenBuilder("Ingame HUD"){{
                 controller(new mygame.HUDScreenController());
@@ -101,6 +102,14 @@ public class HUDScreen extends BaseAppState {
                 
                 layer(new LayerBuilder("Layer_HUD"){{
                     childLayoutAbsoluteInside();
+                    
+                    image(new ImageBuilder("img_crosshair"){{
+                        filename("Interface/Images/Hud/crosshair.png");
+                        x(SizeValue.px(screenWidth/2-13));
+                        y(SizeValue.px(screenHeight/2-13));
+                        height("26px");
+                        width("26px");
+                    }});
                     
                     
                      panel(new PanelBuilder("Panel_HUD_PlayerStats"){{
@@ -163,26 +172,6 @@ public class HUDScreen extends BaseAppState {
                             }}); 
                     }});
                     
-                    panel(new PanelBuilder("Panel_HUD_DialogBox"){{
-                        backgroundColor("#ffc3");  
-                        y(SizeValue.px(screenHeight-300));
-                        x(SizeValue.px(screenWidth/2-250));
-                        height("100px");
-                        width("500px");
-                        
-                        childLayoutCenter();
-                        
-                            control(new LabelBuilder("HUD_DialogText"){{
-                                
-                                font("Interface/Fonts/Default.fnt");
-                                height("100%");
-                                width("100%");                          
-                                }}); 
-                     }});    
-                    
-
-                        
-                
                 }});
                 }}.build(nifty));
                         
@@ -208,9 +197,16 @@ public class HUDScreen extends BaseAppState {
     }
     
     public void showLookAtDialog(Boolean enabled, String text){
-        nifty.getCurrentScreen().findNiftyControl("Panel_HUD_DialogBox", NiftyControl.class).setEnabled(enabled);
-        nifty.getCurrentScreen().findNiftyControl("HUD_DialogText", Label.class).setEnabled(enabled);
-        nifty.getCurrentScreen().findNiftyControl("HUD_DialogText", Label.class).setText("This is just a "+text);
+       
+        createDialogPanel(text);
+//        nifty.getCurrentScreen().findNiftyControl("HUD_DialogText", Label.class).setEnabled(enabled);
+//        nifty.getCurrentScreen().findNiftyControl("HUD_DialogText", Label.class).setText("This is just a "+text);
         
+    }
+    
+    public void createDialogPanel(String text){
+    
+        
+            
     }
 }

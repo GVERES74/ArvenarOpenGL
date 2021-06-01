@@ -103,6 +103,8 @@ public class PausedScreen extends BaseAppState {
             nifty.registerSound("btnclick", "Interface/sound/click.wav");
             nifty.registerSound("openbook", "Interface/sound/BookFlip1.wav");
             nifty.registerSound("closebook", "Interface/sound/BookFlip10.wav");
+            nifty.registerMouseCursor("crosshair", "Interface/Images/HUD/crosshair.png", 100, 100);
+            nifty.getNiftyMouse().enableMouseCursor("crosshair");
                    
             nifty.addScreen("Screen_PausedMenu", new ScreenBuilder("Game Paused"){{
                 controller(new mygame.PausedScreenController());
