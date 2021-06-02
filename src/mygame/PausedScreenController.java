@@ -76,19 +76,18 @@ public class PausedScreenController extends BaseAppState implements ScreenContro
         
     }
     
-    public void settingsGame(){
-        PlayGame.attachAppState(PlayGame.settings_screen);
-        PlayGame.detachAppState(PlayGame.paused_screen);
-        System.out.println("Game Settings button pressed...");
-        //PlayGame.musicPlayer.stop();
-        
-    }
-    
     public void showMap(){
         
         PlayGame.attachAppState(PlayGame.mapview_screen);
         PlayGame.detachAppState(PlayGame.paused_screen);
         
+    }
+    
+    public void openDiary(){
+        
+        PlayGame.attachAppState(PlayGame.diary_screen);
+        PlayGame.detachAppState(PlayGame.paused_screen);
+        PlayGame.musicPlayer.stop();
     }
     
     
@@ -107,6 +106,15 @@ public class PausedScreenController extends BaseAppState implements ScreenContro
                 + "was not right here...";
         return content;
     }
+    
+    public void settingsGame(){
+        PlayGame.attachAppState(PlayGame.settings_screen);
+        PlayGame.detachAppState(PlayGame.paused_screen);
+        System.out.println("Game Settings button pressed...");
+        //PlayGame.musicPlayer.stop();
+        
+    }
+    
     
     public void backToGame(){
         System.out.println("Back to game button pressed...");

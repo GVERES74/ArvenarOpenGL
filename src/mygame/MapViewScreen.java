@@ -22,10 +22,7 @@ import de.lessvoid.nifty.builder.ImageBuilder;
 import de.lessvoid.nifty.builder.LayerBuilder;
 import de.lessvoid.nifty.builder.PanelBuilder;
 import de.lessvoid.nifty.builder.ScreenBuilder;
-import de.lessvoid.nifty.builder.TextBuilder;
-import de.lessvoid.nifty.controls.scrollpanel.builder.ScrollPanelBuilder;
 import de.lessvoid.nifty.screen.Screen;
-import de.lessvoid.nifty.tools.SizeValue;
 
 /**
  *  
@@ -88,7 +85,7 @@ public class MapViewScreen extends BaseAppState {
     
     @Override
     protected void onDisable() {
-        
+        System.out.println("MapScreen onDisable called....");
         disableMapViewScreen();
             //Called when the state was previously enabled but is now disabled         
         //either because setEnabled(false) was called or the state is being         

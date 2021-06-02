@@ -35,6 +35,7 @@ public class PlayGame extends SimpleApplication{
     public static HUDScreen ingameHud;
     public static MapViewScreen mapview_screen;
     public static ExtrasScreen extras_screen;
+    public static DiaryScreen diary_screen;
         
     public static AudioNode musicPlayer, soundPlayer;
     
@@ -70,6 +71,7 @@ public class PlayGame extends SimpleApplication{
            paused_screen = new PausedScreen(); //stateManager.attach(paused_screen);
            ingameHud = new HUDScreen();          //stateManager.attach(ingameHud);
            mapview_screen = new MapViewScreen();
+           diary_screen = new DiaryScreen();
            gameplayState = new GameAppState(); stateManager.attach(gameplayState);
            
            levelS1M0 = new S2M0_shore(); //stateManager.attach(levelS1M0);

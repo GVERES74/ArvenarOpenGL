@@ -32,7 +32,7 @@ import de.lessvoid.nifty.tools.SizeValue;
  *
  * @author TE332168
  */
-public class PausedScreen extends BaseAppState {
+public class DiaryScreen extends BaseAppState {
     
     private SimpleApplication app;
     private Node              rootNode;
@@ -61,7 +61,7 @@ public class PausedScreen extends BaseAppState {
         screenHeight = PlayGame.getPlayGameAppSettings().getHeight();
         inputManager.deleteMapping(SimpleApplication.INPUT_MAPPING_EXIT); //delete ESC key quit app function
                 
-        createPausedScreen();
+        createDiaryScreen();
 
     }
     
@@ -73,12 +73,13 @@ public class PausedScreen extends BaseAppState {
     
     @Override
     protected void cleanup(Application app) {
-        System.out.println("PausedScreen cleanup called.....");
+        System.out.println("DiaryScreen cleanup called.....");
     }
 
      @Override
     protected void onEnable() {
-        enablePausedScreen();
+        enableDiaryScreen();
+        
     }
       
 
@@ -86,12 +87,12 @@ public class PausedScreen extends BaseAppState {
     @Override
     protected void onDisable() {
 
-       disablePausedScreen();
+       disableDiaryScreen();
                         
     }
     
     
-    public void createPausedScreen(){
+    public void createDiaryScreen(){
         
         app.getFlyByCamera().setDragToRotate(true);
         
@@ -103,14 +104,12 @@ public class PausedScreen extends BaseAppState {
             nifty.registerSound("btnclick", "Interface/sound/click.wav");
             nifty.registerSound("openbook", "Interface/sound/BookFlip1.wav");
             nifty.registerSound("closebook", "Interface/sound/BookFlip10.wav");
-            nifty.registerMouseCursor("crosshair", "Interface/Images/HUD/crosshair.png", 100, 100);
-            nifty.getNiftyMouse().enableMouseCursor("crosshair");
                    
-            nifty.addScreen("Screen_PausedMenu", new ScreenBuilder("Game Paused"){{
-                controller(new mygame.PausedScreenController());
-                defaultFocusElement("settings_Apply");
+            nifty.addScreen("Screen_DiaryBook", new ScreenBuilder("Read Diary"){{
+                controller(new mygame.DiaryScreenController());
+                defaultFocusElement("settings_Back");
                 
-                layer(new LayerBuilder("Layer_Settings_AllItems"){{
+                layer(new LayerBuilder("Layer_Diary_Root"){{
                     childLayoutAbsoluteInside();
                     
                     onStartScreenEffect(new EffectBuilder("playSound") {{
@@ -127,7 +126,7 @@ public class PausedScreen extends BaseAppState {
                             width("100%");
                             }});
                         
-                    panel(new PanelBuilder("Panel_Paused_Title"){{
+                    panel(new PanelBuilder("Panel_Diary_Title"){{
 //                       
                         x("20px");
                         y("20px");
@@ -136,7 +135,7 @@ public class PausedScreen extends BaseAppState {
                         childLayoutCenter();
                                                 
                             text(new TextBuilder() {{
-                                text("Game Paused");
+                                text("Reading Diary");
                                 font("Interface/Fonts/verdana-48-regular.fnt");
                                 height("100%");
                                 width("100%");
@@ -146,91 +145,17 @@ public class PausedScreen extends BaseAppState {
                             }});
                     }});        
                     
-                               
-                    panel(new PanelBuilder("Panel_Paused_MenuButtons"){{
-                      
-                        x(SizeValue.px(screenWidth/9));
-                        y("80px");
-                        height("50%");
-                        width("30%"); 
-                        childLayoutVertical();
-                        
-                        text(new TextBuilder() {{
-                                text("MOTHER'S BOOK");
-                                font("Interface/Fonts/verdana-48-regular.fnt");
-                                color("#0009");
-                                height("20%");
-                                width("100%");
-                                alignCenter();
-                                                                                                
-                        }});
-                        
-                        image(new ImageBuilder("pausedmenuimg_Inventory"){{
-                            filename("Interface/Images/MenuUI/button_0_pausedmenu_inventory.png");
-                            height("60px");
-                            width("300px");    
-                            interactOnClick("");
-                            backgroundColor("#0c01");
-                            onStartHoverEffect(new HoverEffectBuilder("changeImage"){{
-                                effectParameter("active", "Interface/Images/MenuUI/button_1_pausedmenu_inventory.png"); neverStopRendering(true);
-                                effectParameter("inactive", "Interface/Images/MenuUI/button_0_pausedmenu_inventory.png"); neverStopRendering(true);}});
-                            onStartHoverEffect(new HoverEffectBuilder("move"){{effectParameter("mode", "toOffset"); effectParameter("offsetX", "+10");}});
-                            onStartHoverEffect(new HoverEffectBuilder("playSound"){{effectParameter("sound", "btnclick");}});
-                        }});
-                        
-                        image(new ImageBuilder("pausedmenuimg_Character"){{
-                            filename("Interface/Images/MenuUI/button_0_pausedmenu_character.png");
-                            height("60px");
-                            width("300px");      
-                            interactOnClick("");
-                            backgroundColor("#0c01");
-                            onStartHoverEffect(new HoverEffectBuilder("changeImage"){{
-                                effectParameter("active", "Interface/Images/MenuUI/button_1_pausedmenu_character.png"); neverStopRendering(true);
-                                effectParameter("inactive", "Interface/Images/MenuUI/button_0_pausedmenu_character.png"); neverStopRendering(true);}});
-                            onStartHoverEffect(new HoverEffectBuilder("move"){{effectParameter("mode", "toOffset"); effectParameter("offsetX", "+10");}});
-                            onStartHoverEffect(new HoverEffectBuilder("playSound"){{effectParameter("sound", "btnclick");}});
-                        }});
-
-                        image(new ImageBuilder("pausedmenuimg_Mission"){{
-                            filename("Interface/Images/MenuUI/button_0_pausedmenu_mission.png");
-                            height("60px");
-                            width("300px");     
-                            interactOnClick("openDiary()");
-                            backgroundColor("#0c01");
-                            onStartHoverEffect(new HoverEffectBuilder("changeImage"){{
-                                effectParameter("active", "Interface/Images/MenuUI/button_1_pausedmenu_mission.png"); neverStopRendering(true);
-                                effectParameter("inactive", "Interface/Images/MenuUI/button_0_pausedmenu_mission.png"); neverStopRendering(true);}});
-                            onStartHoverEffect(new HoverEffectBuilder("move"){{effectParameter("mode", "toOffset"); effectParameter("offsetX", "+10");}});
-                            onStartHoverEffect(new HoverEffectBuilder("playSound"){{effectParameter("sound", "btnclick");}});
-                        }});
-                        
-                        image(new ImageBuilder("pausedmenuimg_Worldmap"){{
-                            filename("Interface/Images/MenuUI/button_0_pausedmenu_worldmap.png");
-                            height("60px");
-                            width("300px");       
-                            interactOnClick("showMap()");
-                            backgroundColor("#0c01");
-                            onStartHoverEffect(new HoverEffectBuilder("changeImage"){{
-                                effectParameter("active", "Interface/Images/MenuUI/button_1_pausedmenu_worldmap.png"); neverStopRendering(true);
-                                effectParameter("inactive", "Interface/Images/MenuUI/button_0_pausedmenu_worldmap.png"); neverStopRendering(true);}});
-                            onStartHoverEffect(new HoverEffectBuilder("move"){{effectParameter("mode", "toOffset"); effectParameter("offsetX", "+10");}});
-                            onStartHoverEffect(new HoverEffectBuilder("playSound"){{effectParameter("sound", "btnclick");}});
-                        }});
-                        
-                        }}); //end panel menuitems
-                    
-                    
-                    panel(new PanelBuilder("Panel_Paused_MenuItemHints"){{
-                        x(SizeValue.px(screenWidth/2));
+                    panel(new PanelBuilder("Panel_Diary_Content_SheetLeft"){{
+                        x("200px");
                         y("80px");
                         height("80%");
                         width("40%"); 
                         childLayoutCenter();
                         //backgroundColor("#00f1");
                         
-                        text(new TextBuilder("title_hint"){{
-                            text("${CALL.getMenuItemHintText()}");
-                            font("Interface/Fonts/verdana-48-regular.fnt");
+                        text(new TextBuilder("Content_Left"){{
+                            text("${CALL.getLeftContentText()}");
+                            font("Interface/Fonts/Default.fnt");
                             color("#00f9");
                             height("100%");
                             width("100%");
@@ -238,10 +163,31 @@ public class PausedScreen extends BaseAppState {
                             valignCenter();
                             
                         }});
-                    }}); //end panel hintcontent   
+                    }}); //end panel Book Sheet Left 
+                    
+                    
+                    panel(new PanelBuilder("Panel_Diary_Content_SheetRight"){{
+                        x("600px");
+                        y("80px");
+                        height("80%");
+                        width("40%"); 
+                        childLayoutCenter();
+                        //backgroundColor("#00f1");
+                        
+                        text(new TextBuilder("Content_Right"){{
+                            text("${CALL.getRightContentText()}");
+                            font("Interface/Fonts/Default.fnt");
+                            color("#00f9");
+                            height("100%");
+                            width("100%");
+                            alignCenter();
+                            valignCenter();
+                            
+                        }});
+                    }}); //end panel Book Sheet Right 
                    
                    
-                    panel(new PanelBuilder("Panel_Paused_ScreenButtons"){{
+                    panel(new PanelBuilder("Panel_Diary_ScreenButtons"){{
                         childLayoutHorizontal();
                         x(SizeValue.px(screenWidth/9));
                         y(SizeValue.px(screenHeight-150));
@@ -296,18 +242,19 @@ public class PausedScreen extends BaseAppState {
                 }});
                 }}.build(nifty));
                         
-                nifty.gotoScreen("Screen_PausedMenu");
+                nifty.gotoScreen("Screen_DiaryBook");
     }
     
-    public void enablePausedScreen(){
-        nifty.gotoScreen("Screen_PausedMenu");
+    public void enableDiaryScreen(){
+        nifty.gotoScreen("Screen_DiaryBook");
         app.getFlyByCamera().setDragToRotate(true);
+        
     }
     
-    public void disablePausedScreen(){
-        nifty.removeScreen("Screen_PausedMenu");
+    public void disableDiaryScreen(){
+        nifty.removeScreen("Screen_DiaryBook");
         app.getFlyByCamera().setDragToRotate(false);
-        
+        PlayGame.getNiftyDisplay().getNifty().gotoScreen("Screen_HUD");
         
     }
 }

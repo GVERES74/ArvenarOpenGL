@@ -8,11 +8,15 @@ package mygame;
 import com.jme3.app.Application;
 import com.jme3.app.SimpleApplication;
 import com.jme3.app.state.BaseAppState;
+import com.jme3.font.BitmapFont;
+import com.jme3.font.BitmapText;
+import com.jme3.ui.Picture;
 import de.lessvoid.nifty.Nifty;
 import de.lessvoid.nifty.builder.ImageBuilder;
 import de.lessvoid.nifty.builder.LayerBuilder;
 import de.lessvoid.nifty.builder.PanelBuilder;
 import de.lessvoid.nifty.builder.ScreenBuilder;
+import de.lessvoid.nifty.controls.Label;
 import de.lessvoid.nifty.controls.label.builder.LabelBuilder;
 import de.lessvoid.nifty.screen.Screen;
 import de.lessvoid.nifty.tools.SizeValue;
@@ -39,15 +43,11 @@ public class HUDScreen extends BaseAppState {
         screenWidth = PlayGame.getPlayGameAppSettings().getWidth();
         screenHeight = PlayGame.getPlayGameAppSettings().getHeight();
         
-        
         createHUDScreen();
-        
-            //It is technically safe to do all initialization and cleanup in the         
-        //onEnable()/onDisable() methods. Choosing to use initialize() and         
-        //cleanup() for this is a matter of performance specifics for the         
-        //implementor.        
-        //TODO: initialize your AppState, e.g. attach spatials to rootNode    
+      
     }
+    
+    
     @Override
     protected void cleanup(Application app) {
         
@@ -172,12 +172,35 @@ public class HUDScreen extends BaseAppState {
                             }}); 
                     }});
                     
-                }});
+                    panel(new PanelBuilder("Panel_HUD_Dialog"){{
+                            backgroundColor("#6665");  
+                            height("100px");
+                            width("600px");
+                            x(SizeValue.px(screenWidth/2-300));
+                            y(SizeValue.px(screenHeight/2+100));
+                            visible(false);
+                            childLayoutCenter();
+                            
+                            control(new LabelBuilder("dialogText"){{
+                                text("");
+                                font("Interface/Fonts/Default.fnt");
+                                height("100%");
+                                width("100%");
+                                visible(false);
+                                alignCenter();
+                                valignCenter();
+                            }});
+                            
+                    }});    
+                    
+                    }});    
+                
                 }}.build(nifty));
                         
                 nifty.gotoScreen("Screen_HUD");
-                System.out.println(screenHeight);
-    }
+                                    
+    }    
+
     
     public void enableHUDScreen(){
         nifty.gotoScreen("Screen_HUD");
@@ -193,20 +216,48 @@ public class HUDScreen extends BaseAppState {
     
     public void decreasePlayerHealthBar(){
         int healthpoints = nifty.getCurrentScreen().findElementById("HUD_PlayerHealthValueBar").getWidth();
-                nifty.getCurrentScreen().findElementById("HUD_PlayerHealthValueBar").setWidth(healthpoints-10);
+            nifty.getCurrentScreen().findElementById("HUD_PlayerHealthValueBar").setWidth(healthpoints-10);
     }
     
-    public void showLookAtDialog(Boolean enabled, String text){
+    public void showLookAtDialog(Boolean enabled, String text){ //not used at the moment - alternative solution for dialog
        
-        createDialogPanel(text);
-//        nifty.getCurrentScreen().findNiftyControl("HUD_DialogText", Label.class).setEnabled(enabled);
-//        nifty.getCurrentScreen().findNiftyControl("HUD_DialogText", Label.class).setText("This is just a "+text);
-        
-    }
-    
-    public void createDialogPanel(String text){
-    
-        
+        Picture pic = new Picture("DialogPanel");
+            pic.setImage(app.getAssetManager(), "Interface/Images/Hud/dialogbox.png", true);
+            pic.setWidth(600);
+            pic.setHeight(100);
+            pic.setPosition(screenWidth/2-300, screenHeight-200);
             
+            
+        
+        BitmapFont dialogFont = app.getAssetManager().loadFont("Interface/Fonts/Default.fnt");
+        BitmapText dialogText = new BitmapText(dialogFont, false);
+        dialogText.setText(text);
+        dialogText.setLocalTranslation(screenWidth/2-100, screenHeight-200, 0); // position
+        
+            if (enabled){
+                app.getGuiNode().attachChild(pic);
+                app.getGuiNode().attachChild(dialogText);
+            }
+            else if (!enabled){
+                app.getGuiNode().getChildren().clear();
+
+            }
+        
+    }//not used right now - alternative solution for dialog
+    
+    public void createDialogPanel(Boolean enabled, String text){
+        
+        if (enabled){
+            nifty.getCurrentScreen().findElementById("dialogText").setVisible(true);
+            nifty.getCurrentScreen().findElementById("Panel_HUD_Dialog").setVisible(true);
+            nifty.getCurrentScreen().findNiftyControl("dialogText", Label.class).setText("This is just a "+text);
+        
+        }
+        
+        if (!enabled){
+            nifty.getCurrentScreen().findElementById("dialogText").setVisible(false);
+            nifty.getCurrentScreen().findElementById("Panel_HUD_Dialog").setVisible(false);
+        }
     }
-}
+
+}//end class

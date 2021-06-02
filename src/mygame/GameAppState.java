@@ -111,22 +111,13 @@ public class GameAppState extends BaseAppState implements AnimEventListener{
                 
         setCollisionPhysics();
         initKeyEvent();
-        addAmbientLight();
+
         createPlayer();
         
     }
-        
-       
-        public void addAmbientLight(){
-        
-            DirectionalLight sun = new DirectionalLight();
-            sun.setDirection(new Vector3f(-0.5f, -1f, -3.0f));
-            this.app.getRootNode().addLight(sun);
-        }
     
         public void createPlayer(){
                 /** Load a model. Uses model and texture from jme3-test-data library! */ 
-        
         
             npcPlayer = (Node)this.app.getAssetManager().loadModel("Models/Oto/OtoOldAnim.j3o");
             npcPlayer.setLocalTranslation(0, 7, 0);
@@ -238,20 +229,16 @@ public class GameAppState extends BaseAppState implements AnimEventListener{
                                     else if (!keyPressed){
                                         PlayGame.detachAppState(PlayGame.mapview_screen);} break;
                                         
-                    case "lookat_target": if (keyPressed){
-                    CollisionResults results = new CollisionResults();
-                    Ray ray = new Ray(camera.getLocation(), camera.getDirection());
-                    rootNode.collideWith(ray, results);
-                        if (results.size() > 0){
-                        target = results.getClosestCollision().getGeometry().getName();
-                        }
-                        PlayGame.ingameHud.showLookAtDialog(true,target);
+                    case "lookat_target": if ((keyPressed) && PlayGame.gameplayState.isEnabled()){
+                        
+                        //PlayGame.ingameHud.showLookAtDialog(true,getTarget());
+                        PlayGame.ingameHud.createDialogPanel(true,getTarget());
                         System.out.println("This is just a "+target);
 
                     } 
                     
                     else if (!keyPressed){
-                        PlayGame.ingameHud.showLookAtDialog(false,"");
+                        PlayGame.ingameHud.createDialogPanel(false,"");
                     }
                         break;                    
                 }
@@ -325,6 +312,14 @@ public class GameAppState extends BaseAppState implements AnimEventListener{
         
     }
     
-        
+    public String getTarget(){
+        CollisionResults results = new CollisionResults();
+            Ray ray = new Ray(camera.getLocation(), camera.getDirection());
+            rootNode.collideWith(ray, results);
+                if (results.size() > 0){
+                target = results.getClosestCollision().getGeometry().getName();
+                }
+                return target;
+    }    
     
 }
