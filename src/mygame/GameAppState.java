@@ -11,6 +11,7 @@ import com.jme3.animation.AnimControl;
 import com.jme3.animation.AnimEventListener;
 import com.jme3.app.Application;
 import com.jme3.app.SimpleApplication;
+import com.jme3.app.state.AppState;
 import com.jme3.app.state.AppStateManager;
 import com.jme3.app.state.BaseAppState;
 import com.jme3.asset.AssetManager;
@@ -63,7 +64,7 @@ public class GameAppState extends BaseAppState implements AnimEventListener{
         
     private Spatial level;
     private BulletAppState bulletAppState;
-    
+        
     private RigidBodyControl landScape;
             
     public CharacterControl firstPersonPlayer;
@@ -93,7 +94,7 @@ public class GameAppState extends BaseAppState implements AnimEventListener{
         this.inputManager = this.app.getInputManager();
         this.viewPort     = this.app.getViewPort();
         this.camera       = this.app.getCamera();
-        
+                
         inputManager.deleteMapping(SimpleApplication.INPUT_MAPPING_EXIT); //delete ESC key quit app function
         
         bulletAppState = new BulletAppState();
@@ -171,13 +172,18 @@ public class GameAppState extends BaseAppState implements AnimEventListener{
             this.app.getInputManager().addMapping("StrafeRight", new KeyTrigger(KeyInput.KEY_D));
             this.app.getInputManager().addMapping("Jump", new KeyTrigger(KeyInput.KEY_SPACE));
             this.app.getInputManager().addMapping("Crouch", new KeyTrigger(KeyInput.KEY_LCONTROL));
-            this.app.getInputManager().addMapping("PauseGame", new KeyTrigger(KeyInput.KEY_ESCAPE));
+            this.app.getInputManager().addMapping("PauseGame", new KeyTrigger(KeyInput.KEY_P));
             this.app.getInputManager().addMapping("MapView", new KeyTrigger(KeyInput.KEY_M));
+            this.app.getInputManager().addMapping("OpenDiary", new KeyTrigger(KeyInput.KEY_L));
             
             this.app.getInputManager().addMapping("lookat_target", new MouseButtonTrigger(MouseInput.BUTTON_LEFT));
             
 
-            this.app.getInputManager().addListener(actionListener, "Forward", "Backward", "StrafeLeft", "StrafeRight", "Jump", "Crouch", "PauseGame", "MapView", "lookat_target");
+            //let's separate movement, open screen and action listeners
+            this.app.getInputManager().addListener(actionListener, "Forward", "Backward", "StrafeLeft", "StrafeRight", "Jump", "Crouch");
+            this.app.getInputManager().addListener(actionListener, "PauseGame", "MapView", "OpenDiary");
+            this.app.getInputManager().addListener(actionListener, "lookat_target");
+             
             //this.app.getInputManager().addListener(analogListener, "lookat_target");
             
         }
@@ -216,29 +222,26 @@ public class GameAppState extends BaseAppState implements AnimEventListener{
                     case "Jump": if (keyPressed) {firstPersonPlayer.jump(new Vector3f(0,20f,0));
                                  decreasePlayerHealth(); 
                                   }; break;
-                    case "Crouch": if (keyPressed) {}
-                                    break;
+                    case "Crouch": if (keyPressed) {} break;
                                                      
-                    case "PauseGame": if (!PlayGame.getPlayGameApp().getStateManager().hasState(PlayGame.paused_screen) &&!keyPressed){ 
-                                           PlayGame.attachAppState(PlayGame.paused_screen);
-                                        } else if (!keyPressed){
-                                          PlayGame.detachAppState(PlayGame.paused_screen);} break;  
+                    case "PauseGame":   hotKeyPressed(PlayGame.paused_screen, keyPressed); break;  
                                         
-                    case "MapView": if (!PlayGame.getPlayGameApp().getStateManager().hasState(PlayGame.mapview_screen) &&!keyPressed){
-                                        PlayGame.attachAppState(PlayGame.mapview_screen);}
-                                    else if (!keyPressed){
-                                        PlayGame.detachAppState(PlayGame.mapview_screen);} break;
+                    case "MapView":     hotKeyPressed(PlayGame.mapview_screen, keyPressed); break;  
                                         
-                    case "lookat_target": if ((keyPressed) && PlayGame.gameplayState.isEnabled()){
+                    case "OpenDiary":   hotKeyPressed(PlayGame.diary_screen, keyPressed); break;                      
+                                        
+                    case "lookat_target": if ((keyPressed) && PlayGame.ingameHud.isEnabled()){
                         
                         //PlayGame.ingameHud.showLookAtDialog(true,getTarget());
                         PlayGame.ingameHud.createDialogPanel(true,getTarget());
+                        
                         System.out.println("This is just a "+target);
 
                     } 
                     
                     else if (!keyPressed){
                         PlayGame.ingameHud.createDialogPanel(false,"");
+                        
                     }
                         break;                    
                 }
@@ -321,5 +324,15 @@ public class GameAppState extends BaseAppState implements AnimEventListener{
                 }
                 return target;
     }    
+    
+    public void hotKeyPressed(AppState appStateName, Boolean keyPressed){
+        
+        if (!keyPressed && !PlayGame.getPlayGameApp().getStateManager().hasState(appStateName)){
+            PlayGame.attachAppState(appStateName);}
+            else if (!keyPressed){
+            PlayGame.detachAppState(appStateName);}       
+        }
+                
+        
     
 }

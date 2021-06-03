@@ -97,7 +97,7 @@ public class PlayGame extends SimpleApplication{
     public void simpleUpdate(float tpf) {
         //TODO: add update code
 //        sphereGeo.rotate(0,tpf*2,tpf);
-
+        
         
     }
 

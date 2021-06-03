@@ -23,7 +23,6 @@ import de.lessvoid.nifty.builder.LayerBuilder;
 import de.lessvoid.nifty.builder.PanelBuilder;
 import de.lessvoid.nifty.builder.ScreenBuilder;
 import de.lessvoid.nifty.builder.TextBuilder;
-import de.lessvoid.nifty.controls.Slider;
 import de.lessvoid.nifty.controls.checkbox.builder.CheckboxBuilder;
 import de.lessvoid.nifty.controls.dropdown.builder.DropDownBuilder;
 import de.lessvoid.nifty.controls.label.builder.LabelBuilder;
@@ -84,18 +83,18 @@ public class SettingsScreen extends BaseAppState {
     
     @Override
     protected void cleanup(Application app) {
-        System.out.println("SettingsScreen cleanup called.....");
+        System.out.println(this.nifty.getCurrentScreen().getScreenId()+" screen cleanup called.....");
     }
 
      @Override
     protected void onEnable() {
-        enableSettingsScreen();
+        showSettingsScreen();
        
     }
     
     @Override
     protected void onDisable() {
-        disableSettingsScreen();
+        hideSettingsScreen();
         
     }
     
@@ -346,13 +345,13 @@ public class SettingsScreen extends BaseAppState {
                 nifty.gotoScreen("Screen_GameSettings");
     }
     
-     public void enableSettingsScreen(){
+     public void showSettingsScreen(){
          
         nifty.gotoScreen("Screen_GameSettings");
         app.getFlyByCamera().setDragToRotate(true);
      }
      
-     public void disableSettingsScreen(){
+     public void hideSettingsScreen(){
          
         nifty.removeScreen("Screen_GameSettings");
         app.getFlyByCamera().setDragToRotate(false);

@@ -60,7 +60,7 @@ public class HUDScreen extends BaseAppState {
     @Override
     protected void onEnable() {
         
-           enableHUDScreen(); 
+           showHUDScreen(); 
            
         //Called when the state is fully enabled, ie: is attached and         
         //isEnabled() is true or when the setEnabled() status changes after the         
@@ -70,7 +70,7 @@ public class HUDScreen extends BaseAppState {
     @Override
     protected void onDisable() {
        
-        disableHUDScreen();
+        hideHUDScreen();
         //Called when the state was previously enabled but is now disabled         
         //either because setEnabled(false) was called or the state is being         
         //cleaned up.    
@@ -202,13 +202,13 @@ public class HUDScreen extends BaseAppState {
     }    
 
     
-    public void enableHUDScreen(){
+    public void showHUDScreen(){
         nifty.gotoScreen("Screen_HUD");
         app.getFlyByCamera().setDragToRotate(false);
         
     }
     
-    public void disableHUDScreen(){
+    public void hideHUDScreen(){
         nifty.removeScreen("Screen_HUD");
         app.getFlyByCamera().setDragToRotate(true);
         

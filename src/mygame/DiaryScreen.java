@@ -23,6 +23,7 @@ import de.lessvoid.nifty.builder.LayerBuilder;
 import de.lessvoid.nifty.builder.PanelBuilder;
 import de.lessvoid.nifty.builder.ScreenBuilder;
 import de.lessvoid.nifty.builder.TextBuilder;
+import de.lessvoid.nifty.controls.label.builder.LabelBuilder;
 import de.lessvoid.nifty.screen.Screen;
 import de.lessvoid.nifty.tools.SizeValue;
 
@@ -73,25 +74,24 @@ public class DiaryScreen extends BaseAppState {
     
     @Override
     protected void cleanup(Application app) {
-        System.out.println("DiaryScreen cleanup called.....");
-    }
-
-     @Override
-    protected void onEnable() {
-        enableDiaryScreen();
+        System.out.println(this.nifty.getCurrentScreen().getScreenId()+" screen cleanup called.....");
+        
         
     }
-      
 
-
+    @Override
+    protected void onEnable() {
+        showDiaryScreen();
+        
+    }
+     
     @Override
     protected void onDisable() {
 
-       disableDiaryScreen();
+       hideDiaryScreen();
                         
     }
-    
-    
+        
     public void createDiaryScreen(){
         
         app.getFlyByCamera().setDragToRotate(true);
@@ -105,7 +105,7 @@ public class DiaryScreen extends BaseAppState {
             nifty.registerSound("openbook", "Interface/sound/BookFlip1.wav");
             nifty.registerSound("closebook", "Interface/sound/BookFlip10.wav");
                    
-            nifty.addScreen("Screen_DiaryBook", new ScreenBuilder("Read Diary"){{
+            nifty.addScreen("Screen_DiaryBook", new ScreenBuilder("DiaryBook"){{
                 controller(new mygame.DiaryScreenController());
                 defaultFocusElement("settings_Back");
                 
@@ -127,15 +127,14 @@ public class DiaryScreen extends BaseAppState {
                             }});
                         
                     panel(new PanelBuilder("Panel_Diary_Title"){{
-//                       
                         x("20px");
                         y("20px");
                         height("100px");
-                        width("250px");
+                        width("300px");
                         childLayoutCenter();
                                                 
                             text(new TextBuilder() {{
-                                text("Reading Diary");
+                                text("Mom's Lost Diary");
                                 font("Interface/Fonts/verdana-48-regular.fnt");
                                 height("100%");
                                 width("100%");
@@ -146,44 +145,58 @@ public class DiaryScreen extends BaseAppState {
                     }});        
                     
                     panel(new PanelBuilder("Panel_Diary_Content_SheetLeft"){{
-                        x("200px");
+                        x("150px");
                         y("80px");
                         height("80%");
                         width("40%"); 
-                        childLayoutCenter();
+                        childLayoutVertical();
                         //backgroundColor("#00f1");
                         
-                        text(new TextBuilder("Content_Left"){{
-                            text("${CALL.getLeftContentText()}");
+                        control(new LabelBuilder("Content_Text1"){{
+                            //text("${CALL.getContentText1()}");
                             font("Interface/Fonts/Default.fnt");
                             color("#00f9");
-                            height("100%");
+                            height("40%");
                             width("100%");
                             alignCenter();
-                            valignCenter();
-                            
                         }});
+                        
+                        image(new ImageBuilder("Content_Image1"){{
+                                filename("Interface/Images/Diary/thesore.png");
+                                height("50%");
+                                width("50%"); 
+                                alignCenter();
+                        }});    
+                        
                     }}); //end panel Book Sheet Left 
                     
                     
                     panel(new PanelBuilder("Panel_Diary_Content_SheetRight"){{
-                        x("600px");
+                        x("700px");
                         y("80px");
                         height("80%");
                         width("40%"); 
-                        childLayoutCenter();
+                        childLayoutVertical();
                         //backgroundColor("#00f1");
-                        
-                        text(new TextBuilder("Content_Right"){{
-                            text("${CALL.getRightContentText()}");
-                            font("Interface/Fonts/Default.fnt");
-                            color("#00f9");
-                            height("100%");
-                            width("100%");
-                            alignCenter();
-                            valignCenter();
+                          
+                            image(new ImageBuilder("Content_Image2"){{
+                                filename("Interface/Images/Diary/beachhut.png");
+                                height("50%");
+                                width("50%"); 
+                                alignCenter();
+                            }});
                             
-                        }});
+                            control(new LabelBuilder("Content_Text2"){{
+                                //text("${CALL.getContentText2()}");
+                                font("Interface/Fonts/Default.fnt");
+                                color("#00f9");
+                                height("40%");
+                                width("100%");
+                                alignCenter();
+                            }});    
+                            
+                            
+                            
                     }}); //end panel Book Sheet Right 
                    
                    
@@ -191,8 +204,8 @@ public class DiaryScreen extends BaseAppState {
                         childLayoutHorizontal();
                         x(SizeValue.px(screenWidth/9));
                         y(SizeValue.px(screenHeight-150));
-                        height("70px");
-                        width("600px"); 
+                        height("10%");
+                        width("80%"); 
                                                 
                         
                         image(new ImageBuilder("pausedmenuimg_gamesettings"){{
@@ -214,7 +227,7 @@ public class DiaryScreen extends BaseAppState {
                             height("40px");
                             width("200px");    
                             interactOnClick("backToGame()");
-                            interactOnMouseOver("buttonEffect()");
+                            
 //                            backgroundColor("#0c01");
                             onStartHoverEffect(new HoverEffectBuilder("changeImage"){{
                                 effectParameter("active", "Interface/Images/MenuUI/button_1_pausedmenu_back.png"); neverStopRendering(true);
@@ -229,7 +242,7 @@ public class DiaryScreen extends BaseAppState {
                             height("40px");
                             width("200px");    
                             interactOnClick("backToMainMenu()");
-                            interactOnMouseOver("buttonEffect()");
+                            
 //                            backgroundColor("#0c01");
                             onStartHoverEffect(new HoverEffectBuilder("changeImage"){{
                                 effectParameter("active", "Interface/Images/MenuUI/button_1_pausedmenu_quit.png"); neverStopRendering(true);
@@ -237,6 +250,37 @@ public class DiaryScreen extends BaseAppState {
                             onStartHoverEffect(new HoverEffectBuilder("move"){{effectParameter("mode", "toOffset"); effectParameter("offsetX", "+15");}});
                             onStartHoverEffect(new HoverEffectBuilder("playSound"){{effectParameter("sound", "btnclick");}});
                             }});
+                                            
+                    
+                        image(new ImageBuilder("Diary_PrevPage"){{
+                            filename("Interface/Images/MenuUI/button_0_book_prevpage.png");
+                            height("40px");
+                            width("100px");    
+                            interactOnClick("prevPage()");
+                            
+//                            backgroundColor("#0c01");
+                            onStartHoverEffect(new HoverEffectBuilder("changeImage"){{
+                                effectParameter("active", "Interface/Images/MenuUI/button_0_book_prevpage.png"); neverStopRendering(true);
+                                effectParameter("inactive", "Interface/Images/MenuUI/button_0_book_prevpage.png"); neverStopRendering(true);}});
+                            onStartHoverEffect(new HoverEffectBuilder("move"){{effectParameter("mode", "toOffset"); effectParameter("offsetX", "-15");}});
+                            onStartHoverEffect(new HoverEffectBuilder("playSound"){{effectParameter("sound", "btnclick");}});
+                            }});
+                        
+                        
+                        image(new ImageBuilder("Diary_PrevPage"){{
+                            filename("Interface/Images/MenuUI/button_0_book_nextpage.png");
+                            height("40px");
+                            width("100px");    
+                            interactOnClick("nextPage()");
+                            
+//                            backgroundColor("#0c01");
+                            onStartHoverEffect(new HoverEffectBuilder("changeImage"){{
+                                effectParameter("active", "Interface/Images/MenuUI/button_0_book_nextpage.png"); neverStopRendering(true);
+                                effectParameter("inactive", "Interface/Images/MenuUI/button_0_book_nextpage.png"); neverStopRendering(true);}});
+                            onStartHoverEffect(new HoverEffectBuilder("move"){{effectParameter("mode", "toOffset"); effectParameter("offsetX", "+15");}});
+                            onStartHoverEffect(new HoverEffectBuilder("playSound"){{effectParameter("sound", "btnclick");}});
+                            }});
+                        
                         }});
                       
                 }});
@@ -245,13 +289,13 @@ public class DiaryScreen extends BaseAppState {
                 nifty.gotoScreen("Screen_DiaryBook");
     }
     
-    public void enableDiaryScreen(){
+    public void showDiaryScreen(){
         nifty.gotoScreen("Screen_DiaryBook");
         app.getFlyByCamera().setDragToRotate(true);
         
     }
     
-    public void disableDiaryScreen(){
+    public void hideDiaryScreen(){
         nifty.removeScreen("Screen_DiaryBook");
         app.getFlyByCamera().setDragToRotate(false);
         PlayGame.getNiftyDisplay().getNifty().gotoScreen("Screen_HUD");

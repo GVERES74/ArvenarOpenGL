@@ -87,7 +87,7 @@ public class PausedScreenController extends BaseAppState implements ScreenContro
         
         PlayGame.attachAppState(PlayGame.diary_screen);
         PlayGame.detachAppState(PlayGame.paused_screen);
-        PlayGame.musicPlayer.stop();
+        
     }
     
     
@@ -119,7 +119,7 @@ public class PausedScreenController extends BaseAppState implements ScreenContro
     public void backToGame(){
         System.out.println("Back to game button pressed...");
         PlayGame.detachAppState(PlayGame.paused_screen);
-        PlayGame.ingameHud.enableHUDScreen();
+        PlayGame.ingameHud.showHUDScreen();
         
         //also calls screen's onDisable() method
                 

@@ -50,7 +50,8 @@ public class PausedScreen extends BaseAppState {
     
     @Override
     public void initialize(Application app) {
-        
+    //If a detached AppState is attached then initialize() will be called on the following render pass.
+    
         this.app = (SimpleApplication) app; // can cast Application to something more specific
         this.rootNode     = this.app.getRootNode();
         this.assetManager = this.app.getAssetManager();
@@ -73,20 +74,20 @@ public class PausedScreen extends BaseAppState {
     
     @Override
     protected void cleanup(Application app) {
-        System.out.println("PausedScreen cleanup called.....");
+        //If an attached AppState is detached then cleanup() will be called on the following render pass.
+        System.out.println(this.nifty.getCurrentScreen().getScreenId()+" screen cleanup called.....");
     }
 
      @Override
     protected void onEnable() {
-        enablePausedScreen();
+        showPausedScreen();
     }
-      
-
+    
 
     @Override
     protected void onDisable() {
 
-       disablePausedScreen();
+       hidePausedScreen();
                         
     }
     
@@ -106,7 +107,7 @@ public class PausedScreen extends BaseAppState {
             nifty.registerMouseCursor("crosshair", "Interface/Images/HUD/crosshair.png", 100, 100);
             nifty.getNiftyMouse().enableMouseCursor("crosshair");
                    
-            nifty.addScreen("Screen_PausedMenu", new ScreenBuilder("Game Paused"){{
+            nifty.addScreen("Screen_PausedMenu", new ScreenBuilder("PausedMenu"){{
                 controller(new mygame.PausedScreenController());
                 defaultFocusElement("settings_Apply");
                 
@@ -299,12 +300,12 @@ public class PausedScreen extends BaseAppState {
                 nifty.gotoScreen("Screen_PausedMenu");
     }
     
-    public void enablePausedScreen(){
+    public void showPausedScreen(){
         nifty.gotoScreen("Screen_PausedMenu");
         app.getFlyByCamera().setDragToRotate(true);
     }
     
-    public void disablePausedScreen(){
+    public void hidePausedScreen(){
         nifty.removeScreen("Screen_PausedMenu");
         app.getFlyByCamera().setDragToRotate(false);
         

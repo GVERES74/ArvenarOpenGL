@@ -67,8 +67,7 @@ public class MapViewScreen extends BaseAppState {
     @Override
     protected void cleanup(Application app) {
         
-        //TODO: clean up what you initialized in the initialize method,        
-        //e.g. remove all spatials from rootNode    
+        System.out.println(this.nifty.getCurrentScreen().getScreenId()+" screen cleanup called....."); 
     }
 
     //onEnable()/onDisable() can be used for managing things that should     
@@ -77,7 +76,7 @@ public class MapViewScreen extends BaseAppState {
     @Override
     protected void onEnable() {
         
-        enableMapViewScreen();
+        showMapViewScreen();
         //Called when the state is fully enabled, ie: is attached and         
         //isEnabled() is true or when the setEnabled() status changes after the         
         //state is attached.    
@@ -85,8 +84,8 @@ public class MapViewScreen extends BaseAppState {
     
     @Override
     protected void onDisable() {
-        System.out.println("MapScreen onDisable called....");
-        disableMapViewScreen();
+        
+        hideMapViewScreen();
             //Called when the state was previously enabled but is now disabled         
         //either because setEnabled(false) was called or the state is being         
         //cleaned up.    
@@ -110,7 +109,7 @@ public class MapViewScreen extends BaseAppState {
             nifty.registerSound("btnclick", "Interface/sound/click.wav");
             nifty.registerSound("openmap", "Interface/sound/book_flip_2.ogg");
                    
-            nifty.addScreen("Screen_MapScreen", new ScreenBuilder("View Map"){{
+            nifty.addScreen("Screen_MapScreen", new ScreenBuilder("MapView"){{
                 controller(new mygame.MapViewScreenController());
                 defaultFocusElement("settings_CloseMap");
                 
@@ -352,12 +351,12 @@ public class MapViewScreen extends BaseAppState {
                 nifty.gotoScreen("Screen_MapScreen");
     }
     
-    public void enableMapViewScreen(){
+    public void showMapViewScreen(){
         app.getFlyByCamera().setDragToRotate(true);
         nifty.gotoScreen("Screen_MapScreen");
     }
     
-    public void disableMapViewScreen(){
+    public void hideMapViewScreen(){
         app.getFlyByCamera().setDragToRotate(false);
         nifty.removeScreen("Screen_MapScreen");
         PlayGame.getNiftyDisplay().getNifty().gotoScreen("Screen_HUD");

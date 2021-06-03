@@ -9,7 +9,13 @@ import com.jme3.app.Application;
 import com.jme3.app.SimpleApplication;
 import com.jme3.app.state.BaseAppState;
 import com.jme3.input.InputManager;
+import com.jme3.texture.Image;
+import com.jme3.ui.Picture;
 import de.lessvoid.nifty.Nifty;
+import de.lessvoid.nifty.controls.Label;
+import de.lessvoid.nifty.controls.NiftyControl;
+import de.lessvoid.nifty.elements.Element;
+import de.lessvoid.nifty.render.NiftyImage;
 import de.lessvoid.nifty.screen.Screen;
 import de.lessvoid.nifty.screen.ScreenController;
 
@@ -25,7 +31,8 @@ public class DiaryScreenController extends BaseAppState implements ScreenControl
     private InputManager inputManager;
     private Nifty nifty;
     private Screen screen;
-    
+    private Element diarytextpage1, diarytextpage2;
+    private NiftyImage diaryimagepage1, diaryimagepage2;
     
     @Override
     protected void initialize(Application app) {
@@ -44,7 +51,6 @@ public class DiaryScreenController extends BaseAppState implements ScreenControl
     @Override
     protected void onEnable() {
     
-
      
     }
     
@@ -64,16 +70,59 @@ public class DiaryScreenController extends BaseAppState implements ScreenControl
     public void bind(Nifty nifty, Screen screen) {
         this.nifty = nifty;
         this.screen = screen;
+        
+        
     }
 
     @Override
     public void onStartScreen() {
+        PlayGame.musicPlayer.stop();
         PlayGame.playMusic("Music/Soundtracks/RPG - The Great Collapse.ogg");
         
     }
 
     @Override
     public void onEndScreen() {
+        
+    }
+    
+    
+    
+    public String getContentText1(){
+        String content1 = 
+                "<< Abandoned Shore - Day 1 >>\n"
+                + "Dear Valentine,\n"
+                + "By the time you read these rows, i'm likely already far away.\n"
+                + "Ten years ago i suddenly disappeared from our house,\n"
+                + "i can not even remember what actually happened, i only \n"
+                + "remember pain, and despair, looking for you and your brother,\n"
+                + "but....but you were nowhere to be found.\n"
+                + "I found myself here, on a deserted beach, alone and very tired.\n"
+                + "But i have to get up and walk, looking for shelter and food...\n"
+                + "Storm is coming over the ocean, and nightfall is almost here.";
+        return content1;
+    }
+    
+    public String getContentText2(){
+        String content2 = 
+                "<< Abandoned Shore - Day 2 >>\n"
+                + "I found a shack near the shore. It looks abandoned and weathered,\n "
+                + "but will do the job. I'm still very tired, as i didn't sleep last night at all.\n"
+                + "What could have happened to me?? Where am I? What is this place?\n"
+                + "There is some bread and roasted fish on the table. I hope i won't die \n"
+                + "from poisoned food. Later i will look around in the shack, but first of all\n"
+                + "i have to sleep a bit...and get myself together, tomorrow i MUST go for\n"
+                + "a walk on the beach.";
+        return content2;
+    }
+    
+    public void nextPage(){
+        screen.findNiftyControl("Content_Text1", Label.class).setText(getContentText1());
+        screen.findNiftyControl("Content_Text2", Label.class).setText(getContentText2());
+        
+    }
+    
+    public void prevPage(){
         
     }
     
@@ -84,50 +133,6 @@ public class DiaryScreenController extends BaseAppState implements ScreenControl
         System.out.println("Game Settings button pressed...");
         //PlayGame.musicPlayer.stop();
         
-    }
-    
-    public void showMap(){
-        
-        PlayGame.attachAppState(PlayGame.mapview_screen);
-        PlayGame.detachAppState(PlayGame.paused_screen);
-        
-    }
-    
-    
-    public String getLeftContentText(){
-        String content1 = 
-                "<< Abandoned Shore - Day 1 >>\n"
-                + "Dear Valentine,\n"
-                + "By the time you read these rows,\n"
-                + "i likely am already dead.\n"
-                + "Ten years ago i suddenly\n"
-                + "disappeared from our house,\n"
-                + "i can not even remember what \n"
-                + "actually happened, i only \n"
-                + "remember pain, and despair, \n"
-                + "and you weren't anywhere.\n"
-                + "I found myself here,\n"
-                + "in a deserted beach,\n"
-                + "i have to get up and walk,\n"
-                + "looking for shelter and food...";
-        return content1;
-    }
-    
-    public String getRightContentText(){
-        String content2 = 
-                "<< Abandoned Shore - Day 2 >>\n"
-                + "I found a shack near the shore.\n"
-                + "It looks abandoned and weathered,\n "
-                + "but will do the job. I'm still\n"
-                + "very tired, as i didn't sleep\n"
-                + "last night at all.\n"
-                + "What could have happened to me??\n"
-                + "There is some bread and roasted fish \n"
-                + "on the table. I hope i won't die \n"
-                + "from poisoned food.\n"
-                + "Later i will look around in the shack, \n"
-                + "but first of all i have to sleep a bit...";
-        return content2;
     }
     
     public void backToGame(){
