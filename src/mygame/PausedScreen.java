@@ -76,11 +76,13 @@ public class PausedScreen extends BaseAppState {
     protected void cleanup(Application app) {
         //If an attached AppState is detached then cleanup() will be called on the following render pass.
         System.out.println(this.nifty.getCurrentScreen().getScreenId()+" screen cleanup called.....");
+        PlayGame.gameplayState.setEnabled(true);
     }
 
      @Override
     protected void onEnable() {
         showPausedScreen();
+        PlayGame.gameplayState.setEnabled(false);
     }
     
 
@@ -308,6 +310,7 @@ public class PausedScreen extends BaseAppState {
     public void hidePausedScreen(){
         nifty.removeScreen("Screen_PausedMenu");
         app.getFlyByCamera().setDragToRotate(false);
+        //PlayGame.getNiftyDisplay().getNifty().gotoScreen("Screen_HUD");
         
         
     }

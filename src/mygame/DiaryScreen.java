@@ -75,13 +75,14 @@ public class DiaryScreen extends BaseAppState {
     @Override
     protected void cleanup(Application app) {
         System.out.println(this.nifty.getCurrentScreen().getScreenId()+" screen cleanup called.....");
-        
+        PlayGame.gameplayState.setEnabled(true);
         
     }
 
     @Override
     protected void onEnable() {
         showDiaryScreen();
+        PlayGame.gameplayState.setEnabled(false);
         
     }
      
@@ -153,7 +154,7 @@ public class DiaryScreen extends BaseAppState {
                         //backgroundColor("#00f1");
                         
                         control(new LabelBuilder("Content_Text1"){{
-                            //text("${CALL.getContentText1()}");
+                            
                             font("Interface/Fonts/Default.fnt");
                             color("#00f9");
                             height("40%");
@@ -162,7 +163,7 @@ public class DiaryScreen extends BaseAppState {
                         }});
                         
                         image(new ImageBuilder("Content_Image1"){{
-                                filename("Interface/Images/Diary/thesore.png");
+                                
                                 height("50%");
                                 width("50%"); 
                                 alignCenter();
@@ -180,14 +181,14 @@ public class DiaryScreen extends BaseAppState {
                         //backgroundColor("#00f1");
                           
                             image(new ImageBuilder("Content_Image2"){{
-                                filename("Interface/Images/Diary/beachhut.png");
+                                
                                 height("50%");
                                 width("50%"); 
                                 alignCenter();
                             }});
                             
                             control(new LabelBuilder("Content_Text2"){{
-                                //text("${CALL.getContentText2()}");
+                                
                                 font("Interface/Fonts/Default.fnt");
                                 color("#00f9");
                                 height("40%");
@@ -257,8 +258,8 @@ public class DiaryScreen extends BaseAppState {
                             height("40px");
                             width("100px");    
                             interactOnClick("prevPage()");
-                            
-//                            backgroundColor("#0c01");
+                                                        
+//                          backgroundColor("#0c01");
                             onStartHoverEffect(new HoverEffectBuilder("changeImage"){{
                                 effectParameter("active", "Interface/Images/MenuUI/button_0_book_prevpage.png"); neverStopRendering(true);
                                 effectParameter("inactive", "Interface/Images/MenuUI/button_0_book_prevpage.png"); neverStopRendering(true);}});
@@ -267,7 +268,7 @@ public class DiaryScreen extends BaseAppState {
                             }});
                         
                         
-                        image(new ImageBuilder("Diary_PrevPage"){{
+                        image(new ImageBuilder("Diary_NextPage"){{
                             filename("Interface/Images/MenuUI/button_0_book_nextpage.png");
                             height("40px");
                             width("100px");    

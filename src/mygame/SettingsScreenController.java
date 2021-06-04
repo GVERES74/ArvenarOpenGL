@@ -1,4 +1,4 @@
-/*
+    /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
@@ -138,20 +138,22 @@ public class SettingsScreenController extends BaseAppState implements ScreenCont
             hashsetdmodes.add(m);
         }
         
+        
+        //dropdownResolution.addAllItems(hashsetdmodes);
         //for (DisplayMode dm: dmodes){ //for HashSet
             for (DisplayMode dm: modes){
-                            
-              dropdownResolution.addItem(dm.getWidth()+"x"+dm.getHeight()+"/"+dm.getBitDepth()+"bpp@"+dm.getRefreshRate()+"Hz");
               
-        }  
+              dropdownResolution.addItem(dm.getWidth()+"x"+dm.getHeight()+"/"+dm.getBitDepth()+"bpp@"+dm.getRefreshRate()+"Hz");
+            }
               
             dropdownBitDepth.addItem(16);
             dropdownBitDepth.addItem(24);
             dropdownRefreshRate.addItem(60);
             dropdownRefreshRate.addItem(75);
                        
+            
             dropdownResolution.selectItemByIndex(modes.length-1);
-            dropdownBitDepth.selectItemByIndex(0);
+            dropdownBitDepth.selectItemByIndex(1);
             dropdownRefreshRate.selectItemByIndex(0);
         
     }

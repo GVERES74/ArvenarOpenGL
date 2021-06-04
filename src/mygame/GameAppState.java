@@ -230,7 +230,7 @@ public class GameAppState extends BaseAppState implements AnimEventListener{
                                         
                     case "OpenDiary":   hotKeyPressed(PlayGame.diary_screen, keyPressed); break;                      
                                         
-                    case "lookat_target": if ((keyPressed) && PlayGame.ingameHud.isEnabled()){
+                    case "lookat_target": if ((keyPressed) && PlayGame.gameplayState.isEnabled()){
                         
                         //PlayGame.ingameHud.showLookAtDialog(true,getTarget());
                         PlayGame.ingameHud.createDialogPanel(true,getTarget());
@@ -239,7 +239,7 @@ public class GameAppState extends BaseAppState implements AnimEventListener{
 
                     } 
                     
-                    else if (!keyPressed){
+                    else if (!(keyPressed) && PlayGame.gameplayState.isEnabled()){
                         PlayGame.ingameHud.createDialogPanel(false,"");
                         
                     }

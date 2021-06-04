@@ -3,6 +3,7 @@ package mygame;
 import Levels.S2M0_shore;
 import com.jme3.app.SimpleApplication;
 import com.jme3.app.state.AppState;
+import com.jme3.audio.AudioData.DataType;
 import com.jme3.audio.AudioNode;
 
 import com.jme3.export.binary.BinaryImporter;
@@ -37,7 +38,7 @@ public class PlayGame extends SimpleApplication{
     public static ExtrasScreen extras_screen;
     public static DiaryScreen diary_screen;
         
-    public static AudioNode musicPlayer, soundPlayer;
+    public static AudioNode musicPlayer, soundPlayer, soundinstance;
     
                 
     public static void main(String[] args) throws BackingStoreException {
@@ -67,12 +68,12 @@ public class PlayGame extends SimpleApplication{
            mainMenu_screen = new MainMenuScreen(); //stateManager.attach(mainMenu_screen);
            settings_screen = new SettingsScreen();  //stateManager.attach(settings_screen);
            credits_screen = new CreditsScreen(); //stateManager.attach(credits_screen);
-           extras_screen = new ExtrasScreen(); //stateManager.attach(extras_screen);
+           extras_screen = new ExtrasScreen(); stateManager.attach(extras_screen);
            paused_screen = new PausedScreen(); //stateManager.attach(paused_screen);
            ingameHud = new HUDScreen();          //stateManager.attach(ingameHud);
            mapview_screen = new MapViewScreen();
-           diary_screen = new DiaryScreen();
-           gameplayState = new GameAppState(); stateManager.attach(gameplayState);
+           diary_screen = new DiaryScreen(); //stateManager.attach(diary_screen);
+           gameplayState = new GameAppState(); //stateManager.attach(gameplayState);
            
            levelS1M0 = new S2M0_shore(); //stateManager.attach(levelS1M0);
 
@@ -139,6 +140,13 @@ public class PlayGame extends SimpleApplication{
         app.getRootNode().attachChild(soundPlayer);
         //audioRenderer.playSource(soundPlayer);
         soundPlayer.play();
+    }
+    
+    public static void playSoundInstance(String filepath){
+        soundinstance = new AudioNode(app.getAssetManager(), filepath, DataType.Buffer);
+        soundinstance.setPositional(false);
+        app.getRootNode().attachChild(soundinstance);
+        soundinstance.playInstance();
     }
     
     public static void attachAppState(AppState appstate){

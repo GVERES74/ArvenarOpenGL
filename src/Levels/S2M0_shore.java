@@ -189,7 +189,7 @@ public class S2M0_shore extends BaseAppState {
             particle1.setImagesY(2);
             particle1.getParticleInfluencer().setInitialVelocity(new Vector3f(-1,-1,0));
             particle1.getParticleInfluencer().setVelocityVariation(1.0f);
-            particle1.setLocalTranslation(0, 50, 0);
+            particle1.setLocalTranslation(-600, 50, 250);
             particle1.setStartSize(0.5f);
             particle1.setEndSize(1.0f);
             //particle1.setGravity(1,1,1);

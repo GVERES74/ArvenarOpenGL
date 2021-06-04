@@ -9,7 +9,6 @@ import com.jme3.app.Application;
 import com.jme3.app.SimpleApplication;
 import com.jme3.app.state.AppStateManager;
 import com.jme3.app.state.BaseAppState;
-import com.jme3.system.AppSettings;
 import de.lessvoid.nifty.Nifty;
 import de.lessvoid.nifty.controls.DropDown;
 import de.lessvoid.nifty.controls.Label;
@@ -17,6 +16,10 @@ import de.lessvoid.nifty.controls.Tab;
 import de.lessvoid.nifty.controls.TabGroup;
 import de.lessvoid.nifty.screen.Screen;
 import de.lessvoid.nifty.screen.ScreenController;
+import java.io.File;
+import java.nio.file.DirectoryStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
 
 /**
  *  
@@ -110,35 +113,14 @@ public class ExtrasScreenController extends BaseAppState implements ScreenContro
     
     private void loadMusicFiles(){
         System.out.println("Music list loaded.....");
-        String[] oggfiles = {
-                "RPG_Ambient_4.ogg",
-                "RPG - Mabels Crystal.ogg",
-                "RPG - The Great Collapse.ogg",
-                "RPG - The Path to Agartha (FadeOut).ogg",
-                "RPG - The Path to Agartha (Loopable).ogg",
-                "The Last Sylph.ogg",
-                "RPG_-_Misty_Mountains.ogg",
-                "RPG_Ambient_3.ogg",
-                "RPG - The Mysterious Companion.ogg",
-                "RPG_Ambient_4_The_Dark_Wood_.ogg",
-                "RPG_Title_1.ogg",
-                "RPG_Never_Go_Full_Bard.ogg",
-                "RPG - A Long Way From Home.ogg",
-                "Audience.ogg",
-                "Loop_Kings_Feast.wav",
-                "RPG - The Secret Within The Silent Woods.ogg",
-                "Peaceful_Place.ogg",
-                "RPG_Village_1.ogg",
-                "RPG_Ambient_2.ogg",
-                "RPG_For_Wenches_Ale_and_LOOT.ogg",
-                "RPG_The_Lost_Town.ogg",
-                "ambient_snow1.ogg",
-                "forest.wav"};
         
-        for (String s: oggfiles){
-        dropdownSelectMusic.addItem(s);
-        }
-        
+        File folder = new File("assets/Music/Soundtracks");
+            for (final File fileEntry : folder.listFiles()) {
+                if (!fileEntry.isDirectory()) {
+                    dropdownSelectMusic.addItem(fileEntry.getName());
+                }
+            }    
+           
         dropdownSelectMusic.selectItemByIndex(0);
         
     }
@@ -188,4 +170,14 @@ public class ExtrasScreenController extends BaseAppState implements ScreenContro
     protected void onDisable() {
         
     }
+    
+    public void listFilesForFolder(File folder) {
+    for (final File fileEntry : folder.listFiles()) {
+        if (fileEntry.isDirectory()) {
+            listFilesForFolder(fileEntry);
+        } else {
+            System.out.println(fileEntry.getName());
+        }
+    }
+}
 }

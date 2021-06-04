@@ -78,11 +78,13 @@ public class ExtrasScreen extends BaseAppState {
     
     @Override
     protected void cleanup(Application app) {
+        PlayGame.gameplayState.setEnabled(true);
         System.out.println("Extras Screen cleanup called.....");
     }
 
      @Override
     protected void onEnable() {
+        PlayGame.gameplayState.setEnabled(false);
         enableExtrasScreen();
         PlayGame.playMusic("Music/Soundtracks/RPG - The Great Collapse.ogg");
        
@@ -152,42 +154,44 @@ public class ExtrasScreen extends BaseAppState {
                             
                             
                         control(new TabBuilder("tab_Extras_MPlayer", "Music Player"){{
-                            childLayoutAbsoluteInside();
-                            
+                            childLayoutCenter();
                                  
                                     panel(new PanelBuilder("Panel_Extras_MusicThemeTitle"){{
-                                    x("50px");
-                                    y("20px");
+//                                    
+                                    alignCenter();
+                                    valignTop();
                                     height("10%");
-                                    width("80%"); 
+                                    width("95%");
+                                    padding("5px");
                                     backgroundColor("#ccc1");
                                     childLayoutHorizontal();    
-                                            control(new LabelBuilder("text_nowPlaying", "Now playing:") {{
-                                                alignLeft();
+                                            control(new LabelBuilder("text_nowPlaying", "Playing:") {{
+                                                alignCenter();
                                                 valignCenter();
                                                 font("Interface/Fonts/Default.fnt");
                                                 height("100%");
-                                                width("30%");
+                                                width("20%");
                                                
                                             }});
 
 
                                             control(new LabelBuilder("text_PlayingTitle", "No music loaded..") {{
-                                                alignLeft();
+                                                alignCenter();
                                                 valignCenter();
                                                 font("Interface/Fonts/Default.fnt");
                                                 height("100%");
-                                                width("70%");
+                                                width("80%");
 
                                             }});
                                     
                                     }}); //panel for music title
                                     
                                     panel(new PanelBuilder("Panel_Extras_MusicPlayerControls"){{
-                                    x("50px");
-                                    y("100px");
+//                                    
+                                    alignCenter();
+                                    valignCenter();
                                     height("50%");
-                                    width("80%"); 
+                                    width("95%"); 
                                     backgroundColor("#fff3");
                                     childLayoutAbsoluteInside();                                      
                                             control(new LabelBuilder("label_SelectMusic") {{
@@ -199,8 +203,8 @@ public class ExtrasScreen extends BaseAppState {
                                             }});
 
                                             control(new DropDownBuilder("dropdown_MusicTheme") {{
-                                                width("200px");
-                                                x("150px");
+                                                width("300px");
+                                                x("120px");
                                                 y("30px");
 
                                             }});
@@ -209,7 +213,7 @@ public class ExtrasScreen extends BaseAppState {
                                             filename("Interface/Images/ExtrasUI/mplayer_play_0.png");
                                             height("50px");
                                             width("50px"); 
-                                            x("100px");
+                                            x("150px");
                                             y("150px");
                                             visibleToMouse(true);
                                             interactOnClick("playMusic()");
@@ -222,7 +226,7 @@ public class ExtrasScreen extends BaseAppState {
                                             filename("Interface/Images/ExtrasUI/mplayer_stop_0.png");
                                             height("50px");
                                             width("50px"); 
-                                            x("150px");
+                                            x("200px");
                                             y("151px");
                                             visibleToMouse(true);
                                             interactOnClick("stopMusic()");
@@ -235,7 +239,7 @@ public class ExtrasScreen extends BaseAppState {
                                             filename("Interface/Images/ExtrasUI/mplayer_pause_0.png");
                                             height("50px");
                                             width("50px"); 
-                                            x("200px");
+                                            x("250px");
                                             y("150px");
                                             visibleToMouse(true);
                                             interactOnClick("pauseMusic()");

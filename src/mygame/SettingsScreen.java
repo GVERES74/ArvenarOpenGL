@@ -83,13 +83,14 @@ public class SettingsScreen extends BaseAppState {
     
     @Override
     protected void cleanup(Application app) {
+        PlayGame.gameplayState.setEnabled(true);
         System.out.println(this.nifty.getCurrentScreen().getScreenId()+" screen cleanup called.....");
     }
 
      @Override
     protected void onEnable() {
         showSettingsScreen();
-       
+       PlayGame.gameplayState.setEnabled(false);
     }
     
     @Override

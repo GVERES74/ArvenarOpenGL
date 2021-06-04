@@ -108,8 +108,10 @@ public class PausedScreenController extends BaseAppState implements ScreenContro
     }
     
     public void settingsGame(){
-        PlayGame.attachAppState(PlayGame.settings_screen);
         PlayGame.detachAppState(PlayGame.paused_screen);
+        PlayGame.attachAppState(PlayGame.settings_screen);
+        
+        
         System.out.println("Game Settings button pressed...");
         //PlayGame.musicPlayer.stop();
         

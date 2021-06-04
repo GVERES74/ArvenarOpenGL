@@ -8,6 +8,8 @@ package mygame;
 import com.jme3.app.Application;
 import com.jme3.app.SimpleApplication;
 import com.jme3.app.state.BaseAppState;
+import com.jme3.font.BitmapFont;
+import com.jme3.font.BitmapText;
 import com.jme3.input.InputManager;
 import com.jme3.texture.Image;
 import com.jme3.ui.Picture;
@@ -15,9 +17,15 @@ import de.lessvoid.nifty.Nifty;
 import de.lessvoid.nifty.controls.Label;
 import de.lessvoid.nifty.controls.NiftyControl;
 import de.lessvoid.nifty.elements.Element;
+import de.lessvoid.nifty.elements.render.ImageRenderer;
 import de.lessvoid.nifty.render.NiftyImage;
 import de.lessvoid.nifty.screen.Screen;
 import de.lessvoid.nifty.screen.ScreenController;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 
 /**
  *  
@@ -32,13 +40,15 @@ public class DiaryScreenController extends BaseAppState implements ScreenControl
     private Nifty nifty;
     private Screen screen;
     private Element diarytextpage1, diarytextpage2;
-    private NiftyImage diaryimagepage1, diaryimagepage2;
+    private Element diaryimagepage1, diaryimagepage2;
+    private NiftyImage diaryniftyimagepage1, diaryniftyimagepage2;
     
     @Override
     protected void initialize(Application app) {
     
        this.inputManager = this.app.getInputManager();
        //inputManager.deleteMapping(SimpleApplication.INPUT_MAPPING_EXIT); //delete ESC key quit app function
+       
        
     }
 
@@ -71,7 +81,14 @@ public class DiaryScreenController extends BaseAppState implements ScreenControl
         this.nifty = nifty;
         this.screen = screen;
         
+        diaryimagepage1 = screen.findElementById("Content_Image1");
+        diaryimagepage2 = screen.findElementById("Content_Image2");
         
+        diaryniftyimagepage1 = nifty.createImage(screen,"Interface/Images/Diary/theshore.png", true);
+        diaryniftyimagepage2 = nifty.createImage(screen,"Interface/Images/Diary/beachhut.png", true);
+        
+        //diaryniftyimagepage1 = nifty.createImage(screen,level.getDiaryImage1, true);
+        //diaryniftyimagepage2 = nifty.createImage(screen,level.getDiaryImage2, true);
     }
 
     @Override
@@ -88,42 +105,48 @@ public class DiaryScreenController extends BaseAppState implements ScreenControl
     
     
     
-    public String getContentText1(){
-        String content1 = 
-                "<< Abandoned Shore - Day 1 >>\n"
-                + "Dear Valentine,\n"
-                + "By the time you read these rows, i'm likely already far away.\n"
-                + "Ten years ago i suddenly disappeared from our house,\n"
-                + "i can not even remember what actually happened, i only \n"
-                + "remember pain, and despair, looking for you and your brother,\n"
-                + "but....but you were nowhere to be found.\n"
-                + "I found myself here, on a deserted beach, alone and very tired.\n"
-                + "But i have to get up and walk, looking for shelter and food...\n"
-                + "Storm is coming over the ocean, and nightfall is almost here.";
-        return content1;
+    public String getContentText1() throws FileNotFoundException, IOException{
+        
+        String content = "";
+        String readstr;
+        File text = new File("src/Levels/S2M0_shore_Day1.txt");
+        BufferedReader br = new BufferedReader(new FileReader(text));
+        
+        while((readstr = br.readLine()) != null){
+                    
+                content = content + "\n"+ readstr;
+        }            
+        //        
+        return content;
     }
     
-    public String getContentText2(){
-        String content2 = 
-                "<< Abandoned Shore - Day 2 >>\n"
-                + "I found a shack near the shore. It looks abandoned and weathered,\n "
-                + "but will do the job. I'm still very tired, as i didn't sleep last night at all.\n"
-                + "What could have happened to me?? Where am I? What is this place?\n"
-                + "There is some bread and roasted fish on the table. I hope i won't die \n"
-                + "from poisoned food. Later i will look around in the shack, but first of all\n"
-                + "i have to sleep a bit...and get myself together, tomorrow i MUST go for\n"
-                + "a walk on the beach.";
-        return content2;
+    public String getContentText2() throws FileNotFoundException, IOException{
+        String content = "";
+        String readstr;
+        File text = new File("src/Levels/S2M0_shore_Day2.txt");
+        BufferedReader br = new BufferedReader(new FileReader(text));
+        
+        while((readstr = br.readLine()) != null){
+                    
+                content = content + "\n"+ readstr;
+        }            
+        //        
+        return content;
     }
     
-    public void nextPage(){
+    
+    
+    public void nextPage() throws IOException{
+        PlayGame.playSoundInstance("Interface/sound/book_flip_3.ogg");
         screen.findNiftyControl("Content_Text1", Label.class).setText(getContentText1());
         screen.findNiftyControl("Content_Text2", Label.class).setText(getContentText2());
+        diaryimagepage1.getRenderer(ImageRenderer.class).setImage(diaryniftyimagepage1);
+        diaryimagepage2.getRenderer(ImageRenderer.class).setImage(diaryniftyimagepage2);
         
     }
     
     public void prevPage(){
-        
+       PlayGame.playSoundInstance("Interface/sound/book_flip_3.ogg"); 
     }
     
     public void settingsGame(){
@@ -149,6 +172,9 @@ public class DiaryScreenController extends BaseAppState implements ScreenControl
         System.exit(0);
         
     }
+    
+    
+    
     
 
 }
