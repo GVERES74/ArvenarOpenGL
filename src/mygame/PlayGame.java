@@ -66,9 +66,9 @@ public class PlayGame extends SimpleApplication{
            viewPort.addProcessor(niftyDisplay); 
            
            mainMenu_screen = new MainMenuScreen(); //stateManager.attach(mainMenu_screen);
-           settings_screen = new SettingsScreen();  //stateManager.attach(settings_screen);
+           settings_screen = new SettingsScreen();  stateManager.attach(settings_screen);
            credits_screen = new CreditsScreen(); //stateManager.attach(credits_screen);
-           extras_screen = new ExtrasScreen(); stateManager.attach(extras_screen);
+           extras_screen = new ExtrasScreen(); //stateManager.attach(extras_screen);
            paused_screen = new PausedScreen(); //stateManager.attach(paused_screen);
            ingameHud = new HUDScreen();          //stateManager.attach(ingameHud);
            mapview_screen = new MapViewScreen();

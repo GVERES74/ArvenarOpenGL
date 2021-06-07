@@ -139,11 +139,14 @@ public class SettingsScreenController extends BaseAppState implements ScreenCont
         }
         
         
+        dropdownResolution.clear();
         //dropdownResolution.addAllItems(hashsetdmodes);
         //for (DisplayMode dm: dmodes){ //for HashSet
             for (DisplayMode dm: modes){
+            
               
               dropdownResolution.addItem(dm.getWidth()+"x"+dm.getHeight()+"/"+dm.getBitDepth()+"bpp@"+dm.getRefreshRate()+"Hz");
+              
             }
               
             dropdownBitDepth.addItem(16);

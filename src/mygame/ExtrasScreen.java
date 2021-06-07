@@ -175,7 +175,7 @@ public class ExtrasScreen extends BaseAppState {
                                             }});
 
 
-                                            control(new LabelBuilder("text_PlayingTitle", "No music loaded..") {{
+                                            control(new LabelBuilder("text_PlayingTitle", "Main Menu Theme..") {{
                                                 alignCenter();
                                                 valignCenter();
                                                 font("Interface/Fonts/Default.fnt");

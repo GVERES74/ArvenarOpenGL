@@ -17,9 +17,6 @@ import de.lessvoid.nifty.controls.TabGroup;
 import de.lessvoid.nifty.screen.Screen;
 import de.lessvoid.nifty.screen.ScreenController;
 import java.io.File;
-import java.nio.file.DirectoryStream;
-import java.nio.file.Files;
-import java.nio.file.Path;
 
 /**
  *  
@@ -52,15 +49,13 @@ public class ExtrasScreenController extends BaseAppState implements ScreenContro
         //cleanup() for this is a matter of performance specifics for the         
         //implementor.        
         //TODO: initialize your AppState, e.g. attach spatials to rootNode 
-        
-        
+                
     }
 
     @Override
     protected void cleanup(Application app) {
     
-    
-    
+        
         //e.g. remove all spatials from rootNode    
     }
 
@@ -71,7 +66,7 @@ public class ExtrasScreenController extends BaseAppState implements ScreenContro
     @Override
     public void update(float tpf) {
     
-        
+       
     
         //TODO: implement behavior during runtime    
     }
@@ -87,7 +82,9 @@ public class ExtrasScreenController extends BaseAppState implements ScreenContro
 
     @Override
     public void onStartScreen() { //itt kell inicializálni a screen-t!! Különben pl. üres ListBox-ot kapsz.
+        
         loadMusicFiles();
+        nowPlayingTitle.setText(dropdownSelectMusic.getSelection().toString());
         System.out.println("Init Extras done.....");
                 
     }
@@ -112,15 +109,21 @@ public class ExtrasScreenController extends BaseAppState implements ScreenContro
     }
     
     private void loadMusicFiles(){
-        System.out.println("Music list loaded.....");
         
         File folder = new File("assets/Music/Soundtracks");
-            for (final File fileEntry : folder.listFiles()) {
-                if (!fileEntry.isDirectory()) {
-                    dropdownSelectMusic.addItem(fileEntry.getName());
+        
+        File[] content = folder.listFiles();
+        dropdownSelectMusic.clear(); //avoid duplication of items!!
+        for (int i = 0; i < content.length; i++){
+            //for (final File fileEntry : folder.listFiles()) {
+                if (content[i].isFile()) {
+                    dropdownSelectMusic.addItem(i+"."+content[i].getName());
+                    System.out.println(content[i].getName());
+                                        
                 }
-            }    
-           
+                               
+        }    
+        
         dropdownSelectMusic.selectItemByIndex(0);
         
     }
@@ -173,7 +176,7 @@ public class ExtrasScreenController extends BaseAppState implements ScreenContro
     
     public void listFilesForFolder(File folder) {
     for (final File fileEntry : folder.listFiles()) {
-        if (fileEntry.isDirectory()) {
+        if (fileEntry.isFile()) {
             listFilesForFolder(fileEntry);
         } else {
             System.out.println(fileEntry.getName());
