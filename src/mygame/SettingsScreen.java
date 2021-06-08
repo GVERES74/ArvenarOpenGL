@@ -87,10 +87,11 @@ public class SettingsScreen extends BaseAppState {
         System.out.println(this.nifty.getCurrentScreen().getScreenId()+" screen cleanup called.....");
     }
 
-     @Override
+    @Override
     protected void onEnable() {
         showSettingsScreen();
        PlayGame.gameplayState.setEnabled(false);
+       
     }
     
     @Override
@@ -130,7 +131,7 @@ public class SettingsScreen extends BaseAppState {
                         width("100%");
                     }});
                     
-                     panel(new PanelBuilder("Panel_Settings_Title"){{
+                    panel(new PanelBuilder("Panel_Settings_Title"){{
                         childLayoutCenter();
                         x("20px");
                         y("20px");
@@ -332,9 +333,6 @@ public class SettingsScreen extends BaseAppState {
                                 effectParameter("inactive", "Interface/Images/MenuUI/button_0_back.png"); neverStopRendering(true);}});
                             onStartHoverEffect(new HoverEffectBuilder("move"){{effectParameter("mode", "toOffset"); effectParameter("offsetX", "+15");}});
                             onStartHoverEffect(new HoverEffectBuilder("playSound"){{effectParameter("sound", "btnclick");}});
-                                      
-                                        
-                                    
                                 
                         }});
                         }});
@@ -346,18 +344,18 @@ public class SettingsScreen extends BaseAppState {
                 nifty.gotoScreen("Screen_GameSettings");
     }
     
-     public void showSettingsScreen(){
+    public void showSettingsScreen(){
          
         nifty.gotoScreen("Screen_GameSettings");
         app.getFlyByCamera().setDragToRotate(true);
-     }
+    }
      
-     public void hideSettingsScreen(){
+    public void hideSettingsScreen(){
          
         nifty.removeScreen("Screen_GameSettings");
         app.getFlyByCamera().setDragToRotate(false);
         PlayGame.getNiftyDisplay().getNifty().gotoScreen("Screen_HUD");
-     }
+    }
      
     
 }

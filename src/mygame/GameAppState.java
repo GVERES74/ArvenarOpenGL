@@ -172,16 +172,17 @@ public class GameAppState extends BaseAppState implements AnimEventListener{
             this.app.getInputManager().addMapping("StrafeRight", new KeyTrigger(KeyInput.KEY_D));
             this.app.getInputManager().addMapping("Jump", new KeyTrigger(KeyInput.KEY_SPACE));
             this.app.getInputManager().addMapping("Crouch", new KeyTrigger(KeyInput.KEY_LCONTROL));
-            this.app.getInputManager().addMapping("PauseGame", new KeyTrigger(KeyInput.KEY_P));
+            this.app.getInputManager().addMapping("PauseGame", new KeyTrigger(KeyInput.KEY_ESCAPE));
             this.app.getInputManager().addMapping("MapView", new KeyTrigger(KeyInput.KEY_M));
             this.app.getInputManager().addMapping("OpenDiary", new KeyTrigger(KeyInput.KEY_L));
+            this.app.getInputManager().addMapping("Settings", new KeyTrigger(KeyInput.KEY_F1));
             
             this.app.getInputManager().addMapping("lookat_target", new MouseButtonTrigger(MouseInput.BUTTON_LEFT));
             
 
             //let's separate movement, open screen and action listeners
             this.app.getInputManager().addListener(actionListener, "Forward", "Backward", "StrafeLeft", "StrafeRight", "Jump", "Crouch");
-            this.app.getInputManager().addListener(actionListener, "PauseGame", "MapView", "OpenDiary");
+            this.app.getInputManager().addListener(actionListener, "PauseGame", "MapView", "OpenDiary", "Settings");
             this.app.getInputManager().addListener(actionListener, "lookat_target");
              
             //this.app.getInputManager().addListener(analogListener, "lookat_target");
@@ -220,23 +221,23 @@ public class GameAppState extends BaseAppState implements AnimEventListener{
                     case "StrafeLeft": keyA = keyPressed; break;
                     case "StrafeRight": keyD = keyPressed; break;
                     case "Jump": if (keyPressed) {firstPersonPlayer.jump(new Vector3f(0,20f,0));
-                                 decreasePlayerHealth(); 
-                                  }; break;
+                                    decreasePlayerHealth(); 
+                                 }; break;
                     case "Crouch": if (keyPressed) {} break;
                                                      
                     case "PauseGame":   hotKeyPressed(PlayGame.paused_screen, keyPressed); break;  
                                         
                     case "MapView":     hotKeyPressed(PlayGame.mapview_screen, keyPressed); break;  
                                         
-                    case "OpenDiary":   hotKeyPressed(PlayGame.diary_screen, keyPressed); break;                      
+                    case "OpenDiary":   hotKeyPressed(PlayGame.diary_screen, keyPressed); break; 
+                    
+                    case "Settings":   hotKeyPressed(PlayGame.settings_screen, keyPressed); break; 
                                         
                     case "lookat_target": if ((keyPressed) && PlayGame.gameplayState.isEnabled()){
                         
                         //PlayGame.ingameHud.showLookAtDialog(true,getTarget());
                         PlayGame.ingameHud.createDialogPanel(true,getTarget());
                         
-                        System.out.println("This is just a "+target);
-
                     } 
                     
                     else if (!(keyPressed) && PlayGame.gameplayState.isEnabled()){
@@ -287,7 +288,7 @@ public class GameAppState extends BaseAppState implements AnimEventListener{
     @Override
     protected void onEnable() {
         PlayGame.attachAppState(PlayGame.ingameHud);
-        
+                
         System.out.print("GameAppState onEnable() called......");
         
     }
@@ -320,7 +321,7 @@ public class GameAppState extends BaseAppState implements AnimEventListener{
             Ray ray = new Ray(camera.getLocation(), camera.getDirection());
             rootNode.collideWith(ray, results);
                 if (results.size() > 0){
-                target = results.getClosestCollision().getGeometry().getName();
+                    target = results.getClosestCollision().getGeometry().getName();
                 }
                 return target;
     }    
@@ -328,10 +329,11 @@ public class GameAppState extends BaseAppState implements AnimEventListener{
     public void hotKeyPressed(AppState appStateName, Boolean keyPressed){
         
         if (!keyPressed && !PlayGame.getPlayGameApp().getStateManager().hasState(appStateName)){
-            PlayGame.attachAppState(appStateName);}
-            else if (!keyPressed){
+            PlayGame.attachAppState(appStateName);
+            }
+        else if (!keyPressed){
             PlayGame.detachAppState(appStateName);}       
-        }
+    }
                 
         
     

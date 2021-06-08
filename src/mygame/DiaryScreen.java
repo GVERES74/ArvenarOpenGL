@@ -156,7 +156,7 @@ public class DiaryScreen extends BaseAppState {
                         control(new LabelBuilder("Content_Text1"){{
                             
                             font("Interface/Fonts/Default.fnt");
-                            color("#00f9");
+                            color("#0009");
                             height("40%");
                             width("100%");
                             alignCenter();
@@ -190,7 +190,7 @@ public class DiaryScreen extends BaseAppState {
                             control(new LabelBuilder("Content_Text2"){{
                                 
                                 font("Interface/Fonts/Default.fnt");
-                                color("#00f9");
+                                color("#0009");
                                 height("40%");
                                 width("100%");
                                 alignCenter();
@@ -300,6 +300,5 @@ public class DiaryScreen extends BaseAppState {
         nifty.removeScreen("Screen_DiaryBook");
         app.getFlyByCamera().setDragToRotate(false);
         PlayGame.getNiftyDisplay().getNifty().gotoScreen("Screen_HUD");
-        
     }
 }

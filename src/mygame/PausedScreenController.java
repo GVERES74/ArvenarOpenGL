@@ -9,6 +9,7 @@ import com.jme3.app.Application;
 import com.jme3.app.SimpleApplication;
 import com.jme3.app.state.BaseAppState;
 import com.jme3.input.InputManager;
+import com.jme3.math.FastMath;
 import de.lessvoid.nifty.Nifty;
 import de.lessvoid.nifty.screen.Screen;
 import de.lessvoid.nifty.screen.ScreenController;
@@ -78,21 +79,22 @@ public class PausedScreenController extends BaseAppState implements ScreenContro
     
     public void showMap(){
         
+        //PlayGame.detachAppState(PlayGame.paused_screen);
         PlayGame.attachAppState(PlayGame.mapview_screen);
-        PlayGame.detachAppState(PlayGame.paused_screen);
-        
+                
     }
     
     public void openDiary(){
-        
+               
+        //PlayGame.detachAppState(PlayGame.paused_screen);
         PlayGame.attachAppState(PlayGame.diary_screen);
-        PlayGame.detachAppState(PlayGame.paused_screen);
         
     }
     
     
     public String getMenuItemHintText(){
-        String content = 
+        String[] content = {
+        
                 "<< Abandoned Shore >>\n"
                 + "You woke up dizzy\n"
                 + "and feeling sick\n"
@@ -103,15 +105,52 @@ public class PausedScreenController extends BaseAppState implements ScreenContro
                 + "who had died long ago.\n"
                 + "You felt strange and\n"
                 + "were afraid of something\n"
-                + "was not right here...";
-        return content;
+                + "was not right here...",
+                
+                "<< HotKey bindings >>\n\r"
+                + "F1 = Open Settings Screen\n\r"
+                + "ESC = Open Paused Menu\n\r"
+                + "M = Open Land Map\n\r"
+                + "L = Open Diary",
+                
+                "<< About the Project >>\n\r"
+                + "This project was originally\n\r"
+                + "planned to be developed in\n\r"
+                + "JavaFX. Due to the fact, that\n\r"
+                + "the developer has been working\n\r"
+                + "on the project alone, came the idea\n\r"
+                + "to look for a game engine that not widely\n\r"
+                + "used nowadays, but is easy to learn, and\n\r"
+                + "still capable of create a good software\n\r"
+                + "from the scratch.",
+                
+                "<< About the Game >>\n\r"
+                + "It is always closer to a true gamer\n\r"
+                + "to see and play an RPG, that is not\n\r"
+                + "about cutting edge menus, that are very\n\r"
+                + "beautyful for the eyes, and you can easily\n\r"
+                + "lost yourself in, forgetting what was your\n\r"
+                + "progress or game status 2 minutes ago.....\n\r"
+                + "No. In real life you draw out a map, open a diary\n\r"
+                + "and flipping its pages, and die in the world\n\r"
+                + "from starving or dehydrating.",
+                
+                "<< Game Extras >>\n\r"
+                + "There is an ogg music player\n\r"
+                + "under the Game Extras menu. Go and try it."
+                
+        };
+        
+        int r = FastMath.nextRandomInt(0, content.length-1);
+              
+        
+        return content[r];
     }
     
     public void settingsGame(){
-        PlayGame.detachAppState(PlayGame.paused_screen);
+        //PlayGame.detachAppState(PlayGame.paused_screen);
         PlayGame.attachAppState(PlayGame.settings_screen);
-        
-        
+                
         System.out.println("Game Settings button pressed...");
         //PlayGame.musicPlayer.stop();
         
@@ -121,8 +160,7 @@ public class PausedScreenController extends BaseAppState implements ScreenContro
     public void backToGame(){
         System.out.println("Back to game button pressed...");
         PlayGame.detachAppState(PlayGame.paused_screen);
-        PlayGame.ingameHud.showHUDScreen();
-        
+                
         //also calls screen's onDisable() method
                 
     }

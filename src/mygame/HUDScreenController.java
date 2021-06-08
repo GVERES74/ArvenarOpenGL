@@ -10,12 +10,9 @@ import com.jme3.app.SimpleApplication;
 import com.jme3.app.state.AppStateManager;
 import com.jme3.app.state.BaseAppState;
 import de.lessvoid.nifty.Nifty;
-import de.lessvoid.nifty.controls.Label;
 import de.lessvoid.nifty.controls.NiftyControl;
-import de.lessvoid.nifty.elements.Element;
 import de.lessvoid.nifty.screen.Screen;
 import de.lessvoid.nifty.screen.ScreenController;
-import de.lessvoid.nifty.tools.SizeValue;
 
 /**
  *  

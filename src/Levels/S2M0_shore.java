@@ -31,7 +31,6 @@ import com.jme3.renderer.ViewPort;
 import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
 import com.jme3.water.WaterFilter;
-import mygame.GameAppState;
 import mygame.PlayGame;
 
 /**
@@ -231,7 +230,7 @@ public class S2M0_shore extends BaseAppState {
             
             sun = new DirectionalLight();
             //sun.setColor(ColorRGBA.White);
-            sun.setDirection(new Vector3f(7.0f, -1.3f, -4.0f).normalizeLocal());
+            sun.setDirection(new Vector3f(7.0f, -2.0f, -4.0f).normalizeLocal());
             this.app.getRootNode().addLight(sun);
             
         }

@@ -77,6 +77,7 @@ public class PausedScreen extends BaseAppState {
         //If an attached AppState is detached then cleanup() will be called on the following render pass.
         System.out.println(this.nifty.getCurrentScreen().getScreenId()+" screen cleanup called.....");
         PlayGame.gameplayState.setEnabled(true);
+        
     }
 
      @Override
@@ -233,8 +234,8 @@ public class PausedScreen extends BaseAppState {
                         
                         text(new TextBuilder("title_hint"){{
                             text("${CALL.getMenuItemHintText()}");
-                            font("Interface/Fonts/verdana-48-regular.fnt");
-                            color("#00f9");
+                            font("Interface/Fonts/Default.fnt");
+                            color("#0009");
                             height("100%");
                             width("100%");
                             alignCenter();
@@ -310,7 +311,12 @@ public class PausedScreen extends BaseAppState {
     public void hidePausedScreen(){
         nifty.removeScreen("Screen_PausedMenu");
         app.getFlyByCamera().setDragToRotate(false);
-        //PlayGame.getNiftyDisplay().getNifty().gotoScreen("Screen_HUD");
+        
+        if ((!PlayGame.app.getStateManager().hasState(PlayGame.settings_screen)) ||
+            (!PlayGame.app.getStateManager().hasState(PlayGame.mapview_screen)) ||
+            (!PlayGame.app.getStateManager().hasState(PlayGame.diary_screen))){
+                    PlayGame.getNiftyDisplay().getNifty().gotoScreen("Screen_HUD");
+        }
         
         
     }

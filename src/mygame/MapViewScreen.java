@@ -358,7 +358,7 @@ public class MapViewScreen extends BaseAppState {
     public void hideMapViewScreen(){
         app.getFlyByCamera().setDragToRotate(false);
         nifty.removeScreen("Screen_MapScreen");
-        PlayGame.getNiftyDisplay().getNifty().gotoScreen("Screen_HUD");
+        PlayGame.getNiftyDisplay().getNifty().gotoScreen("Screen_HUD");        
     }
        
 }

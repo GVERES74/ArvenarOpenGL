@@ -7,15 +7,11 @@ package mygame;
 
 import com.jme3.app.Application;
 import com.jme3.app.state.BaseAppState;
-import com.jme3.input.event.MouseMotionEvent;
 import de.lessvoid.nifty.Nifty;
-import de.lessvoid.nifty.NiftyEventSubscriber;
-import de.lessvoid.nifty.controls.SliderChangedEvent;
 import de.lessvoid.nifty.elements.Element;
 import de.lessvoid.nifty.input.NiftyMouseInputEvent;
 import de.lessvoid.nifty.screen.Screen;
 import de.lessvoid.nifty.screen.ScreenController;
-import de.lessvoid.nifty.tools.SizeValue;
 import javax.annotation.Nonnull;
 
 /**
@@ -121,7 +117,7 @@ public class MapViewScreenController extends BaseAppState implements ScreenContr
     public void zoomCurrentMap(final Element element, @Nonnull final NiftyMouseInputEvent mwevent){
        
         int mouseWheel = mwevent.getMouseWheel();
-        
+                
         System.out.println("MouseWheel: "+mouseWheel);
             if (mouseWheel < 0){
             zoomOutMap();
@@ -187,6 +183,7 @@ public class MapViewScreenController extends BaseAppState implements ScreenContr
     }
     
     public void setSeaMapSize(int count){
+        
        selected_map.setHeight((int) (selected_map.getHeight()+count));
        selected_map.setWidth((int) (selected_map.getWidth()+count));
         if(selected_map.getHeight() < panelMapViewer.getHeight()){

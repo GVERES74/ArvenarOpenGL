@@ -10,6 +10,7 @@ import com.jme3.app.SimpleApplication;
 import com.jme3.app.state.BaseAppState;
 import com.jme3.font.BitmapFont;
 import com.jme3.font.BitmapText;
+import com.jme3.math.FastMath;
 import com.jme3.ui.Picture;
 import de.lessvoid.nifty.Nifty;
 import de.lessvoid.nifty.builder.ImageBuilder;
@@ -246,11 +247,13 @@ public class HUDScreen extends BaseAppState {
     }//not used right now - alternative solution for dialog
     
     public void createDialogPanel(Boolean enabled, String text){
-        
+                
+        String[] comment = {"This is just a ", "This should be a ", "This looks to be a ", "Hmm, I would say it's a ", "I'm wondering if it's not a "};
+        int r = FastMath.nextRandomInt(0, comment.length-1);
         if (enabled){
             nifty.getCurrentScreen().findElementById("dialogText").setVisible(true);
             nifty.getCurrentScreen().findElementById("Panel_HUD_Dialog").setVisible(true);
-            nifty.getCurrentScreen().findNiftyControl("dialogText", Label.class).setText("This is just a "+text);
+            nifty.getCurrentScreen().findNiftyControl("dialogText", Label.class).setText(comment[r]+text);
         
         }
         

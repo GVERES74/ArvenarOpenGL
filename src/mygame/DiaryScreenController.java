@@ -26,6 +26,8 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *  
@@ -95,6 +97,7 @@ public class DiaryScreenController extends BaseAppState implements ScreenControl
     public void onStartScreen() {
         PlayGame.musicPlayer.stop();
         PlayGame.playMusic("Music/Soundtracks/RPG - The Great Collapse.ogg");
+        initDiaryPages(); //starting content showing
         
     }
 
@@ -138,6 +141,7 @@ public class DiaryScreenController extends BaseAppState implements ScreenControl
     
     public void nextPage() throws IOException{
         PlayGame.playSoundInstance("Interface/sound/book_flip_3.ogg");
+        
         screen.findNiftyControl("Content_Text1", Label.class).setText(getContentText1());
         screen.findNiftyControl("Content_Text2", Label.class).setText(getContentText2());
         diaryimagepage1.getRenderer(ImageRenderer.class).setImage(diaryniftyimagepage1);
@@ -147,6 +151,18 @@ public class DiaryScreenController extends BaseAppState implements ScreenControl
     
     public void prevPage(){
        PlayGame.playSoundInstance("Interface/sound/book_flip_3.ogg"); 
+    }
+    
+    public void initDiaryPages(){
+        try {
+            screen.findNiftyControl("Content_Text1", Label.class).setText(getContentText1());
+            screen.findNiftyControl("Content_Text2", Label.class).setText(getContentText2());
+        } catch (IOException ex) {
+            Logger.getLogger(DiaryScreenController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        diaryimagepage1.getRenderer(ImageRenderer.class).setImage(diaryniftyimagepage1);
+        diaryimagepage2.getRenderer(ImageRenderer.class).setImage(diaryniftyimagepage2);
     }
     
     public void settingsGame(){
