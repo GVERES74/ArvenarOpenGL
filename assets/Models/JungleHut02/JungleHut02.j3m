@@ -1,0 +1,11 @@
+Material JungleHut02 : Common/MatDefs/Light/Lighting.j3md {
+              MaterialParameters {
+                DiffuseMap: Models/JungleHut02/3TD_WoodPlank_T_01.png
+                //NormalMap: Models/JungleHut02/3TD_WoodPlank_T_01.png
+		UseMaterialColors: true
+	        Specular: 1.0 1.0 1.0 1.0
+        	Diffuse: 1.0 1.0 1.0 1.0
+	        Shininess: 20.0 
+        
+  }
+}

@@ -18,6 +18,7 @@ import com.jme3.effect.ParticleEmitter;
 import com.jme3.effect.ParticleMesh;
 import com.jme3.effect.shapes.EmitterBoxShape;
 import com.jme3.input.InputManager;
+import com.jme3.light.AmbientLight;
 import com.jme3.light.DirectionalLight;
 import com.jme3.material.Material;
 import com.jme3.math.ColorRGBA;
@@ -140,19 +141,28 @@ public class S2M0_shore extends BaseAppState {
     }
     
      public void loadSceneModels(){
+            //boat and ship
             createModel("Models/Boat/boat_crashed.j3o", "", 300f, 0f, 900f, -1f, 0f, 30f);
             createModel("Models/Boat/boat_small.obj", "", 30f, 2f, 320f, 0f, 0.1f, 1f);
-            createModel("Models/Shack/small_shack.FBX", "Models/Shack/small_shack.j3m", -650f, 7f, 250f, 1f, -1.55f, 3f);
+            //schacks, huts, jettys
+            createModel("Models/Jetty02/Tropical_Jetty02.j3o", "Models/Jetty02/Tropical_Jetty02.j3m", -600f, 1f, 400f, 0f, 0f, 2f);
+            createModel("Models/JungleHut01/JungleHut01.j3o", "Models/JungleHut01/JungleHut01.j3m", -650f, 15f, 250f, 1f, 0f, 2f);
+            createModel("Models/JungleHut01/AfricaDock01.j3o", "Models/JungleHut01/AfricaDock01.j3m", -640f, 11f, 260f, -0.3f, 0f, 2f);
+            createModel("Models/JungleHut02/JungleHut02.j3o", "Models/JungleHut02/JungleHut02.j3m", -100f, 13f, -600f, 0f, 0f, 2f);
+            createModel("Models/JungleHut01/AfricaDock01.j3o", "Models/JungleHut01/AfricaDock01.j3m", -97f, 11f, -620f, 1.5f, 0f, 2f);
+            
+            //trees
             createModel("Models/Tree/StrangeCoconutTreeYoung.j3o", "", -650f, 5f, 220f, 1f, 0f, 15f);
             createModel("Models/Tree/StrangePalm.j3o", "", -650f, 5f, 200f, 1f, 0f, 15f);
             createModel("Models/Tree/StrangePalmOld.j3o", "", -650f, 5f, 270f, 1f, 0f, 1f);
             createModel("Models/Tree/StrangePalmCurved.j3o", "", -630f, 5f, 300f, 1f, 0f, 2f);
             createModel("Models/Tree/StrangeCoconutTreeCurved.j3o", "", -630f, 5f, 320f, 1f, 0f, 5f);
-            createModel("Models/House/MVK_Houses_01.j3o", "Models/House/MVK_Houses_01.j3m", 0f, 7f, -600f, -1f, 0f, 10f);
+            //buildings
             
+            //campfire
             createModel("Models/Campfire/campfire_logs.obj", "Models/Campfire/campfire_logs.j3m", -620f, 7f, 250f, 1f, 0f, 5f);
             createModel("Models/Campfire/campfire_stones.obj", "Models/Campfire/campfire_stones.j3m", -620f, 7f, 250f, 1f, 0, 5f);
-                        
+            //crates and barrels            
             createModel("Models/Crate/Crate-04.obj", "Models/Crate/wood_crate.j3m", -640f, 7f, 260f, 1f, 0f, 5f);
             createModel("Models/Crate/Crate-01.obj", "Models/Crate/wood_crate.j3m", -640f, 7f, 270f, 1f, 0f, 5f);
             createModel("Models/Crate/Crate-02.obj", "Models/Crate/wood_crate.j3m", -640f, 7f, 275f, 1f, 0f, 5f);
@@ -188,7 +198,7 @@ public class S2M0_shore extends BaseAppState {
             particle1.setImagesY(2);
             particle1.getParticleInfluencer().setInitialVelocity(new Vector3f(-1,-1,0));
             particle1.getParticleInfluencer().setVelocityVariation(1.0f);
-            particle1.setLocalTranslation(-600, 50, 250);
+            particle1.setLocalTranslation(-650, 50, 250);
             particle1.setStartSize(0.5f);
             particle1.setEndSize(1.0f);
             //particle1.setGravity(1,1,1);
@@ -230,10 +240,13 @@ public class S2M0_shore extends BaseAppState {
             
             sun = new DirectionalLight();
             //sun.setColor(ColorRGBA.White);
-            sun.setDirection(new Vector3f(7.0f, -2.0f, -4.0f).normalizeLocal());
+            sun.setDirection(new Vector3f(6.0f, -1.5f, -4.0f).normalizeLocal());
             this.app.getRootNode().addLight(sun);
             
         }
+        
+        
+        
         
         
         public void createAdvancedWater(){
