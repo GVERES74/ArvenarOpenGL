@@ -147,7 +147,7 @@ public class S2M0_shore extends BaseAppState {
             //schacks, huts, jettys
             createModel("Models/Jetty02/Tropical_Jetty02.j3o", "Models/Jetty02/Tropical_Jetty02.j3m", -600f, 1f, 400f, 0f, 0f, 2f);
             createModel("Models/JungleHut01/JungleHut01.j3o", "Models/JungleHut01/JungleHut01.j3m", -650f, 15f, 250f, 1f, 0f, 2f);
-            createModel("Models/JungleHut01/AfricaDock01.j3o", "Models/JungleHut01/AfricaDock01.j3m", -640f, 11f, 260f, -0.3f, 0f, 2f);
+            createModel("Models/JungleHut01/AfricaDock01.j3o", "Models/JungleHut01/AfricaDock01.j3m", -640f, 11f, 256f, -0.5f, 0f, 2f);
             createModel("Models/JungleHut02/JungleHut02.j3o", "Models/JungleHut02/JungleHut02.j3m", -100f, 13f, -600f, 0f, 0f, 2f);
             createModel("Models/JungleHut01/AfricaDock01.j3o", "Models/JungleHut01/AfricaDock01.j3m", -97f, 11f, -620f, 1.5f, 0f, 2f);
             
@@ -157,18 +157,25 @@ public class S2M0_shore extends BaseAppState {
             createModel("Models/Tree/StrangePalmOld.j3o", "", -650f, 5f, 270f, 1f, 0f, 1f);
             createModel("Models/Tree/StrangePalmCurved.j3o", "", -630f, 5f, 300f, 1f, 0f, 2f);
             createModel("Models/Tree/StrangeCoconutTreeCurved.j3o", "", -630f, 5f, 320f, 1f, 0f, 5f);
+            createModel("Models/Tree/Palm/Palm01.j3o", "Models/Tree/Palm/Palm01.j3m", 0f, 5f, 250f, 1f, 0f, 5f);
+            createModel("Models/Tree/Palm/Palm02.j3o", "Models/Tree/Palm/Palm02.j3m", 400f, 3f, 250f, 1f, 0f, 5f);
+            createModel("Models/Tree/Palm/Palm03.j3o", "Models/Tree/Palm/Palm03.j3m", -630f, 5f, 400f, 1f, 0f, 5f);
+            createModel("Models/Tree/Cecropia/CecropiaTree01.j3o", "Models/Tree/Cecropia/Cecropia.j3m", -120f, 10f, -620f, 1f, 0f, 5f);
+            
             //buildings
             
             //campfire
             createModel("Models/Campfire/campfire_logs.obj", "Models/Campfire/campfire_logs.j3m", -620f, 7f, 250f, 1f, 0f, 5f);
             createModel("Models/Campfire/campfire_stones.obj", "Models/Campfire/campfire_stones.j3m", -620f, 7f, 250f, 1f, 0, 5f);
             //crates and barrels            
-            createModel("Models/Crate/Crate-04.obj", "Models/Crate/wood_crate.j3m", -640f, 7f, 260f, 1f, 0f, 5f);
-            createModel("Models/Crate/Crate-01.obj", "Models/Crate/wood_crate.j3m", -640f, 7f, 270f, 1f, 0f, 5f);
+            createModel("Models/Crate/Crate-04.obj", "Models/Crate/wood_crate.j3m", -640f, 7f, 250f, 1f, 0f, 5f);
+            createModel("Models/Crate/Crate-01.obj", "Models/Crate/wood_crate.j3m", -640f, 11f, 237f, 0f, 0f, 5f);
             createModel("Models/Crate/Crate-02.obj", "Models/Crate/wood_crate.j3m", -640f, 7f, 275f, 1f, 0f, 5f);
             createModel("Models/Crate/Crate-03.obj", "Models/Crate/wood_crate.j3m", -640f, 7f, 280f, 1f, 0f, 5f);
-            createModel("Models/Crate/Crate-05.obj", "Models/Crate/wood_crate.j3m", -640f, 7f, 265f, 1f, 0f, 5f);
-            createModel("Models/Crate/Crate-05.obj", "Models/Crate/wood_crate.j3m", -635f, 7f, 255f, 1f, 0f, 5f);
+            createModel("Models/Crate/Crate-05.obj", "Models/Crate/wood_crate.j3m", -595f, 4f, 401f, -1f, 0f, 5f);
+            createModel("Models/Crate/Crate-05.obj", "Models/Crate/wood_crate.j3m", -620f, 3f, 390f, 1f, 0f, 6f);
+            createModel("Models/Crate/Crate_jetty_01.j3o", "Models/Crate/Crate_jetty_01.j3m", -595f, 4.1f, 398f, 0f, 0f, 2f);
+            
             
             createModel("Models/Cage/CageBed.j3o", "Models/Cage/cage.j3m", -650f, 7f, 300f, -2f, 0f, 3f);
                         
@@ -274,8 +281,10 @@ public class S2M0_shore extends BaseAppState {
         private void loadAudio(){
         
             PlayGame.playMusic("Music/Soundtracks/Peaceful_Place.ogg");
-            playSound("Sounds/Ambient/Animals/ocean_seagull_mono.ogg", false, true, true, 1.5f, 0f, 0f, 500f);
-            playSound("Sounds/Ambient/Fire/torchBurning.ogg", false, true, true, 1.5f, -620f, 7f, 250f); 
+            playSound("Sounds/Ambient/Animals/ocean_seagull_mono.ogg", false, true, true, 2, 0f, 0f, 500f);
+            playSound("Sounds/Ambient/Fire/torchBurning.ogg", false, true, true, 2, -620f, 7f, 250f);
+            playSound("Sounds/Ambient/Environment/JungleAmbient01.ogg", false, true, true, 2, -150f, 5f, -630f);
+            
         }
         
         //playsound must be instantiated (more sounds must be played, needs always a new AudioNode)
