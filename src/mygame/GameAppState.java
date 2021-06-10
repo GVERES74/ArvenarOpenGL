@@ -140,6 +140,8 @@ public class GameAppState extends BaseAppState implements AnimEventListener{
         public void setCollisionPhysics(){
         
             CollisionShape sceneShape = CollisionShapeFactory.createMeshShape(level);
+            
+            
             landScape = new RigidBodyControl(sceneShape,0);
             level.addControl(landScape);
 
@@ -315,6 +317,12 @@ public class GameAppState extends BaseAppState implements AnimEventListener{
         app.getStateManager().attach(levelid);
         
     }
+
+    public Spatial getLevel() {
+        return level;
+    }
+    
+    
     
     public String getTarget(){
         CollisionResults results = new CollisionResults();

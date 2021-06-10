@@ -14,6 +14,10 @@ import com.jme3.asset.AssetManager;
 import com.jme3.audio.AudioData;
 import com.jme3.audio.AudioNode;
 import com.jme3.audio.AudioRenderer;
+import com.jme3.bullet.BulletAppState;
+import com.jme3.bullet.collision.shapes.CollisionShape;
+import com.jme3.bullet.control.RigidBodyControl;
+import com.jme3.bullet.util.CollisionShapeFactory;
 import com.jme3.effect.ParticleEmitter;
 import com.jme3.effect.ParticleMesh;
 import com.jme3.effect.shapes.EmitterBoxShape;
@@ -32,6 +36,7 @@ import com.jme3.renderer.ViewPort;
 import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
 import com.jme3.water.WaterFilter;
+import mygame.GameAppState;
 import mygame.PlayGame;
 
 /**
@@ -58,6 +63,10 @@ public class S2M0_shore extends BaseAppState {
     private AudioNode playsoundonce;
     private AudioRenderer audioRenderer;
     
+    private BulletAppState bulletAppState;
+        
+    private RigidBodyControl modelRigidBody, levelRigidBody;
+    
     ParticleEmitter particle1;
     //for Post process water effectprocessor
     private FilterPostProcessor ppFilter;
@@ -68,8 +77,7 @@ public class S2M0_shore extends BaseAppState {
     private float waveTime = 0.0f;
     private float ppWaterHeight = 0.0f;
     
-//    GameAppState maingameappstate = new GameAppState();
-    
+   
     
     @Override
     protected void initialize(Application app) {
@@ -80,6 +88,10 @@ public class S2M0_shore extends BaseAppState {
         this.inputManager = this.app.getInputManager();
         this.viewPort     = this.app.getViewPort();
         this.camera       = this.app.getCamera();
+        
+        bulletAppState = new BulletAppState();
+                
+        app.getStateManager().attach(bulletAppState);
     
     //It is technically safe to do all initialization and cleanup in the         
         //onEnable()/onDisable() methods. Choosing to use initialize() and         
@@ -88,6 +100,7 @@ public class S2M0_shore extends BaseAppState {
         //TODO: initialize your AppState, e.g. attach spatials to rootNode    
         
         loadSceneModels();
+        addScenePhysics();
         sunShine();
         createAdvancedWater();
         loadAudio();
@@ -192,6 +205,12 @@ public class S2M0_shore extends BaseAppState {
             model.setLocalTranslation(xpos, ypos, zpos);
             model.rotate(pitch, yaw, 0);
             model.setLocalScale(scale);
+            
+            CollisionShape sceneModel = CollisionShapeFactory.createMeshShape(model);
+            modelRigidBody = new RigidBodyControl(sceneModel,0);
+            model.addControl(modelRigidBody);
+            
+            bulletAppState.getPhysicsSpace().add(modelRigidBody);
             rootNode.attachChild(model);
         }
     
@@ -253,9 +272,6 @@ public class S2M0_shore extends BaseAppState {
         }
         
         
-        
-        
-        
         public void createAdvancedWater(){
             //post process water
         ppFilter = new FilterPostProcessor(assetManager);
@@ -313,6 +329,15 @@ public class S2M0_shore extends BaseAppState {
 
     public Spatial getLevel() {
         return level_S2M0;
+    }
+    
+    public void addScenePhysics(){
+         CollisionShape sceneLevel = CollisionShapeFactory.createMeshShape(app.getStateManager().getState(GameAppState.class).getLevel()); //type cast Spatial level to Node
+            levelRigidBody = new RigidBodyControl(sceneLevel,0);
+            app.getStateManager().getState(GameAppState.class).getLevel().addControl(levelRigidBody);
+            bulletAppState.getPhysicsSpace().add(levelRigidBody);
+            
+            bulletAppState.getPhysicsSpace().add(app.getStateManager().getState(GameAppState.class).firstPersonPlayer);
     }
         
         
