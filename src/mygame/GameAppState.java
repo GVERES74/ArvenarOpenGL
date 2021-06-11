@@ -31,7 +31,6 @@ import com.jme3.input.controls.ActionListener;
 import com.jme3.input.controls.AnalogListener;
 import com.jme3.input.controls.KeyTrigger;
 import com.jme3.input.controls.MouseButtonTrigger;
-import com.jme3.light.DirectionalLight;
 import com.jme3.math.Ray;
 import com.jme3.math.Vector3f;
 import com.jme3.renderer.Camera;
@@ -65,8 +64,8 @@ public class GameAppState extends BaseAppState implements AnimEventListener{
     private Spatial level;
     private BulletAppState bulletAppState;
         
-    private RigidBodyControl landScape;
-            
+    public RigidBodyControl levelRigidBody;
+    CapsuleCollisionShape capsulePlayer;        
     public CharacterControl firstPersonPlayer;
     
     
@@ -80,6 +79,7 @@ public class GameAppState extends BaseAppState implements AnimEventListener{
     
     S2M0_shore levelS2M0; 
     
+    private float playerHeight;
     private int playerhp = 100;
     public String target = "Valami";
     
@@ -101,9 +101,6 @@ public class GameAppState extends BaseAppState implements AnimEventListener{
                 
         app.getStateManager().attach(bulletAppState);
         
-        
-        
-        
         //init levels
         levelS2M0 = new S2M0_shore();
         
@@ -121,7 +118,7 @@ public class GameAppState extends BaseAppState implements AnimEventListener{
                 /** Load a model. Uses model and texture from jme3-test-data library! */ 
         
             npcPlayer = (Node)this.app.getAssetManager().loadModel("Models/Oto/OtoOldAnim.j3o");
-            npcPlayer.setLocalTranslation(0, 7, 0);
+            npcPlayer.setLocalTranslation(0, 10, 0);
             //npcPlayer.scale(1f);
 
             this.app.getRootNode().attachChild(npcPlayer);
@@ -132,26 +129,23 @@ public class GameAppState extends BaseAppState implements AnimEventListener{
             npcWalkChannel.setAnim("Walk");
 
             firstPersonPlayer.setGravity(new Vector3f(0,-20f,0)); //fallspeed
-            firstPersonPlayer.setPhysicsLocation(new Vector3f(-100,15,250));
+            firstPersonPlayer.setPhysicsLocation(new Vector3f(-600,15,250));
+            firstPersonPlayer.setJumpSpeed(20);
+            firstPersonPlayer.setFallSpeed(30);
             
         
         }
     
         public void setCollisionPhysics(){
-        
-            CollisionShape sceneShape = CollisionShapeFactory.createMeshShape(level);
-            
-            
-            landScape = new RigidBodyControl(sceneShape,0);
-            level.addControl(landScape);
-
-
-            CapsuleCollisionShape capsulePlayer = new CapsuleCollisionShape(1.5f,6f,1);
+            playerHeight = 6f;
+            capsulePlayer = new CapsuleCollisionShape(1f,playerHeight,1);
                 firstPersonPlayer = new CharacterControl(capsulePlayer, 0.05f);
-                firstPersonPlayer.setJumpSpeed(20);
-                firstPersonPlayer.setFallSpeed(30);
-                bulletAppState.getPhysicsSpace().add(landScape);
-                bulletAppState.getPhysicsSpace().add(firstPersonPlayer);
+                
+                
+                
+            CollisionShape sceneLevel = CollisionShapeFactory.createMeshShape(level); 
+            levelRigidBody = new RigidBodyControl(sceneLevel,0);
+                level.addControl(levelRigidBody);
 
         }
     
@@ -210,7 +204,7 @@ public class GameAppState extends BaseAppState implements AnimEventListener{
         this.app.getCamera().setLocation(firstPersonPlayer.getPhysicsLocation());
         
         npcPlayer.move(0.01f, 0, 0.01f);
-        
+               
         
     }
     
@@ -225,7 +219,7 @@ public class GameAppState extends BaseAppState implements AnimEventListener{
                     case "Jump": if (keyPressed) {firstPersonPlayer.jump(new Vector3f(0,20f,0));
                                     decreasePlayerHealth(); 
                                  }; break;
-                    case "Crouch": if (keyPressed) {} break;
+                    case "Crouch": if (keyPressed) {playerHeight = 3f;} else if (!keyPressed){playerHeight = 6f;} break;
                                                      
                     case "PauseGame":   hotKeyPressed(PlayGame.paused_screen, keyPressed); break;  
                                         
@@ -250,7 +244,7 @@ public class GameAppState extends BaseAppState implements AnimEventListener{
                 }
                 
                 if (keyPressed) {   
-                    //playSoundInstance("Sounds/Human/footstep_onsnow1.wav");
+                    PlayGame.playSoundInstance("Sounds/Human/footstep_onsnow1.wav");
                 }
                 else if (!keyPressed){
                     

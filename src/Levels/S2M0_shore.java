@@ -65,7 +65,7 @@ public class S2M0_shore extends BaseAppState {
     
     private BulletAppState bulletAppState;
         
-    private RigidBodyControl modelRigidBody, levelRigidBody;
+    private RigidBodyControl modelRigidBody;
     
     ParticleEmitter particle1;
     //for Post process water effectprocessor
@@ -332,11 +332,8 @@ public class S2M0_shore extends BaseAppState {
     }
     
     public void addScenePhysics(){
-         CollisionShape sceneLevel = CollisionShapeFactory.createMeshShape(app.getStateManager().getState(GameAppState.class).getLevel()); //type cast Spatial level to Node
-            levelRigidBody = new RigidBodyControl(sceneLevel,0);
-            app.getStateManager().getState(GameAppState.class).getLevel().addControl(levelRigidBody);
-            bulletAppState.getPhysicsSpace().add(levelRigidBody);
-            
+         
+            bulletAppState.getPhysicsSpace().add(app.getStateManager().getState(GameAppState.class).levelRigidBody);
             bulletAppState.getPhysicsSpace().add(app.getStateManager().getState(GameAppState.class).firstPersonPlayer);
     }
         

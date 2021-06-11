@@ -1,7 +1,7 @@
 Material Cecropia : Common/MatDefs/Light/Lighting.j3md {
               MaterialParameters {
                 DiffuseMap: Models/Tree/Cecropia/CecropiaTree01.DAE.imposter.dds
-                NormalMap: Models/Tree/Cecropia/CecropiaTree01.DAE.imposter_normals.dds
+                //NormalMap: Models/Tree/Cecropia/CecropiaTree01.DAE.imposter_normals.dds
 		UseMaterialColors: true
 	        Specular: 1.0 1.0 1.0 1.0
         	Diffuse: 1.0 1.0 1.0 1.0
