@@ -129,19 +129,18 @@ public class GameAppState extends BaseAppState implements AnimEventListener{
             npcWalkChannel.setAnim("Walk");
 
             firstPersonPlayer.setGravity(new Vector3f(0,-20f,0)); //fallspeed
-            firstPersonPlayer.setPhysicsLocation(new Vector3f(-600,15,250));
+            firstPersonPlayer.setPhysicsLocation(levelS2M0.getInitPlayerPosition());
+            
             firstPersonPlayer.setJumpSpeed(20);
             firstPersonPlayer.setFallSpeed(30);
-            
-        
+                    
         }
     
         public void setCollisionPhysics(){
             playerHeight = 6f;
             capsulePlayer = new CapsuleCollisionShape(1f,playerHeight,1);
                 firstPersonPlayer = new CharacterControl(capsulePlayer, 0.05f);
-                
-                
+                              
                 
             CollisionShape sceneLevel = CollisionShapeFactory.createMeshShape(level); 
             levelRigidBody = new RigidBodyControl(sceneLevel,0);
@@ -315,8 +314,7 @@ public class GameAppState extends BaseAppState implements AnimEventListener{
     public Spatial getLevel() {
         return level;
     }
-    
-    
+        
     
     public String getTarget(){
         CollisionResults results = new CollisionResults();

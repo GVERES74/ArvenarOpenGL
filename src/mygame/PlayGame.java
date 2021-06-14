@@ -27,6 +27,7 @@ public class PlayGame extends SimpleApplication{
     private static Nifty nifty;
     
     public static GameAppState gameplayState;
+    
     public S2M0_shore levelS1M0;
     
     public static MainMenuScreen mainMenu_screen;

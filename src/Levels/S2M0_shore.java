@@ -22,7 +22,6 @@ import com.jme3.effect.ParticleEmitter;
 import com.jme3.effect.ParticleMesh;
 import com.jme3.effect.shapes.EmitterBoxShape;
 import com.jme3.input.InputManager;
-import com.jme3.light.AmbientLight;
 import com.jme3.light.DirectionalLight;
 import com.jme3.material.Material;
 import com.jme3.math.ColorRGBA;
@@ -77,7 +76,7 @@ public class S2M0_shore extends BaseAppState {
     private float waveTime = 0.0f;
     private float ppWaterHeight = 0.0f;
     
-   
+    private Vector3f initPlayerPosition = new Vector3f(-600f,15f,250f);
     
     @Override
     protected void initialize(Application app) {
@@ -336,6 +335,13 @@ public class S2M0_shore extends BaseAppState {
             bulletAppState.getPhysicsSpace().add(app.getStateManager().getState(GameAppState.class).levelRigidBody);
             bulletAppState.getPhysicsSpace().add(app.getStateManager().getState(GameAppState.class).firstPersonPlayer);
     }
-        
+
+    public Vector3f getInitPlayerPosition() {
+        return initPlayerPosition;
+    }
+
+    
+      
+    
         
 }

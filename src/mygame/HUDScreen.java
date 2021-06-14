@@ -262,5 +262,6 @@ public class HUDScreen extends BaseAppState {
             nifty.getCurrentScreen().findElementById("Panel_HUD_Dialog").setVisible(false);
         }
     }
+    
 
 }//end class
