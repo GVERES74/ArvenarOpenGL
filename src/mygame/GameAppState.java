@@ -243,7 +243,7 @@ public class GameAppState extends BaseAppState implements AnimEventListener{
                 }
                 
                 if (keyPressed) {   
-                    PlayGame.playSoundInstance("Sounds/Human/footstep_onsnow1.wav");
+                    PlayGame.playSoundInstance("Sounds/Human/walkDry.ogg");
                 }
                 else if (!keyPressed){
                     

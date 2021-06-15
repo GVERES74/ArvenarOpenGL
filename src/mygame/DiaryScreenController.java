@@ -8,14 +8,9 @@ package mygame;
 import com.jme3.app.Application;
 import com.jme3.app.SimpleApplication;
 import com.jme3.app.state.BaseAppState;
-import com.jme3.font.BitmapFont;
-import com.jme3.font.BitmapText;
 import com.jme3.input.InputManager;
-import com.jme3.texture.Image;
-import com.jme3.ui.Picture;
 import de.lessvoid.nifty.Nifty;
 import de.lessvoid.nifty.controls.Label;
-import de.lessvoid.nifty.controls.NiftyControl;
 import de.lessvoid.nifty.elements.Element;
 import de.lessvoid.nifty.elements.render.ImageRenderer;
 import de.lessvoid.nifty.render.NiftyImage;
@@ -96,7 +91,7 @@ public class DiaryScreenController extends BaseAppState implements ScreenControl
     @Override
     public void onStartScreen() {
         PlayGame.musicPlayer.stop();
-        PlayGame.playMusic("Music/Soundtracks/RPG - The Great Collapse.ogg");
+        PlayGame.loadMusic("Music/Soundtracks/RPG - The Great Collapse.ogg", true);
         initDiaryPages(); //starting content showing
         
     }

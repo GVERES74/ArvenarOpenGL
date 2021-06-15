@@ -75,8 +75,8 @@ public class S2M0_shore extends BaseAppState {
     private float ppInitialWaterHeight = 0.5f; // choose a value for your scene
     private float waveTime = 0.0f;
     private float ppWaterHeight = 0.0f;
-    
-    private Vector3f initPlayerPosition = new Vector3f(-600f,15f,250f);
+            
+    private Vector3f initPlayerPosition = new Vector3f(0f,15f,250f);
     
     @Override
     protected void initialize(Application app) {
@@ -140,9 +140,13 @@ public class S2M0_shore extends BaseAppState {
     
     @Override
     public void update(float tpf) {
-    
+        
         updateAdvancedWater(tpf);
         
+        if (camera.getLocation().x < -600f){
+                 PlayGame.musicPlayer.play();
+        
+        }
 //        particle1.setLocalTranslation(
 //                new Vector3f(
 //                        maingameappstate.firstPersonPlayer.getPhysicsLocation().x, 
@@ -294,23 +298,25 @@ public class S2M0_shore extends BaseAppState {
         }
         
         private void loadAudio(){
-        
-            PlayGame.playMusic("Music/Soundtracks/Peaceful_Place.ogg");
-            playSound("Sounds/Ambient/Animals/ocean_seagull_mono.ogg", false, true, true, 2, 0f, 0f, 500f);
-            playSound("Sounds/Ambient/Fire/torchBurning.ogg", false, true, true, 2, -620f, 7f, 250f);
-            playSound("Sounds/Ambient/Environment/JungleAmbient01.ogg", false, true, true, 2, -150f, 5f, -630f);
+            
+            PlayGame.loadMusic("Music/Soundtracks/Peaceful_Place.ogg", false);
+            
+            playSound("Sounds/Ambient/Animals/ocean_seagull_mono.ogg", false, true, true, 1000f, 3, 0f, 5f, 500f);
+            playSound("Sounds/Ambient/Fire/torchBurning.ogg", false, true, true, 1000f, 2, -620f, 7f, 250f);
+            playSound("Sounds/Ambient/Environment/JungleAmbient01.ogg", false, true, true, 1000f, 3, -100f, 5f, -630f);
             
         }
         
         //playsound must be instantiated (more sounds must be played, needs always a new AudioNode)
-        public void playSound(String filepath, boolean directional, boolean positional, boolean looping, float volume, float xpos, float ypos, float zpos){
+        public void playSound(String filepath, boolean directional, boolean positional, boolean looping, float maxdist, float volume, float xpos, float ypos, float zpos){
         soundPlayer = new AudioNode(assetManager, filepath, AudioData.DataType.Stream);
         soundPlayer.setDirectional(directional);
         soundPlayer.setPositional(positional);
         soundPlayer.setLocalTranslation(xpos, ypos, zpos);
         soundPlayer.setLooping(looping);
         soundPlayer.setVolume(volume);
-//        soundPlayer.setMaxDistance(300f);
+        soundPlayer.setRefDistance(5f);
+        soundPlayer.setMaxDistance(maxdist);
         rootNode.attachChild(soundPlayer);
         soundPlayer.play();
         //audioRenderer.playSource(soundPlayer);
@@ -339,9 +345,5 @@ public class S2M0_shore extends BaseAppState {
     public Vector3f getInitPlayerPosition() {
         return initPlayerPosition;
     }
-
-    
-      
-    
-        
+            
 }

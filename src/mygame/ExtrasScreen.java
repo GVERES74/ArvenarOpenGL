@@ -86,7 +86,7 @@ public class ExtrasScreen extends BaseAppState {
     protected void onEnable() {
         PlayGame.gameplayState.setEnabled(false);
         enableExtrasScreen();
-        PlayGame.playMusic("Music/Soundtracks/RPG - The Great Collapse.ogg");
+        PlayGame.loadMusic("Music/Soundtracks/RPG - The Great Collapse.ogg", true);
        
     }
     

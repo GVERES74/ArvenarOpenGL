@@ -117,8 +117,8 @@ public class ExtrasScreenController extends BaseAppState implements ScreenContro
         for (int i = 0; i < content.length; i++){
             //for (final File fileEntry : folder.listFiles()) {
                 if (content[i].isFile()) {
-                    dropdownSelectMusic.addItem(i+"."+content[i].getName());
-                    System.out.println(content[i].getName());
+                    dropdownSelectMusic.addItem(content[i].getName());
+                    
                                         
                 }
                                
@@ -131,7 +131,7 @@ public class ExtrasScreenController extends BaseAppState implements ScreenContro
     public void playMusic(){
         
         PlayGame.musicPlayer.stop();
-        PlayGame.playMusic(musicFilesPath+dropdownSelectMusic.getSelection());
+        PlayGame.loadMusic(musicFilesPath+dropdownSelectMusic.getSelection(), true);
         nowPlayingTitle.setText(dropdownSelectMusic.getSelection().toString());
         System.out.println("Playmusic clicked");
     }
