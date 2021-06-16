@@ -84,6 +84,7 @@ public class ExtrasScreenController extends BaseAppState implements ScreenContro
     public void onStartScreen() { //itt kell inicializálni a screen-t!! Különben pl. üres ListBox-ot kapsz.
         
         loadMusicFiles();
+        
         nowPlayingTitle.setText(dropdownSelectMusic.getSelection().toString());
         System.out.println("Init Extras done.....");
                 
@@ -114,14 +115,15 @@ public class ExtrasScreenController extends BaseAppState implements ScreenContro
         
         File[] content = folder.listFiles();
         dropdownSelectMusic.clear(); //avoid duplication of items!!
-        for (int i = 0; i < content.length; i++){
-            //for (final File fileEntry : folder.listFiles()) {
-                if (content[i].isFile()) {
-                    dropdownSelectMusic.addItem(content[i].getName());
-                    
-                                        
+        //for (int i = 0; i < content.length; i++){
+          for (final File fileEntry : folder.listFiles()) {
+                //if (content[i].isFile()) {
+                if (fileEntry.isFile()) {
+                    //dropdownSelectMusic.addItem(content[i].getName());
+                    dropdownSelectMusic.addItem(fileEntry.getName());
+                                                            
                 }
-                               
+                              
         }    
         
         dropdownSelectMusic.selectItemByIndex(0);
@@ -131,7 +133,8 @@ public class ExtrasScreenController extends BaseAppState implements ScreenContro
     public void playMusic(){
         
         PlayGame.musicPlayer.stop();
-        PlayGame.loadMusic(musicFilesPath+dropdownSelectMusic.getSelection(), true);
+        PlayGame.loadMusic(musicFilesPath+dropdownSelectMusic.getSelection(), true, false);
+            
         nowPlayingTitle.setText(dropdownSelectMusic.getSelection().toString());
         System.out.println("Playmusic clicked");
     }
@@ -161,8 +164,7 @@ public class ExtrasScreenController extends BaseAppState implements ScreenContro
         //PlayGame.musicPlayer.stop();
             
     }
-     
-    
+        
 
     @Override
     protected void onEnable() {
@@ -173,14 +175,5 @@ public class ExtrasScreenController extends BaseAppState implements ScreenContro
     protected void onDisable() {
         
     }
-    
-    public void listFilesForFolder(File folder) {
-    for (final File fileEntry : folder.listFiles()) {
-        if (fileEntry.isFile()) {
-            listFilesForFolder(fileEntry);
-        } else {
-            System.out.println(fileEntry.getName());
-        }
-    }
-}
+       
 }

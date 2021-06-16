@@ -64,6 +64,7 @@ public class MainMenuScreen extends BaseAppState {
     private Node startGUINode = new Node("Main Menu GUINode");
     
     float screenHeight, screenWidth;
+    boolean animated = true;
     
     BitmapText menuItemText, camPosInfoText;
 
@@ -102,8 +103,8 @@ public class MainMenuScreen extends BaseAppState {
         //this.app.getFlyByCamera().setEnabled(false);
         
         initMenuControls();
-        createMainMenu();
-        
+        createAnimatedMainMenu();
+          
         
     //TODO: initialize your AppState, e.g. attach spatials to rootNode
         //this is called on the OpenGL thread after the AppState has been attached
@@ -120,7 +121,8 @@ public class MainMenuScreen extends BaseAppState {
         }
         
         
-        protected void moveCamera(){
+        protected void moveCamera(boolean enabled){
+            if (enabled == true){
             Vector3f camDirection = camera.getDirection();
             Vector3f camLocation = camera.getLocation();
                       
@@ -130,6 +132,11 @@ public class MainMenuScreen extends BaseAppState {
             float camz = camLocation.z;
             float camy = camLocation.y;
                 camera.setLocation(new Vector3f(camx+moveX, camy, camz+moveZ));
+            }    
+            
+            else if (enabled == false){
+                camera.setLocation(new Vector3f(0, 3, 0));
+            }
 
         }
         
@@ -159,10 +166,9 @@ public class MainMenuScreen extends BaseAppState {
             @Override
             public void onAction(String mappedName, boolean isPressed, float tpf) {
                 switch (mappedName) {
-                    case "SkipIntro": 
-                        
-                        //stateManager.attach(settingsScreen);
-                        
+                    case "SkipIntro":                         
+                        animated = false;
+                        createSimpleMainMenu(); break;
                 }
                 }
                              
@@ -172,14 +178,21 @@ public class MainMenuScreen extends BaseAppState {
     @Override
     public void update(float tpf) {
         //TODO: implement behavior during runtime
+        if (animated == true){
         rotateCamera(-0.1f, 1,tpf,Vector3f.UNIT_Y);
-        moveCamera();
+        moveCamera(true);
+        }
+        else if (animated == false){
+            rotateCamera(0f, 0,0,Vector3f.UNIT_Y);
+            moveCamera(false);                                
+        }
        
     }
     
     @Override
     public void cleanup(Application app) {
         System.out.println("MainMenuScreen cleanup called.....");
+        inputManager.deleteMapping("SkipIntro");
        // startRootNode.detachAllChildren();
        // rootNode.detachChild(mainScene);
 
@@ -199,7 +212,7 @@ public class MainMenuScreen extends BaseAppState {
         
     }
     
-    public void createMainMenu(){
+    public void createAnimatedMainMenu(){
         
         app.setDisplayStatView(false); 
         nifty = PlayGame.getNiftyDisplay().getNifty();
@@ -209,17 +222,13 @@ public class MainMenuScreen extends BaseAppState {
         nifty.loadStyleFile("nifty-default-styles.xml");
         nifty.loadControlFile("nifty-default-controls.xml");
         nifty.registerSound("btnclick", "Interface/sound/click.wav");
-//        nifty.registerMusic("maintheme", "Music/Soundtracks/RPG_Ambient_2.ogg");
                 
-        nifty.addScreen("Screen_MainMenu", new ScreenBuilder("Main Menu"){{
+        nifty.addScreen("Screen_AnimatedMainMenu", new ScreenBuilder("Main Menu"){{
                 controller(new mygame.MainMenuScreenController());
                 defaultFocusElement("menuimg_Play");
                 
                 layer(new LayerBuilder("Layer_Menu_Main"){{
                     childLayoutVertical();
-//                    onStartScreenEffect(new EffectBuilder("playSound") {{
-//                            effectParameter("sound", "maintheme");
-//                            }});    
                     
                     onStartScreenEffect(new EffectBuilder("fade") {{
                             startDelay(22000);
@@ -338,13 +347,8 @@ public class MainMenuScreen extends BaseAppState {
                         }});
                         
                     }});    
-                        
-//                        popup(new PopupBuilder("popupExit") {{
-//                            childLayoutCenter();
-//                            backgroundColor("#000a");
-//                        }}.registerPopup(nifty));
-                          
-                        
+                       
+
          }});
 
                     layer(new LayerBuilder("Layer_Menu_Logo"){{
@@ -416,21 +420,177 @@ public class MainMenuScreen extends BaseAppState {
                     
                      
                 }}); //layer logo end
+                    
+                     layer(new LayerBuilder("Layer_Menu_SkipIntro"){{
+                        childLayoutVertical();
+                                                                               
+                            text(new TextBuilder() {{
+                                text("Press ESC to skip intro");
+                                font("Interface/Fonts/Default.fnt");
+                                color("#0009");
+                                height("10%");
+                                width("10%");
+                                alignCenter();
+                                valignCenter();
+                                                                
+                                onStartScreenEffect(new EffectBuilder("fade") {{
+                                length(10000);
+                                startDelay(100);
+                                effectParameter("start", "#f");
+                                effectParameter("end", "#0");
+                                post(false);
+                                neverStopRendering(true);
+                                }});
+                            }});    
+                             
+                     }}); //layer skipintro end
+                    
                 }}.build(nifty));
         
                 
-               nifty.gotoScreen("Screen_MainMenu");
-        
+               nifty.gotoScreen("Screen_AnimatedMainMenu");
         
     }
     
+    public void createSimpleMainMenu(){
+                
+        app.setDisplayStatView(false); 
+        nifty = PlayGame.getNiftyDisplay().getNifty();
+        app.getFlyByCamera().setDragToRotate(true);
+        
+        app.getGuiViewPort().addProcessor(PlayGame.getNiftyDisplay()); 
+        nifty.loadStyleFile("nifty-default-styles.xml");
+        nifty.loadControlFile("nifty-default-controls.xml");
+        nifty.registerSound("btnclick", "Interface/sound/click.wav");
+                
+        nifty.addScreen("Screen_SimpleMainMenu", new ScreenBuilder("Main Menu"){{
+                controller(new mygame.MainMenuScreenController());
+                defaultFocusElement("menuimg_Play");
+                
+                layer(new LayerBuilder("Layer_Menu_Main"){{
+                    childLayoutVertical();
+                   
+                    panel(new PanelBuilder("Panel_Menu_Title"){{
+                        childLayoutVertical();
+                        alignLeft();
+                        valignCenter();
+                        height("150px");
+                        width("400px");
+                        //backgroundColor("#cff5");
+                        
+                            image(new ImageBuilder("imagelogo_Title") {{
+                                filename("Interface/Images/MenuUI/mainlogo1.png");
+                                height("180px");
+                                width("380px"); 
+                                alignCenter();
+                                valignCenter();
+                                
+                            }});
+                    }});        
+                    
+                   panel(new PanelBuilder("Panel_Menu_ForButtons"){{
+//                        childLayoutVertical();
+                        childLayoutAbsoluteInside();
+                        alignLeft();
+                        valignCenter();
+                        height("300px");
+                        width("250px"); 
+                                                
+                        //backgroundColor("#eee3"); //last digit sets the alpha channel
+//                        style("nifty-panel");
+                        
+                        image(new ImageBuilder("menuimg_Play"){{
+                            filename("Interface/Images/MenuUI/button_0_playgame.png");
+                            x("20px");
+                            y("20px");
+                            height("45px");
+                            width("150px");  
+                            
+                            interactOnClick("startGame()");
+                            onStartHoverEffect(new HoverEffectBuilder("changeImage"){{
+                                effectParameter("active", "Interface/Images/MenuUI/button_1_playgame.png"); neverStopRendering(true);
+                                effectParameter("inactive", "Interface/Images/MenuUI/button_0_playgame.png"); neverStopRendering(true);}});
+                                onStartHoverEffect(new HoverEffectBuilder("move"){{effectParameter("mode", "toOffset"); effectParameter("offsetX", "+10");}});
+                            onStartHoverEffect(new HoverEffectBuilder("playSound"){{effectParameter("sound", "btnclick");}});
+                            
+                        }});
+                        
+                        image(new ImageBuilder("menuimg_Settings"){{
+                            filename("Interface/Images/MenuUI/button_0_settings.png");
+                            x("20px");
+                            y("70px");
+                            height("45px");
+                            width("150px");    
+                            interactOnClick("settingsGame()");
+                            backgroundColor("#0c01");
+                            onStartHoverEffect(new HoverEffectBuilder("changeImage"){{
+                                effectParameter("active", "Interface/Images/MenuUI/button_1_settings.png"); neverStopRendering(true);
+                                effectParameter("inactive", "Interface/Images/MenuUI/button_0_settings.png"); neverStopRendering(true);}});
+                            onStartHoverEffect(new HoverEffectBuilder("move"){{effectParameter("mode", "toOffset"); effectParameter("offsetX", "+10");}});
+                            onStartHoverEffect(new HoverEffectBuilder("playSound"){{effectParameter("sound", "btnclick");}});
+                        }});
+                        
+                        image(new ImageBuilder("menuimg_Credits"){{
+                            filename("Interface/Images/MenuUI/button_0_credits.png");
+                            x("20px");
+                            y("120px");
+                            height("45px");
+                            width("150px");   
+                            interactOnClick("creditsGame()");
+                            backgroundColor("#0c01");
+                            onStartHoverEffect(new HoverEffectBuilder("changeImage"){{
+                                effectParameter("active", "Interface/Images/MenuUI/button_1_credits.png"); neverStopRendering(true);
+                                effectParameter("inactive", "Interface/Images/MenuUI/button_0_credits.png"); neverStopRendering(true);}});
+                            onStartHoverEffect(new HoverEffectBuilder("move"){{effectParameter("mode", "toOffset"); effectParameter("offsetX", "+10");}});
+                            onStartHoverEffect(new HoverEffectBuilder("playSound"){{effectParameter("sound", "btnclick");}});
+                        }});
+
+                        image(new ImageBuilder("menuimg_Extras"){{
+                            filename("Interface/Images/MenuUI/button_0_extras.png");
+                            x("20px");
+                            y("170px");
+                            height("45px");
+                            width("150px");    
+                            interactOnClick("gameExtras()");
+                            backgroundColor("#0c01");
+                            onStartHoverEffect(new HoverEffectBuilder("changeImage"){{
+                                effectParameter("active", "Interface/Images/MenuUI/button_1_extras.png"); neverStopRendering(true);
+                                effectParameter("inactive", "Interface/Images/MenuUI/button_0_extras.png"); neverStopRendering(true);}});
+                            onStartHoverEffect(new HoverEffectBuilder("move"){{effectParameter("mode", "toOffset"); effectParameter("offsetX", "+10");}});
+                            onStartHoverEffect(new HoverEffectBuilder("playSound"){{effectParameter("sound", "btnclick");}});
+                        }});
+                        
+                        image(new ImageBuilder("menuimg_Quit"){{
+                            filename("Interface/Images/MenuUI/button_0_quit.png");
+                            x("20px");
+                            y("220px");
+                            height("45px");
+                            width("150px");    
+                            interactOnClick("quitGame()");
+                            backgroundColor("#0c01");
+                            onStartHoverEffect(new HoverEffectBuilder("changeImage"){{
+                                effectParameter("active", "Interface/Images/MenuUI/button_1_quit.png"); neverStopRendering(true);
+                                effectParameter("inactive", "Interface/Images/MenuUI/button_0_quit.png"); neverStopRendering(true);}});
+                            onStartHoverEffect(new HoverEffectBuilder("move"){{effectParameter("mode", "toOffset"); effectParameter("offsetX", "+10");}});
+                            onStartHoverEffect(new HoverEffectBuilder("playSound"){{effectParameter("sound", "btnclick");}});
+                        }});
+                        
+                    }});    
+                        
+                }});
+
+                   
+                }}.build(nifty));
+                nifty.gotoScreen("Screen_SimpleMainMenu");
+    }
+    
     public void enableMainMenuScreen(){
-        nifty.gotoScreen("Screen_MainMenu");
+        nifty.gotoScreen("Screen_SimpleMainMenu");
         app.getFlyByCamera().setDragToRotate(true);
     }
     
     public void disableMainMenuScreen(){
-        nifty.removeScreen("Screen_MainMenu");
+        nifty.removeScreen("Screen_SimpleMainMenu");
         app.getFlyByCamera().setDragToRotate(false);
     }
     

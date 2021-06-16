@@ -91,7 +91,7 @@ public class DiaryScreenController extends BaseAppState implements ScreenControl
     @Override
     public void onStartScreen() {
         PlayGame.musicPlayer.stop();
-        PlayGame.loadMusic("Music/Soundtracks/RPG - The Great Collapse.ogg", true);
+        PlayGame.loadMusic("Music/Soundtracks/RPG - The Great Collapse.ogg", true, true);
         initDiaryPages(); //starting content showing
         
     }

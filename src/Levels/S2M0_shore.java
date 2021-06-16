@@ -299,7 +299,7 @@ public class S2M0_shore extends BaseAppState {
         
         private void loadAudio(){
             
-            PlayGame.loadMusic("Music/Soundtracks/Peaceful_Place.ogg", false);
+            PlayGame.loadMusic("Music/Soundtracks/Peaceful_Place.ogg", false, true);
             
             playSound("Sounds/Ambient/Animals/ocean_seagull_mono.ogg", false, true, true, 1000f, 3, 0f, 5f, 500f);
             playSound("Sounds/Ambient/Fire/torchBurning.ogg", false, true, true, 1000f, 2, -620f, 7f, 250f);

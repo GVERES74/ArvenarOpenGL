@@ -266,6 +266,7 @@ public class GameAppState extends BaseAppState implements AnimEventListener{
     public void cleanup(Application app) {
                 
         this.app.getRootNode().detachAllChildren();
+        this.app.getInputManager().deleteMapping("PauseGame");
         System.out.println("GameAppState cleanup called.....");
         
         }

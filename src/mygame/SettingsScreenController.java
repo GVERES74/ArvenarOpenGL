@@ -195,18 +195,22 @@ public class SettingsScreenController extends BaseAppState implements ScreenCont
     }
     
      public void popupCancelSettings(){
+                
+    }
+     
+    public void backToGame(){
+        System.out.println("Back to game button pressed...");
+        
+        PlayGame.detachAppState(PlayGame.settings_screen);
         
         
     }
     
     public void backToMainMenu(){
-        System.out.println("Back button pressed...");
+        System.out.println("Back to main menu button pressed...");
         
         PlayGame.detachAppState(PlayGame.settings_screen);
-        
-        
-        //PlayGame.musicPlayer.stop();
-            
+                
     }
     
     public void changeGamePlaySettings(){

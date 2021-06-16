@@ -336,7 +336,7 @@ public class S0M0_valley extends BaseAppState {
         
         public void loadMenuMusic(){
 
-            PlayGame.playMusic("Music/Soundtracks/RPG_Ambient_2.ogg");
+            PlayGame.loadMusic("Music/Soundtracks/RPG_Ambient_2.ogg", true, true);
 
         }
         

@@ -168,6 +168,7 @@ public class PausedScreenController extends BaseAppState implements ScreenContro
     public void backToMainMenu(){
         System.out.println("Back to Mainmenu button pressed...");
         PlayGame.detachAppState(PlayGame.gameplayState);
+        PlayGame.detachAppState(PlayGame.mainMenu_screen);
         System.exit(0);
         
     }

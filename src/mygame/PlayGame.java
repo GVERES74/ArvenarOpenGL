@@ -68,10 +68,10 @@ public class PlayGame extends SimpleApplication{
            nifty = niftyDisplay.getNifty();
            viewPort.addProcessor(niftyDisplay); 
            
-           mainMenu_screen = new MainMenuScreen(); //stateManager.attach(mainMenu_screen);
+           mainMenu_screen = new MainMenuScreen(); stateManager.attach(mainMenu_screen);
            settings_screen = new SettingsScreen();  //stateManager.attach(settings_screen);
            credits_screen = new CreditsScreen(); //stateManager.attach(credits_screen);
-           extras_screen = new ExtrasScreen(); stateManager.attach(extras_screen);
+           extras_screen = new ExtrasScreen(); //stateManager.attach(extras_screen);
            paused_screen = new PausedScreen(); //stateManager.attach(paused_screen);
            ingameHud = new HUDScreen();          //stateManager.attach(ingameHud);
            mapview_screen = new MapViewScreen();
@@ -123,11 +123,11 @@ public class PlayGame extends SimpleApplication{
         return appsettings;
     }
     
-    public static void loadMusic(String filepath, boolean start){
+    public static void loadMusic(String filepath, boolean start, boolean looping){
         musicPlayer = new AudioNode(app.getAssetManager(), filepath);
         musicPlayer.setDirectional(false);
         musicPlayer.setPositional(false);
-        musicPlayer.setLooping(true);
+        musicPlayer.setLooping(looping);
         musicPlayer.stop();
         app.getRootNode().attachChild(musicPlayer);
         
