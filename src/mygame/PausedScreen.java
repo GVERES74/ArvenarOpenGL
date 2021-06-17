@@ -133,10 +133,10 @@ public class PausedScreen extends BaseAppState {
                         
                     panel(new PanelBuilder("Panel_Paused_Title"){{
 //                       
-                        x("20px");
-                        y("20px");
-                        height("100px");
-                        width("250px");
+                        x("0px");
+                        y("0px");
+                        height("10%");
+                        width("100%");
                         childLayoutCenter();
                                                 
                             text(new TextBuilder() {{
@@ -145,7 +145,7 @@ public class PausedScreen extends BaseAppState {
                                 height("100%");
                                 width("100%");
                                 alignCenter();
-                                valignCenter();
+                                valignTop();
                                                                                                 
                             }});
                     }});        

@@ -13,12 +13,16 @@ import com.jme3.font.BitmapText;
 import com.jme3.math.FastMath;
 import com.jme3.ui.Picture;
 import de.lessvoid.nifty.Nifty;
+import de.lessvoid.nifty.NiftyEventSubscriber;
 import de.lessvoid.nifty.builder.ImageBuilder;
 import de.lessvoid.nifty.builder.LayerBuilder;
 import de.lessvoid.nifty.builder.PanelBuilder;
 import de.lessvoid.nifty.builder.ScreenBuilder;
 import de.lessvoid.nifty.controls.Label;
+import de.lessvoid.nifty.controls.ListBox;
+import de.lessvoid.nifty.controls.ListBoxSelectionChangedEvent;
 import de.lessvoid.nifty.controls.label.builder.LabelBuilder;
+import de.lessvoid.nifty.controls.listbox.builder.ListBoxBuilder;
 import de.lessvoid.nifty.screen.Screen;
 import de.lessvoid.nifty.tools.SizeValue;
 
@@ -33,7 +37,7 @@ public class HUDScreen extends BaseAppState {
     private SimpleApplication app;
     private Nifty nifty;
     private Screen hudscreen;
-    
+    private ListBox dialogListBox;    
     private int screenWidth, screenHeight;
     
     
@@ -62,6 +66,7 @@ public class HUDScreen extends BaseAppState {
     protected void onEnable() {
         
            showHUDScreen(); 
+           nifty.getCurrentScreen().findElementById("Layer_Dialog_Root").setVisible(false);
            
         //Called when the state is fully enabled, ie: is attached and         
         //isEnabled() is true or when the setEnabled() status changes after the         
@@ -194,7 +199,61 @@ public class HUDScreen extends BaseAppState {
                             
                     }});    
                     
+                }});  //end HUDLayer
+                
+                layer(new LayerBuilder("Layer_Dialog_Root"){{
+                    childLayoutCenter();
+                    
+                    panel(new PanelBuilder("Panel_Dialog_Container"){{
+                        backgroundColor("#6602");  
+                        alignCenter();
+                        valignCenter();
+                        height("30%");
+                        width("50%");
+                        childLayoutVertical();
+                        
+                        panel(new PanelBuilder("Panel_Dialog_NPCDialogText"){{
+                        backgroundColor("#ee02");  
+                        alignCenter();
+                        valignCenter();
+                        height("50%");
+                        width("100%");
+                        childLayoutCenter();
+                        }});    
+                        
+                        panel(new PanelBuilder("Panel_Dialog_PlayerDialogs"){{
+                        //backgroundColor("#ee02");  
+                        alignCenter();
+                        valignCenter();
+                        height("50%");
+                        width("100%");
+                        childLayoutHorizontal();
+                        
+                            image(new ImageBuilder("Image_Dialog_CharacterImage"){{
+                            filename("Interface/Images/Hud/player.png");
+                            
+                            alignCenter();
+                            valignCenter();
+                            }});
+                        
+                        
+                            control(new ListBoxBuilder("ListBox_Dialog"){{
+                            displayItems(4);
+                            selectionModeSingle();
+                            hideVerticalScrollbar();
+                            hideHorizontalScrollbar();
+                            height("100%");
+                            width("80%");
+                            alignCenter();
+                            valignCenter();
+                            
+                            }}); 
+                    }});
+                                       
                     }});    
+                    
+                    }});    
+                    
                 
                 }}.build(nifty));
                         
@@ -262,6 +321,21 @@ public class HUDScreen extends BaseAppState {
             nifty.getCurrentScreen().findElementById("Panel_HUD_Dialog").setVisible(false);
         }
     }
+    
+    public void showCharacterDialog(){
+                
+            app.getFlyByCamera().setDragToRotate(true);
+            nifty.getCurrentScreen().findElementById("Layer_Dialog_Root").setVisible(true);
+            dialogListBox = nifty.getCurrentScreen().findNiftyControl("ListBox_Dialog", ListBox.class);
+            dialogListBox.clear();
+            dialogListBox.addItem("I'm looking for my mother");
+            dialogListBox.addItem("I'm lost, please tell me where I am");
+            dialogListBox.addItem("Not now. (end conversation)");
+            
+        
+    }
+    
+    
     
 
 }//end class

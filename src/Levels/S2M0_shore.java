@@ -36,6 +36,7 @@ import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
 import com.jme3.water.WaterFilter;
 import mygame.GameAppState;
+import mygame.HUDScreenController;
 import mygame.PlayGame;
 
 /**
@@ -145,7 +146,7 @@ public class S2M0_shore extends BaseAppState {
         
         if (camera.getLocation().x < -600f){
                  PlayGame.musicPlayer.play();
-        
+                 PlayGame.ingameHud.showCharacterDialog();
         }
 //        particle1.setLocalTranslation(
 //                new Vector3f(

@@ -109,8 +109,8 @@ public class GameAppState extends BaseAppState implements AnimEventListener{
                 
         setCollisionPhysics();
         initKeyEvent();
-
         createPlayer();
+        
         
     }
     
@@ -284,6 +284,7 @@ public class GameAppState extends BaseAppState implements AnimEventListener{
     @Override
     protected void onEnable() {
         PlayGame.attachAppState(PlayGame.ingameHud);
+        
                 
         System.out.print("GameAppState onEnable() called......");
         
@@ -328,14 +329,15 @@ public class GameAppState extends BaseAppState implements AnimEventListener{
     }    
     
     public void hotKeyPressed(AppState appStateName, Boolean keyPressed){
-        
-        if (!keyPressed && !PlayGame.getPlayGameApp().getStateManager().hasState(appStateName)){
+     
+        if (keyPressed && !PlayGame.getPlayGameApp().getStateManager().hasState(appStateName)){
             PlayGame.attachAppState(appStateName);
             }
-        else if (!keyPressed){
-            PlayGame.detachAppState(appStateName);}       
+        else if (keyPressed){
+            PlayGame.detachAppState(appStateName);
+        }       
+    
     }
-                
         
     
 }

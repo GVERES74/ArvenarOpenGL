@@ -128,10 +128,10 @@ public class DiaryScreen extends BaseAppState {
                             }});
                         
                     panel(new PanelBuilder("Panel_Diary_Title"){{
-                        x("20px");
-                        y("20px");
-                        height("100px");
-                        width("300px");
+                        x("0px");
+                        y("0px");
+                        height("10%");
+                        width("100%");
                         childLayoutCenter();
                                                 
                             text(new TextBuilder() {{
@@ -140,7 +140,7 @@ public class DiaryScreen extends BaseAppState {
                                 height("100%");
                                 width("100%");
                                 alignCenter();
-                                valignCenter();
+                                valignTop();
                                                                                                 
                             }});
                     }});        

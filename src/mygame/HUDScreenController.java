@@ -10,9 +10,14 @@ import com.jme3.app.SimpleApplication;
 import com.jme3.app.state.AppStateManager;
 import com.jme3.app.state.BaseAppState;
 import de.lessvoid.nifty.Nifty;
+import de.lessvoid.nifty.NiftyEventSubscriber;
+import de.lessvoid.nifty.controls.ListBox;
+import de.lessvoid.nifty.controls.ListBoxSelectionChangedEvent;
 import de.lessvoid.nifty.controls.NiftyControl;
+import de.lessvoid.nifty.controls.SliderChangedEvent;
 import de.lessvoid.nifty.screen.Screen;
 import de.lessvoid.nifty.screen.ScreenController;
+import javax.annotation.Nonnull;
 
 /**
  *  
@@ -84,7 +89,7 @@ public class HUDScreenController extends BaseAppState implements ScreenControlle
         this.screen = screen;
         
         imghealthbarvalue = screen.findNiftyControl("HUD_PlayerHealthValueBar", NiftyControl.class);
-        
+               
         
     }
 
@@ -97,6 +102,19 @@ public class HUDScreenController extends BaseAppState implements ScreenControlle
     public void onEndScreen() {
         
     }
-
+    
+    @NiftyEventSubscriber(id="ListBox_Dialog")
+    public void onListBoxSelectionChanged(final String id, final ListBoxSelectionChangedEvent event) {
+                       
+        if (event.getSelectionIndices().isEmpty()) {
+            return;
+        }
+        else {
+        System.out.println(event.getSelection());
+        nifty.getCurrentScreen().findElementById("Panel_Dialog_Container").setVisible(false);
+        app.getFlyByCamera().setDragToRotate(false);
+        }
         
+    }    
+    
 }

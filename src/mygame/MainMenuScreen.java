@@ -197,19 +197,17 @@ public class MainMenuScreen extends BaseAppState {
        // rootNode.detachChild(mainScene);
 
     }    
-        
-        
+          
    
     @Override
     protected void onEnable(){
         enableMainMenuScreen();       
     }
-
+    
 
     @Override
     protected void onDisable() {
         disableMainMenuScreen();
-        
     }
     
     public void createAnimatedMainMenu(){
@@ -434,12 +432,12 @@ public class MainMenuScreen extends BaseAppState {
                                 valignCenter();
                                                                 
                                 onStartScreenEffect(new EffectBuilder("fade") {{
-                                length(10000);
+                                length(1000);
                                 startDelay(100);
                                 effectParameter("start", "#f");
                                 effectParameter("end", "#0");
                                 post(false);
-                                neverStopRendering(true);
+                                neverStopRendering(false);
                                 }});
                             }});    
                              
