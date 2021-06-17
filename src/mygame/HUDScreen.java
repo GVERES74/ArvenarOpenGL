@@ -66,7 +66,7 @@ public class HUDScreen extends BaseAppState {
     protected void onEnable() {
         
            showHUDScreen(); 
-           nifty.getCurrentScreen().findElementById("Layer_Dialog_Root").setVisible(false);
+           
            
         //Called when the state is fully enabled, ie: is attached and         
         //isEnabled() is true or when the setEnabled() status changes after the         
@@ -107,85 +107,72 @@ public class HUDScreen extends BaseAppState {
                 //defaultFocusElement("settings_Apply");
                 
                 layer(new LayerBuilder("Layer_HUD"){{
-                    childLayoutAbsoluteInside();
+                    childLayoutHorizontal();
                     
-                    image(new ImageBuilder("img_crosshair"){{
-                        filename("Interface/Images/Hud/crosshair.png");
-                        x(SizeValue.px(screenWidth/2-13));
-                        y(SizeValue.px(screenHeight/2-13));
-                        height("26px");
-                        width("26px");
-                    }});
+                                      
                     
-                    
-                     panel(new PanelBuilder("Panel_HUD_PlayerStats"){{
+                    panel(new PanelBuilder("Panel_HUD_PlayerStats"){{
                         //backgroundColor("#ee02");  
-                        x("50px");
-                        y("20px");
-                        height("150px");
-                        width("250px");
-                        childLayoutAbsoluteInside();
+                        alignCenter();
+                        
+                        height("100%");
+                        width("33%");
+                        childLayoutVertical();
                         
                             image(new ImageBuilder("HUD_PlayerImg"){{
                             filename("Interface/Images/Hud/player.png");
-                            x("5px");
-                            y("5px");
+                            alignLeft();
+                            valignTop();
                             height("96px");
                             width("70px");                          
                             }});
                             
                             image(new ImageBuilder("HUD_PlayerHealthIcon"){{
                             filename("Interface/Images/Hud/heart.png");
-                            x("5px");
-                            y("105px");
+                            
                             height("24px");
                             width("24px");                          
                             }});
                             
                             image(new ImageBuilder("HUD_PlayerHealthBar"){{
                             filename("Interface/Images/Hud/healthbar.png");
-                            x("35px");
-                            y("110px");
+                            
                             height("10px");
                             width("200px");                          
                             }});
                             
                             image(new ImageBuilder("HUD_PlayerHealthValueBar"){{
                             filename("Interface/Images/Hud/healthvaluebar.png");
-                            x("35px");
-                            y("110px");
+                            
                             height("9px");
                             width("200px");                          
                             }});
-                    }});        
-                    
+                           
                    
-                    panel(new PanelBuilder("Panel_HUD_Minimap"){{
-                        //backgroundColor("#ee02");  
-//                        y(SizeValue.px(screenHeight));
-                        x("40px");
-                        y("70%"); //minimap position as per screen resolution
-                        height("255px");
-                        width("255px");
-                        childLayoutAbsoluteInside();
-                        
+                                           
                             image(new ImageBuilder("HUD_MinimapImg"){{
                             filename("Interface/Images/Hud/minimap_base.png");
-                            x("5px");
-                            y("5px");
+                            alignLeft();
+                            valignBottom();
                             height("250px");
                             width("250px");                          
                             }}); 
                     }});
                     
                     panel(new PanelBuilder("Panel_HUD_Dialog"){{
-                            backgroundColor("#6665");  
-                            height("100px");
-                            width("600px");
-                            x(SizeValue.px(screenWidth/2-300));
-                            y(SizeValue.px(screenHeight/2+100));
-                            visible(false);
+                            
+                            height("100%");
+                            width("33%");
+                            
                             childLayoutCenter();
+                            
+                            image(new ImageBuilder("img_crosshair"){{
+                                filename("Interface/Images/Hud/crosshair.png");
+                                alignCenter();
+                                valignCenter();
+                                height("26px");
+                                width("26px");
+                            }});
                             
                             control(new LabelBuilder("dialogText"){{
                                 text("");
@@ -197,19 +184,13 @@ public class HUDScreen extends BaseAppState {
                                 valignCenter();
                             }});
                             
-                    }});    
-                    
-                }});  //end HUDLayer
-                
-                layer(new LayerBuilder("Layer_Dialog_Root"){{
-                    childLayoutCenter();
+                                  
                     
                     panel(new PanelBuilder("Panel_Dialog_Container"){{
                         backgroundColor("#6602");  
-                        alignCenter();
-                        valignCenter();
+                       
                         height("30%");
-                        width("50%");
+                        width("100%");
                         childLayoutVertical();
                         
                         panel(new PanelBuilder("Panel_Dialog_NPCDialogText"){{
@@ -227,13 +208,14 @@ public class HUDScreen extends BaseAppState {
                         valignCenter();
                         height("50%");
                         width("100%");
+                        padding("10px");
+                        
                         childLayoutHorizontal();
                         
                             image(new ImageBuilder("Image_Dialog_CharacterImage"){{
                             filename("Interface/Images/Hud/player.png");
                             
-                            alignCenter();
-                            valignCenter();
+                            
                             }});
                         
                         
@@ -244,8 +226,7 @@ public class HUDScreen extends BaseAppState {
                             hideHorizontalScrollbar();
                             height("100%");
                             width("80%");
-                            alignCenter();
-                            valignCenter();
+                            
                             
                             }}); 
                     }});
@@ -253,7 +234,7 @@ public class HUDScreen extends BaseAppState {
                     }});    
                     
                     }});    
-                    
+                    }}); 
                 
                 }}.build(nifty));
                         
@@ -325,7 +306,7 @@ public class HUDScreen extends BaseAppState {
     public void showCharacterDialog(){
                 
             app.getFlyByCamera().setDragToRotate(true);
-            nifty.getCurrentScreen().findElementById("Layer_Dialog_Root").setVisible(true);
+            nifty.getCurrentScreen().findElementById("Panel_Dialog_Container").setVisible(true);
             dialogListBox = nifty.getCurrentScreen().findNiftyControl("ListBox_Dialog", ListBox.class);
             dialogListBox.clear();
             dialogListBox.addItem("I'm looking for my mother");

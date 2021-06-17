@@ -112,7 +112,7 @@ public class HUDScreenController extends BaseAppState implements ScreenControlle
         else {
         System.out.println(event.getSelection());
         nifty.getCurrentScreen().findElementById("Panel_Dialog_Container").setVisible(false);
-        app.getFlyByCamera().setDragToRotate(false);
+        
         }
         
     }    
