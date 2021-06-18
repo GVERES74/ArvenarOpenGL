@@ -83,6 +83,7 @@ public class PausedScreen extends BaseAppState {
      @Override
     protected void onEnable() {
         showPausedScreen();
+        
         PlayGame.gameplayState.setEnabled(false);
     }
     

@@ -146,7 +146,7 @@ public class S2M0_shore extends BaseAppState {
         
         if (camera.getLocation().x < -600f){
                  PlayGame.musicPlayer.play();
-                 PlayGame.ingameHud.showCharacterDialog();
+                 
         }
 //        particle1.setLocalTranslation(
 //                new Vector3f(

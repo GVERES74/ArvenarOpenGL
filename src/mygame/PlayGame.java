@@ -6,7 +6,6 @@ import com.jme3.app.state.AppState;
 import com.jme3.audio.AudioData;
 import com.jme3.audio.AudioData.DataType;
 import com.jme3.audio.AudioNode;
-import com.jme3.audio.AudioSource.Status;
 
 import com.jme3.export.binary.BinaryImporter;
 import com.jme3.niftygui.NiftyJmeDisplay;
@@ -62,13 +61,20 @@ public class PlayGame extends SimpleApplication{
     @Override
     public void simpleInitApp() {
         
+            /*The beauty of AppStates and controls
+            The ideal jMonkeyEngine application's simpleInitApp() method would have only two
+            lines of code: one that creates a custom StartScreenAppState instance, and a second
+            line that attaches it to the stateManager object of the SimpleApplication class.*/
+        
        
            app.setDisplayFps(false); app.setDisplayStatView(false);
            niftyDisplay = NiftyJmeDisplay.newNiftyJmeDisplay(assetManager, inputManager, audioRenderer, viewPort);
            nifty = niftyDisplay.getNifty();
            viewPort.addProcessor(niftyDisplay); 
            
-           mainMenu_screen = new MainMenuScreen(); //stateManager.attach(mainMenu_screen);
+           mainMenu_screen = new MainMenuScreen(); stateManager.attach(mainMenu_screen); //THIS THE IDEAL WAY!! 
+           
+           //THESE ARE ONLY FOR MODUL TESTING
            settings_screen = new SettingsScreen();  //stateManager.attach(settings_screen);
            credits_screen = new CreditsScreen(); //stateManager.attach(credits_screen);
            extras_screen = new ExtrasScreen(); //stateManager.attach(extras_screen);
@@ -77,11 +83,11 @@ public class PlayGame extends SimpleApplication{
            
            mapview_screen = new MapViewScreen();
            diary_screen = new DiaryScreen(); //stateManager.attach(diary_screen);
-           gameplayState = new GameAppState(); stateManager.attach(gameplayState);
+           gameplayState = new GameAppState(); //stateManager.attach(gameplayState);
            
            levelS1M0 = new S2M0_shore(); //stateManager.attach(levelS1M0);
 
-
+                        
          /** Load a Node from a .j3o file */
          
                            
@@ -100,10 +106,12 @@ public class PlayGame extends SimpleApplication{
     
     @Override
     public void simpleUpdate(float tpf) {
-        //TODO: add update code
-//        sphereGeo.rotate(0,tpf*2,tpf);
         
-        
+        /*The beauty of AppStates and controls
+        The ideal jMonkeyEngine application has an empty simpleUpdate() method in its main
+        class—all entity behavior would be neatly modularized and encapsulated in controls and
+        AppState objects.*/   
+
     }
 
     @Override
@@ -167,12 +175,6 @@ public class PlayGame extends SimpleApplication{
        
     public static void detachAppState(AppState appstate){
         app.getStateManager().detach(appstate);
-    }
-    
-    public static void switchNiftyScreen(String removeid, String gotoid){
-        
-        nifty.removeScreen(removeid);
-        nifty.gotoScreen(gotoid);
     }
     
        

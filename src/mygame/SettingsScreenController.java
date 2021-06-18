@@ -209,7 +209,14 @@ public class SettingsScreenController extends BaseAppState implements ScreenCont
     public void backToMainMenu(){
         System.out.println("Back to main menu button pressed...");
         
+        /*THIS THE IDEAL WAY!! 
+        When the user clicks on the save button, the OptionsScreenAppState object
+        attaches the StartScreenAppState method again, and detaches itself.
+        */
         PlayGame.detachAppState(PlayGame.settings_screen);
+        PlayGame.attachAppState(PlayGame.mainMenu_screen);
+        
+        
                 
     }
     

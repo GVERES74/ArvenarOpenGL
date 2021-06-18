@@ -167,8 +167,10 @@ public class MainMenuScreen extends BaseAppState {
             public void onAction(String mappedName, boolean isPressed, float tpf) {
                 switch (mappedName) {
                     case "SkipIntro":                         
+                        if (isPressed){
                         animated = false;
                         createSimpleMainMenu(); break;
+                        }
                 }
                 }
                              
@@ -193,8 +195,9 @@ public class MainMenuScreen extends BaseAppState {
     public void cleanup(Application app) {
         System.out.println("MainMenuScreen cleanup called.....");
         inputManager.deleteMapping("SkipIntro");
-       // startRootNode.detachAllChildren();
-       // rootNode.detachChild(mainScene);
+        
+        //startRootNode.detachAllChildren();
+        //rootNode.detachChild(level);
 
     }    
           

@@ -82,6 +82,7 @@ public class GameAppState extends BaseAppState implements AnimEventListener{
     private float playerHeight;
     private int playerhp = 100;
     public String target = "Valami";
+    private String pressedKey;
     
     
     @Override
@@ -168,6 +169,7 @@ public class GameAppState extends BaseAppState implements AnimEventListener{
             this.app.getInputManager().addMapping("Jump", new KeyTrigger(KeyInput.KEY_SPACE));
             this.app.getInputManager().addMapping("Crouch", new KeyTrigger(KeyInput.KEY_LCONTROL));
             this.app.getInputManager().addMapping("PauseGame", new KeyTrigger(KeyInput.KEY_ESCAPE));
+            this.app.getInputManager().addMapping("CloseScreen", new KeyTrigger(KeyInput.KEY_ESCAPE));
             this.app.getInputManager().addMapping("MapView", new KeyTrigger(KeyInput.KEY_M));
             this.app.getInputManager().addMapping("OpenDiary", new KeyTrigger(KeyInput.KEY_L));
             this.app.getInputManager().addMapping("Settings", new KeyTrigger(KeyInput.KEY_F1));
@@ -177,7 +179,7 @@ public class GameAppState extends BaseAppState implements AnimEventListener{
 
             //let's separate movement, open screen and action listeners
             this.app.getInputManager().addListener(actionListener, "Forward", "Backward", "StrafeLeft", "StrafeRight", "Jump", "Crouch");
-            this.app.getInputManager().addListener(actionListener, "PauseGame", "MapView", "OpenDiary", "Settings");
+            this.app.getInputManager().addListener(actionListener, "PauseGame", "MapView", "OpenDiary", "Settings", "CloseScreen");
             this.app.getInputManager().addListener(actionListener, "lookat_target");
              
             //this.app.getInputManager().addListener(analogListener, "lookat_target");
@@ -209,6 +211,7 @@ public class GameAppState extends BaseAppState implements AnimEventListener{
     
         private ActionListener actionListener = new ActionListener(){
             public void onAction (String keyBinding, boolean keyPressed, float tpf){
+                pressedKey = keyBinding;
                 switch (keyBinding){
                     
                     case "Forward": keyW = keyPressed; break;
@@ -231,12 +234,12 @@ public class GameAppState extends BaseAppState implements AnimEventListener{
                     case "lookat_target": if ((keyPressed) && PlayGame.gameplayState.isEnabled()){
                         
                         //PlayGame.ingameHud.showLookAtDialog(true,getTarget());
-                        PlayGame.ingameHud.createDialogPanel(true,getTarget());
+                        PlayGame.ingameHud.createAssetInfoPanel(true,getTarget());
                         
                     } 
                     
                     else if (!(keyPressed) && PlayGame.gameplayState.isEnabled()){
-                        PlayGame.ingameHud.createDialogPanel(false,"");
+                        PlayGame.ingameHud.createAssetInfoPanel(false,"");
                         
                     }
                         break;                    
@@ -333,9 +336,13 @@ public class GameAppState extends BaseAppState implements AnimEventListener{
         if (keyPressed && !PlayGame.getPlayGameApp().getStateManager().hasState(appStateName)){
             PlayGame.attachAppState(appStateName);
             }
-        else if (keyPressed){
+        else if (keyPressed) {
             PlayGame.detachAppState(appStateName);
         }       
+        
+        else if (keyPressed && PlayGame.getPlayGameApp().getStateManager().hasState(appStateName) && pressedKey.equals("CloseScreen")){
+            PlayGame.detachAppState(appStateName);
+        }
     
     }
         

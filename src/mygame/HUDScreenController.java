@@ -105,13 +105,14 @@ public class HUDScreenController extends BaseAppState implements ScreenControlle
     
     @NiftyEventSubscriber(id="ListBox_Dialog")
     public void onListBoxSelectionChanged(final String id, final ListBoxSelectionChangedEvent event) {
-                       
+            
         if (event.getSelectionIndices().isEmpty()) {
             return;
         }
         else {
         System.out.println(event.getSelection());
         nifty.getCurrentScreen().findElementById("Panel_Dialog_Container").setVisible(false);
+
         
         }
         

@@ -14,6 +14,7 @@ import de.lessvoid.nifty.Nifty;
 import de.lessvoid.nifty.elements.Element;
 import de.lessvoid.nifty.screen.Screen;
 import de.lessvoid.nifty.screen.ScreenController;
+import static mygame.PlayGame.mainMenu_screen;
 
 /**
  *
@@ -64,20 +65,24 @@ public class MainMenuScreenController extends BaseAppState implements ScreenCont
         System.out.println("Play Game button pressed...");
         
         PlayGame.detachAppState(PlayGame.mainMenu_screen);
-               
+        PlayGame.attachAppState(PlayGame.gameplayState);       
         PlayGame.musicPlayer.stop();
-        PlayGame.attachAppState(PlayGame.gameplayState);
+        
                 
     }
         
         
     public void settingsGame(){
         
-        //nifty.gotoScreen(nextScreen);
         System.out.println("Game Settings button pressed...");
         PlayGame.musicPlayer.stop();
         
+        /*THIS THE IDEAL WAY!! 
+        When the user clicks on the options button, the StartScreenAppState method
+        attaches an OptionsScreenAppState object and detaches itself.
+        */
         PlayGame.attachAppState(PlayGame.settings_screen);
+        PlayGame.detachAppState(PlayGame.mainMenu_screen);
         
     }
     

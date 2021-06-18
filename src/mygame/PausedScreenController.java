@@ -148,7 +148,7 @@ public class PausedScreenController extends BaseAppState implements ScreenContro
     }
     
     public void settingsGame(){
-        //PlayGame.detachAppState(PlayGame.paused_screen);
+        PlayGame.detachAppState(PlayGame.paused_screen);
         PlayGame.attachAppState(PlayGame.settings_screen);
                 
         System.out.println("Game Settings button pressed...");
@@ -168,8 +168,8 @@ public class PausedScreenController extends BaseAppState implements ScreenContro
     public void backToMainMenu(){
         System.out.println("Back to Mainmenu button pressed...");
         PlayGame.detachAppState(PlayGame.gameplayState);
-        PlayGame.detachAppState(PlayGame.mainMenu_screen);
-        System.exit(0);
+        PlayGame.attachAppState(PlayGame.mainMenu_screen);
+        //System.exit(0);
         
     }
     
