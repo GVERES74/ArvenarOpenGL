@@ -103,8 +103,8 @@ public class MainMenuScreen extends BaseAppState {
         //this.app.getFlyByCamera().setEnabled(false);
         
         initMenuControls();
-        createAnimatedMainMenu();
-          
+        //createAnimatedMainMenu();
+          createSimpleMainMenu();
         
     //TODO: initialize your AppState, e.g. attach spatials to rootNode
         //this is called on the OpenGL thread after the AppState has been attached
@@ -228,7 +228,7 @@ public class MainMenuScreen extends BaseAppState {
                 controller(new mygame.MainMenuScreenController());
                 defaultFocusElement("menuimg_Play");
                 
-                layer(new LayerBuilder("Layer_Menu_Main"){{
+            layer(new LayerBuilder("Layer_Menu_Main"){{
                     childLayoutVertical();
                     
                     onStartScreenEffect(new EffectBuilder("fade") {{
@@ -237,7 +237,7 @@ public class MainMenuScreen extends BaseAppState {
                                 effectParameter("start", "#00");
                                 effectParameter("end", "#ff");
                                 neverStopRendering(true);
-                            }});    
+                    }});    
                     
                     
                     panel(new PanelBuilder("Panel_Menu_Title"){{
@@ -260,9 +260,10 @@ public class MainMenuScreen extends BaseAppState {
                     
                     panel(new PanelBuilder("Panel_Menu_ForButtons"){{
 //                        childLayoutVertical();
-                        childLayoutAbsoluteInside();
+                        childLayoutVertical();
                         alignLeft();
                         valignCenter();
+                        padding("20px");
                         height("300px");
                         width("250px"); 
                                                 
@@ -273,8 +274,6 @@ public class MainMenuScreen extends BaseAppState {
                         
                         image(new ImageBuilder("menuimg_Play"){{
                             filename("Interface/Images/MenuUI/button_0_playgame.png");
-                            x("20px");
-                            y("20px");
                             height("45px");
                             width("150px");  
                             
@@ -289,8 +288,6 @@ public class MainMenuScreen extends BaseAppState {
                         
                         image(new ImageBuilder("menuimg_Settings"){{
                             filename("Interface/Images/MenuUI/button_0_settings.png");
-                            x("20px");
-                            y("70px");
                             height("45px");
                             width("150px");    
                             interactOnClick("settingsGame()");
@@ -304,8 +301,6 @@ public class MainMenuScreen extends BaseAppState {
                         
                         image(new ImageBuilder("menuimg_Credits"){{
                             filename("Interface/Images/MenuUI/button_0_credits.png");
-                            x("20px");
-                            y("120px");
                             height("45px");
                             width("150px");   
                             interactOnClick("creditsGame()");
@@ -319,8 +314,6 @@ public class MainMenuScreen extends BaseAppState {
 
                         image(new ImageBuilder("menuimg_Extras"){{
                             filename("Interface/Images/MenuUI/button_0_extras.png");
-                            x("20px");
-                            y("170px");
                             height("45px");
                             width("150px");    
                             interactOnClick("gameExtras()");
@@ -334,8 +327,6 @@ public class MainMenuScreen extends BaseAppState {
                         
                         image(new ImageBuilder("menuimg_Quit"){{
                             filename("Interface/Images/MenuUI/button_0_quit.png");
-                            x("20px");
-                            y("220px");
                             height("45px");
                             width("150px");    
                             interactOnClick("quitGame()");
@@ -350,19 +341,20 @@ public class MainMenuScreen extends BaseAppState {
                     }});    
                        
 
-         }});
+                }});
 
-                    layer(new LayerBuilder("Layer_Menu_Logo"){{
-                        childLayoutAbsoluteInside();
+                    layer(new LayerBuilder("Layer_Menu_All"){{
+                        childLayoutVertical();
 
+                        panel(new PanelBuilder("Panel_Menu_Cat"){{    
+                            childLayoutCenter();
+                                height("30%");
+                                width("100%");
                             image(new ImageBuilder("logo_Cat") {{
                                 filename("Interface/Images/greetingcat.png");
-                                
-                                height("180px");
-                                width("180px");
-                                x("600px");
-                                y("100px");
-                                
+                                height("100%");
+                                width("20%");
+                                                                                                
                                 onStartScreenEffect(new EffectBuilder("fade") {{ //fade in and fade out effect :)
                                 startDelay(1000);
                                 //length(8000);    
@@ -374,15 +366,22 @@ public class MainMenuScreen extends BaseAppState {
                                 neverStopRendering(true);
                                 }});
                             }});
+                        }}); //panel catlogo end        
                             
-                            text(new TextBuilder() {{
+                        panel(new PanelBuilder("Panel_Menu_Texts"){{
+                                childLayoutCenter();
+                                height("50%");
+                                width("100%");
+                            
+                             text(new TextBuilder() {{
                                 text("Greeting Cat Game Studio presents\n"
                                         + "Arvenar - The Lost Traveller");
                                 font("Interface/Fonts/Default.fnt");
+                                color("#0009");
                                 height("100%");
                                 width("100%");
-                                x("500px");
-                                y("300px");
+                                alignCenter();
+                                
                                 onStartScreenEffect(new EffectBuilder("fade") {{
                                 startDelay(1000);
                                 //length(8000);    
@@ -402,11 +401,12 @@ public class MainMenuScreen extends BaseAppState {
                                         + "Powered by NiftyGUI\n"
                                         + "Powered by OpenGameArt.org\n"
                                         + "https://opengameart.org");
-                                 font("Interface/Fonts/Default.fnt");
+                                font("Interface/Fonts/Default.fnt");
+                                color("#0009");
                                 height("100%");
                                 width("100%");
-                                x("500px");
-                                y("300px");
+                                alignCenter();
+                                
                                 onStartScreenEffect(new EffectBuilder("fade") {{
                                 startDelay(12000);
                                 //length(8000);    
@@ -419,32 +419,35 @@ public class MainMenuScreen extends BaseAppState {
                                 }});
                             }});
                     
-                     
-                }}); //layer logo end
-                    
-                     layer(new LayerBuilder("Layer_Menu_SkipIntro"){{
-                        childLayoutVertical();
+                    }}); //panel texts end
                                                                                
-                            text(new TextBuilder() {{
+                    panel(new PanelBuilder("Panel_Menu_SkipIntroText"){{
+                            childLayoutCenter();
+                            height("20%");
+                            width("50%");
+                                
+                                text(new TextBuilder() {{
                                 text("Press ESC to skip intro");
-                                font("Interface/Fonts/Default.fnt");
+                                font("Interface/Fonts/verdana-48-regular.fnt");
                                 color("#0009");
-                                height("10%");
-                                width("10%");
+                                height("80%");
+                                width("80%");
                                 alignCenter();
-                                valignCenter();
+                                
                                                                 
                                 onStartScreenEffect(new EffectBuilder("fade") {{
-                                length(1000);
-                                startDelay(100);
+                                length(5000);
+                                startDelay(1000);
                                 effectParameter("start", "#f");
                                 effectParameter("end", "#0");
-                                post(false);
+                                post(true);
                                 neverStopRendering(false);
                                 }});
-                            }});    
-                             
-                     }}); //layer skipintro end
+                           
+                                
+                        }}); 
+                        }}); //panel skipintro end            
+                        }}); //layer menu end
                     
                 }}.build(nifty));
         
@@ -491,9 +494,9 @@ public class MainMenuScreen extends BaseAppState {
                     
                    panel(new PanelBuilder("Panel_Menu_ForButtons"){{
 //                        childLayoutVertical();
-                        childLayoutAbsoluteInside();
-                        alignLeft();
-                        valignCenter();
+                        childLayoutVertical();
+                        
+                        padding("20px");
                         height("300px");
                         width("250px"); 
                                                 
@@ -502,8 +505,7 @@ public class MainMenuScreen extends BaseAppState {
                         
                         image(new ImageBuilder("menuimg_Play"){{
                             filename("Interface/Images/MenuUI/button_0_playgame.png");
-                            x("20px");
-                            y("20px");
+                            
                             height("45px");
                             width("150px");  
                             
@@ -518,8 +520,7 @@ public class MainMenuScreen extends BaseAppState {
                         
                         image(new ImageBuilder("menuimg_Settings"){{
                             filename("Interface/Images/MenuUI/button_0_settings.png");
-                            x("20px");
-                            y("70px");
+                            
                             height("45px");
                             width("150px");    
                             interactOnClick("settingsGame()");
@@ -533,8 +534,8 @@ public class MainMenuScreen extends BaseAppState {
                         
                         image(new ImageBuilder("menuimg_Credits"){{
                             filename("Interface/Images/MenuUI/button_0_credits.png");
-                            x("20px");
-                            y("120px");
+                            
+                            
                             height("45px");
                             width("150px");   
                             interactOnClick("creditsGame()");
@@ -548,8 +549,7 @@ public class MainMenuScreen extends BaseAppState {
 
                         image(new ImageBuilder("menuimg_Extras"){{
                             filename("Interface/Images/MenuUI/button_0_extras.png");
-                            x("20px");
-                            y("170px");
+                            
                             height("45px");
                             width("150px");    
                             interactOnClick("gameExtras()");
@@ -563,8 +563,7 @@ public class MainMenuScreen extends BaseAppState {
                         
                         image(new ImageBuilder("menuimg_Quit"){{
                             filename("Interface/Images/MenuUI/button_0_quit.png");
-                            x("20px");
-                            y("220px");
+                            
                             height("45px");
                             width("150px");    
                             interactOnClick("quitGame()");

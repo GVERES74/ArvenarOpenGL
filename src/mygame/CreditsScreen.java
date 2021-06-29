@@ -199,16 +199,32 @@ public class CreditsScreen extends BaseAppState {
                 controller(new mygame.CreditsScreenController());
                 defaultFocusElement("Button_Back");
                 
-                layer(new LayerBuilder("Layer_CreditsText"){{
-                    childLayoutCenter();
+                layer(new LayerBuilder("Layer_Credits"){{
+                    childLayoutVertical();
+                                        
+                    panel(new PanelBuilder("Panel_Credits_Header"){{
+                        height("20%");
+                        width("30%"); 
+                        //backgroundColor("#fff6");
+                        childLayoutCenter();
+                            text(new TextBuilder() {{
+                                text("Game Credits");
+                                font("Interface/Fonts/verdana-48-regular.fnt");
+                                height("50%");
+                                width("100%");
+                                alignCenter();
+                                valignTop();
+                                
+                            }});
+                    }}); //end panel credits title 
                     
                     
                     panel(new PanelBuilder("Panel_CreditsTexts"){{
                         height("50%");
-                        width("50%"); 
+                        width("100%"); 
                         alignCenter();
-                        valignCenter();
-                        backgroundColor("#0f02");
+                        
+                        //backgroundColor("#0f02");
                         childLayoutCenter();                       
                         
                         text(new TextBuilder() {{
@@ -249,43 +265,37 @@ public class CreditsScreen extends BaseAppState {
                                 neverStopRendering(true);
                                 }});
                             }}); // text2 end    
-                    }}); //panel end
-                }}); //layer end  
-                
-                layer(new LayerBuilder("Layer_CreditsControls"){{
-                    childLayoutAbsoluteInside();
-                    
-                    panel(new PanelBuilder("Panel_Credits_Title"){{
-                        height("50px");
-                        width("150px"); 
-                        x("50px");
-                        y("30px");
-                        childLayoutVertical();
-                            text(new TextBuilder() {{
-                                text("Game Credits");
-                                font("Interface/Fonts/verdana-48-regular.fnt");
-                                height("100%");
-                                width("100%");
-                                alignLeft();
-                                valignTop();
+                             
+                             control(new LabelBuilder("ctext3") {{
+                                text("Code and Design by Gabor Veres\n"
+                                        + "Music by OpenGameArt.org\n"
+                                        + "Game Assets by OpenGameArt.org\n"
+                                        + "Coded in jMonkey3 and NiftyGUI");
+                                font("Interface/Fonts/Default.fnt");
+                                height("20%");
+                                width("50%");
+                                alignCenter();
+                                valignCenter();
+                                onStartScreenEffect(new EffectBuilder("autoScroll") {{
+                                startDelay(12000);
+                                length(50000);    
                                 
-                            }});
-                    }}); 
+                                effectParameter("start", "500");
+                                effectParameter("end", "-500");
+                                inherit(true);
+                                }});
+                            }}); // text2 end    
+                    }}); //panel texts end
                     
+                    panel(new PanelBuilder("Panel_Credits_Buttons"){{
+                        childLayoutCenter();
+                        height("20%");
+                        width("30%");     
                     
-                    panel(new PanelBuilder("Panel_Credits_Back"){{
-                        x("50px");
-                        y("500px");
-                        height("50px");
-                        width("200px"); 
-                        
-                        //backgroundColor("#eff6"); //last digit sets the alpha channel
-//                      
-                        childLayoutVertical();
-                            image(new ImageBuilder() {{
+                    image(new ImageBuilder() {{
                             filename("Interface/Images/MenuUI/button_0_back.png");
                             alignCenter();
-                            valignCenter();
+                                                        
                             height("40px");
                             width("150px");    
                             interactOnClick("backToMainMenu()");
@@ -297,8 +307,7 @@ public class CreditsScreen extends BaseAppState {
                             onStartHoverEffect(new HoverEffectBuilder("playSound"){{effectParameter("sound", "btnclick");}});
                         }});
                         
-//                                                  
-                        
+                       
                 }});
                 }});
                 }}.build(nifty));

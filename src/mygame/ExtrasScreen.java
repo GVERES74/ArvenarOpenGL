@@ -16,6 +16,7 @@ import com.jme3.renderer.RenderManager;
 import com.jme3.renderer.ViewPort;
 import com.jme3.scene.Node;
 import de.lessvoid.nifty.Nifty;
+import de.lessvoid.nifty.builder.EffectBuilder;
 import de.lessvoid.nifty.builder.HoverEffectBuilder;
 import de.lessvoid.nifty.builder.ImageBuilder;
 import de.lessvoid.nifty.builder.LayerBuilder;
@@ -29,7 +30,6 @@ import de.lessvoid.nifty.controls.slider.builder.SliderBuilder;
 import de.lessvoid.nifty.controls.tabs.builder.TabBuilder;
 import de.lessvoid.nifty.controls.tabs.builder.TabGroupBuilder;
 import de.lessvoid.nifty.screen.Screen;
-import de.lessvoid.nifty.tools.SizeValue;
 
 /**
  *  
@@ -113,39 +113,41 @@ public class ExtrasScreen extends BaseAppState {
                 controller(new mygame.ExtrasScreenController());
                 defaultFocusElement("settings_Back");
                 
-                layer(new LayerBuilder("Layer_Extras_Root"){{
-                    childLayoutAbsoluteInside();
-                        
-                    
-//                    onStartScreenEffect(new EffectBuilder("playSound") {{
-//                        effectParameter("sound", "settingstheme");
-//                    }}); 
-                
+                layer(new LayerBuilder("Layer_Extras_Background"){{
+                    childLayoutCenter();
+
                     image(new ImageBuilder() {{
                         filename("Interface/Images/bkg_pirate_table.jpg");
                         height("100%");
                         width("100%");
                     }});
+                }}); //end layer background
                     
-                     panel(new PanelBuilder("Panel_Extras_Title"){{
+                layer(new LayerBuilder("Layer_Extras_Content"){{
+                    childLayoutVertical();
+                    
+                    panel(new PanelBuilder("Panel_Extras_Title"){{
                         childLayoutCenter();
-                        x("20px");
-                        y("20px");
-
-                        height("100px");
-                        width("250px"); 
+                        height("10%");
+                        width("30%"); 
                         
                             text(new TextBuilder() {{
                                 text("Game Extras");
                                 font("Interface/Fonts/verdana-48-regular.fnt");
                                 height("100%");
                                 width("100%");
+                                alignLeft();
                                 
                             }});
-                    }});        
+                    }});    //end panel title    
                     
-                                    
-                    control(new TabGroupBuilder("TabGroup_Extras"){{
+                    
+                    panel(new PanelBuilder("Panel_Extras_Tabs"){{
+                        childLayoutCenter();
+                        height("70%");
+                        width("100%"); 
+                    
+                        control(new TabGroupBuilder("TabGroup_Extras"){{
                             width("500px");
                             height("500px");
                             x(String.valueOf(screenWidth/2-250));
@@ -181,7 +183,16 @@ public class ExtrasScreen extends BaseAppState {
                                                 font("Interface/Fonts/Default.fnt");
                                                 height("100%");
                                                 width("80%");
+                                                onStartScreenEffect(new EffectBuilder("autoScroll") {{
+                                                    
+                                                    length(100000);
+                                                    effectParameter("start", "600");
+                                                    effectParameter("end", "-600");
+                                                    inherit(true);
 
+                                                    
+                                                }});  
+                                                
                                             }});
                                     
                                     }}); //panel for music title
@@ -315,13 +326,13 @@ public class ExtrasScreen extends BaseAppState {
                         }});
                     
                 }});    
-                   
+                }}); //end panel content    
+                    
                     panel(new PanelBuilder("Panel_Extras_ScreenButtons"){{
-                        x("50px");
-                        y(SizeValue.px(screenHeight-300));
-                        height("200px");
-                        width("300px"); 
-                        childLayoutVertical();                        
+                        height("10%");
+                        width("20%"); 
+                        childLayoutCenter();                        
+                        //paddingLeft("20px");
                         
                                                
                         image(new ImageBuilder("settings_Back"){{
@@ -343,7 +354,7 @@ public class ExtrasScreen extends BaseAppState {
                         }});
                         }});
                 
-                }});
+                }}); //end layer content
                 }}.build(nifty));
         
                 

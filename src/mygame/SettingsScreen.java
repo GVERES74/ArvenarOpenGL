@@ -30,7 +30,6 @@ import de.lessvoid.nifty.controls.slider.builder.SliderBuilder;
 import de.lessvoid.nifty.controls.tabs.builder.TabBuilder;
 import de.lessvoid.nifty.controls.tabs.builder.TabGroupBuilder;
 import de.lessvoid.nifty.screen.Screen;
-import de.lessvoid.nifty.tools.SizeValue;
 
 
 /**
@@ -117,44 +116,46 @@ public class SettingsScreen extends BaseAppState {
                 controller(new mygame.SettingsScreenController());
                 defaultFocusElement("settings_Apply");
                 
-                layer(new LayerBuilder("Layer_Settings_AllItems"){{
-                    childLayoutAbsoluteInside();
-                        
+                layer(new LayerBuilder("Layer_Settings_Background"){{
+                    childLayoutCenter();
                     
-//                    onStartScreenEffect(new EffectBuilder("playSound") {{
-//                        effectParameter("sound", "settingstheme");
-//                    }}); 
-                
                     image(new ImageBuilder() {{
                         filename("Interface/Images/bkg_pirate_table.jpg");
                         height("100%");
                         width("100%");
                     }});
+                }}); //end layer background    
+                    
+                layer(new LayerBuilder("Layer_Settings_Content"){{
+                    childLayoutVertical();
                     
                     panel(new PanelBuilder("Panel_Settings_Title"){{
-                        childLayoutCenter();
-                        x("20px");
-                        y("20px");
-
-                        height("100px");
-                        width("250px"); 
+                        height("10%");
+                        width("30%"); 
                         
+                        childLayoutCenter();
                             text(new TextBuilder() {{
                                 text("Game Settings");
                                 font("Interface/Fonts/verdana-48-regular.fnt");
-                                height("100%");
-                                width("100%");
+                                height("50%");
+                                width("30%");
+                                alignCenter();
+                                valignCenter();
                                 
                             }});
-                    }});        
+                    }}); //end panel settings title 
+                                               
                     
-                                    
-                    control(new TabGroupBuilder("TabGroup_Settings"){{
+                    panel(new PanelBuilder("Panel_Settings_Tabs"){{
+                        childLayoutCenter();
+                        width("100%");
+                        height("70%");            
+                    
+                        control(new TabGroupBuilder("TabGroup_Settings"){{
                             width("500px");
                             height("500px");
-                            x(String.valueOf(screenWidth/2-250));
-                            y("100px");
-                            
+                            alignCenter();
+                            valignCenter();
                             backgroundColor("#ffc1");
                         
                             
@@ -299,13 +300,15 @@ public class SettingsScreen extends BaseAppState {
                                     style("nifty-panel");                                
                         }});
                     
-                }});    
+                    }});
+                    }}); //end panel tabs
                    
                     panel(new PanelBuilder("Panel_Settings_ScreenButtons"){{
-                        x("50px");
-                        y(SizeValue.px(screenHeight-300));
-                        height("200px");
-                        width("300px"); 
+                        //backgroundColor("#ffc1");
+                        height("20%");
+                        width("20%");
+                        paddingLeft("20px");
+                        //alignCenter();
                         childLayoutVertical();                        
                         
                         image(new ImageBuilder("settings_Apply"){{

@@ -75,14 +75,14 @@ public class PlayGame extends SimpleApplication{
            mainMenu_screen = new MainMenuScreen(); stateManager.attach(mainMenu_screen); //THIS THE IDEAL WAY!! 
            
            //THESE ARE ONLY FOR MODUL TESTING
-           settings_screen = new SettingsScreen();  //stateManager.attach(settings_screen);
+           settings_screen = new SettingsScreen();//stateManager.attach(settings_screen);
            credits_screen = new CreditsScreen(); //stateManager.attach(credits_screen);
-           extras_screen = new ExtrasScreen(); //stateManager.attach(extras_screen);
+           extras_screen = new ExtrasScreen();  //stateManager.attach(extras_screen);
            paused_screen = new PausedScreen(); //stateManager.attach(paused_screen);
-           ingameHud = new HUDScreen();          //stateManager.attach(ingameHud);
+           ingameHud = new HUDScreen();       //stateManager.attach(ingameHud);
            
            mapview_screen = new MapViewScreen();
-           diary_screen = new DiaryScreen(); //stateManager.attach(diary_screen);
+           diary_screen = new DiaryScreen();    //stateManager.attach(diary_screen);
            gameplayState = new GameAppState(); //stateManager.attach(gameplayState);
            
            levelS1M0 = new S2M0_shore(); //stateManager.attach(levelS1M0);

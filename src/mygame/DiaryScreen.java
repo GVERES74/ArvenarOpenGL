@@ -110,9 +110,8 @@ public class DiaryScreen extends BaseAppState {
                 controller(new mygame.DiaryScreenController());
                 defaultFocusElement("settings_Back");
                 
-                layer(new LayerBuilder("Layer_Diary_Root"){{
-                    childLayoutAbsoluteInside();
-                    
+                layer(new LayerBuilder("Layer_Diary_Background"){{
+                    childLayoutCenter();                    
                     onStartScreenEffect(new EffectBuilder("playSound") {{
                         effectParameter("sound", "openbook");
                     }}); 
@@ -120,46 +119,65 @@ public class DiaryScreen extends BaseAppState {
                     onEndScreenEffect(new EffectBuilder("playSound") {{
                         effectParameter("sound", "closebook");
                     }}); 
-                
-                   image(new ImageBuilder() {{
+                    
+                    image(new ImageBuilder() {{
                             filename("Interface/Images/book.png");
                             height("100%");
                             width("100%");
-                            }});
-                        
+                    }});
+                }}); //end layer background
+                
+                layer(new LayerBuilder("Layer_Diary_Content"){{
+                    childLayoutVertical(); 
+                    
                     panel(new PanelBuilder("Panel_Diary_Title"){{
-                        x("0px");
-                        y("0px");
                         height("10%");
-                        width("100%");
+                        width("30%"); 
+                        //backgroundColor("#fff6");
                         childLayoutCenter();
-                                                
                             text(new TextBuilder() {{
-                                text("Mom's Lost Diary");
+                                text("Mother's Diary");
                                 font("Interface/Fonts/verdana-48-regular.fnt");
                                 height("100%");
                                 width("100%");
                                 alignCenter();
-                                valignTop();
-                                                                                                
+                                                                
                             }});
-                    }});        
-                    
-                    panel(new PanelBuilder("Panel_Diary_Content_SheetLeft"){{
-                        x("150px");
-                        y("80px");
+                    }}); //end panel title 
+                                        
+                    panel(new PanelBuilder("Panel_Diary_Contents"){{
+                        
                         height("80%");
-                        width("40%"); 
+                        width("100%");
                         childLayoutVertical();
-                        //backgroundColor("#00f1");
+                        
+                                                
+                        panel(new PanelBuilder("Panel_Diary_Sheets"){{
+                        
+                            height("100%");
+                            width("100%");
+                            childLayoutHorizontal();
+                            alignCenter();
+                                                                            
+                        panel(new PanelBuilder("Panel_Diary_Content_SheetLeft"){{
+                        
+                            height("100%");
+                            width("50%"); 
+                            childLayoutVertical();
+                            //backgroundColor("#00f1");
+                            paddingLeft("150px");
+                            paddingTop("20px");
+                            alignCenter();
+                            valignCenter();
                         
                         control(new LabelBuilder("Content_Text1"){{
                             
                             font("Interface/Fonts/Default.fnt");
                             color("#0009");
-                            height("40%");
+                            height("50%");
                             width("100%");
                             alignCenter();
+                            valignCenter();
                         }});
                         
                         image(new ImageBuilder("Content_Image1"){{
@@ -167,24 +185,28 @@ public class DiaryScreen extends BaseAppState {
                                 height("50%");
                                 width("50%"); 
                                 alignCenter();
+                                valignCenter();
                         }});    
                         
                     }}); //end panel Book Sheet Left 
                     
                     
                     panel(new PanelBuilder("Panel_Diary_Content_SheetRight"){{
-                        x("700px");
-                        y("80px");
-                        height("80%");
-                        width("40%"); 
+                        
+                        height("100%");
+                        width("50%"); 
                         childLayoutVertical();
-                        //backgroundColor("#00f1");
-                          
+                        //backgroundColor("#55f1");
+                        //paddingLeft("50px");
+                        paddingTop("20px");
+                        alignCenter();  
+                        valignCenter();
                             image(new ImageBuilder("Content_Image2"){{
                                 
                                 height("50%");
                                 width("50%"); 
                                 alignCenter();
+                                valignCenter();
                             }});
                             
                             control(new LabelBuilder("Content_Text2"){{
@@ -198,22 +220,23 @@ public class DiaryScreen extends BaseAppState {
                             
                             
                             
-                    }}); //end panel Book Sheet Right 
-                   
+                     
+                    }});//end panel Book Sheet Right 
+                }});   //end panel Sheets
                    
                     panel(new PanelBuilder("Panel_Diary_ScreenButtons"){{
                         childLayoutHorizontal();
-                        x(SizeValue.px(screenWidth/9));
-                        y(SizeValue.px(screenHeight-150));
+                        paddingLeft("150px");
+                        //paddingTop("20px");
                         height("10%");
-                        width("80%"); 
-                                                
+                        width("100%"); 
+                        //backgroundColor("#0008");                        
                         
                         image(new ImageBuilder("pausedmenuimg_gamesettings"){{
                             filename("Interface/Images/MenuUI/button_0_pausedmenu_gamesettings.png");
                             height("40px");
                             width("200px");      
-                            
+                            alignCenter();
                             interactOnClick("settingsGame()");
                             onStartHoverEffect(new HoverEffectBuilder("changeImage"){{
                                 effectParameter("active", "Interface/Images/MenuUI/button_1_pausedmenu_gamesettings.png"); neverStopRendering(true);
@@ -226,7 +249,8 @@ public class DiaryScreen extends BaseAppState {
                         image(new ImageBuilder("pausedmenu_Back"){{
                             filename("Interface/Images/MenuUI/button_0_pausedmenu_back.png");
                             height("40px");
-                            width("200px");    
+                            width("200px");
+                            alignCenter();
                             interactOnClick("backToGame()");
                             
 //                            backgroundColor("#0c01");
@@ -241,7 +265,8 @@ public class DiaryScreen extends BaseAppState {
                         image(new ImageBuilder("pausedmenu_Exit"){{
                             filename("Interface/Images/MenuUI/button_0_pausedmenu_quit.png");
                             height("40px");
-                            width("200px");    
+                            width("200px");
+                            alignCenter();
                             interactOnClick("backToMainMenu()");
                             
 //                            backgroundColor("#0c01");
@@ -256,7 +281,8 @@ public class DiaryScreen extends BaseAppState {
                         image(new ImageBuilder("Diary_PrevPage"){{
                             filename("Interface/Images/MenuUI/button_0_book_prevpage.png");
                             height("40px");
-                            width("100px");    
+                            width("100px");
+                            alignCenter();
                             interactOnClick("prevPage()");
                                                         
 //                          backgroundColor("#0c01");
@@ -271,7 +297,8 @@ public class DiaryScreen extends BaseAppState {
                         image(new ImageBuilder("Diary_NextPage"){{
                             filename("Interface/Images/MenuUI/button_0_book_nextpage.png");
                             height("40px");
-                            width("100px");    
+                            width("100px");
+                            alignCenter();
                             interactOnClick("nextPage()");
                             
 //                            backgroundColor("#0c01");
@@ -284,7 +311,8 @@ public class DiaryScreen extends BaseAppState {
                         
                         }});
                       
-                }});
+                }}); //end panel contents
+                }}); //end layer contents
                 }}.build(nifty));
                         
                 nifty.gotoScreen("Screen_DiaryBook");

@@ -22,6 +22,8 @@ import de.lessvoid.nifty.builder.ImageBuilder;
 import de.lessvoid.nifty.builder.LayerBuilder;
 import de.lessvoid.nifty.builder.PanelBuilder;
 import de.lessvoid.nifty.builder.ScreenBuilder;
+import de.lessvoid.nifty.builder.TextBuilder;
+import de.lessvoid.nifty.controls.scrollpanel.builder.ScrollPanelBuilder;
 import de.lessvoid.nifty.screen.Screen;
 
 /**
@@ -112,7 +114,7 @@ public class MapViewScreen extends BaseAppState {
                 controller(new mygame.MapViewScreenController());
                 defaultFocusElement("settings_CloseMap");
                 
-                layer(new LayerBuilder("Layer_MapView"){{
+                layer(new LayerBuilder("Layer_MapView_Background"){{
                     childLayoutCenter();
                     
                     
@@ -130,16 +132,41 @@ public class MapViewScreen extends BaseAppState {
                             height("100%");
                             width("100%");
                     }});
-                        
+                }}); //end layer background
+                
+                layer(new LayerBuilder("Layer_MapView_Contents"){{
+                    childLayoutVertical();
                                
-                    panel(new PanelBuilder("Panel_MapView_Buttons"){{
-                        alignLeft();
-                        valignCenter();
-                        height("80%");
+                    panel(new PanelBuilder("Panel_MapView_Title"){{
+                        height("10%");
                         width("30%"); 
+                        //backgroundColor("#fff6");
+                        childLayoutCenter();
+                            text(new TextBuilder() {{
+                                text("Map of Arvenar");
+                                font("Interface/Fonts/verdana-48-regular.fnt");
+                                height("100%");
+                                width("100%");
+                                alignCenter();
+                                                                
+                            }});
+                    }}); //end panel title 
+                    
+                    
+                    panel(new PanelBuilder("Panel_MapView_Content"){{
+                        height("80%");
+                        width("100%"); 
+                        //backgroundColor("#fff6");
+                        childLayoutHorizontal();
+                    
+                    panel(new PanelBuilder("Panel_MapView_Buttons"){{
+                        alignCenter();
+                        valignCenter();
+                        height("100%");
+                        width("20%"); 
                         padding("20px");
                         childLayoutVertical();
-                        backgroundColor("#ffc1");
+                        //backgroundColor("#ffc1");
                                                                      
                     
                         panel(new PanelBuilder("Panel_MapView_SelectMap"){{
@@ -287,10 +314,45 @@ public class MapViewScreen extends BaseAppState {
                             }});
                                                 
                         }});
+                                                
+                    }});    
+                        
+                        control(new ScrollPanelBuilder("ScrollPanel_MapView_MapHolder"){{
+                        alignCenter();
+                        valignCenter();
+                        width("70%");
+                        height("80%");
+                        set("horizontal", "true");
+                        set("vertical", "true");
+                        childLayoutOverlay();
+                        //backgroundColor("#0009");
+                                                
+                        panel(new PanelBuilder("Panel_MapView_MapImage"){{
+                        height("120%"); 
+                        width("120%");
+                        alignCenter();
+                        childLayoutCenter();
+                        interactOnMouseWheel("zoomCurrentMap()");
+                        
+                            image(new ImageBuilder("img_LocalMap") {{
+                                filename("Interface/Images/Map/map_local.png");
+                                height("100%");
+                                width("100%");
+                                }});    
+                            image(new ImageBuilder("img_WorldMap") {{
+                                filename("Interface/Images/Map/caribbean.png");
+                                height("100%");
+                                width("100%");
+                                }});
+                            
+                    }});    
+                    }});  //scrollpanel maps end  
+                    }}); //panel content end
                         
                         panel(new PanelBuilder("Panel_MapView_ScreenButtons"){{
-                        height("20%");
-                        width("100%"); 
+                        height("10%");
+                        width("20%"); 
+                        paddingLeft("20px");
                         childLayoutVertical();
                         
                         image(new ImageBuilder("settings_Back"){{
@@ -308,40 +370,7 @@ public class MapViewScreen extends BaseAppState {
                               
                         }});
                       
-                    }}); 
-                        
-                    }});    
-                        
-//                        control(new ScrollPanelBuilder("ScrollPanel_MapView_MapHolder"){{
-//                        x("200px");
-//                        y("50px");
-//                        width("80%");
-//                        height("80%");
-//                        set("horizontal", "false");
-//                        set("vertical", "false");
-//                        //childLayoutOverlay();
-//                        //backgroundColor("#0009");
-                                                
-                        panel(new PanelBuilder("Panel_MapView_MapImage"){{
-                        height("80%"); 
-                        width("70%");
-                        alignCenter();
-                        childLayoutCenter();
-                        interactOnMouseWheel("zoomCurrentMap()");
-                        
-                            image(new ImageBuilder("img_LocalMap") {{
-                                filename("Interface/Images/Map/map_local.png");
-                                height("100%");
-                                width("100%");
-                                }});    
-                            image(new ImageBuilder("img_WorldMap") {{
-                                filename("Interface/Images/Map/caribbean.png");
-                                height("100%");
-                                width("100%");
-                                }});
-                            
-                    }});    
-//                    }}); //ScrollPanel end
+                        }}); //end panel screenbuttons
                         
                                    
                 }});

@@ -115,8 +115,8 @@ public class PausedScreen extends BaseAppState {
                 controller(new mygame.PausedScreenController());
                 defaultFocusElement("settings_Apply");
                 
-                layer(new LayerBuilder("Layer_Settings_AllItems"){{
-                    childLayoutAbsoluteInside();
+                layer(new LayerBuilder("Layer_PausedMenu_Background"){{
+                    childLayoutCenter();
                     
                     onStartScreenEffect(new EffectBuilder("playSound") {{
                         effectParameter("sound", "openbook");
@@ -126,38 +126,46 @@ public class PausedScreen extends BaseAppState {
                         effectParameter("sound", "closebook");
                     }}); 
                 
-                   image(new ImageBuilder() {{
+                    image(new ImageBuilder() {{
                             filename("Interface/Images/book.png");
                             height("100%");
                             width("100%");
-                            }});
-                        
-                    panel(new PanelBuilder("Panel_Paused_Title"){{
-//                       
-                        x("0px");
-                        y("0px");
+                    }});
+                    
+                }});   //end layer backgroundimage 
+                
+                layer(new LayerBuilder("Layer_PausedMenu_Content"){{
+                    childLayoutVertical();
+                
+                    panel(new PanelBuilder("Panel_PausedMenu_Title"){{
                         height("10%");
-                        width("100%");
+                        width("30%"); 
+                        
                         childLayoutCenter();
-                                                
                             text(new TextBuilder() {{
                                 text("Game Paused");
                                 font("Interface/Fonts/verdana-48-regular.fnt");
-                                height("100%");
-                                width("100%");
+                                height("50%");
+                                width("30%");
                                 alignCenter();
-                                valignTop();
-                                                                                                
+                                valignCenter();
+                                
                             }});
-                    }});        
+                    }}); //end panel pausedmenu title 
                     
-                               
-                    panel(new PanelBuilder("Panel_Paused_MenuButtons"){{
-                      
-                        x(SizeValue.px(screenWidth/9));
-                        y("80px");
-                        height("50%");
-                        width("30%"); 
+                    
+                    panel(new PanelBuilder("Panel_Paused_Contents"){{
+                        childLayoutVertical();
+                        panel(new PanelBuilder("Panel_Paused_Sheets"){{
+                            height("80%");
+                            width("100%");     
+                            childLayoutHorizontal();
+                        
+                        panel(new PanelBuilder("Panel_Paused_MenuButtons"){{
+                        alignCenter();
+                        height("100%");
+                        width("50%"); 
+                        paddingLeft("150px");
                         childLayoutVertical();
                         
                         text(new TextBuilder() {{
@@ -226,10 +234,9 @@ public class PausedScreen extends BaseAppState {
                     
                     
                     panel(new PanelBuilder("Panel_Paused_MenuItemHints"){{
-                        x(SizeValue.px(screenWidth/2));
-                        y("80px");
-                        height("80%");
-                        width("40%"); 
+                        alignCenter();
+                        height("100%");
+                        width("50%"); 
                         childLayoutCenter();
                         //backgroundColor("#00f1");
                         
@@ -244,15 +251,14 @@ public class PausedScreen extends BaseAppState {
                             
                         }});
                     }}); //end panel hintcontent   
-                   
+                    }}); //end panel sheets
                    
                     panel(new PanelBuilder("Panel_Paused_ScreenButtons"){{
                         childLayoutHorizontal();
-                        x(SizeValue.px(screenWidth/9));
-                        y(SizeValue.px(screenHeight-150));
-                        height("70px");
-                        width("600px"); 
-                                                
+                        paddingLeft("150px");
+                        height("10%");
+                        width("100%"); 
+                                              
                         
                         image(new ImageBuilder("pausedmenuimg_gamesettings"){{
                             filename("Interface/Images/MenuUI/button_0_pausedmenu_gamesettings.png");
@@ -296,9 +302,10 @@ public class PausedScreen extends BaseAppState {
                             onStartHoverEffect(new HoverEffectBuilder("move"){{effectParameter("mode", "toOffset"); effectParameter("offsetX", "+15");}});
                             onStartHoverEffect(new HoverEffectBuilder("playSound"){{effectParameter("sound", "btnclick");}});
                             }});
-                        }});
-                      
-                }});
+                        }}); //end panel screenbuttons
+                           
+                }}); //end panel contents
+                }}); //end layer contents
                 }}.build(nifty));
                         
                 nifty.gotoScreen("Screen_PausedMenu");
