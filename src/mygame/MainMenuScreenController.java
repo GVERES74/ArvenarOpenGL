@@ -14,7 +14,6 @@ import de.lessvoid.nifty.Nifty;
 import de.lessvoid.nifty.elements.Element;
 import de.lessvoid.nifty.screen.Screen;
 import de.lessvoid.nifty.screen.ScreenController;
-import static mygame.PlayGame.mainMenu_screen;
 
 /**
  *
@@ -66,7 +65,7 @@ public class MainMenuScreenController extends BaseAppState implements ScreenCont
         
         PlayGame.detachAppState(PlayGame.mainMenu_screen);
         PlayGame.attachAppState(PlayGame.gameplayState);       
-        PlayGame.musicPlayer.stop();
+        Audioxerver.musicPlayer.stop();
         
                 
     }
@@ -75,7 +74,7 @@ public class MainMenuScreenController extends BaseAppState implements ScreenCont
     public void settingsGame(){
         
         System.out.println("Game Settings button pressed...");
-        PlayGame.musicPlayer.stop();
+        Audioxerver.musicPlayer.stop();
         
         /*THIS THE IDEAL WAY!! 
         When the user clicks on the options button, the StartScreenAppState method
@@ -89,7 +88,7 @@ public class MainMenuScreenController extends BaseAppState implements ScreenCont
     public void creditsGame(){
         System.out.println("Game Credits button pressed...");
         
-        PlayGame.musicPlayer.stop();
+        Audioxerver.musicPlayer.stop();
         
         PlayGame.attachAppState(PlayGame.credits_screen);
                 

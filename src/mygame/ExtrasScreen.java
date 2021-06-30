@@ -183,15 +183,31 @@ public class ExtrasScreen extends BaseAppState {
                                                 font("Interface/Fonts/Default.fnt");
                                                 height("100%");
                                                 width("80%");
-                                                onStartScreenEffect(new EffectBuilder("autoScroll") {{
-                                                    
-                                                    length(100000);
-                                                    effectParameter("start", "600");
-                                                    effectParameter("end", "-600");
-                                                    inherit(true);
+//                                                onActiveEffect(new EffectBuilder("colorPulsate") {{
+//                                                    
+//                                                    effectParameter("startColor", "#fff6");
+//                                                    effectParameter("endColor", "#0006");
+//                                                    effectParameter("pulsateType", "sin");
+//                                                    effectParameter("period", "2000");
+//                                                    
+//                                                }}); 
 
+                                                    onActiveEffect(new EffectBuilder("move") {{
+                                                        
+                                                        neverStopRendering(false);
+                                                        effectParameter("length", "2000");
+                                                        effectParameter("mode", "fromOffset");
+                                                        effectParameter("offsetX", "-100");
+                                                        effectValue("time", "3000", "value", "0.0");
+                                                        effectValue("time", "5000", "value", "-50");
+                                                        effectValue("time", "10000", "value", "-100");
+                                                        effectValue("time", "12000", "value", "-50");
+                                                        effectValue("time", "15000", "value", "0.0");
+                                                                                                                   
+                                                        
+                                                    }});  
                                                     
-                                                }});  
+                                                    
                                                 
                                             }});
                                     

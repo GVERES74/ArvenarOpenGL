@@ -24,9 +24,12 @@ import de.lessvoid.nifty.screen.ScreenController;
 import java.awt.DisplayMode;
 import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
-import java.util.HashSet;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.prefs.BackingStoreException;
 import javax.annotation.Nonnull;
+import java.util.Collections;
+import java.util.Comparator;
 
 
 /**
@@ -42,6 +45,8 @@ public class SettingsScreenController extends BaseAppState implements ScreenCont
     private Screen screen;
     private GraphicsDevice device;
     private DisplayMode[] modes;
+    private DisplayMode currentMode;
+    private List <DisplayMode> sorted;
     
     private String mainScreen;
     private TabGroup tabgroup;
@@ -54,8 +59,7 @@ public class SettingsScreenController extends BaseAppState implements ScreenCont
     private Label labelSliderMusicVol, labelSliderSoundVol;
     private int width, height;
     
-    HashSet<DisplayMode> hashsetdmodes =new HashSet<DisplayMode>();
-    
+        
     @Override
     protected void initialize(Application app) {
         this.app = (SimpleApplication) app;
@@ -131,32 +135,52 @@ public class SettingsScreenController extends BaseAppState implements ScreenCont
     public void initDisplayDevice(){
         device = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
         modes = device.getDisplayModes();
+        currentMode = device.getDisplayMode();
     }
     
     public void loadAllowedDisplayModes(){
-        for (DisplayMode m: modes){
-            hashsetdmodes.add(m);
-        }
-        
-        
+              
         dropdownResolution.clear();
-        //dropdownResolution.addAllItems(hashsetdmodes);
-        //for (DisplayMode dm: dmodes){ //for HashSet
-            for (DisplayMode dm: modes){
+        
+            try {
             
-              
-              dropdownResolution.addItem(dm.getWidth()+"x"+dm.getHeight()+"/"+dm.getBitDepth()+"bpp@"+dm.getRefreshRate()+"Hz");
-              
+                sorted = new ArrayList<DisplayMode>();
+                
+                    for (int i=0; i<modes.length; i++) {
+                        DisplayMode mode = modes[i];
+                              
+                        if (mode.getWidth() >= 1366 && mode.getHeight() >= 768) {
+                            sorted.add(mode);
+                        }
+                    
+                    }
+
+                  Collections.sort(sorted, new Comparator<DisplayMode>() {
+                    @Override
+                    public int compare(DisplayMode o1, DisplayMode o2) {
+                      int widthCompare = Integer.valueOf(o1.getWidth()).compareTo(Integer.valueOf(o2.getWidth()));
+                      if (widthCompare != 0) {
+                        return widthCompare;
+                      }
+                      int heightCompare = Integer.valueOf(o1.getHeight()).compareTo(Integer.valueOf(o2.getHeight()));
+                      if (heightCompare != 0) {
+                        return heightCompare;
+                      }
+                      return o1.toString().compareTo(o2.toString());
+                    }
+                  });
+
+      
+              for (DisplayMode mode : sorted) {
+                dropdownResolution.addItem(mode);
+              }
+            } catch (Exception e) {
             }
-              
-            dropdownBitDepth.addItem(16);
-            dropdownBitDepth.addItem(24);
-            dropdownRefreshRate.addItem(60);
-            dropdownRefreshRate.addItem(75);
-                       
             
-            dropdownResolution.selectItemByIndex(modes.length-1);
-            dropdownBitDepth.selectItemByIndex(1);
+            dropdownResolution.selectItemByIndex(sorted.size()-1);
+            dropdownBitDepth.addItem(currentMode.getBitDepth());
+            dropdownBitDepth.selectItemByIndex(0);
+            dropdownRefreshRate.addItem(currentMode.getRefreshRate());
             dropdownRefreshRate.selectItemByIndex(0);
         
     }
@@ -237,9 +261,9 @@ public class SettingsScreenController extends BaseAppState implements ScreenCont
         int selectedBitDepth = dropdownBitDepth.getSelectedIndex();
         int selectedRefreshRate = dropdownRefreshRate.getSelectedIndex();
         
-        PlayGame.getPlayGameAppSettings().setResolution(modes[selectedResolution].getWidth(), modes[selectedResolution].getHeight());
+        PlayGame.getPlayGameAppSettings().setResolution(sorted.get(selectedResolution).getWidth(), sorted.get(selectedResolution).getHeight());
 //        PlayGame.getPlayGameAppSettings().setDepthBits(modes[selectedBitDepth].getBitDepth());
-        PlayGame.getPlayGameAppSettings().setFrequency(modes[selectedRefreshRate].getRefreshRate());
+        PlayGame.getPlayGameAppSettings().setFrequency(currentMode.getRefreshRate());
         
         PlayGame.getPlayGameAppSettings().setFullscreen(checkboxFullscreen.isChecked()&& device.isFullScreenSupported());
         PlayGame.getPlayGameApp().setSettings(PlayGame.getPlayGameAppSettings());
@@ -247,8 +271,8 @@ public class SettingsScreenController extends BaseAppState implements ScreenCont
     }
     
     public void changeAudioSettings(){
-        PlayGame.musicPlayer.setVolume(sliderMusicVol.getValue());
-        PlayGame.soundPlayer.setVolume(sliderSoundVol.getValue());
+        Audioxerver.musicPlayer.setVolume(sliderMusicVol.getValue());
+        Audioxerver.soundPlayer.setVolume(sliderSoundVol.getValue());
     }
     
     public void applySettings() throws BackingStoreException {
@@ -268,7 +292,7 @@ public class SettingsScreenController extends BaseAppState implements ScreenCont
     public void onMusicVolumeSliderChanged(final String id, @Nonnull final SliderChangedEvent sliderChangedEvent) {
                        
         labelSliderMusicVol.setText((int)sliderMusicVol.getValue()+"%");
-        PlayGame.musicPlayer.setVolume(sliderMusicVol.getValue()/100); //values 0.0f - 1.0f !!
+        Audioxerver.musicPlayer.setVolume(sliderMusicVol.getValue()/100); //values 0.0f - 1.0f !!
         
     }
     
@@ -276,6 +300,6 @@ public class SettingsScreenController extends BaseAppState implements ScreenCont
     public void onSoundVolumeSliderChanged(final String id, @Nonnull final SliderChangedEvent sliderChangedEvent) {
                       
         labelSliderSoundVol.setText((int)sliderSoundVol.getValue()+"%");
-        PlayGame.soundPlayer.setVolume(sliderSoundVol.getValue()/100); //values 0.0f - 1.0f !!
+        Audioxerver.soundPlayer.setVolume(sliderSoundVol.getValue()/100); //values 0.0f - 1.0f !!
     }
 }

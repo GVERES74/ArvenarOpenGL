@@ -11,10 +11,8 @@ import de.lessvoid.nifty.Nifty;
 import de.lessvoid.nifty.controls.ScrollPanel;
 import de.lessvoid.nifty.elements.Element;
 import de.lessvoid.nifty.input.NiftyMouseInputEvent;
-import de.lessvoid.nifty.layout.align.VerticalAlign;
 import de.lessvoid.nifty.screen.Screen;
 import de.lessvoid.nifty.screen.ScreenController;
-import de.lessvoid.nifty.tools.SizeValue;
 import javax.annotation.Nonnull;
 
 /**
@@ -177,6 +175,7 @@ public class MapViewScreenController extends BaseAppState implements ScreenContr
     public void backToGame(){
         System.out.println("Back button pressed...");
         PlayGame.detachAppState(PlayGame.mapview_screen);
+        
                
     }
     

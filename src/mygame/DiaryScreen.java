@@ -25,7 +25,6 @@ import de.lessvoid.nifty.builder.ScreenBuilder;
 import de.lessvoid.nifty.builder.TextBuilder;
 import de.lessvoid.nifty.controls.label.builder.LabelBuilder;
 import de.lessvoid.nifty.screen.Screen;
-import de.lessvoid.nifty.tools.SizeValue;
 
 
 
@@ -176,7 +175,7 @@ public class DiaryScreen extends BaseAppState {
                             color("#0009");
                             height("50%");
                             width("100%");
-                            alignCenter();
+                            align(Align.Left);
                             valignCenter();
                         }});
                         
@@ -215,7 +214,7 @@ public class DiaryScreen extends BaseAppState {
                                 color("#0009");
                                 height("40%");
                                 width("100%");
-                                alignCenter();
+                                align(Align.Left);
                             }});    
                             
                             
@@ -328,5 +327,6 @@ public class DiaryScreen extends BaseAppState {
         nifty.removeScreen("Screen_DiaryBook");
         app.getFlyByCamera().setDragToRotate(false);
         PlayGame.getNiftyDisplay().getNifty().gotoScreen("Screen_HUD");
+        
     }
 }

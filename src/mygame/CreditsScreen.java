@@ -106,7 +106,7 @@ public class CreditsScreen extends BaseAppState {
     
         public void loadCreditsMusic(){
 
-            PlayGame.loadMusic("Music/Soundtracks/RPG_Ambient_3.ogg", true, true);
+            Audioxerver.loadMusic("Music/Soundtracks/RPG_Ambient_3.ogg", true, true);
 
         }
         
@@ -235,7 +235,7 @@ public class CreditsScreen extends BaseAppState {
                                 alignCenter();
                                 valignCenter();
                                 
-                                onStartScreenEffect(new EffectBuilder("fade") {{
+                                onActiveEffect(new EffectBuilder("fade") {{
                                 startDelay(1000);
                                 //length(8000);    
                                 effectValue("time", "3000", "value", "0.0");
@@ -254,7 +254,7 @@ public class CreditsScreen extends BaseAppState {
                                 width("200px");
                                 alignCenter();
                                 valignCenter();
-                                onStartScreenEffect(new EffectBuilder("fade") {{
+                                onActiveEffect(new EffectBuilder("fade") {{
                                 startDelay(10000);
                                 //length(8000);    
                                 effectValue("time", "3000", "value", "0.0");
@@ -272,17 +272,18 @@ public class CreditsScreen extends BaseAppState {
                                         + "Game Assets by OpenGameArt.org\n"
                                         + "Coded in jMonkey3 and NiftyGUI");
                                 font("Interface/Fonts/Default.fnt");
-                                height("20%");
+                                height("50%");
                                 width("50%");
                                 alignCenter();
                                 valignCenter();
-                                onStartScreenEffect(new EffectBuilder("autoScroll") {{
-                                startDelay(12000);
-                                length(50000);    
+                                onActiveEffect(new EffectBuilder("autoScroll") {{
+                                    startDelay(15000);
+                                    effectParameter("length", "20000");
+                                    effectParameter("start", "500");
+                                    effectParameter("end", "-500");
+                                    inherit(true);
+                                    neverStopRendering(true);
                                 
-                                effectParameter("start", "500");
-                                effectParameter("end", "-500");
-                                inherit(true);
                                 }});
                             }}); // text2 end    
                     }}); //panel texts end

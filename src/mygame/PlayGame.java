@@ -3,9 +3,6 @@ package mygame;
 import Levels.S2M0_shore;
 import com.jme3.app.SimpleApplication;
 import com.jme3.app.state.AppState;
-import com.jme3.audio.AudioData;
-import com.jme3.audio.AudioData.DataType;
-import com.jme3.audio.AudioNode;
 
 import com.jme3.export.binary.BinaryImporter;
 import com.jme3.niftygui.NiftyJmeDisplay;
@@ -40,8 +37,6 @@ public class PlayGame extends SimpleApplication{
     public static ExtrasScreen extras_screen;
     public static DiaryScreen diary_screen;
         
-    public static AudioNode musicPlayer, soundPlayer, soundinstance;
-    
                 
     public static void main(String[] args) throws BackingStoreException {
                 
@@ -132,43 +127,7 @@ public class PlayGame extends SimpleApplication{
         return appsettings;
     }
     
-    public static void loadMusic(String filepath, boolean start, boolean looping){
-        musicPlayer = new AudioNode(app.getAssetManager(), filepath);
-        musicPlayer.setDirectional(false);
-        musicPlayer.setPositional(false);
-        musicPlayer.setLooping(looping);
-        musicPlayer.stop();
-        app.getRootNode().attachChild(musicPlayer);
-        
-        if (start == true){
-            musicPlayer.play();
-        }
-        else {
-            musicPlayer.stop();
-        }
-    }
-
-    public void playSound(String filepath, boolean directional, boolean positional, boolean looping, float maxdist, float volume, float xpos, float ypos, float zpos){
-        soundPlayer = new AudioNode(assetManager, filepath, AudioData.DataType.Stream);
-        soundPlayer.setDirectional(directional);
-        soundPlayer.setPositional(positional);
-        soundPlayer.setLocalTranslation(xpos, ypos, zpos);
-        soundPlayer.setLooping(looping);
-        soundPlayer.setVolume(volume);
-        soundPlayer.setMaxDistance(maxdist);
-        rootNode.attachChild(soundPlayer);
-        soundPlayer.play();
-        //audioRenderer.playSource(soundPlayer);
-        
-    }
-    
-    public static void playSoundInstance(String filepath){
-        soundinstance = new AudioNode(app.getAssetManager(), filepath, DataType.Buffer);
-        soundinstance.setPositional(false);
-        app.getRootNode().attachChild(soundinstance);
-        soundinstance.playInstance();
-    }
-    
+       
     public static void attachAppState(AppState appstate){
         app.getStateManager().attach(appstate);
     }

@@ -35,8 +35,8 @@ import com.jme3.renderer.ViewPort;
 import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
 import com.jme3.water.WaterFilter;
+import mygame.Audioxerver;
 import mygame.GameAppState;
-import mygame.HUDScreenController;
 import mygame.PlayGame;
 
 /**
@@ -145,7 +145,7 @@ public class S2M0_shore extends BaseAppState {
         updateAdvancedWater(tpf);
         
         if (camera.getLocation().x < -600f){
-                 PlayGame.musicPlayer.play();
+                 Audioxerver.musicPlayer.play();
                  
         }
 //        particle1.setLocalTranslation(
@@ -300,7 +300,7 @@ public class S2M0_shore extends BaseAppState {
         
         private void loadAudio(){
             
-            PlayGame.loadMusic("Music/Soundtracks/Peaceful_Place.ogg", false, true);
+            Audioxerver.loadMusic("Music/Soundtracks/Peaceful_Place.ogg", false, true);
             
             playSound("Sounds/Ambient/Animals/ocean_seagull_mono.ogg", false, true, true, 1000f, 3, 0f, 5f, 500f);
             playSound("Sounds/Ambient/Fire/torchBurning.ogg", false, true, true, 1000f, 2, -620f, 7f, 250f);

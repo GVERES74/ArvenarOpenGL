@@ -132,8 +132,9 @@ public class ExtrasScreenController extends BaseAppState implements ScreenContro
     
     public void playMusic(){
         
-        PlayGame.musicPlayer.stop();
-        PlayGame.loadMusic(musicFilesPath+dropdownSelectMusic.getSelection(), true, false);
+        //PlayGame.musicPlayer.stop();
+        Audioxerver.musicPlayer.stop();
+        Audioxerver.loadMusic(musicFilesPath+dropdownSelectMusic.getSelection(), true, false);
             
         nowPlayingTitle.setText(dropdownSelectMusic.getSelection().toString());
         System.out.println("Playmusic clicked");
@@ -141,14 +142,16 @@ public class ExtrasScreenController extends BaseAppState implements ScreenContro
     
     public void stopMusic(){
         
-        PlayGame.musicPlayer.stop();
+        //PlayGame.musicPlayer.stop();
+        Audioxerver.musicPlayer.stop();
         System.out.println("Stopmusic clicked");
         
     }
     
     public void pauseMusic(){
         
-        PlayGame.musicPlayer.pause();
+        //PlayGame.musicPlayer.pause();
+        Audioxerver.musicPlayer.pause();
         
         System.out.println("Music paused...");
         

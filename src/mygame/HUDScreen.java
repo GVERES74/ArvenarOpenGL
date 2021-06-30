@@ -13,18 +13,15 @@ import com.jme3.font.BitmapText;
 import com.jme3.math.FastMath;
 import com.jme3.ui.Picture;
 import de.lessvoid.nifty.Nifty;
-import de.lessvoid.nifty.NiftyEventSubscriber;
 import de.lessvoid.nifty.builder.ImageBuilder;
 import de.lessvoid.nifty.builder.LayerBuilder;
 import de.lessvoid.nifty.builder.PanelBuilder;
 import de.lessvoid.nifty.builder.ScreenBuilder;
 import de.lessvoid.nifty.controls.Label;
 import de.lessvoid.nifty.controls.ListBox;
-import de.lessvoid.nifty.controls.ListBoxSelectionChangedEvent;
 import de.lessvoid.nifty.controls.label.builder.LabelBuilder;
 import de.lessvoid.nifty.controls.listbox.builder.ListBoxBuilder;
 import de.lessvoid.nifty.screen.Screen;
-import de.lessvoid.nifty.tools.SizeValue;
 
 /**
  *  
@@ -274,6 +271,8 @@ public class HUDScreen extends BaseAppState {
                             height("100%");
                             width("80%");
                             alignRight();
+                            optionalHorizontalScrollbar();
+                            optionalVerticalScrollbar();
                             }}); 
                     
                     }});
@@ -334,21 +333,15 @@ public class HUDScreen extends BaseAppState {
                 
         String[] comment = {"This is just a ", "This should be a ", "This looks to be a ", "Hmm, I would say it's a ", "I'm wondering if it's not a "};
         int r = FastMath.nextRandomInt(0, comment.length-1);
-        if (enabled){
-            nifty.getCurrentScreen().findElementById("dialogText").setVisible(true);
-            nifty.getCurrentScreen().findElementById("Panel_HUD_Dialog").setVisible(true);
+        
+            nifty.getCurrentScreen().findElementById("dialogText").setVisible(enabled);
+            nifty.getCurrentScreen().findElementById("Panel_HUD_Dialog").setVisible(enabled);
             nifty.getCurrentScreen().findNiftyControl("dialogText", Label.class).setText(comment[r]+text);
             
             if (text.contains("Oto")){
                 PlayGame.ingameHud.showCharacterDialog();
             }
         
-        }
-        
-        if (!enabled){
-            nifty.getCurrentScreen().findElementById("dialogText").setVisible(false);
-            nifty.getCurrentScreen().findElementById("Panel_HUD_Dialog").setVisible(false);
-        }
     }
     
     public void showCharacterDialog(){

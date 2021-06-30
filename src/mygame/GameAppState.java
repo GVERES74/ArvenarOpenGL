@@ -205,7 +205,7 @@ public class GameAppState extends BaseAppState implements AnimEventListener{
         this.app.getCamera().setLocation(firstPersonPlayer.getPhysicsLocation());
         
         npcPlayer.move(0.01f, 0, 0.01f);
-               
+              
         
     }
     
@@ -238,15 +238,16 @@ public class GameAppState extends BaseAppState implements AnimEventListener{
                         
                     } 
                     
-                    else if (!(keyPressed) && PlayGame.gameplayState.isEnabled()){
-                        PlayGame.ingameHud.createAssetInfoPanel(false,"");
+                    else if ((!keyPressed) && PlayGame.gameplayState.isEnabled()){
+                    
+                        PlayGame.ingameHud.createAssetInfoPanel(false,"vision..");
                         
                     }
                         break;                    
                 }
                 
                 if (keyPressed) {   
-                    PlayGame.playSoundInstance("Sounds/Human/walkDry.ogg");
+                    Audioxerver.playSoundInstance("Sounds/Human/walkDry.ogg");
                 }
                 else if (!keyPressed){
                     
@@ -288,7 +289,6 @@ public class GameAppState extends BaseAppState implements AnimEventListener{
     protected void onEnable() {
         PlayGame.attachAppState(PlayGame.ingameHud);
         
-                
         System.out.print("GameAppState onEnable() called......");
         
     }

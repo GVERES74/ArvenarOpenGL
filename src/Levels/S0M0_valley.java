@@ -26,7 +26,6 @@ import com.jme3.light.DirectionalLight;
 import com.jme3.material.Material;
 import com.jme3.math.ColorRGBA;
 import com.jme3.math.Plane;
-import com.jme3.math.Quaternion;
 import com.jme3.math.Vector3f;
 import com.jme3.renderer.Camera;
 import com.jme3.renderer.RenderManager;
@@ -36,6 +35,7 @@ import com.jme3.scene.Geometry;
 import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
 import com.jme3.water.SimpleWaterProcessor;
+import mygame.Audioxerver;
 import mygame.GameAppState;
 import mygame.MainMenuScreen;
 import mygame.PlayGame;
@@ -336,7 +336,7 @@ public class S0M0_valley extends BaseAppState {
         
         public void loadMenuMusic(){
 
-            PlayGame.loadMusic("Music/Soundtracks/RPG_Ambient_2.ogg", true, true);
+            Audioxerver.loadMusic("Music/Soundtracks/RPG_Ambient_2.ogg", true, true);
 
         }
         
