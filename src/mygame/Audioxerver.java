@@ -15,7 +15,7 @@ import static mygame.PlayGame.app;
  */
 public class Audioxerver {
     
-    public static AudioNode musicPlayer, soundPlayer, soundinstance;
+    public static AudioNode musicPlayer, soundPlayer, soundinstance, loopedSoundPlayer;
     
      public static void loadMusic(String filepath, boolean start, boolean looping){
         musicPlayer = new AudioNode(app.getAssetManager(), filepath);
@@ -47,10 +47,17 @@ public class Audioxerver {
         
     }
     
+    public static void playLoopedSound(String filepath, boolean looping){
+        loopedSoundPlayer = soundPlayer = new AudioNode(app.getAssetManager(), filepath, AudioData.DataType.Buffer);
+        loopedSoundPlayer.setLooping(looping);
+        loopedSoundPlayer.setPositional(false);
+        
+        loopedSoundPlayer.play();
+    }
+    
     public static void playSoundInstance(String filepath){
         soundinstance = new AudioNode(app.getAssetManager(), filepath, AudioData.DataType.Buffer);
-        soundinstance.setPositional(false);
-        app.getRootNode().attachChild(soundinstance);
+        soundinstance.setPositional(false);app.getRootNode().attachChild(soundinstance);
         soundinstance.playInstance();
     }
     

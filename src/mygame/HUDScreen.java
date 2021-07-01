@@ -334,15 +334,17 @@ public class HUDScreen extends BaseAppState {
         String[] comment = {"This is just a ", "This should be a ", "This looks to be a ", "Hmm, I would say it's a ", "I'm wondering if it's not a "};
         int r = FastMath.nextRandomInt(0, comment.length-1);
         
-            nifty.getCurrentScreen().findElementById("dialogText").setVisible(enabled);
-            nifty.getCurrentScreen().findElementById("Panel_HUD_Dialog").setVisible(enabled);
-            nifty.getCurrentScreen().findNiftyControl("dialogText", Label.class).setText(comment[r]+text);
+            
+                nifty.getCurrentScreen().findElementById("dialogText").setVisible(enabled);
+                nifty.getCurrentScreen().findElementById("Panel_HUD_Dialog").setVisible(enabled);
+                nifty.getCurrentScreen().findNiftyControl("dialogText", Label.class).setText(comment[r]+text);
             
             if (text.contains("Oto")){
                 PlayGame.ingameHud.showCharacterDialog();
             }
         
     }
+       
     
     public void showCharacterDialog(){
             createDialogPanel();    

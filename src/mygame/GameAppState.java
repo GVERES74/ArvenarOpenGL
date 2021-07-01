@@ -44,7 +44,8 @@ import com.jme3.scene.Spatial;
  *
  * @author TE332168
  */
-public class GameAppState extends BaseAppState implements AnimEventListener{
+public class GameAppState extends BaseAppState 
+        implements AnimEventListener, ActionListener, AnalogListener{
     
     private SimpleApplication app;
     
@@ -73,6 +74,8 @@ public class GameAppState extends BaseAppState implements AnimEventListener{
     private Vector3f camDir = new Vector3f();
     private Vector3f camLeft = new Vector3f();
     private boolean keyA = false, keyD = false, keyW = false, keyS = false;
+
+    private enum MovementKeys {FORWARD, BACKWARD, STRAFELEFT, STRAFERIGHT};
     
     private AnimChannel npcWalkChannel;
     private AnimControl control;
@@ -83,6 +86,8 @@ public class GameAppState extends BaseAppState implements AnimEventListener{
     private int playerhp = 100;
     public String target = "Valami";
     private String pressedKey;
+    
+    private boolean gameplayIsRunning = true;
     
     
     @Override
@@ -161,11 +166,12 @@ public class GameAppState extends BaseAppState implements AnimEventListener{
         }
 
         private void initKeyEvent(){
-        
-            this.app.getInputManager().addMapping("Forward", new KeyTrigger(KeyInput.KEY_W));
-            this.app.getInputManager().addMapping("Backward", new KeyTrigger(KeyInput.KEY_S));
-            this.app.getInputManager().addMapping("StrafeLeft", new KeyTrigger(KeyInput.KEY_A));
-            this.app.getInputManager().addMapping("StrafeRight", new KeyTrigger(KeyInput.KEY_D));
+            //let's map some enums for the movement keys
+            this.app.getInputManager().addMapping(MovementKeys.FORWARD.name(), new KeyTrigger(KeyInput.KEY_W));
+            this.app.getInputManager().addMapping(MovementKeys.BACKWARD.name(), new KeyTrigger(KeyInput.KEY_S));
+            this.app.getInputManager().addMapping(MovementKeys.STRAFELEFT.name(), new KeyTrigger(KeyInput.KEY_A));
+            this.app.getInputManager().addMapping(MovementKeys.STRAFERIGHT.name(), new KeyTrigger(KeyInput.KEY_D));
+            //map keys in common way
             this.app.getInputManager().addMapping("Jump", new KeyTrigger(KeyInput.KEY_SPACE));
             this.app.getInputManager().addMapping("Crouch", new KeyTrigger(KeyInput.KEY_LCONTROL));
             this.app.getInputManager().addMapping("PauseGame", new KeyTrigger(KeyInput.KEY_ESCAPE));
@@ -174,15 +180,22 @@ public class GameAppState extends BaseAppState implements AnimEventListener{
             this.app.getInputManager().addMapping("OpenDiary", new KeyTrigger(KeyInput.KEY_L));
             this.app.getInputManager().addMapping("Settings", new KeyTrigger(KeyInput.KEY_F1));
             
-            this.app.getInputManager().addMapping("lookat_target", new MouseButtonTrigger(MouseInput.BUTTON_LEFT));
+            this.app.getInputManager().addMapping("lookat_target", new MouseButtonTrigger(MouseInput.BUTTON_MIDDLE)); //MBLEFT causes NullPointerException when clicking on screen buttons
             
 
             //let's separate movement, open screen and action listeners
-            this.app.getInputManager().addListener(actionListener, "Forward", "Backward", "StrafeLeft", "StrafeRight", "Jump", "Crouch");
-            this.app.getInputManager().addListener(actionListener, "PauseGame", "MapView", "OpenDiary", "Settings", "CloseScreen");
-            this.app.getInputManager().addListener(actionListener, "lookat_target");
-             
-            //this.app.getInputManager().addListener(analogListener, "lookat_target");
+            this.app.getInputManager().addListener(this, 
+                    MovementKeys.FORWARD.name(), 
+                    MovementKeys.BACKWARD.name(), 
+                    MovementKeys.STRAFELEFT.name(), 
+                    MovementKeys.STRAFERIGHT.name(), 
+                    "Jump", "Crouch");
+            
+            this.app.getInputManager().addListener(this, "PauseGame", "MapView", "OpenDiary", "Settings", "CloseScreen");
+            this.app.getInputManager().addListener(this, "lookat_target");
+            
+            //footsteps are analog
+            this.app.getInputManager().addListener(this, "Forward", "Backward", "StrafeLeft", "StrafeRight", "Jump", "Crouch");
             
         }
         
@@ -209,15 +222,18 @@ public class GameAppState extends BaseAppState implements AnimEventListener{
         
     }
     
-        private ActionListener actionListener = new ActionListener(){
+            @Override
             public void onAction (String keyBinding, boolean keyPressed, float tpf){
-                pressedKey = keyBinding;
+                pressedKey = keyBinding; //track the pressed key
+                
+                if (keyBinding.equals(MovementKeys.FORWARD.name())) {keyW = keyPressed;}
+                if (keyBinding.equals(MovementKeys.BACKWARD.name())) {keyS = keyPressed;}
+                if (keyBinding.equals(MovementKeys.STRAFELEFT.name())) {keyA = keyPressed;}     
+                if (keyBinding.equals(MovementKeys.STRAFERIGHT.name())) {keyD = keyPressed;}     
+                
                 switch (keyBinding){
                     
-                    case "Forward": keyW = keyPressed; break;
-                    case "Backward": keyS = keyPressed; break;
-                    case "StrafeLeft": keyA = keyPressed; break;
-                    case "StrafeRight": keyD = keyPressed; break;
+                    
                     case "Jump": if (keyPressed) {firstPersonPlayer.jump(new Vector3f(0,20f,0));
                                     decreasePlayerHealth(); 
                                  }; break;
@@ -231,39 +247,33 @@ public class GameAppState extends BaseAppState implements AnimEventListener{
                     
                     case "Settings":   hotKeyPressed(PlayGame.settings_screen, keyPressed); break; 
                                         
-                    case "lookat_target": if ((keyPressed) && PlayGame.gameplayState.isEnabled()){
+                    case "lookat_target": 
+                        if ((keyPressed) && PlayGame.gameplayState.isEnabled()){
+                            PlayGame.ingameHud.createAssetInfoPanel(true, getTarget());
                         
-                        //PlayGame.ingameHud.showLookAtDialog(true,getTarget());
-                        PlayGame.ingameHud.createAssetInfoPanel(true,getTarget());
-                        
-                    } 
+                        } 
                     
-                    else if ((!keyPressed) && PlayGame.gameplayState.isEnabled()){
+                        else if (!keyPressed){
                     
-                        PlayGame.ingameHud.createAssetInfoPanel(false,"vision..");
+                         PlayGame.ingameHud.createAssetInfoPanel(false, "a vision...");
                         
-                    }
+                        }
                         break;                    
                 }
                 
-                if (keyPressed) {   
-                    Audioxerver.playSoundInstance("Sounds/Human/walkDry.ogg");
-                }
-                else if (!keyPressed){
-                    
-                }
-                
+                    if (keyBinding.equals(MovementKeys.FORWARD.name()) && keyPressed){    
+                        Audioxerver.playLoopedSound("Sounds/Human/grassy-footstep2.wav", true);
+                    }  else Audioxerver.loopedSoundPlayer.stop();
             }
-        };
+        
          
          
-        private AnalogListener analogListener = new AnalogListener(){
             @Override
             public void onAnalog(String keyBinding, float value, float tpf) {
-             
-        }
-        };
-        
+                
+                
+            }
+               
     
     
     @Override
@@ -335,6 +345,7 @@ public class GameAppState extends BaseAppState implements AnimEventListener{
      
         if (keyPressed && !PlayGame.getPlayGameApp().getStateManager().hasState(appStateName)){
             PlayGame.attachAppState(appStateName);
+            gameplayIsRunning = !gameplayIsRunning;
             }
         else if (keyPressed) {
             PlayGame.detachAppState(appStateName);

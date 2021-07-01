@@ -67,7 +67,7 @@ public class PlayGame extends SimpleApplication{
            nifty = niftyDisplay.getNifty();
            viewPort.addProcessor(niftyDisplay); 
            
-           mainMenu_screen = new MainMenuScreen(); stateManager.attach(mainMenu_screen); //THIS THE IDEAL WAY!! 
+           mainMenu_screen = new MainMenuScreen(); //stateManager.attach(mainMenu_screen); //THIS THE IDEAL WAY!! 
            
            //THESE ARE ONLY FOR MODUL TESTING
            settings_screen = new SettingsScreen();//stateManager.attach(settings_screen);
@@ -78,7 +78,7 @@ public class PlayGame extends SimpleApplication{
            
            mapview_screen = new MapViewScreen();
            diary_screen = new DiaryScreen();    //stateManager.attach(diary_screen);
-           gameplayState = new GameAppState(); //stateManager.attach(gameplayState);
+           gameplayState = new GameAppState(); stateManager.attach(gameplayState);
            
            levelS1M0 = new S2M0_shore(); //stateManager.attach(levelS1M0);
 
