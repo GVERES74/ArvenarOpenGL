@@ -60,15 +60,13 @@ public class S0M0_valley extends BaseAppState {
     private ViewPort          viewPort;
     private Camera camera;
         
-    private AudioNode soundPlayer;
-    private AudioNode playsoundonce;
-    private AudioRenderer audioRenderer;
     
     private BulletAppState bulletAppState;
         
     private RigidBodyControl modelRigidBody;
     
     ParticleEmitter particle1;
+    SimpleWaterProcessor waterCreator;
     //for Post process water effectprocessor
     
     private DirectionalLight sun;
@@ -103,15 +101,15 @@ public class S0M0_valley extends BaseAppState {
         createFirePlace();
         createWaterStream();
         createWaterFall();
-        loadMenuMusic();
+        
         loadAmbientSound();
         
     }
 
     @Override
     protected void cleanup(Application app) {
-    
-    
+        
+            
         //TODO: clean up what you initialized in the initialize method,        
         //e.g. remove all spatials from rootNode    
     }
@@ -131,7 +129,9 @@ public class S0M0_valley extends BaseAppState {
     
     @Override
     protected void onDisable() {
-    
+        Audioxerver.musicPlayer.stop();
+        Audioxerver.soundPlayer.stop();
+        
 
     
         //Called when the state was previously enabled but is now disabled         
@@ -304,8 +304,8 @@ public class S0M0_valley extends BaseAppState {
         
         public void createSimpleWater(float width, float depth, float posx, float posy, float posz){
             
-            SimpleWaterProcessor waterCreator = new SimpleWaterProcessor(assetManager);
-                                 waterCreator.setReflectionScene(
+                                waterCreator = new SimpleWaterProcessor(assetManager);
+                                waterCreator.setReflectionScene(
                                     PlayGame.getPlayGameApp().getStateManager().getState(MainMenuScreen.class).getLevel()     
                                  );
             
@@ -334,48 +334,29 @@ public class S0M0_valley extends BaseAppState {
             
         }
         
-        public void loadMenuMusic(){
-
-            Audioxerver.loadMusic("Music/Soundtracks/RPG_Ambient_2.ogg", true, true);
-
-        }
-        
         public void loadAmbientSound(){
 
-            playSound("Sounds/Ambient/Water/waterstream.ogg", false, true, true, 0.5f, 23f, -0.5f, -11f);
-            playSound("Sounds/Ambient/Water/waterfall_01.ogg", false, false, true, 0.5f, 32f, 2f, -2f); 
-            playSound("Sounds/Ambient/Fire/torchBurning.ogg", false, true, true, 1.0f, 0f, 0f, 0f); 
+            Audioxerver.playSound("Sounds/Ambient/Water/waterstream.ogg", false, true, true, 1000f, 0.5f, 23f, -0.5f, -11f);
+            Audioxerver.playSound("Sounds/Ambient/Water/waterfall_01.ogg", false, false, true, 1000f, 0.5f, 32f, 2f, -2f); 
+            Audioxerver.playSound("Sounds/Ambient/Fire/torchBurning.ogg", false, true, true, 1000f, 1.0f, 0f, 0f, 0f); 
         }
+       
         
-        //playsound must be instantiated (more sounds must be played, needs always a new AudioNode)
-        public void playSound(String filepath, boolean directional, boolean positional, boolean looping, float volume, float xpos, float ypos, float zpos){
-        soundPlayer = new AudioNode(assetManager, filepath, AudioData.DataType.Stream);
-        soundPlayer.setDirectional(directional);
-        soundPlayer.setPositional(positional);
-        soundPlayer.setLocalTranslation(xpos, ypos, zpos);
-        soundPlayer.setLooping(looping);
-        soundPlayer.setVolume(volume);
-//        soundPlayer.setMaxDistance(300f);
-        rootNode.attachChild(soundPlayer);
-        soundPlayer.play();
-        //audioRenderer.playSource(soundPlayer);
+        public Spatial getLevel() {
+            return level_S0M0;
         }
-        
-    public Spatial getLevel() {
-        return level_S0M0;
-    }
 
-    public Vector3f getInitPlayerPosition() {
-        return initPlayerPosition;        
-    }
-    
-    
-            
-    public void addScenePhysics(){
-         
-            bulletAppState.getPhysicsSpace().add(app.getStateManager().getState(GameAppState.class).levelRigidBody);
-            bulletAppState.getPhysicsSpace().add(app.getStateManager().getState(GameAppState.class).firstPersonPlayer);
-    }
+        public Vector3f getInitPlayerPosition() {
+            return initPlayerPosition;        
+        }
+
+
+
+        public void addScenePhysics(){
+
+                bulletAppState.getPhysicsSpace().add(app.getStateManager().getState(GameAppState.class).levelRigidBody);
+                bulletAppState.getPhysicsSpace().add(app.getStateManager().getState(GameAppState.class).firstPersonPlayer);
+        }
         
         
 }

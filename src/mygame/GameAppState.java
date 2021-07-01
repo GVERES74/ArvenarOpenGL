@@ -263,7 +263,9 @@ public class GameAppState extends BaseAppState
                 
                     if (keyBinding.equals(MovementKeys.FORWARD.name()) && keyPressed){    
                         Audioxerver.playLoopedSound("Sounds/Human/grassy-footstep2.wav", true);
-                    }  else Audioxerver.loopedSoundPlayer.stop();
+                    }  else if (keyBinding.equals(MovementKeys.FORWARD.name()) && !keyPressed){
+                        Audioxerver.loopedSoundPlayer.stop();
+                    }
             }
         
          
@@ -282,6 +284,8 @@ public class GameAppState extends BaseAppState
         this.app.getRootNode().detachAllChildren();
         this.app.getInputManager().deleteMapping("PauseGame");
         System.out.println("GameAppState cleanup called.....");
+        Audioxerver.musicPlayer.stop();
+        Audioxerver.soundPlayer.stop();
         
         }
 

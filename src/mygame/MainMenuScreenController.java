@@ -40,7 +40,7 @@ public class MainMenuScreenController extends BaseAppState implements ScreenCont
     @Override
     public void update(float tpf) {
         
-         
+        
     }
     
     
@@ -66,42 +66,40 @@ public class MainMenuScreenController extends BaseAppState implements ScreenCont
         PlayGame.detachAppState(PlayGame.mainMenu_screen);
         PlayGame.attachAppState(PlayGame.gameplayState);       
         Audioxerver.musicPlayer.stop();
-        
-                
+        Audioxerver.soundPlayer.stop();                       
     }
         
         
     public void settingsGame(){
         
         System.out.println("Game Settings button pressed...");
-        Audioxerver.musicPlayer.stop();
-        
+                
         /*THIS THE IDEAL WAY!! 
         When the user clicks on the options button, the StartScreenAppState method
         attaches an OptionsScreenAppState object and detaches itself.
         */
         PlayGame.attachAppState(PlayGame.settings_screen);
         PlayGame.detachAppState(PlayGame.mainMenu_screen);
-        
+        Audioxerver.musicPlayer.stop();
+        Audioxerver.soundPlayer.stop();       
     }
     
     public void creditsGame(){
         System.out.println("Game Credits button pressed...");
         
-        Audioxerver.musicPlayer.stop();
         
         PlayGame.attachAppState(PlayGame.credits_screen);
-                
+        Audioxerver.musicPlayer.stop();
+        Audioxerver.soundPlayer.stop(); 
         
     }
     
     public void gameExtras(){
         System.out.println("Game Extras button pressed...");
         
-        //PlayGame.musicPlayer.stop();
-                
         PlayGame.attachAppState(PlayGame.extras_screen);
-                
+        Audioxerver.musicPlayer.stop();
+        Audioxerver.soundPlayer.stop();       
         
     }
     
@@ -119,7 +117,7 @@ public class MainMenuScreenController extends BaseAppState implements ScreenCont
 
     @Override
     protected void cleanup(Application app) {
-        
+      
     }
 
     @Override

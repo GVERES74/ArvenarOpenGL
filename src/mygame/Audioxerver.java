@@ -7,6 +7,8 @@ package mygame;
 
 import com.jme3.audio.AudioData;
 import com.jme3.audio.AudioNode;
+import com.jme3.math.FastMath;
+import java.io.File;
 import static mygame.PlayGame.app;
 
 /**
@@ -59,6 +61,17 @@ public class Audioxerver {
         soundinstance = new AudioNode(app.getAssetManager(), filepath, AudioData.DataType.Buffer);
         soundinstance.setPositional(false);app.getRootNode().attachChild(soundinstance);
         soundinstance.playInstance();
+    }
+    
+    public static   void loadRandomMusic(){
+        
+        File folder = new File("assets/Music/Soundtracks");
+        
+        File[] content = folder.listFiles();
+        int i = FastMath.nextRandomInt(0, content.length-1);
+        
+        Audioxerver.loadMusic("Music/Soundtracks/"+content[i].getName(), true, true);
+
     }
     
 }

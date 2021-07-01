@@ -37,7 +37,6 @@ import com.jme3.scene.Spatial;
 import com.jme3.water.WaterFilter;
 import mygame.Audioxerver;
 import mygame.GameAppState;
-import mygame.PlayGame;
 
 /**
  *  
@@ -132,7 +131,7 @@ public class S2M0_shore extends BaseAppState {
     @Override
     protected void onDisable() {
     
-
+        Audioxerver.musicPlayer.stop();
     
         //Called when the state was previously enabled but is now disabled         
         //either because setEnabled(false) was called or the state is being         
@@ -302,26 +301,12 @@ public class S2M0_shore extends BaseAppState {
             
             Audioxerver.loadMusic("Music/Soundtracks/Peaceful_Place.ogg", false, true);
             
-            playSound("Sounds/Ambient/Animals/ocean_seagull_mono.ogg", false, true, true, 1000f, 3, 0f, 5f, 500f);
-            playSound("Sounds/Ambient/Fire/torchBurning.ogg", false, true, true, 1000f, 2, -620f, 7f, 250f);
-            playSound("Sounds/Ambient/Environment/JungleAmbient01.ogg", false, true, true, 1000f, 3, -100f, 5f, -630f);
+            Audioxerver.playSound("Sounds/Ambient/Animals/ocean_seagull_mono.ogg", false, true, true, 1000f, 3, 0f, 5f, 500f);
+            Audioxerver.playSound("Sounds/Ambient/Fire/torchBurning.ogg", false, true, true, 1000f, 2, -620f, 7f, 250f);
+            Audioxerver.playSound("Sounds/Ambient/Environment/JungleAmbient01.ogg", false, true, true, 1000f, 3, -100f, 5f, -630f);
             
         }
         
-        //playsound must be instantiated (more sounds must be played, needs always a new AudioNode)
-        public void playSound(String filepath, boolean directional, boolean positional, boolean looping, float maxdist, float volume, float xpos, float ypos, float zpos){
-        soundPlayer = new AudioNode(assetManager, filepath, AudioData.DataType.Stream);
-        soundPlayer.setDirectional(directional);
-        soundPlayer.setPositional(positional);
-        soundPlayer.setLocalTranslation(xpos, ypos, zpos);
-        soundPlayer.setLooping(looping);
-        soundPlayer.setVolume(volume);
-        soundPlayer.setRefDistance(5f);
-        soundPlayer.setMaxDistance(maxdist);
-        rootNode.attachChild(soundPlayer);
-        soundPlayer.play();
-        //audioRenderer.playSource(soundPlayer);
-        }
         
         public void playSoundInstance(String file){
             playsoundonce = new AudioNode(assetManager, file, AudioData.DataType.Buffer);

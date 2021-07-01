@@ -105,6 +105,7 @@ public class MainMenuScreen extends BaseAppState {
         initMenuControls();
         //createAnimatedMainMenu();
         createSimpleMainMenu();
+        Audioxerver.loadRandomMusic();
         
     //TODO: initialize your AppState, e.g. attach spatials to rootNode
         //this is called on the OpenGL thread after the AppState has been attached
@@ -139,18 +140,7 @@ public class MainMenuScreen extends BaseAppState {
             }
 
         }
-        
-        
-                        
-        public void playSound(String filepath, boolean directional, boolean positional, boolean looping, float volume, float xpos, float ypos, float zpos){
-        soundPlayer = new AudioNode(assetManager, filepath);
-        soundPlayer.setDirectional(directional);
-        soundPlayer.setPositional(positional);
-        soundPlayer.setLooping(looping);
-        soundPlayer.setVolume(volume);
-        startRootNode.attachChild(soundPlayer);
-        soundPlayer.play();
-    }     
+                 
                 
         public void initMenuControls(){
         
@@ -195,10 +185,7 @@ public class MainMenuScreen extends BaseAppState {
     public void cleanup(Application app) {
         System.out.println("MainMenuScreen cleanup called.....");
         inputManager.deleteMapping("SkipIntro");
-        
-        //startRootNode.detachAllChildren();
-        //rootNode.detachChild(level);
-
+               
     }    
           
    
@@ -585,14 +572,17 @@ public class MainMenuScreen extends BaseAppState {
                 nifty.gotoScreen("Screen_SimpleMainMenu");
     }
     
+    
     public void enableMainMenuScreen(){
         nifty.gotoScreen("Screen_SimpleMainMenu");
         app.getFlyByCamera().setDragToRotate(true);
+        
     }
     
     public void disableMainMenuScreen(){
         nifty.removeScreen("Screen_SimpleMainMenu");
         app.getFlyByCamera().setDragToRotate(false);
+        
     }
     
     

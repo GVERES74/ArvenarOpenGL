@@ -162,9 +162,6 @@ public class ExtrasScreenController extends BaseAppState implements ScreenContro
         
         PlayGame.detachAppState(PlayGame.extras_screen);
         PlayGame.attachAppState(PlayGame.mainMenu_screen);
-        
-        
-        //PlayGame.musicPlayer.stop();
             
     }
         

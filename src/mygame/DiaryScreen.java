@@ -102,8 +102,8 @@ public class DiaryScreen extends BaseAppState {
             nifty.loadControlFile("nifty-default-controls.xml");
         
             nifty.registerSound("btnclick", "Interface/sound/click.wav");
-            nifty.registerSound("openbook", "Interface/sound/BookFlip1.wav");
-            nifty.registerSound("closebook", "Interface/sound/BookFlip10.wav");
+            nifty.registerSound("openbook", "Interface/sound/bookOpen.ogg");
+            nifty.registerSound("closebook", "Interface/sound/bookClose.ogg");
                    
             nifty.addScreen("Screen_DiaryBook", new ScreenBuilder("DiaryBook"){{
                 controller(new mygame.DiaryScreenController());
@@ -326,7 +326,7 @@ public class DiaryScreen extends BaseAppState {
     public void hideDiaryScreen(){
         nifty.removeScreen("Screen_DiaryBook");
         app.getFlyByCamera().setDragToRotate(false);
-        PlayGame.getNiftyDisplay().getNifty().gotoScreen("Screen_HUD");
+            PlayGame.getNiftyDisplay().getNifty().gotoScreen("Screen_HUD");
         
     }
 }
