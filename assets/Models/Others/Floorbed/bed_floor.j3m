@@ -1,0 +1,10 @@
+Material bed_floor : Common/MatDefs/Light/Lighting.j3md {
+              MaterialParameters {
+                DiffuseMap: Models/Others/Floorbed/textil.tga
+                //NormalMap: Models/Others/Floorbed/textil.tga
+		UseMaterialColors: true
+	        Specular: 1.0 1.0 1.0 1.0
+        	Diffuse: 1.0 1.0 1.0 1.0
+	        Shininess: 20.0 
+        
+  }

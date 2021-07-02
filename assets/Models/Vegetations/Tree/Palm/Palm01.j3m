@@ -1,0 +1,12 @@
+Material Palm01 : Common/MatDefs/Light/Lighting.j3md {
+              MaterialParameters {
+                DiffuseMap: Models/Vegetations/Tree/Palm/3td_PalmBark2Seamless.jpg
+		//SpecularMap: Models/Vegetations/Tree/Palm/
+                //NormalMap: Models/Vegetations/Tree/Palm/
+		UseMaterialColors: true
+	        Specular: 1.0 1.0 1.0 1.0
+        	Diffuse: 1.0 1.0 1.0 1.0
+	        Shininess: 20.0 
+        
+  }
+}

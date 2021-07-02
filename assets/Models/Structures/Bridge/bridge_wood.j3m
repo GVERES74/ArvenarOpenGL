@@ -1,0 +1,11 @@
+Material bridge_wood : Common/MatDefs/Light/Lighting.j3md {
+              MaterialParameters {
+                DiffuseMap: Models/Structures/Bridge/planks.png
+                //NormalMap: Models/Structures/Bridge/planks.png
+		UseMaterialColors: true
+	        Specular: 1.0 1.0 1.0 1.0
+        	Diffuse: 1.0 1.0 1.0 1.0
+	        Shininess: 20.0 
+        
+  }
+}

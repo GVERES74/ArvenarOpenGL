@@ -1,0 +1,11 @@
+Material wood_barrel : Common/MatDefs/Light/Lighting.j3md {
+              MaterialParameters {
+                DiffuseMap: Flip Models/Others/Barrel/barrel_diffus.tga
+                //NormalMap:  Flip Models/Others/Barrel/barrel_normal.tga
+		SpecularMap:  Flip Models/Others/Barrel/barrel_specular.tga
+		UseMaterialColors: true
+	        Specular: 1.0 1.0 1.0 1.0
+        	Diffuse: 1.0 1.0 1.0 1.0
+	        Shininess: 20.0 
+        
+  }

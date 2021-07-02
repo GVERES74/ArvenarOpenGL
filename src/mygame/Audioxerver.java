@@ -20,7 +20,7 @@ public class Audioxerver {
     public static AudioNode musicPlayer, soundPlayer, soundinstance, loopedSoundPlayer;
     
      public static void loadMusic(String filepath, boolean start, boolean looping){
-        musicPlayer = new AudioNode(app.getAssetManager(), filepath);
+        musicPlayer = new AudioNode(app.getAssetManager(), filepath, AudioData.DataType.Stream);
         musicPlayer.setDirectional(false);
         musicPlayer.setPositional(false);
         musicPlayer.setLooping(looping);
@@ -36,7 +36,7 @@ public class Audioxerver {
     }
 
     public static void playSound(String filepath, boolean directional, boolean positional, boolean looping, float maxdist, float volume, float xpos, float ypos, float zpos){
-        soundPlayer = new AudioNode(app.getAssetManager(), filepath, AudioData.DataType.Stream);
+        soundPlayer = new AudioNode(app.getAssetManager(), filepath, AudioData.DataType.Buffer);
         soundPlayer.setDirectional(directional);
         soundPlayer.setPositional(positional);
         soundPlayer.setLocalTranslation(xpos, ypos, zpos);

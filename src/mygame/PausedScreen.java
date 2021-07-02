@@ -61,7 +61,7 @@ public class PausedScreen extends BaseAppState {
         screenWidth = PlayGame.getPlayGameAppSettings().getWidth();
         screenHeight = PlayGame.getPlayGameAppSettings().getHeight();
         inputManager.deleteMapping(SimpleApplication.INPUT_MAPPING_EXIT); //delete ESC key quit app function
-                
+        
         createPausedScreen();
 
     }

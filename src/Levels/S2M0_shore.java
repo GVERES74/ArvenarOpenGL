@@ -35,6 +35,7 @@ import com.jme3.renderer.ViewPort;
 import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
 import com.jme3.water.WaterFilter;
+import java.util.Random;
 import mygame.Audioxerver;
 import mygame.GameAppState;
 
@@ -91,6 +92,7 @@ public class S2M0_shore extends BaseAppState {
         bulletAppState = new BulletAppState();
                 
         app.getStateManager().attach(bulletAppState);
+        app.setPauseOnLostFocus(true);
     
     //It is technically safe to do all initialization and cleanup in the         
         //onEnable()/onDisable() methods. Choosing to use initialize() and         
@@ -158,45 +160,96 @@ public class S2M0_shore extends BaseAppState {
     
      public void loadSceneModels(){
             //boat and ship
-            createModel("Models/Boat/boat_crashed.j3o", "", 300f, 0f, 900f, -1f, 0f, 30f);
-            createModel("Models/Boat/boat_small.obj", "", 30f, 2f, 320f, 0f, 0.1f, 1f);
+            createModel("Models/Vehicles/Boat/boat_crashed.j3o", "", 300f, 0f, 900f, -1f, 0f, 30f);
+            createModel("Models/Vehicles/Boat/boat_small.obj", "", 30f, 2f, 320f, 0f, 0.1f, 1f);
             //schacks, huts, jettys
-            createModel("Models/Jetty02/Tropical_Jetty02.j3o", "Models/Jetty02/Tropical_Jetty02.j3m", -600f, 1f, 400f, 0f, 0f, 2f);
-            createModel("Models/JungleHut01/JungleHut01.j3o", "Models/JungleHut01/JungleHut01.j3m", -650f, 15f, 250f, 1f, 0f, 2f);
-            createModel("Models/JungleHut01/AfricaDock01.j3o", "Models/JungleHut01/AfricaDock01.j3m", -640f, 11f, 256f, -0.5f, 0f, 2f);
-            createModel("Models/JungleHut02/JungleHut02.j3o", "Models/JungleHut02/JungleHut02.j3m", -100f, 13f, -600f, 0f, 0f, 2f);
-            createModel("Models/JungleHut01/AfricaDock01.j3o", "Models/JungleHut01/AfricaDock01.j3m", -97f, 11f, -620f, 1.5f, 0f, 2f);
+            createModel("Models/Structures/Jetty02/Tropical_Jetty02.j3o", "Models/Structures/Jetty02/Tropical_Jetty02.j3m", -600f, 1f, 400f, 0f, 0f, 2f);
+            createModel("Models/Structures/JungleHut01/JungleHut01.j3o", "Models/Structures/JungleHut01/JungleHut01.j3m", -650f, 15f, 250f, 1f, 0f, 2f);
+            createModel("Models/Structures/JungleHut01/AfricaDock01.j3o", "Models/Structures/JungleHut01/AfricaDock01.j3m", -640f, 11f, 256f, -0.5f, 0f, 2f);
+            createModel("Models/Structures/JungleHut02/JungleHut02.j3o", "Models/Structures/JungleHut02/JungleHut02.j3m", -100f, 13f, -600f, 0f, 0f, 2f);
+            createModel("Models/Structures/JungleHut01/AfricaDock01.j3o", "Models/Structures/JungleHut01/AfricaDock01.j3m", -97f, 11f, -620f, 1.5f, 0f, 2f);
             
             //trees
-            createModel("Models/Tree/StrangeCoconutTreeYoung.j3o", "", -650f, 5f, 220f, 1f, 0f, 15f);
-            createModel("Models/Tree/StrangePalm.j3o", "", -650f, 5f, 200f, 1f, 0f, 15f);
-            createModel("Models/Tree/StrangePalmOld.j3o", "", -650f, 5f, 270f, 1f, 0f, 1f);
-            createModel("Models/Tree/StrangePalmCurved.j3o", "", -630f, 5f, 300f, 1f, 0f, 2f);
-            createModel("Models/Tree/StrangeCoconutTreeCurved.j3o", "", -630f, 5f, 320f, 1f, 0f, 5f);
-            createModel("Models/Tree/Palm/Palm01.j3o", "Models/Tree/Palm/Palm01.j3m", 0f, 5f, 250f, 1f, 0f, 5f);
-            createModel("Models/Tree/Palm/Palm02.j3o", "Models/Tree/Palm/Palm02.j3m", 400f, 3f, 250f, 1f, 0f, 5f);
-            createModel("Models/Tree/Palm/Palm03.j3o", "Models/Tree/Palm/Palm03.j3m", -630f, 5f, 400f, 1f, 0f, 5f);
-            createModel("Models/Tree/Cecropia/CecropiaTree01.j3o", "Models/Tree/Cecropia/Cecropia.j3m", -120f, 10f, -620f, 1f, 0f, 5f);
+            
+            
+                createModel("Models/Vegetations/Tree/Palm/StrangeCoconutTreeYoung.j3o", "Models/Vegetations/Tree/Palm/StrangePalm.j3m", -680, 5f, 340, 1f, 0f, 15f);
+                createModel("Models/Vegetations/Tree/Palm/StrangePalm.j3o", "Models/Vegetations/Tree/Palm/StrangePalm.j3m", -660, 5f, 300, 2f, 0f, 15f);
+                createModel("Models/Vegetations/Tree/Palm/StrangePalmOld.j3o", "Models/Vegetations/Tree/Palm/StrangePalm.j3m", -630, 5f, 250, 1f, 0f, 1f);
+                createModel("Models/Vegetations/Tree/Palm/StrangePalmCurved.j3o", "Models/Vegetations/Tree/Palm/StrangePalm.j3m", -620, 5f, 200, 0f, 0f, 2f);
+                createModel("Models/Vegetations/Tree/Palm/StrangeCoconutTreeCurved.j3o", "Models/Vegetations/Tree/Palm/StrangePalm.j3m", -625, 5f, 210, 1f, 0f, 5f);
+                createModel("Models/Vegetations/Tree/Palm/Palm01.j3o", "Models/Vegetations/Tree/Palm/Palm01.j3m", -650, 5f, 350, 2f, 0f, 5f);
+                                   
+                        
+            for (int i = 0; i < 10; i++){
+                int x = FastMath.nextRandomInt(-650, 700);
+                int z = FastMath.nextRandomInt(250, -200);
+                int ydeg = FastMath.nextRandomInt(0, 10);
+                        createModel("Models/Vegetations/Tree/Palm/StrangePalmCurved.j3o", "Models/Vegetations/Tree/Palm/StrangePalm.j3m", x, 5f, z, ydeg, 0f, 2f);
+            
+            }
+            
+            for (int i = 0; i < 10; i++){
+                int x = FastMath.nextRandomInt(-650, 700);
+                int z = FastMath.nextRandomInt(250, -200);
+                int ydeg = FastMath.nextRandomInt(0, 10);
+                        createModel("Models/Vegetations/Tree/Palm/StrangeCoconutTreeCurved.j3o", "Models/Vegetations/Tree/Palm/StrangePalm.j3m", x, 5f, z, ydeg, 0f, 5f);
+                                    
+            }
+            
+            
+            
+            for (int i = 0; i < 10; i++){
+                int x = FastMath.nextRandomInt(-650, 700);
+                int z = FastMath.nextRandomInt(250, -200);
+                int ydeg = FastMath.nextRandomInt(0, 10);
+                        createModel("Models/Vegetations/Tree/Palm/Palm01.j3o", "Models/Vegetations/Tree/Palm/Palm01.j3m", x, 5f, z, ydeg, 0f, 5f);
+                                    
+            }
+            
+            for (int i = 0; i < 10; i++){
+                int x = FastMath.nextRandomInt(-650, 700);
+                int z = FastMath.nextRandomInt(250, -200);
+                int ydeg = FastMath.nextRandomInt(0, 10);
+                        createModel("Models/Vegetations/Tree/Palm/Palm02.j3o", "Models/Vegetations/Tree/Palm/Palm02.j3m", x, 5f, z, ydeg, 0f, 5f);
+                                    
+            }
+            
+            for (int i = 0; i < 10; i++){
+                int x = FastMath.nextRandomInt(-650, 700);
+                int z = FastMath.nextRandomInt(250, -200);
+                int ydeg = FastMath.nextRandomInt(0, 10);
+                        createModel("Models/Vegetations/Tree/Palm/Palm03.j3o", "Models/Vegetations/Tree/Palm/Palm03.j3m", x, 5f, z, ydeg, 0f, 5f);
+                                    
+            }
+            
+            for (int i = 0; i < 10; i++){
+                int x = FastMath.nextRandomInt(-600, 700);
+                int z = FastMath.nextRandomInt(-200, -650);
+                int ydeg = FastMath.nextRandomInt(0, 10);
+                        createModel("Models/Vegetations/Tree/Cecropia/CecropiaTree01.j3o", "Models/Vegetations/Tree/Cecropia/Cecropia.j3m", x, 7f, z, ydeg, 0f, 5f);
+                                    
+            }
+            
             
             //buildings
             
             //campfire
-            createModel("Models/Campfire/campfire_logs.obj", "Models/Campfire/campfire_logs.j3m", -620f, 7f, 250f, 1f, 0f, 5f);
-            createModel("Models/Campfire/campfire_stones.obj", "Models/Campfire/campfire_stones.j3m", -620f, 7f, 250f, 1f, 0, 5f);
+            createModel("Models/Others/Campfire/campfire_logs.obj", "Models/Others/Campfire/campfire_logs.j3m", -620f, 7f, 250f, 1f, 0f, 5f);
+            createModel("Models/Others/Campfire/campfire_stones.obj", "Models/Others/Campfire/campfire_stones.j3m", -620f, 7f, 250f, 1f, 0, 5f);
             //crates and barrels            
-            createModel("Models/Crate/Crate-04.obj", "Models/Crate/wood_crate.j3m", -640f, 7f, 250f, 1f, 0f, 5f);
-            createModel("Models/Crate/Crate-01.obj", "Models/Crate/wood_crate.j3m", -640f, 11f, 237f, 0f, 0f, 5f);
-            createModel("Models/Crate/Crate-02.obj", "Models/Crate/wood_crate.j3m", -640f, 7f, 275f, 1f, 0f, 5f);
-            createModel("Models/Crate/Crate-03.obj", "Models/Crate/wood_crate.j3m", -640f, 7f, 280f, 1f, 0f, 5f);
-            createModel("Models/Crate/Crate-05.obj", "Models/Crate/wood_crate.j3m", -595f, 4f, 401f, -1f, 0f, 5f);
-            createModel("Models/Crate/Crate-05.obj", "Models/Crate/wood_crate.j3m", -620f, 3f, 390f, 1f, 0f, 6f);
-            createModel("Models/Crate/Crate_jetty_01.j3o", "Models/Crate/Crate_jetty_01.j3m", -595f, 4.1f, 398f, 0f, 0f, 2f);
+            createModel("Models/Others/Crate/Crate-04.obj", "Models/Others/Crate/wood_crate.j3m", -640f, 7f, 250f, 1f, 0f, 5f);
+            createModel("Models/Others/Crate/Crate-01.obj", "Models/Others/Crate/wood_crate.j3m", -640f, 11f, 237f, 0f, 0f, 5f);
+            createModel("Models/Others/Crate/Crate-02.obj", "Models/Others/Crate/wood_crate.j3m", -640f, 7f, 275f, 1f, 0f, 5f);
+            createModel("Models/Others/Crate/Crate-03.obj", "Models/Others/Crate/wood_crate.j3m", -640f, 7f, 280f, 1f, 0f, 5f);
+            createModel("Models/Others/Crate/Crate-05.obj", "Models/Others/Crate/wood_crate.j3m", -595f, 4f, 401f, -1f, 0f, 5f);
+            createModel("Models/Others/Crate/Crate-05.obj", "Models/Others/Crate/wood_crate.j3m", -620f, 3f, 390f, 1f, 0f, 6f);
+            createModel("Models/Others/Crate/Crate_jetty_01.j3o", "Models/Others/Crate/Crate_jetty_01.j3m", -595f, 4.1f, 398f, 0f, 0f, 2f);
             
             
-            createModel("Models/Cage/CageBed.j3o", "Models/Cage/cage.j3m", -650f, 7f, 300f, -2f, 0f, 3f);
+            createModel("Models/Others/Cage/CageBed.j3o", "Models/Others/Cage/cage.j3m", -650f, 7f, 300f, -2f, 0f, 3f);
                         
-            createModel("Models/Barrel/mini_wood_barrel.obj", "Models/Barrel/wood_barrel.j3m", -645f, 7f, 237f, 1f, 0f, 0.05f);
-            createModel("Models/Barrel/mini_wood_barrel.obj", "Models/Barrel/wood_barrel.j3m", -640f, 7f, 237f, 1f, 0f, 0.05f);
+            createModel("Models/Others/Barrel/mini_wood_barrel.obj", "Models/Others/Barrel/wood_barrel.j3m", -645f, 7f, 237f, 1f, 0f, 0.05f);
+            createModel("Models/Others/Barrel/mini_wood_barrel.obj", "Models/Others/Barrel/wood_barrel.j3m", -640f, 7f, 237f, 1f, 0f, 0.05f);
         }   
     
         public void createModel(String modelfile, String custmatfile, float xpos, float ypos, float zpos, float yaw, float pitch, float scale){

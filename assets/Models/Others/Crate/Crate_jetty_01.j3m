@@ -1,0 +1,10 @@
+Material Crate_jetty_01 : Common/MatDefs/Light/Lighting.j3md {
+              MaterialParameters {
+                DiffuseMap: Flip Models/Others/Crate/Crate_jetty_01.jpg
+                //NormalMap:  Models/Others/Crate/Flip Crate_jetty_01_NRM.png
+		UseMaterialColors: true
+	        Specular: 1.0 1.0 1.0 1.0
+        	Diffuse: 1.0 1.0 1.0 1.0
+	        Shininess: 20.0 
+        
+  }

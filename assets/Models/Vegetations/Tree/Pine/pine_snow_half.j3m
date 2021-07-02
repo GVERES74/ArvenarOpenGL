@@ -1,0 +1,12 @@
+Material pinetree_snow_half : Common/MatDefs/Light/Lighting.j3md {
+              MaterialParameters {
+                DiffuseMap:  Models/Vegetations/Tree/Pine/pine_snow_diffuse_half.tga
+		//NormalMap:   Models/Vegetations/Tree/Pine/pine_snow_normal_half.tga	
+                SpecularMap:  Models/Vegetations/Tree/Pine/pine_snow_specular_half.tga
+		UseMaterialColors: true
+	        Specular: 1.0 1.0 1.0 1.0
+        	Diffuse: 1.0 1.0 1.0 1.0
+	        Shininess: 20.0 
+        
+  }
+}

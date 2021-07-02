@@ -155,40 +155,40 @@ public class S0M0_valley extends BaseAppState {
     
      public void loadSceneModels(){
             
-            createModel("Models/Tree_Pine/snow_pine_tree.obj", "Models/Tree_Pine/pine_snow_full.j3m", 30f, 0.1f, -28, 0f, 0.1f);
-            createModel("Models/Tree_Pine/snow_pine_tree.obj", "Models/Tree_Pine/pine_snow_half.j3m", -8f, 0.0f, -8f, 0f, 0.1f);
-            createModel("Models/Tree_Pine/snow_pine_tree.obj", "Models/Tree_Pine/pine_snow_none.j3m", -20f, 0.0f, -3f, 0f, 0.1f);
-            createModel("Models/Grass/grass.glb", "Models/Grass/grass.j3m", 19f, 0.0f, -18f, 0f, 3f);
-            createModel("Models/Grass/grass.glb", "Models/Grass/grass.j3m", -5f, 0.0f, 6f, 0f, 3f);
-            createModel("Models/Grass/grass.glb", "Models/Grass/grass.j3m", -5f, 0.0f, -3f, 0f, 3f);
-            createModel("Models/Grass/grass_large.glb", "Models/Grass/grass.j3m", 16f, 0.0f, -10f, 0f, 3f);
-            createModel("Models/Bush/bush_round.obj", "Models/Bush/bush_round.j3m", 28f, -0.2f, 5f, 0f, 0.1f);
+            createModel("Models/Vegetations/Tree/Pine/snow_pine_tree.obj", "Models/Vegetations/Tree/Pine/pine_snow_full.j3m", 30f, 0.1f, -28, 0f, 0.1f);
+            createModel("Models/Vegetations/Tree/Pine/snow_pine_tree.obj", "Models/Vegetations/Tree/Pine/pine_snow_half.j3m", -8f, 0.0f, -8f, 0f, 0.1f);
+            createModel("Models/Vegetations/Tree/Pine/snow_pine_tree.obj", "Models/Vegetations/Tree/Pine/pine_snow_none.j3m", -20f, 0.0f, -3f, 0f, 0.1f);
+            createModel("Models/Vegetations/Grass/grass.glb", "Models/Vegetations/Grass/grass.j3m", 19f, 0.0f, -18f, 0f, 3f);
+            createModel("Models/Vegetations/Grass/grass.glb", "Models/Vegetations/Grass/grass.j3m", -5f, 0.0f, 6f, 0f, 3f);
+            createModel("Models/Vegetations/Grass/grass.glb", "Models/Vegetations/Grass/grass.j3m", -5f, 0.0f, -3f, 0f, 3f);
+            createModel("Models/Vegetations/Grass/grass_large.glb", "Models/Vegetations/Grass/grass.j3m", 16f, 0.0f, -10f, 0f, 3f);
+            createModel("Models/Vegetations/Bush/bush_round.obj", "Models/Vegetations/Bush/bush_round.j3m", 28f, -0.2f, 5f, 0f, 0.1f);
             
-            createModel("Models/Jetty02/Tropical_Jetty02.j3o", "Models/Jetty02/Tropical_Jetty02.j3m", 3f, -0.7f, -13f, -1.5f, 0.5f);
-            createModel("Models/Bridge/bridge_wood.obj", "Models/Bridge/bridge_wood.j3m", 21f, -0.4f, -13f, 0.9f, 4f);
-            createModel("Models/Grass/grass_large.glb", "Models/Grass/grass.j3m", 20f, -0.5f, -15f, 0f, 3f);
-            createModel("Models/Grass/grass_large.glb", "Models/Grass/grass.j3m", 22f, -0.2f, -11f, 0f, 3f);
-            createModel("Models/Stones/stone_largeA.obj", "", 21.5f, -0.65f, -10.5f, -3f, 2f);
+            createModel("Models/Structures/Jetty02/Tropical_Jetty02.j3o", "Models/Structures/Jetty02/Tropical_Jetty02.j3m", 3f, -0.7f, -13f, -1.5f, 0.5f);
+            createModel("Models/Structures/Bridge/bridge_wood.obj", "Models/Structures/Bridge/bridge_wood.j3m", 21f, -0.4f, -13f, 0.9f, 4f);
+            createModel("Models/Vegetations/Grass/grass_large.glb", "Models/Vegetations/Grass/grass.j3m", 20f, -0.5f, -15f, 0f, 3f);
+            createModel("Models/Vegetations/Grass/grass_large.glb", "Models/Vegetations/Grass/grass.j3m", 22f, -0.2f, -11f, 0f, 3f);
+            createModel("Models/Naturals/Stones/stone_largeA.obj", "", 21.5f, -0.65f, -10.5f, -3f, 2f);
             
-            createModel("Models/Campfire/campfire_logs.obj", "Models/Campfire/campfire_logs.j3m", 0f, -0.1f, 0f, 0f, 2f);
-            createModel("Models/Campfire/campfire_stones.obj", "Models/Campfire/campfire_stones.j3m", 0f, -0.1f, 0f, 0f, 3f);
-            createModel("Models/Floorbed/bed_floor.obj", "Models/Floorbed/bed_floor.j3m", 1f, 0f, 3f, 1f, 3f);
+            createModel("Models/Others/Campfire/campfire_logs.obj", "Models/Others/Campfire/campfire_logs.j3m", 0f, -0.1f, 0f, 0f, 2f);
+            createModel("Models/Others/Campfire/campfire_stones.obj", "Models/Others/Campfire/campfire_stones.j3m", 0f, -0.1f, 0f, 0f, 3f);
+            createModel("Models/Others/Floorbed/bed_floor.obj", "Models/Others/Floorbed/bed_floor.j3m", 1f, 0f, 3f, 1f, 3f);
             
-            createModel("Models/Crate/Crate-04.obj", "Models/Crate/wood_crate.j3m", 28f, 0.0f, -20f, 1f, 2f);
-            createModel("Models/Crate/Crate-01.obj", "Models/Crate/wood_crate.j3m", 28f, 1.05f, -20f, 3f, 2f);
-            createModel("Models/Crate/Crate-02.obj", "Models/Crate/wood_crate.j3m", 26f, 0.0f, -18f, 6f, 2f);
-            createModel("Models/Crate/Crate-03.obj", "Models/Crate/wood_crate.j3m", 27f, 0.0f, -22f, 19f, 2f);
-            createModel("Models/Crate/Crate-05.obj", "Models/Crate/wood_crate.j3m", 20f, 0.0f, -8f, 0f, 2f);
-            createModel("Models/Crate/Crate-05.obj", "Models/Crate/wood_crate.j3m", 26f, 0.3f, -18f, 0f, 3f);
+            createModel("Models/Others/Crate/Crate-04.obj", "Models/Others/Crate/wood_crate.j3m", 28f, 0.0f, -20f, 1f, 2f);
+            createModel("Models/Others/Crate/Crate-01.obj", "Models/Others/Crate/wood_crate.j3m", 28f, 1.05f, -20f, 3f, 2f);
+            createModel("Models/Others/Crate/Crate-02.obj", "Models/Others/Crate/wood_crate.j3m", 26f, 0.0f, -18f, 6f, 2f);
+            createModel("Models/Others/Crate/Crate-03.obj", "Models/Others/Crate/wood_crate.j3m", 27f, 0.0f, -22f, 19f, 2f);
+            createModel("Models/Others/Crate/Crate-05.obj", "Models/Others/Crate/wood_crate.j3m", 20f, 0.0f, -8f, 0f, 2f);
+            createModel("Models/Others/Crate/Crate-05.obj", "Models/Others/Crate/wood_crate.j3m", 26f, 0.3f, -18f, 0f, 3f);
             
-            createModel("Models/Cage/CageBed.j3o", "Models/Cage/cage.j3m", 25f, 0.0f, -24f, 2f, 1f);
+            createModel("Models/Others/Cage/CageBed.j3o", "Models/Others/Cage/cage.j3m", 25f, 0.0f, -24f, 2f, 1f);
 //            createModel("Models/Trunk/trunk.j3o", "", 5f, 0f, 3f, 90f, 1f);
-            createModel("Models/Barrel/mini_wood_barrel.obj", "Models/Barrel/wood_barrel.j3m", 20f, 0.0f, -19f, 2f, 0.02f);
-            createModel("Models/Barrel/mini_wood_barrel.obj", "Models/Barrel/wood_barrel.j3m", 19f, 0.0f, -23f, 2f, 0.02f);
+            createModel("Models/Others/Barrel/mini_wood_barrel.obj", "Models/Others/Barrel/wood_barrel.j3m", 20f, 0.0f, -19f, 2f, 0.02f);
+            createModel("Models/Others/Barrel/mini_wood_barrel.obj", "Models/Others/Barrel/wood_barrel.j3m", 19f, 0.0f, -23f, 2f, 0.02f);
             
-            createModel("Models/Stool/DwarfBeerBarrel.j3o", "Models/Stool/stool.j3m", 2f, 0f, -3f, 0f, 0.5f);
-            createModel("Models/Tent/tent_detailedOpen.obj", "Models/Tent/tent.j3m", -5f, 0f, 3f, 90f, 6f);
-            createModel("Models/Signpost/sign.obj", "Models/Signpost/signpost.j3m", 21f, -0.25f, -8f, -1f, 3f);
+            createModel("Models/Others/Stool/DwarfBeerBarrel.j3o", "Models/Others/Stool/stool.j3m", 2f, 0f, -3f, 0f, 0.5f);
+            createModel("Models/Others/Tent/tent_detailedOpen.obj", "Models/Others/Tent/tent.j3m", -5f, 0f, 3f, 90f, 6f);
+            createModel("Models/Others/Signpost/sign.obj", "Models/Others/Signpost/signpost.j3m", 21f, -0.25f, -8f, -1f, 3f);
         }   
     
         public void createModel(String modelfile, String custmatfile, float xpos, float ypos, float zpos, float yaw, float scale){

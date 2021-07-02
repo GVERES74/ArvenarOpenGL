@@ -1,0 +1,11 @@
+Material AfricaDock01 : Common/MatDefs/Light/Lighting.j3md {
+              MaterialParameters {
+                DiffuseMap: Models/Structures/JungleHut01/3td_planks_01.jpg
+                //NormalMap: Models/Structures/JungleHut01/
+		UseMaterialColors: true
+	        Specular: 1.0 1.0 1.0 1.0
+        	Diffuse: 1.0 1.0 1.0 1.0
+	        Shininess: 20.0 
+        
+  }
+}

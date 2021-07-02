@@ -102,6 +102,7 @@ public class GameAppState extends BaseAppState
         this.camera       = this.app.getCamera();
                 
         inputManager.deleteMapping(SimpleApplication.INPUT_MAPPING_EXIT); //delete ESC key quit app function
+        app.setPauseOnLostFocus(true);
         
         bulletAppState = new BulletAppState();
                 

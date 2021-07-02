@@ -47,7 +47,7 @@ public class PlayGame extends SimpleApplication{
         appsettings.setTitle("Arvenar 3D - OpenGl");
         appsettings.setSettingsDialogImage("Interface/Images/splash.png");
         appsettings.save("ArvenarGL.cfg");
-        app.setShowSettings(true); //default jMonkey settings OFF
+        app.setShowSettings(true); //default jMonkey settings ON / OFF
         app.start();
         
         
