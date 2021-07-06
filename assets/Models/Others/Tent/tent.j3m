@@ -1,17 +1,22 @@
-Material tent : Common/MatDefs/Light/Lighting.j3md {
-              MaterialParameters {
-                DiffuseMap:  Flip Models/Others/Tent/thatch.png
-                //NormalMap:
-		UseMaterialColors: true
-	        Specular: 1.0 1.0 1.0 1.0
-        	Diffuse: 1.0 1.0 1.0 1.0
-	        Shininess: 10.0 
-        
-  }
+Material Tent : Common/MatDefs/Light/Lighting.j3md {
 
-AdditionalRenderState {
-       
-        FaceCull Front
+    Transparent Off
+
+    MaterialParameters {
+        DiffuseMap : Models/Others/Tent/thatch.png
+	//NormalMap : Models/Others/Tent/
+        //UseAlpha : true
+        AlphaDiscardThreshold : 0.5
+        UseMaterialColors : true
+        Ambient : .5 .5 .5 .5
+        Diffuse : 0.7 0.7 0.7 1
+        Specular : 0 0 0 1
+        Shininess : 16
     }
-
+    AdditionalRenderState {
+        Blend Alpha
+        AlphaTestFalloff 0.50
+        FaceCull Off
+    }
 }
+

@@ -1,0 +1,11 @@
+Material Candle : Common/MatDefs/Light/Lighting.j3md {
+              MaterialParameters {
+                DiffuseMap: Models/Furnishments/Candle/metal_metallic.jpg
+                //NormalMap: Models/Furnishments/Candle/metal_normal.png
+		UseMaterialColors: true
+	        Specular: 1.0 1.0 1.0 1.0
+        	Diffuse: 1.0 1.0 1.0 1.0
+	        Shininess: 20.0 
+        
+  }
+}

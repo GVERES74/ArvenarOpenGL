@@ -271,8 +271,8 @@ public class SettingsScreenController extends BaseAppState implements ScreenCont
     }
     
     public void changeAudioSettings(){
-        Audioxerver.musicPlayer.setVolume(sliderMusicVol.getValue());
-        Audioxerver.soundPlayer.setVolume(sliderSoundVol.getValue());
+        AudioManager.musicPlayer.setVolume(sliderMusicVol.getValue());
+        AudioManager.soundPlayer.setVolume(sliderSoundVol.getValue());
     }
     
     public void applySettings() throws BackingStoreException {
@@ -292,7 +292,7 @@ public class SettingsScreenController extends BaseAppState implements ScreenCont
     public void onMusicVolumeSliderChanged(final String id, @Nonnull final SliderChangedEvent sliderChangedEvent) {
                        
         labelSliderMusicVol.setText((int)sliderMusicVol.getValue()+"%");
-        Audioxerver.musicPlayer.setVolume(sliderMusicVol.getValue()/100); //values 0.0f - 1.0f !!
+        AudioManager.musicPlayer.setVolume(sliderMusicVol.getValue()/100); //values 0.0f - 1.0f !!
         
     }
     
@@ -300,6 +300,6 @@ public class SettingsScreenController extends BaseAppState implements ScreenCont
     public void onSoundVolumeSliderChanged(final String id, @Nonnull final SliderChangedEvent sliderChangedEvent) {
                       
         labelSliderSoundVol.setText((int)sliderSoundVol.getValue()+"%");
-        Audioxerver.soundPlayer.setVolume(sliderSoundVol.getValue()/100); //values 0.0f - 1.0f !!
+        AudioManager.soundPlayer.setVolume(sliderSoundVol.getValue()/100); //values 0.0f - 1.0f !!
     }
 }

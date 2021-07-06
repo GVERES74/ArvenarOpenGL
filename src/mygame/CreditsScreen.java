@@ -106,7 +106,7 @@ public class CreditsScreen extends BaseAppState {
     
         public void loadCreditsMusic(){
 
-            Audioxerver.loadMusic("Music/Soundtracks/RPG_Ambient_3.ogg", true, true);
+            AudioManager.loadMusic("Music/Soundtracks/RPG_Ambient_3.ogg", true, true);
 
         }
         

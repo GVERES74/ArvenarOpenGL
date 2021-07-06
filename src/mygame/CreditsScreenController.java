@@ -75,7 +75,7 @@ public class CreditsScreenController extends BaseAppState implements ScreenContr
         
         PlayGame.attachAppState(PlayGame.mainMenu_screen);
         PlayGame.detachAppState(PlayGame.credits_screen);
-        Audioxerver.musicPlayer.stop();
+        AudioManager.musicPlayer.stop();
         
             
     }

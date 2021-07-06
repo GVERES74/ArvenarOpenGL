@@ -65,8 +65,8 @@ public class MainMenuScreenController extends BaseAppState implements ScreenCont
         
         PlayGame.detachAppState(PlayGame.mainMenu_screen);
         PlayGame.attachAppState(PlayGame.gameplayState);       
-        Audioxerver.musicPlayer.stop();
-        Audioxerver.soundPlayer.stop();                       
+        AudioManager.musicPlayer.stop();
+        AudioManager.soundPlayer.stop();                       
     }
         
         
@@ -80,8 +80,8 @@ public class MainMenuScreenController extends BaseAppState implements ScreenCont
         */
         PlayGame.attachAppState(PlayGame.settings_screen);
         PlayGame.detachAppState(PlayGame.mainMenu_screen);
-        Audioxerver.musicPlayer.stop();
-        Audioxerver.soundPlayer.stop();       
+        AudioManager.musicPlayer.stop();
+        AudioManager.soundPlayer.stop();       
     }
     
     public void creditsGame(){
@@ -89,8 +89,8 @@ public class MainMenuScreenController extends BaseAppState implements ScreenCont
         
         
         PlayGame.attachAppState(PlayGame.credits_screen);
-        Audioxerver.musicPlayer.stop();
-        Audioxerver.soundPlayer.stop(); 
+        AudioManager.musicPlayer.stop();
+        AudioManager.soundPlayer.stop(); 
         
     }
     
@@ -98,8 +98,8 @@ public class MainMenuScreenController extends BaseAppState implements ScreenCont
         System.out.println("Game Extras button pressed...");
         
         PlayGame.attachAppState(PlayGame.extras_screen);
-        Audioxerver.musicPlayer.stop();
-        Audioxerver.soundPlayer.stop();       
+        AudioManager.musicPlayer.stop();
+        AudioManager.soundPlayer.stop();       
         
     }
     

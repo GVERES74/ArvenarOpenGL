@@ -90,8 +90,8 @@ public class DiaryScreenController extends BaseAppState implements ScreenControl
 
     @Override
     public void onStartScreen() {
-        Audioxerver.musicPlayer.stop();
-        Audioxerver.loadMusic("Music/Soundtracks/RPG - The Great Collapse.ogg", true, true);
+        AudioManager.musicPlayer.stop();
+        AudioManager.loadMusic("Music/Soundtracks/RPG - The Great Collapse.ogg", true, true);
         initDiaryPages(); //starting content showing
         
     }
@@ -135,7 +135,7 @@ public class DiaryScreenController extends BaseAppState implements ScreenControl
     
     
     public void nextPage() throws IOException{
-        Audioxerver.playSoundInstance("Interface/sound/book_flip_3.ogg");
+        AudioManager.playSoundInstance("Interface/sound/book_flip_3.ogg");
         
         screen.findNiftyControl("Content_Text1", Label.class).setText(getContentText1());
         screen.findNiftyControl("Content_Text2", Label.class).setText(getContentText2());
@@ -145,7 +145,7 @@ public class DiaryScreenController extends BaseAppState implements ScreenControl
     }
     
     public void prevPage(){
-       Audioxerver.playSoundInstance("Interface/sound/book_flip_3.ogg"); 
+       AudioManager.playSoundInstance("Interface/sound/book_flip_3.ogg"); 
     }
     
     public void initDiaryPages(){

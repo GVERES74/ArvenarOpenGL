@@ -1,0 +1,11 @@
+Material boat : Common/MatDefs/Light/Lighting.j3md {
+              MaterialParameters {
+                DiffuseMap: Models/Vehicles/Boat/3td_JettyWood01.jpg
+	        //NormalMap: Models/Vehicles/Boat/3td_JettyWood01_NRM.jpg
+		UseMaterialColors: true
+	        Specular: 1.0 1.0 1.0 1.0
+        	Diffuse: 1.0 1.0 1.0 1.0
+	        Shininess: 20.0 
+        
+  }
+}

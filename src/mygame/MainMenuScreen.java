@@ -105,7 +105,7 @@ public class MainMenuScreen extends BaseAppState {
         initMenuControls();
         //createAnimatedMainMenu();
         createSimpleMainMenu();
-        Audioxerver.loadRandomMusic();
+        AudioManager.loadRandomMusic();
         
     //TODO: initialize your AppState, e.g. attach spatials to rootNode
         //this is called on the OpenGL thread after the AppState has been attached

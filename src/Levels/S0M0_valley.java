@@ -11,9 +11,6 @@ import com.jme3.app.SimpleApplication;
 import com.jme3.app.state.AppStateManager;
 import com.jme3.app.state.BaseAppState;
 import com.jme3.asset.AssetManager;
-import com.jme3.audio.AudioData;
-import com.jme3.audio.AudioNode;
-import com.jme3.audio.AudioRenderer;
 import com.jme3.bullet.BulletAppState;
 import com.jme3.bullet.collision.shapes.CollisionShape;
 import com.jme3.bullet.control.RigidBodyControl;
@@ -35,7 +32,7 @@ import com.jme3.scene.Geometry;
 import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
 import com.jme3.water.SimpleWaterProcessor;
-import mygame.Audioxerver;
+import mygame.AudioManager;
 import mygame.GameAppState;
 import mygame.MainMenuScreen;
 import mygame.PlayGame;
@@ -129,8 +126,8 @@ public class S0M0_valley extends BaseAppState {
     
     @Override
     protected void onDisable() {
-        Audioxerver.musicPlayer.stop();
-        Audioxerver.soundPlayer.stop();
+        AudioManager.musicPlayer.stop();
+        AudioManager.soundPlayer.stop();
         
 
     
@@ -155,19 +152,15 @@ public class S0M0_valley extends BaseAppState {
     
      public void loadSceneModels(){
             
-            createModel("Models/Vegetations/Tree/Pine/snow_pine_tree.obj", "Models/Vegetations/Tree/Pine/pine_snow_full.j3m", 30f, 0.1f, -28, 0f, 0.1f);
-            createModel("Models/Vegetations/Tree/Pine/snow_pine_tree.obj", "Models/Vegetations/Tree/Pine/pine_snow_half.j3m", -8f, 0.0f, -8f, 0f, 0.1f);
-            createModel("Models/Vegetations/Tree/Pine/snow_pine_tree.obj", "Models/Vegetations/Tree/Pine/pine_snow_none.j3m", -20f, 0.0f, -3f, 0f, 0.1f);
-            createModel("Models/Vegetations/Grass/grass.glb", "Models/Vegetations/Grass/grass.j3m", 19f, 0.0f, -18f, 0f, 3f);
-            createModel("Models/Vegetations/Grass/grass.glb", "Models/Vegetations/Grass/grass.j3m", -5f, 0.0f, 6f, 0f, 3f);
-            createModel("Models/Vegetations/Grass/grass.glb", "Models/Vegetations/Grass/grass.j3m", -5f, 0.0f, -3f, 0f, 3f);
-            createModel("Models/Vegetations/Grass/grass_large.glb", "Models/Vegetations/Grass/grass.j3m", 16f, 0.0f, -10f, 0f, 3f);
-            createModel("Models/Vegetations/Bush/bush_round.obj", "Models/Vegetations/Bush/bush_round.j3m", 28f, -0.2f, 5f, 0f, 0.1f);
-            
+            createModel("Models/Vegetation/Trees/Pine/snow_pine_tree.obj", "Models/Vegetation/Trees/Pine/pine_snow_full.j3m", 30f, 0.1f, -28, 0f, 0.1f);
+            createModel("Models/Vegetation/Trees/Pine/snow_pine_tree.obj", "Models/Vegetation/Trees/Pine/pine_snow_half.j3m", -8f, 0.0f, -8f, 0f, 0.1f);
+            createModel("Models/Vegetation/Trees/Pine/snow_pine_tree.obj", "Models/Vegetation/Trees/Pine/pine_snow_none.j3m", -20f, 0.0f, -3f, 0f, 0.1f);
+                        
             createModel("Models/Structures/Jetty02/Tropical_Jetty02.j3o", "Models/Structures/Jetty02/Tropical_Jetty02.j3m", 3f, -0.7f, -13f, -1.5f, 0.5f);
             createModel("Models/Structures/Bridge/bridge_wood.obj", "Models/Structures/Bridge/bridge_wood.j3m", 21f, -0.4f, -13f, 0.9f, 4f);
-            createModel("Models/Vegetations/Grass/grass_large.glb", "Models/Vegetations/Grass/grass.j3m", 20f, -0.5f, -15f, 0f, 3f);
-            createModel("Models/Vegetations/Grass/grass_large.glb", "Models/Vegetations/Grass/grass.j3m", 22f, -0.2f, -11f, 0f, 3f);
+            createModel("Models/Vegetation/Grasses/Tropical/BeachGrass01.j3o", "Models/Vegetation/Grasses/Tropical/BeachGrass01.j3m", 20f, -0.5f, -15f, 0f, 5f);
+            createModel("Models/Vegetation/Grasses/Tropical/BeachGrass01.j3o", "Models/Vegetation/Grasses/Tropical/BeachGrass01.j3m", 22f, -0.2f, -11f, 1f, 6f);
+            createModel("Models/Vegetation/Grasses/Tropical/BeachGrass01.j3o", "Models/Vegetation/Grasses/Tropical/BeachGrass01.j3m", 19f, 0.0f, -18f, 2f, 4f);
             createModel("Models/Naturals/Stones/stone_largeA.obj", "", 21.5f, -0.65f, -10.5f, -3f, 2f);
             
             createModel("Models/Others/Campfire/campfire_logs.obj", "Models/Others/Campfire/campfire_logs.j3m", 0f, -0.1f, 0f, 0f, 2f);
@@ -336,9 +329,9 @@ public class S0M0_valley extends BaseAppState {
         
         public void loadAmbientSound(){
 
-            Audioxerver.playSound("Sounds/Ambient/Water/waterstream.ogg", false, true, true, 1000f, 0.5f, 23f, -0.5f, -11f);
-            Audioxerver.playSound("Sounds/Ambient/Water/waterfall_01.ogg", false, false, true, 1000f, 0.5f, 32f, 2f, -2f); 
-            Audioxerver.playSound("Sounds/Ambient/Fire/torchBurning.ogg", false, true, true, 1000f, 1.0f, 0f, 0f, 0f); 
+            AudioManager.playSound("Sounds/Ambient/Water/waterstream.ogg", false, true, true, 1000f, 0.5f, 23f, -0.5f, -11f);
+            AudioManager.playSound("Sounds/Ambient/Water/waterfall_01.ogg", false, false, true, 1000f, 0.5f, 32f, 2f, -2f); 
+            AudioManager.playSound("Sounds/Ambient/Fire/torchBurning.ogg", false, true, true, 1000f, 1.0f, 0f, 0f, 0f); 
         }
        
         

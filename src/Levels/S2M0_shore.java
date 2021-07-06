@@ -36,7 +36,7 @@ import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
 import com.jme3.water.WaterFilter;
 import java.util.Random;
-import mygame.Audioxerver;
+import mygame.AudioManager;
 import mygame.GameAppState;
 
 /**
@@ -133,7 +133,7 @@ public class S2M0_shore extends BaseAppState {
     @Override
     protected void onDisable() {
     
-        Audioxerver.musicPlayer.stop();
+        AudioManager.musicPlayer.stop();
     
         //Called when the state was previously enabled but is now disabled         
         //either because setEnabled(false) was called or the state is being         
@@ -146,7 +146,7 @@ public class S2M0_shore extends BaseAppState {
         updateAdvancedWater(tpf);
         
         if (camera.getLocation().x < -600f){
-                 Audioxerver.musicPlayer.play();
+                 AudioManager.musicPlayer.play();
                  
         }
 //        particle1.setLocalTranslation(
@@ -159,77 +159,47 @@ public class S2M0_shore extends BaseAppState {
     }
     
      public void loadSceneModels(){
-            //boat and ship
-            createModel("Models/Vehicles/Boat/boat_crashed.j3o", "", 300f, 0f, 900f, -1f, 0f, 30f);
-            createModel("Models/Vehicles/Boat/boat_small.obj", "", 30f, 2f, 320f, 0f, 0.1f, 1f);
-            //schacks, huts, jettys
+    //boat and ship
+            createModel("Models/Vehicles/Boat/boat_crashed.j3o", "Models/Vehicles/Boat/boat.j3m", 300f, 0f, 900f, -1f, 0f, 30f);
+            createModel("Models/Vehicles/Boat/boat_small.obj", "Models/Vehicles/Boat/boat.j3m", 30f, 2f, 320f, 0f, 0.1f, 1f);
+            
+    //schacks, huts, jettys
             createModel("Models/Structures/Jetty02/Tropical_Jetty02.j3o", "Models/Structures/Jetty02/Tropical_Jetty02.j3m", -600f, 1f, 400f, 0f, 0f, 2f);
             createModel("Models/Structures/JungleHut01/JungleHut01.j3o", "Models/Structures/JungleHut01/JungleHut01.j3m", -650f, 15f, 250f, 1f, 0f, 2f);
             createModel("Models/Structures/JungleHut01/AfricaDock01.j3o", "Models/Structures/JungleHut01/AfricaDock01.j3m", -640f, 11f, 256f, -0.5f, 0f, 2f);
             createModel("Models/Structures/JungleHut02/JungleHut02.j3o", "Models/Structures/JungleHut02/JungleHut02.j3m", -100f, 13f, -600f, 0f, 0f, 2f);
             createModel("Models/Structures/JungleHut01/AfricaDock01.j3o", "Models/Structures/JungleHut01/AfricaDock01.j3m", -97f, 11f, -620f, 1.5f, 0f, 2f);
-            
-            //trees
-            
-            
-                createModel("Models/Vegetations/Tree/Palm/StrangeCoconutTreeYoung.j3o", "Models/Vegetations/Tree/Palm/StrangePalm.j3m", -680, 5f, 340, 1f, 0f, 15f);
-                createModel("Models/Vegetations/Tree/Palm/StrangePalm.j3o", "Models/Vegetations/Tree/Palm/StrangePalm.j3m", -660, 5f, 300, 2f, 0f, 15f);
-                createModel("Models/Vegetations/Tree/Palm/StrangePalmOld.j3o", "Models/Vegetations/Tree/Palm/StrangePalm.j3m", -630, 5f, 250, 1f, 0f, 1f);
-                createModel("Models/Vegetations/Tree/Palm/StrangePalmCurved.j3o", "Models/Vegetations/Tree/Palm/StrangePalm.j3m", -620, 5f, 200, 0f, 0f, 2f);
-                createModel("Models/Vegetations/Tree/Palm/StrangeCoconutTreeCurved.j3o", "Models/Vegetations/Tree/Palm/StrangePalm.j3m", -625, 5f, 210, 1f, 0f, 5f);
-                createModel("Models/Vegetations/Tree/Palm/Palm01.j3o", "Models/Vegetations/Tree/Palm/Palm01.j3m", -650, 5f, 350, 2f, 0f, 5f);
-                                   
                         
-            for (int i = 0; i < 10; i++){
-                int x = FastMath.nextRandomInt(-650, 700);
-                int z = FastMath.nextRandomInt(250, -200);
-                int ydeg = FastMath.nextRandomInt(0, 10);
-                        createModel("Models/Vegetations/Tree/Palm/StrangePalmCurved.j3o", "Models/Vegetations/Tree/Palm/StrangePalm.j3m", x, 5f, z, ydeg, 0f, 2f);
             
-            }
+            createModel("Models/Furnishments/Candle/model.j3o", "Models/Furnishments/Candle/candle.j3m", -640f, 8f, 275f, 1f, 0f, 0.01f);
             
-            for (int i = 0; i < 10; i++){
-                int x = FastMath.nextRandomInt(-650, 700);
-                int z = FastMath.nextRandomInt(250, -200);
-                int ydeg = FastMath.nextRandomInt(0, 10);
-                        createModel("Models/Vegetations/Tree/Palm/StrangeCoconutTreeCurved.j3o", "Models/Vegetations/Tree/Palm/StrangePalm.j3m", x, 5f, z, ydeg, 0f, 5f);
-                                    
-            }
-            
-            
-            
-            for (int i = 0; i < 10; i++){
-                int x = FastMath.nextRandomInt(-650, 700);
-                int z = FastMath.nextRandomInt(250, -200);
-                int ydeg = FastMath.nextRandomInt(0, 10);
-                        createModel("Models/Vegetations/Tree/Palm/Palm01.j3o", "Models/Vegetations/Tree/Palm/Palm01.j3m", x, 5f, z, ydeg, 0f, 5f);
-                                    
-            }
-            
-            for (int i = 0; i < 10; i++){
-                int x = FastMath.nextRandomInt(-650, 700);
-                int z = FastMath.nextRandomInt(250, -200);
-                int ydeg = FastMath.nextRandomInt(0, 10);
-                        createModel("Models/Vegetations/Tree/Palm/Palm02.j3o", "Models/Vegetations/Tree/Palm/Palm02.j3m", x, 5f, z, ydeg, 0f, 5f);
-                                    
-            }
-            
-            for (int i = 0; i < 10; i++){
-                int x = FastMath.nextRandomInt(-650, 700);
-                int z = FastMath.nextRandomInt(250, -200);
-                int ydeg = FastMath.nextRandomInt(0, 10);
-                        createModel("Models/Vegetations/Tree/Palm/Palm03.j3o", "Models/Vegetations/Tree/Palm/Palm03.j3m", x, 5f, z, ydeg, 0f, 5f);
-                                    
-            }
-            
-            for (int i = 0; i < 10; i++){
-                int x = FastMath.nextRandomInt(-600, 700);
-                int z = FastMath.nextRandomInt(-200, -650);
-                int ydeg = FastMath.nextRandomInt(0, 10);
-                        createModel("Models/Vegetations/Tree/Cecropia/CecropiaTree01.j3o", "Models/Vegetations/Tree/Cecropia/Cecropia.j3m", x, 7f, z, ydeg, 0f, 5f);
-                                    
-            }
-            
+    //vegetation in fixed places (e.g. around structures to avoid overlapping each other)
+                createModel("Models/Vegetation/Trees/Palm/Palm01.j3o", "Models/Vegetation/Trees/Palm/Palm01.j3m", -650, 5f, 350, 2f, 0f, 5f);
+                createModel("Models/Vegetation/Trees/Palm/Palm02.j3o", "Models/Vegetation/Trees/Palm/Palm02.j3m", -640, 5f, 200, 2f, 0f, 5f);
+                createModel("Models/Vegetation/Trees/Palm/Palm03.j3o", "Models/Vegetation/Trees/Palm/Palm03.j3m", -640, 5f, 220, 2f, 0f, 5f);
+                
+    //randomly placed models (trees, bushes also with random scale)
+//                createModelRandomized("Models/Vegetation/Trees/Cecropia/CecropiaTree01.j3o", "Models/Vegetation/Trees/Cecropia/Cecropia.j3m", 50, -600, 700, 7f, -200, -650, 5, 0f, 3f, 5f);
+//                createModelRandomized("Models/Vegetation/Trees/CiabaTree_01/CiabaTree_01.j3o", "Models/Vegetation/Trees/CiabaTree_01/CiabaTree_01.j3m", 50, -600, 700, 7f, -200, -650, 5, 0f, 3f, 5f);  
+//                createModelRandomized("Models/Vegetation/Trees/CopalTree/CopalTree01.j3o", "Models/Vegetation/Trees/CopalTree/CopalTree01.j3m", 10, -600, 700, 7f, -200, -650, 5, 0f, 3f, 5f);  
+//                createModelRandomized("Models/Vegetation/Trees/Palm/Palm01.j3o", "Models/Vegetation/Trees/Palm/Palm01.j3m", 10, -650, 700, 5f, 250, -200, 5, 0f, 3f, 5f);
+//                createModelRandomized("Models/Vegetation/Trees/Palm/Palm02.j3o", "Models/Vegetation/Trees/Palm/Palm02.j3m", 10, -650, 700, 5f, 250, -200, 5, 0f, 3f, 5f);
+//                createModelRandomized("Models/Vegetation/Trees/Palm/Palm03.j3o", "Models/Vegetation/Trees/Palm/Palm03.j3m", 10, -650, 700, 5f, 250, -200, 5, 0f, 3f, 5f);
+                createModelRandomized("Models/Vegetation/Trees/Monstera/monstera3.j3o", "Models/Vegetation/Trees/Monstera/Monstera.j3m", 10, -650, 700, 5f, 250, -200, 5, 0f, 1f, 3f);
+                createModelRandomized("Models/Vegetation/Trees/Jasmin/jasmin.obj", "Models/Vegetation/Trees/Jasmin/jasmin.j3m", 10, -650, 700, 5f, -200, -650, 5, 0f, 0.1f, 0.3f);
+                
+                createModelRandomized("Models/Vegetation/Bushes/Bush01/Bush01.j3o", "Models/Vegetation/Bushes/Bush01/Bush01.j3m", 10, -650, 700, 7f, 250, -650, 5, 0f, 0.5f, 1f);                    
+                createModelRandomized("Models/Vegetation/Plants/TropicFern/TropicFern01.j3o", "Models/Vegetation/Plants/TropicFern/TropicFern01.j3m", 10, -650, 700, 7f, 250, -650, 5, 0f, 2f, 4f);                    
+                createModelRandomized("Models/Vegetation/Plants/Phila01/Phila01.j3o", "Models/Vegetation/Plants/Phila01/Phila01.j3m", 10, -650, 700, 7f, 250, -650, 5, 0f, 2f, 4f);                    
+                createModelRandomized("Models/Vegetation/Plants/ElephantEar/ElephantEar.j3o", "Models/Vegetation/Plants/ElephantEar/ElephantEar.j3m", 10, -650, 700, 7f, 250, -650, 5, 0f, 2f, 4f);
+                createModelRandomized("Models/Vegetation/Plants/Bamboo01/Bamboo01.j3o", "Models/Vegetation/Plants/Bamboo01/Bamboo01.j3m", 10, -650, 700, 6f, 250, -650, 5, 0f, 1f, 2f);                    
+                createModelRandomized("Models/Vegetation/Plants/Chamomille/PlantsFBX.j3o", "Models/Vegetation/Plants/Chamomille/Chamomille.j3m", 5, -680, -600, 7f, 200, 300, 5, 0f, 4f, 6f);                    
+                createModelRandomized("Models/Vegetation/Plants/ForestPlant01/Plant1.j3o", "Models/Vegetation/Plants/ForestPlant01/Plant1.j3m", 5, -680, -600, 7f, 200, 300, 5, 0f, 0.5f, 1f);                    
+                  
+                createModelRandomized("Models/Vegetation/Flowers/Lily/lilies-sf.j3o", "Models/Vegetation/Flowers/Lily/lily.j3m", 5, -680, -600, 1f, 200, 300, 5, 0f, 0.1f, 0.3f);                    
+
+                createModelRandomized("Models/Vegetation/Grasses/Tropical/BeachGrass01.j3o", "Models/Vegetation/Grasses/Tropical/BeachGrass01.j3m", 50, -650, 700, 9f, 300, -650, 5, 3f, 8f, 15f);                    
+             
             
             //buildings
             
@@ -252,11 +222,11 @@ public class S2M0_shore extends BaseAppState {
             createModel("Models/Others/Barrel/mini_wood_barrel.obj", "Models/Others/Barrel/wood_barrel.j3m", -640f, 7f, 237f, 1f, 0f, 0.05f);
         }   
     
-        public void createModel(String modelfile, String custmatfile, float xpos, float ypos, float zpos, float yaw, float pitch, float scale){
+        public void createModel(String modelfile, String matfile, float xpos, float ypos, float zpos, float yaw, float pitch, float scale){
             Spatial model = assetManager.loadModel(modelfile);
                         
-            if(custmatfile !=""){   
-            model.setMaterial(assetManager.loadMaterial(custmatfile));
+            if(matfile !=""){   
+            model.setMaterial(assetManager.loadMaterial(matfile));
             }                    
             model.setLocalTranslation(xpos, ypos, zpos);
             model.rotate(pitch, yaw, 0);
@@ -269,6 +239,37 @@ public class S2M0_shore extends BaseAppState {
             bulletAppState.getPhysicsSpace().add(modelRigidBody);
             rootNode.attachChild(model);
         }
+        
+        public void createModelRandomized(String modelfile, String matfile, int count, int minx, int maxx, float ypos, int minz, int maxz, int yaw, float pitch, float minscale, float maxscale){
+                            
+            
+            for (int i = 0; i < count; i++){
+                Spatial model = assetManager.loadModel(modelfile);
+                       
+                    if(matfile !=""){   
+                    model.setMaterial(assetManager.loadMaterial(matfile));
+                }    
+                
+                int x = FastMath.nextRandomInt(minx, maxx);
+                int z = FastMath.nextRandomInt(minz, maxz);
+                int ydeg = FastMath.nextRandomInt(0, yaw);
+                float modelsize = (FastMath.nextRandomFloat()%(maxscale-minscale)+minscale);
+                
+                    model.setLocalTranslation(x, ypos, z);
+                    model.rotate(pitch, ydeg, 0);
+                    model.setLocalScale(modelsize);
+                                
+            
+            CollisionShape sceneModel = CollisionShapeFactory.createMeshShape(model);
+            modelRigidBody = new RigidBodyControl(sceneModel,0);
+            model.addControl(modelRigidBody);
+            
+            bulletAppState.getPhysicsSpace().add(modelRigidBody);
+            rootNode.attachChild(model);
+            }
+        }
+        
+        
     
     public void createPrecipitationParticleEffects(){
         
@@ -334,7 +335,7 @@ public class S2M0_shore extends BaseAppState {
         ppWaterFilter = new WaterFilter(rootNode, sun.getDirection());
         ppWaterFilter.setSunScale(1f);
         ppWaterFilter.setWaterHeight(ppInitialWaterHeight);
-        ppWaterFilter.setWindDirection(new Vector2f(0.0f,1.0f));     
+        ppWaterFilter.setWindDirection(new Vector2f(0.2f,0.8f));     
         ppWaterFilter.setNormalScale(0.5f);
         ppWaterFilter.setFoamHardness(0.5f);
         ppWaterFilter.setFoamExistence(new Vector3f(0.5f,1f,1f));
@@ -346,17 +347,18 @@ public class S2M0_shore extends BaseAppState {
         public void updateAdvancedWater(float tpf){
             
             waveTime += tpf;
-            ppWaterHeight = (float) Math.cos(((waveTime * 0.6f) % FastMath.TWO_PI)) * 1.0f;
+            ppWaterHeight = (float) Math.cos(((waveTime * 0.5f) % FastMath.TWO_PI)) * 1.0f;
             ppWaterFilter.setWaterHeight(ppInitialWaterHeight + ppWaterHeight);
+                        
         }
         
         private void loadAudio(){
             
-            Audioxerver.loadMusic("Music/Soundtracks/Peaceful_Place.ogg", false, true);
+            AudioManager.loadMusic("Music/Soundtracks/Peaceful_Place.ogg", false, true);
             
-            Audioxerver.playSound("Sounds/Ambient/Animals/ocean_seagull_mono.ogg", false, true, true, 1000f, 3, 0f, 5f, 500f);
-            Audioxerver.playSound("Sounds/Ambient/Fire/torchBurning.ogg", false, true, true, 1000f, 2, -620f, 7f, 250f);
-            Audioxerver.playSound("Sounds/Ambient/Environment/JungleAmbient01.ogg", false, true, true, 1000f, 3, -100f, 5f, -630f);
+            AudioManager.playSound("Sounds/Ambient/Animals/ocean_seagull_mono.ogg", false, true, true, 1000f, 3, 0f, 5f, 500f);
+            AudioManager.playSound("Sounds/Ambient/Fire/torchBurning.ogg", false, true, true, 1000f, 2, -620f, 7f, 250f);
+            AudioManager.playSound("Sounds/Ambient/Environment/JungleAmbient01.ogg", false, true, true, 1000f, 3, -100f, 5f, -630f);
             
         }
         
