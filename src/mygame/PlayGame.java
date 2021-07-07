@@ -3,6 +3,7 @@ package mygame;
 import Levels.S2M0_shore;
 import com.jme3.app.SimpleApplication;
 import com.jme3.app.state.AppState;
+import com.jme3.bullet.BulletAppState;
 
 import com.jme3.export.binary.BinaryImporter;
 import com.jme3.niftygui.NiftyJmeDisplay;
@@ -25,7 +26,7 @@ public class PlayGame extends SimpleApplication{
     private static Nifty nifty;
     
     public static GameAppState gameplayState;
-    
+    private BulletAppState bulletAppState;
     public S2M0_shore levelS1M0;
     
     public static MainMenuScreen mainMenu_screen;
@@ -61,7 +62,9 @@ public class PlayGame extends SimpleApplication{
             lines of code: one that creates a custom StartScreenAppState instance, and a second
             line that attaches it to the stateManager object of the SimpleApplication class.*/
         
-       
+           bulletAppState = new BulletAppState();
+           app.getStateManager().attach(bulletAppState);
+         
            app.setDisplayFps(false); app.setDisplayStatView(false);
            niftyDisplay = NiftyJmeDisplay.newNiftyJmeDisplay(assetManager, inputManager, audioRenderer, viewPort);
            nifty = niftyDisplay.getNifty();

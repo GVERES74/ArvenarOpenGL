@@ -140,6 +140,7 @@ public class GameAppState extends BaseAppState
             
             firstPersonPlayer.setJumpSpeed(20);
             firstPersonPlayer.setFallSpeed(30);
+            
                     
         }
     
@@ -152,6 +153,7 @@ public class GameAppState extends BaseAppState
             CollisionShape sceneLevel = CollisionShapeFactory.createMeshShape(level); 
             levelRigidBody = new RigidBodyControl(sceneLevel,0);
                 level.addControl(levelRigidBody);
+                
 
         }
     

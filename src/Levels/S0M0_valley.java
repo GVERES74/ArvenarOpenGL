@@ -163,8 +163,8 @@ public class S0M0_valley extends BaseAppState {
             createModel("Models/Vegetation/Grasses/Tropical/BeachGrass01.j3o", "Models/Vegetation/Grasses/Tropical/BeachGrass01.j3m", 19f, 0.0f, -18f, 2f, 4f);
             createModel("Models/Naturals/Stones/stone_largeA.obj", "", 21.5f, -0.65f, -10.5f, -3f, 2f);
             
-            createModel("Models/Others/Campfire/campfire_logs.obj", "Models/Others/Campfire/campfire_logs.j3m", 0f, -0.1f, 0f, 0f, 2f);
-            createModel("Models/Others/Campfire/campfire_stones.obj", "Models/Others/Campfire/campfire_stones.j3m", 0f, -0.1f, 0f, 0f, 3f);
+            createModel("Models/Others/Campfire/campfire_logs.j3o", "", 0f, -0.1f, 0f, 0f, 2f);
+            createModel("Models/Others/Campfire/campfire_stones.j3o", "", 0f, -0.1f, 0f, 0f, 3f);
             createModel("Models/Others/Floorbed/bed_floor.obj", "Models/Others/Floorbed/bed_floor.j3m", 1f, 0f, 3f, 1f, 3f);
             
             createModel("Models/Others/Crate/Crate-04.obj", "Models/Others/Crate/wood_crate.j3m", 28f, 0.0f, -20f, 1f, 2f);
@@ -175,12 +175,12 @@ public class S0M0_valley extends BaseAppState {
             createModel("Models/Others/Crate/Crate-05.obj", "Models/Others/Crate/wood_crate.j3m", 26f, 0.3f, -18f, 0f, 3f);
             
             createModel("Models/Others/Cage/CageBed.j3o", "Models/Others/Cage/cage.j3m", 25f, 0.0f, -24f, 2f, 1f);
-//            createModel("Models/Trunk/trunk.j3o", "", 5f, 0f, 3f, 90f, 1f);
+
             createModel("Models/Others/Barrel/mini_wood_barrel.obj", "Models/Others/Barrel/wood_barrel.j3m", 20f, 0.0f, -19f, 2f, 0.02f);
             createModel("Models/Others/Barrel/mini_wood_barrel.obj", "Models/Others/Barrel/wood_barrel.j3m", 19f, 0.0f, -23f, 2f, 0.02f);
             
             createModel("Models/Others/Stool/DwarfBeerBarrel.j3o", "Models/Others/Stool/stool.j3m", 2f, 0f, -3f, 0f, 0.5f);
-            createModel("Models/Others/Tent/tent_detailedOpen.obj", "Models/Others/Tent/tent.j3m", -5f, 0f, 3f, 90f, 6f);
+            createModel("Models/Others/Tent/tent_detailedOpen.j3o", "", -5f, 0f, 3f, 90f, 6f);
             createModel("Models/Others/Signpost/sign.obj", "Models/Others/Signpost/signpost.j3m", 21f, -0.25f, -8f, -1f, 3f);
         }   
     

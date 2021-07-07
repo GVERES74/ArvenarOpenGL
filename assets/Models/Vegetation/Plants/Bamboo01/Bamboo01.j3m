@@ -3,7 +3,7 @@ Material Bamboo01 : Common/MatDefs/Light/Lighting.j3md {
     Transparent On
 
     MaterialParameters {
-        DiffuseMap : Models/Vegetation/Plants/Bamboo01/3td_BambooLeaf_01.png
+        DiffuseMap : Flip Models/Vegetation/Plants/Bamboo01/3td_BambooLeaf_01.png
         //UseAlpha : true
         AlphaDiscardThreshold : 0.5
         UseMaterialColors : true

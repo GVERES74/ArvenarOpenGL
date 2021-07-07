@@ -1,5 +1,13 @@
-# Created by Kenney (www.kenney.nl)
+# Blender MTL File: 'campfire_stones.blend'
+# Material Count: 1
 
 newmtl stone
-Kd 0.7215686 0.8862745 0.9098039
-
+Ns 96.078431
+Ka 1.000000 1.000000 1.000000
+Kd 0.721569 0.886275 0.909804
+Ks 0.250000 0.250000 0.250000
+Ke 0.000000 0.000000 0.000000
+Ni 1.000000
+d 1.000000
+illum 2
+map_Kd -s 0.300000 0.100000 0.300000 rock4.png

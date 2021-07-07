@@ -1,0 +1,22 @@
+Material Vine : Common/MatDefs/Light/Lighting.j3md {
+
+    Transparent On
+
+    MaterialParameters {
+        DiffuseMap : Flip Models/Vegetation/Plants/Vine/diffuse.tga
+	//NormalMap : Models/Vegetation/Plants/Vine/normal.tga
+        //UseAlpha : true
+        AlphaDiscardThreshold : 0.5
+        UseMaterialColors : true
+        Ambient : .5 .5 .5 .5
+        Diffuse : 0.7 0.7 0.7 1
+        Specular : 0 0 0 1
+        Shininess : 64
+    }
+    AdditionalRenderState {
+        Blend Alpha
+        AlphaTestFalloff 0.50
+        FaceCull Off
+    }
+}
+

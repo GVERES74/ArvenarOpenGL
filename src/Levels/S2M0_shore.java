@@ -11,7 +11,6 @@ import com.jme3.app.SimpleApplication;
 import com.jme3.app.state.AppStateManager;
 import com.jme3.app.state.BaseAppState;
 import com.jme3.asset.AssetManager;
-import com.jme3.audio.AudioData;
 import com.jme3.audio.AudioNode;
 import com.jme3.audio.AudioRenderer;
 import com.jme3.bullet.BulletAppState;
@@ -35,15 +34,14 @@ import com.jme3.renderer.ViewPort;
 import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
 import com.jme3.water.WaterFilter;
-import java.util.Random;
 import mygame.AudioManager;
 import mygame.GameAppState;
 
 /**
- *  
- *  
+ *  
+ *  
  *
- * @author TE332168 
+ * @author TE332168 
  */
 public class S2M0_shore extends BaseAppState {
 
@@ -59,9 +57,6 @@ public class S2M0_shore extends BaseAppState {
     private ViewPort          viewPort;
     private Camera camera;
     
-    private AudioNode soundPlayer;
-    private AudioNode playsoundonce;
-    private AudioRenderer audioRenderer;
     
     private BulletAppState bulletAppState;
         
@@ -94,11 +89,11 @@ public class S2M0_shore extends BaseAppState {
         app.getStateManager().attach(bulletAppState);
         app.setPauseOnLostFocus(true);
     
-    //It is technically safe to do all initialization and cleanup in the         
-        //onEnable()/onDisable() methods. Choosing to use initialize() and         
-        //cleanup() for this is a matter of performance specifics for the         
-        //implementor.        
-        //TODO: initialize your AppState, e.g. attach spatials to rootNode    
+    //It is technically safe to do all initialization and cleanup in the         
+        //onEnable()/onDisable() methods. Choosing to use initialize() and         
+        //cleanup() for this is a matter of performance specifics for the         
+        //implementor.        
+        //TODO: initialize your AppState, e.g. attach spatials to rootNode    
         
         loadSceneModels();
         addScenePhysics();
@@ -113,21 +108,21 @@ public class S2M0_shore extends BaseAppState {
     protected void cleanup(Application app) {
     
     
-        //TODO: clean up what you initialized in the initialize method,        
-        //e.g. remove all spatials from rootNode    
+        //TODO: clean up what you initialized in the initialize method,        
+        //e.g. remove all spatials from rootNode    
     }
 
-    //onEnable()/onDisable() can be used for managing things that should     
-    //only exist while the state is enabled. Prime examples would be scene     
-    //graph attachment or input listener attachment.    
+    //onEnable()/onDisable() can be used for managing things that should     
+    //only exist while the state is enabled. Prime examples would be scene     
+    //graph attachment or input listener attachment.    
     @Override
     protected void onEnable() {
     
 
     
-        //Called when the state is fully enabled, ie: is attached and         
-        //isEnabled() is true or when the setEnabled() status changes after the         
-        //state is attached.    
+        //Called when the state is fully enabled, ie: is attached and         
+        //isEnabled() is true or when the setEnabled() status changes after the         
+        //state is attached.    
     }
     
     @Override
@@ -135,9 +130,9 @@ public class S2M0_shore extends BaseAppState {
     
         AudioManager.musicPlayer.stop();
     
-        //Called when the state was previously enabled but is now disabled         
-        //either because setEnabled(false) was called or the state is being         
-        //cleaned up.    
+        //Called when the state was previously enabled but is now disabled         
+        //either because setEnabled(false) was called or the state is being         
+        //cleaned up.    
     }
     
     @Override
@@ -155,7 +150,7 @@ public class S2M0_shore extends BaseAppState {
 //                        50, 
 //                        maingameappstate.firstPersonPlayer.getPhysicsLocation().z)
 //        );
-        //TODO: implement behavior during runtime    
+        //TODO: implement behavior during runtime    
     }
     
      public void loadSceneModels(){
@@ -174,19 +169,21 @@ public class S2M0_shore extends BaseAppState {
             createModel("Models/Furnishments/Candle/model.j3o", "Models/Furnishments/Candle/candle.j3m", -640f, 8f, 275f, 1f, 0f, 0.01f);
             
     //vegetation in fixed places (e.g. around structures to avoid overlapping each other)
-                createModel("Models/Vegetation/Trees/Palm/Palm01.j3o", "Models/Vegetation/Trees/Palm/Palm01.j3m", -650, 5f, 350, 2f, 0f, 5f);
-                createModel("Models/Vegetation/Trees/Palm/Palm02.j3o", "Models/Vegetation/Trees/Palm/Palm02.j3m", -640, 5f, 200, 2f, 0f, 5f);
-                createModel("Models/Vegetation/Trees/Palm/Palm03.j3o", "Models/Vegetation/Trees/Palm/Palm03.j3m", -640, 5f, 220, 2f, 0f, 5f);
+//                createModel("Models/Vegetation/Trees/Palm/Palm01.j3o", "Models/Vegetation/Trees/Palm/Palm01.j3m", -650, 5f, 350, 2f, 0f, 5f);
+//                createModel("Models/Vegetation/Trees/Palm/Palm02.j3o", "Models/Vegetation/Trees/Palm/Palm02.j3m", -640, 5f, 200, 2f, 0f, 5f);
+//                createModel("Models/Vegetation/Trees/Palm/Palm03.j3o", "Models/Vegetation/Trees/Palm/Palm03.j3m", -640, 5f, 220, 2f, 0f, 5f);
                 
     //randomly placed models (trees, bushes also with random scale)
-//                createModelRandomized("Models/Vegetation/Trees/Cecropia/CecropiaTree01.j3o", "Models/Vegetation/Trees/Cecropia/Cecropia.j3m", 50, -600, 700, 7f, -200, -650, 5, 0f, 3f, 5f);
-//                createModelRandomized("Models/Vegetation/Trees/CiabaTree_01/CiabaTree_01.j3o", "Models/Vegetation/Trees/CiabaTree_01/CiabaTree_01.j3m", 50, -600, 700, 7f, -200, -650, 5, 0f, 3f, 5f);  
-//                createModelRandomized("Models/Vegetation/Trees/CopalTree/CopalTree01.j3o", "Models/Vegetation/Trees/CopalTree/CopalTree01.j3m", 10, -600, 700, 7f, -200, -650, 5, 0f, 3f, 5f);  
+//                createModelRandomized("Models/Vegetation/Trees/Cecropia/CecropiaTree01.j3o", "", 50, -600, 700, 7f, -200, -650, 5, 0f, 3f, 5f);
+//                createModelRandomized("Models/Vegetation/Trees/CiabaTree_01/CiabaTree_02.j3o", "", 50, -600, 700, 7f, -200, -650, 5, 0f, 3f, 5f);  
+//                createModelRandomized("Models/Vegetation/Trees/CopalTree/CopalTree01.j3o", "Models/Vegetation/Trees/CopalTree/CopalTree01.j3m", 10, -600, 700, 7f, -200, -650, 5, 0f, 3f, 5f);
+                  createModelRandomized("Models/Vegetation/Trees/Huge/huge_tree.obj", "Models/Vegetation/Trees/Huge/hugetree.j3m", 10, -600, 700, 7f, -200, -650, 5, 0f, 0.05f, 0.1f);
 //                createModelRandomized("Models/Vegetation/Trees/Palm/Palm01.j3o", "Models/Vegetation/Trees/Palm/Palm01.j3m", 10, -650, 700, 5f, 250, -200, 5, 0f, 3f, 5f);
 //                createModelRandomized("Models/Vegetation/Trees/Palm/Palm02.j3o", "Models/Vegetation/Trees/Palm/Palm02.j3m", 10, -650, 700, 5f, 250, -200, 5, 0f, 3f, 5f);
 //                createModelRandomized("Models/Vegetation/Trees/Palm/Palm03.j3o", "Models/Vegetation/Trees/Palm/Palm03.j3m", 10, -650, 700, 5f, 250, -200, 5, 0f, 3f, 5f);
-                createModelRandomized("Models/Vegetation/Trees/Monstera/monstera3.j3o", "Models/Vegetation/Trees/Monstera/Monstera.j3m", 10, -650, 700, 5f, 250, -200, 5, 0f, 1f, 3f);
-                createModelRandomized("Models/Vegetation/Trees/Jasmin/jasmin.obj", "Models/Vegetation/Trees/Jasmin/jasmin.j3m", 10, -650, 700, 5f, -200, -650, 5, 0f, 0.1f, 0.3f);
+//                createModelRandomized("Models/Vegetation/Trees/Monstera/monstera3.j3o", "Models/Vegetation/Trees/Monstera/Monstera.j3m", 10, -650, 700, 5f, 250, -200, 5, 0f, 1f, 3f);
+//                createModelRandomized("Models/Vegetation/Trees/Jasmin/jasmin.obj", "Models/Vegetation/Trees/Jasmin/jasmin.j3m", 10, -650, 700, 5f, -200, -650, 5, 0f, 0.1f, 0.3f);
+                  createModelRandomized("Models/Vegetation/Trees/Cactus/cactus.obj", "Models/Vegetation/Trees/Cactus/cactus.j3m", 10, -600, 700, 7f, -200, -650, 5, 0f, 0.01f, 0.1f);
                 
                 createModelRandomized("Models/Vegetation/Bushes/Bush01/Bush01.j3o", "Models/Vegetation/Bushes/Bush01/Bush01.j3m", 10, -650, 700, 7f, 250, -650, 5, 0f, 0.5f, 1f);                    
                 createModelRandomized("Models/Vegetation/Plants/TropicFern/TropicFern01.j3o", "Models/Vegetation/Plants/TropicFern/TropicFern01.j3m", 10, -650, 700, 7f, 250, -650, 5, 0f, 2f, 4f);                    
@@ -194,7 +191,9 @@ public class S2M0_shore extends BaseAppState {
                 createModelRandomized("Models/Vegetation/Plants/ElephantEar/ElephantEar.j3o", "Models/Vegetation/Plants/ElephantEar/ElephantEar.j3m", 10, -650, 700, 7f, 250, -650, 5, 0f, 2f, 4f);
                 createModelRandomized("Models/Vegetation/Plants/Bamboo01/Bamboo01.j3o", "Models/Vegetation/Plants/Bamboo01/Bamboo01.j3m", 10, -650, 700, 6f, 250, -650, 5, 0f, 1f, 2f);                    
                 createModelRandomized("Models/Vegetation/Plants/Chamomille/PlantsFBX.j3o", "Models/Vegetation/Plants/Chamomille/Chamomille.j3m", 5, -680, -600, 7f, 200, 300, 5, 0f, 4f, 6f);                    
-                createModelRandomized("Models/Vegetation/Plants/ForestPlant01/Plant1.j3o", "Models/Vegetation/Plants/ForestPlant01/Plant1.j3m", 5, -680, -600, 7f, 200, 300, 5, 0f, 0.5f, 1f);                    
+                createModelRandomized("Models/Vegetation/Plants/ForestPlant01/Plant1.j3o", "Models/Vegetation/Plants/ForestPlant01/Plant1.j3m", 5, -680, -600, 7f, 200, 300, 5, 0f, 0.5f, 1f);
+                createModelRandomized("Models/Vegetation/Plants/Pumpkin/pumpkin_plant.obj", "Models/Vegetation/Plants/Pumpkin/pumpkin.j3m", 5, -680, -600, 7f, 200, 300, 5, 0f, 0.05f, 0.1f);
+                createModelRandomized("Models/Vegetation/Plants/Vine/vine.obj", "Models/Vegetation/Plants/Vine/vine.j3m", 5, -680, -600, 7f, 200, 300, 5, 0f, 0.08f, 0.1f);                    
                   
                 createModelRandomized("Models/Vegetation/Flowers/Lily/lilies-sf.j3o", "Models/Vegetation/Flowers/Lily/lily.j3m", 5, -680, -600, 1f, 200, 300, 5, 0f, 0.1f, 0.3f);                    
 
@@ -204,8 +203,8 @@ public class S2M0_shore extends BaseAppState {
             //buildings
             
             //campfire
-            createModel("Models/Others/Campfire/campfire_logs.obj", "Models/Others/Campfire/campfire_logs.j3m", -620f, 7f, 250f, 1f, 0f, 5f);
-            createModel("Models/Others/Campfire/campfire_stones.obj", "Models/Others/Campfire/campfire_stones.j3m", -620f, 7f, 250f, 1f, 0, 5f);
+            createModel("Models/Others/Campfire/campfire_logs.j3o", "", -620f, 7f, 250f, 1f, 0f, 5f);
+            createModel("Models/Others/Campfire/campfire_stones.obj", "", -620f, 7f, 250f, 1f, 0, 5f);
             //crates and barrels            
             createModel("Models/Others/Crate/Crate-04.obj", "Models/Others/Crate/wood_crate.j3m", -640f, 7f, 250f, 1f, 0f, 5f);
             createModel("Models/Others/Crate/Crate-01.obj", "Models/Others/Crate/wood_crate.j3m", -640f, 11f, 237f, 0f, 0f, 5f);
@@ -222,7 +221,11 @@ public class S2M0_shore extends BaseAppState {
             createModel("Models/Others/Barrel/mini_wood_barrel.obj", "Models/Others/Barrel/wood_barrel.j3m", -640f, 7f, 237f, 1f, 0f, 0.05f);
         }   
     
-        public void createModel(String modelfile, String matfile, float xpos, float ypos, float zpos, float yaw, float pitch, float scale){
+        
+        
+        
+    
+    public void createModel(String modelfile, String matfile, float xpos, float ypos, float zpos, float yaw, float pitch, float scale){
             Spatial model = assetManager.loadModel(modelfile);
                         
             if(matfile !=""){   
@@ -361,17 +364,7 @@ public class S2M0_shore extends BaseAppState {
             AudioManager.playSound("Sounds/Ambient/Environment/JungleAmbient01.ogg", false, true, true, 1000f, 3, -100f, 5f, -630f);
             
         }
-        
-        
-        public void playSoundInstance(String file){
-            playsoundonce = new AudioNode(assetManager, file, AudioData.DataType.Buffer);
-            playsoundonce.setPositional(false);
-            playsoundonce.setLooping(false);
-            playsoundonce.setVolume(0.5f);
-            rootNode.attachChild(playsoundonce);
-            playsoundonce.playInstance();
-            //audioRenderer.playSourceInstance(playsoundonce);
-        }
+       
 
     public Spatial getLevel() {
         return level_S2M0;
