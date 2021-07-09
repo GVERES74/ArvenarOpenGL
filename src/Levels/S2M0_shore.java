@@ -155,49 +155,64 @@ public class S2M0_shore extends BaseAppState {
     
      public void loadSceneModels(){
     //boat and ship
-            createModel("Models/Vehicles/Boat/boat_crashed.j3o", "Models/Vehicles/Boat/boat.j3m", 300f, 0f, 900f, -1f, 0f, 30f);
-            createModel("Models/Vehicles/Boat/boat_small.obj", "Models/Vehicles/Boat/boat.j3m", 30f, 2f, 320f, 0f, 0.1f, 1f);
+            createModel("Models/Vehicles/Ship/Ship.obj", "", 150f, 6f, 900f, 0f, 0f, 10f);
+            
+            createModel("Models/Vehicles/Boat/boat_small.obj", "", 30f, 2f, 320f, 0f, 0.1f, 1f);
             
     //schacks, huts, jettys
-            createModel("Models/Structures/Jetty02/Tropical_Jetty02.j3o", "Models/Structures/Jetty02/Tropical_Jetty02.j3m", -600f, 1f, 400f, 0f, 0f, 2f);
-            createModel("Models/Structures/JungleHut01/JungleHut01.j3o", "Models/Structures/JungleHut01/JungleHut01.j3m", -650f, 15f, 250f, 1f, 0f, 2f);
-            createModel("Models/Structures/JungleHut01/AfricaDock01.j3o", "Models/Structures/JungleHut01/AfricaDock01.j3m", -640f, 11f, 256f, -0.5f, 0f, 2f);
-            createModel("Models/Structures/JungleHut02/JungleHut02.j3o", "Models/Structures/JungleHut02/JungleHut02.j3m", -100f, 13f, -600f, 0f, 0f, 2f);
-            createModel("Models/Structures/JungleHut01/AfricaDock01.j3o", "Models/Structures/JungleHut01/AfricaDock01.j3m", -97f, 11f, -620f, 1.5f, 0f, 2f);
+            createModel("Models/Structures/Jetty02/Jetty02_blend.obj", "", -600f, 1f, 400f, 0f, 0f, 2f);
+            createModel("Models/Structures/JungleHut01/JungleHut01_blend.obj", "", -650f, 15f, 250f, 1f, 0f, 2f);
+            createModel("Models/Structures/AfricaDock01/AfricaDock01_blend.obj", "", -640f, 11f, 256f, -0.5f, 0f, 2f);
+            createModel("Models/Structures/JungleHut02/JungleHut02_blend.obj", "", -100f, 13f, -600f, 0f, 0f, 2f);
+            createModel("Models/Structures/AfricaDock01/AfricaDock01_blend.obj", "", -97f, 11f, -620f, 1.5f, 0f, 2f);
+            createModel("Models/Structures/Shack01/Shack01_blend.obj", "", 650f, 7f, 0f, 3f, 0f, 3f);
                         
             
-            createModel("Models/Furnishments/Candle/model.j3o", "Models/Furnishments/Candle/candle.j3m", -640f, 8f, 275f, 1f, 0f, 0.01f);
+            createModel("Models/Furnishments/Candle/candle_model.obj", "", -640f, 8f, 275f, 1f, 0f, 0.01f);
             
     //vegetation in fixed places (e.g. around structures to avoid overlapping each other)
-//                createModel("Models/Vegetation/Trees/Palm/Palm01.j3o", "Models/Vegetation/Trees/Palm/Palm01.j3m", -650, 5f, 350, 2f, 0f, 5f);
-//                createModel("Models/Vegetation/Trees/Palm/Palm02.j3o", "Models/Vegetation/Trees/Palm/Palm02.j3m", -640, 5f, 200, 2f, 0f, 5f);
-//                createModel("Models/Vegetation/Trees/Palm/Palm03.j3o", "Models/Vegetation/Trees/Palm/Palm03.j3m", -640, 5f, 220, 2f, 0f, 5f);
+                createModel("Models/Vegetation/Trees/Palm/Palm01_blender.obj", "", -650, 5f, 350, 2f, 0f, 5f);
+                createModel("Models/Vegetation/Trees/Palm/Palm02_blender.obj", "", -641, 5f, 200, 2f, 0f, 5f);
+                createModel("Models/Vegetation/Trees/Palm/Palm03_blender.obj", "", -643, 5f, 220, 2f, 0f, 5f);
+                createModel("Models/Vegetation/Trees/BeachPalm/BeachPalm.obj", "", -642, 5f, 380, 2f, 0f, 5f);
+                createModel("Models/Vegetation/Trees/QueensPalm/QueensPalm.obj", "", -645, 5f, 400, 2f, 0f, 5f);
+                createModel("Models/Vegetation/Trees/Banana/Banana01_blend.obj", "", -665, 5f, 420, 2f, 0f, 5f);
+                
                 
     //randomly placed models (trees, bushes also with random scale)
-//                createModelRandomized("Models/Vegetation/Trees/Cecropia/CecropiaTree01.j3o", "", 50, -600, 700, 7f, -200, -650, 5, 0f, 3f, 5f);
-//                createModelRandomized("Models/Vegetation/Trees/CiabaTree_01/CiabaTree_02.j3o", "", 50, -600, 700, 7f, -200, -650, 5, 0f, 3f, 5f);  
-//                createModelRandomized("Models/Vegetation/Trees/CopalTree/CopalTree01.j3o", "Models/Vegetation/Trees/CopalTree/CopalTree01.j3m", 10, -600, 700, 7f, -200, -650, 5, 0f, 3f, 5f);
-                  createModelRandomized("Models/Vegetation/Trees/Huge/huge_tree.obj", "Models/Vegetation/Trees/Huge/hugetree.j3m", 10, -600, 700, 7f, -200, -650, 5, 0f, 0.05f, 0.1f);
-//                createModelRandomized("Models/Vegetation/Trees/Palm/Palm01.j3o", "Models/Vegetation/Trees/Palm/Palm01.j3m", 10, -650, 700, 5f, 250, -200, 5, 0f, 3f, 5f);
-//                createModelRandomized("Models/Vegetation/Trees/Palm/Palm02.j3o", "Models/Vegetation/Trees/Palm/Palm02.j3m", 10, -650, 700, 5f, 250, -200, 5, 0f, 3f, 5f);
-//                createModelRandomized("Models/Vegetation/Trees/Palm/Palm03.j3o", "Models/Vegetation/Trees/Palm/Palm03.j3m", 10, -650, 700, 5f, 250, -200, 5, 0f, 3f, 5f);
+                createModelRandomized("Models/Vegetation/Trees/Cecropia/Cecropia_blender.obj", "", 20, -600, 700, 7f, -200, -650, 5, 0f, 3f, 5f);
+                createModelRandomized("Models/Vegetation/Trees/CiabaTree_01/CiabaTree_01_blender.obj", "", 20, -600, 700, 7f, -200, -650, 5, 0f, 3f, 5f);
+                createModelRandomized("Models/Vegetation/Trees/CiabaTree_01/CiabaTree_02_blender.obj", "", 20, -600, 700, 7f, -200, -650, 5, 0f, 3f, 5f);  
+                createModelRandomized("Models/Vegetation/Trees/CopalTree/CopalTree_blender.obj", "", 20, -600, 700, 7f, -200, -650, 5, 0f, 3f, 5f);
+                
+                createModelRandomized("Models/Vegetation/Trees/Palm/Palm01_blender.obj", "", 20, -650, 700, 5f, 250, -200, 5, 0f, 3f, 5f);
+                createModelRandomized("Models/Vegetation/Trees/Palm/Palm02_blender.obj", "", 20, -650, 700, 5f, 250, -200, 5, 0f, 3f, 5f);
+                createModelRandomized("Models/Vegetation/Trees/Palm/Palm03_blender.obj", "", 20, -650, 700, 5f, 250, -200, 5, 0f, 3f, 5f);
+                createModelRandomized("Models/Vegetation/Trees/BeachPalm/BeachPalm.obj", "", 20, -650, 700, 5f, 250, -200, 5, 0f, 3f, 5f);
+                createModelRandomized("Models/Vegetation/Trees/QueensPalm/QueensPalm.obj", "", 20, -650, 700, 5f, 250, -200, 5, 0f, 3f, 5f);
+                createModelRandomized("Models/Vegetation/Trees/Banana/Banana01_blend.obj", "", 20, -650, 700, 5f, 250, -200, 5, 0f, 3f, 5f);
+                
 //                createModelRandomized("Models/Vegetation/Trees/Monstera/monstera3.j3o", "Models/Vegetation/Trees/Monstera/Monstera.j3m", 10, -650, 700, 5f, 250, -200, 5, 0f, 1f, 3f);
 //                createModelRandomized("Models/Vegetation/Trees/Jasmin/jasmin.obj", "Models/Vegetation/Trees/Jasmin/jasmin.j3m", 10, -650, 700, 5f, -200, -650, 5, 0f, 0.1f, 0.3f);
-                  createModelRandomized("Models/Vegetation/Trees/Cactus/cactus.obj", "Models/Vegetation/Trees/Cactus/cactus.j3m", 10, -600, 700, 7f, -200, -650, 5, 0f, 0.01f, 0.1f);
+                createModelRandomized("Models/Vegetation/Trees/Cactus/cactus.obj", "Models/Vegetation/Trees/Cactus/cactus.j3m", 10, 400, 650, 7f, 50, -600, 5, 0f, 0.04f, 0.06f);
                 
-                createModelRandomized("Models/Vegetation/Bushes/Bush01/Bush01.j3o", "Models/Vegetation/Bushes/Bush01/Bush01.j3m", 10, -650, 700, 7f, 250, -650, 5, 0f, 0.5f, 1f);                    
-                createModelRandomized("Models/Vegetation/Plants/TropicFern/TropicFern01.j3o", "Models/Vegetation/Plants/TropicFern/TropicFern01.j3m", 10, -650, 700, 7f, 250, -650, 5, 0f, 2f, 4f);                    
-                createModelRandomized("Models/Vegetation/Plants/Phila01/Phila01.j3o", "Models/Vegetation/Plants/Phila01/Phila01.j3m", 10, -650, 700, 7f, 250, -650, 5, 0f, 2f, 4f);                    
-                createModelRandomized("Models/Vegetation/Plants/ElephantEar/ElephantEar.j3o", "Models/Vegetation/Plants/ElephantEar/ElephantEar.j3m", 10, -650, 700, 7f, 250, -650, 5, 0f, 2f, 4f);
-                createModelRandomized("Models/Vegetation/Plants/Bamboo01/Bamboo01.j3o", "Models/Vegetation/Plants/Bamboo01/Bamboo01.j3m", 10, -650, 700, 6f, 250, -650, 5, 0f, 1f, 2f);                    
-                createModelRandomized("Models/Vegetation/Plants/Chamomille/PlantsFBX.j3o", "Models/Vegetation/Plants/Chamomille/Chamomille.j3m", 5, -680, -600, 7f, 200, 300, 5, 0f, 4f, 6f);                    
-                createModelRandomized("Models/Vegetation/Plants/ForestPlant01/Plant1.j3o", "Models/Vegetation/Plants/ForestPlant01/Plant1.j3m", 5, -680, -600, 7f, 200, 300, 5, 0f, 0.5f, 1f);
-                createModelRandomized("Models/Vegetation/Plants/Pumpkin/pumpkin_plant.obj", "Models/Vegetation/Plants/Pumpkin/pumpkin.j3m", 5, -680, -600, 7f, 200, 300, 5, 0f, 0.05f, 0.1f);
-                createModelRandomized("Models/Vegetation/Plants/Vine/vine.obj", "Models/Vegetation/Plants/Vine/vine.j3m", 5, -680, -600, 7f, 200, 300, 5, 0f, 0.08f, 0.1f);                    
+                createModelRandomized("Models/Vegetation/Bushes/Bush01/Bush01_blend.obj", "", 10, -650, 700, 7f, -200, -650, 5, 0f, 0.5f, 1f);                    
+                createModelRandomized("Models/Vegetation/Plants/TropicFern/TropicFern01_blend.obj", "", 10, -650, 700, 7f, 250, -650, 5, 0f, 2f, 4f);
+                createModelRandomized("Models/Vegetation/Plants/BirdsNest/BirdsNest_blend.obj", "", 10, -650, 700, 7f, 250, -650, 5, 0f, 2f, 4f);                    
+                createModelRandomized("Models/Vegetation/Plants/Phila01/Phila01_blend.obj", "", 10, -650, 700, 7f, 250, -650, 5, 0f, 2f, 4f);                    
+                createModelRandomized("Models/Vegetation/Plants/ElephantEar/ElephantEar_blend.obj", "", 10, -650, 700, 7f, 250, -650, 5, 0f, 2f, 4f);
+                createModelRandomized("Models/Vegetation/Plants/Bamboo01/Bamboo01_blender.obj", "", 10, -650, 700, 6f, 250, -650, 5, 0f, 1f, 2f);                    
+                
+                createModelRandomized("Models/Vegetation/Plants/Chamomille/PlantsFBX.j3o", "Models/Vegetation/Plants/Chamomille/Chamomille.j3m", 5, -630, -680, 7f, 200, 300, 5, 0f, 4f, 6f);                    
+                createModelRandomized("Models/Vegetation/Plants/ForestPlant01/Plant1.j3o", "Models/Vegetation/Plants/ForestPlant01/Plant1.j3m", 5, -630, -680, 7f, 200, 300, 5, 0f, 0.5f, 1f);
+                createModelRandomized("Models/Vegetation/Plants/ForestPlant01/Plant1.j3o", "Models/Vegetation/Plants/ForestPlant01/Plant1.j3m", 10, 600, 670, 7f, 50, -50, 5, 0f, 0.5f, 1f);
+                createModelRandomized("Models/Vegetation/Plants/Pumpkin/pumpkin_plant.obj", "Models/Vegetation/Plants/Pumpkin/pumpkin.j3m", 5, -660, -680, 7f, 270, 300, 5, 0f, 0.05f, 0.1f);
+                createModelRandomized("Models/Vegetation/Plants/Vine/vine.obj", "Models/Vegetation/Plants/Vine/vine.j3m", 5, -660, -680, 7f, 200, 290, 5, 0f, 0.08f, 0.1f);                    
                   
-                createModelRandomized("Models/Vegetation/Flowers/Lily/lilies-sf.j3o", "Models/Vegetation/Flowers/Lily/lily.j3m", 5, -680, -600, 1f, 200, 300, 5, 0f, 0.1f, 0.3f);                    
+                createModelRandomized("Models/Vegetation/Flowers/Lily/Lily_blend.obj", "", 5, -680, -600, 7f, 200, 300, 5, 0f, 0.1f, 0.2f);
+                createModelRandomized("Models/Vegetation/Flowers/Lily/Lily_blend.obj", "", 5, 600, 670, 7f, 50, -50, 5, 0f, 0.1f, 0.2f);                    
 
-                createModelRandomized("Models/Vegetation/Grasses/Tropical/BeachGrass01.j3o", "Models/Vegetation/Grasses/Tropical/BeachGrass01.j3m", 50, -650, 700, 9f, 300, -650, 5, 3f, 8f, 15f);                    
+                createModelRandomized("Models/Vegetation/Grasses/BeachGrass/BeachGrass_blend.obj", "", 100, -650, 620, 6f, 200, 260, 5, 0f, 8f, 10f);                    
              
             
             //buildings
@@ -230,7 +245,8 @@ public class S2M0_shore extends BaseAppState {
                         
             if(matfile !=""){   
             model.setMaterial(assetManager.loadMaterial(matfile));
-            }                    
+            }
+            
             model.setLocalTranslation(xpos, ypos, zpos);
             model.rotate(pitch, yaw, 0);
             model.setLocalScale(scale);

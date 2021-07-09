@@ -3,7 +3,7 @@ Material Palm01 : Common/MatDefs/Light/Lighting.j3md {
     Transparent On
 
     MaterialParameters {
-        DiffuseMap : Models/Vegetation/Trees/Palm/DriPalm01.dds
+        DiffuseMap : Models/Vegetation/Trees/Palm/
         //UseAlpha : true
         AlphaDiscardThreshold : 0.5
         UseMaterialColors : true
