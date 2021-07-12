@@ -166,9 +166,11 @@ public class S2M0_shore extends BaseAppState {
             createModel("Models/Structures/JungleHut02/JungleHut02_blend.obj", "", -100f, 13f, -600f, 0f, 0f, 2f);
             createModel("Models/Structures/AfricaDock01/AfricaDock01_blend.obj", "", -97f, 11f, -620f, 1.5f, 0f, 2f);
             createModel("Models/Structures/Shack01/Shack01_blend.obj", "", 650f, 7f, 0f, 3f, 0f, 3f);
+            createModel("Models/Structures/Bench/Bench_blend.obj", "", -675f, 11f, -640f, 0f, 0f, 5f);
                         
             
-            createModel("Models/Furnishments/Candle/candle_model.obj", "", -640f, 8f, 275f, 1f, 0f, 0.01f);
+            createModel("Models/Furnishments/Candle/candle_model.obj", "", -650f, 11f, -660f, 1f, 0f, 0.01f);
+            createModel("Models/Furnishments/Candle/candle_model.obj", "", -658f, 11f, -655f, 1f, 0f, 0.01f);
             
     //vegetation in fixed places (e.g. around structures to avoid overlapping each other)
                 createModel("Models/Vegetation/Trees/Palm/Palm01_blender.obj", "", -650, 5f, 350, 2f, 0f, 5f);
@@ -193,7 +195,7 @@ public class S2M0_shore extends BaseAppState {
                 createModelRandomized("Models/Vegetation/Trees/Banana/Banana01_blend.obj", "", 20, -650, 700, 5f, 250, -200, 5, 0f, 3f, 5f);
                 
 //                createModelRandomized("Models/Vegetation/Trees/Monstera/monstera3.j3o", "Models/Vegetation/Trees/Monstera/Monstera.j3m", 10, -650, 700, 5f, 250, -200, 5, 0f, 1f, 3f);
-//                createModelRandomized("Models/Vegetation/Trees/Jasmin/jasmin.obj", "Models/Vegetation/Trees/Jasmin/jasmin.j3m", 10, -650, 700, 5f, -200, -650, 5, 0f, 0.1f, 0.3f);
+                createModelRandomized("Models/Vegetation/Trees/Jasmin/Jasmin_blend.obj", "", 3, -650, -680, 10f, -650, -670, 5, 0f, 0.5f, 1f);
                 createModelRandomized("Models/Vegetation/Trees/Cactus/cactus.obj", "Models/Vegetation/Trees/Cactus/cactus.j3m", 10, 400, 650, 7f, 50, -600, 5, 0f, 0.04f, 0.06f);
                 
                 createModelRandomized("Models/Vegetation/Bushes/Bush01/Bush01_blend.obj", "", 10, -650, 700, 7f, -200, -650, 5, 0f, 0.5f, 1f);                    
@@ -213,8 +215,11 @@ public class S2M0_shore extends BaseAppState {
                 createModelRandomized("Models/Vegetation/Flowers/Lily/Lily_blend.obj", "", 5, 600, 670, 7f, 50, -50, 5, 0f, 0.1f, 0.2f);                    
 
                 createModelRandomized("Models/Vegetation/Grasses/BeachGrass/BeachGrass_blend.obj", "", 100, -650, 620, 6f, 200, 260, 5, 0f, 8f, 10f);                    
-             
+                
             
+                createModelRandomized("Models/Naturals/StoneAndPlants/StonePlants_blend.obj", "", 5, 600, 670, 7f, 100, -100, 5, 0f, 1f, 2f);
+                createModelRandomized("Models/Others/Grave/cross_blend.obj", "", 3, -670, -680, 11f, -650, -670, 2, 0.2f, 1f, 2f);
+                
             //buildings
             
             //campfire
@@ -342,7 +347,8 @@ public class S2M0_shore extends BaseAppState {
             
             sun = new DirectionalLight();
             //sun.setColor(ColorRGBA.White);
-            sun.setDirection(new Vector3f(6.0f, -1.5f, -4.0f).normalizeLocal());
+            sun.setDirection(new Vector3f(1.0f, -1.5f, -4.0f).normalizeLocal());
+            
             this.app.getRootNode().addLight(sun);
             
         }
