@@ -157,10 +157,10 @@ public class S0M0_valley extends BaseAppState {
             createModel("Models/Vegetation/Trees/Pine/snow_pine_tree.obj", "Models/Vegetation/Trees/Pine/pine_snow_none.j3m", -20f, 0.0f, -3f, 0f, 0.1f);
                         
             createModel("Models/Structures/Jetty02/Tropical_Jetty02.j3o", "Models/Structures/Jetty02/Tropical_Jetty02.j3m", 3f, -0.7f, -13f, -1.5f, 0.5f);
-            createModel("Models/Structures/Bridge/bridge_wood.obj", "Models/Structures/Bridge/bridge_wood.j3m", 21f, -0.4f, -13f, 0.9f, 4f);
-            createModel("Models/Vegetation/Grasses/Tropical/BeachGrass01.j3o", "Models/Vegetation/Grasses/Tropical/BeachGrass01.j3m", 20f, -0.5f, -15f, 0f, 5f);
-            createModel("Models/Vegetation/Grasses/Tropical/BeachGrass01.j3o", "Models/Vegetation/Grasses/Tropical/BeachGrass01.j3m", 22f, -0.2f, -11f, 1f, 6f);
-            createModel("Models/Vegetation/Grasses/Tropical/BeachGrass01.j3o", "Models/Vegetation/Grasses/Tropical/BeachGrass01.j3m", 19f, 0.0f, -18f, 2f, 4f);
+            createModel("Models/Structures/Bridge/Wooden_Bridge/WoodenBridge_blend.obj", "", 21f, 1f, -13f, -1f, 4f);
+            createModel("Models/Vegetation/Grasses/BeachGrass/BeachGrass_blend.obj", "", 20f, -0.5f, -15f, 0f, 5f);
+            createModel("Models/Vegetation/Grasses/BeachGrass/BeachGrass_blend.obj", "", 22f, -0.2f, -11f, 1f, 6f);
+            createModel("Models/Vegetation/Grasses/BeachGrass/BeachGrass_blend.obj", "", 19f, 0.0f, -18f, 2f, 4f);
             createModel("Models/Naturals/Stones/stone_largeA.obj", "", 21.5f, -0.65f, -10.5f, -3f, 2f);
             
             createModel("Models/Others/Campfire/campfire_logs.j3o", "", 0f, -0.1f, 0f, 0f, 2f);

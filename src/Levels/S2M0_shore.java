@@ -146,7 +146,7 @@ public class S2M0_shore extends BaseAppState {
                  AudioManager.musicPlayer.play();
         }
         
-        if ((camera.getLocation().x > -650f) && (camera.getLocation().z < -630f)){
+        if ((camera.getLocation().x < -650f) && (camera.getLocation().z < -630f)){
                  AudioManager.musicPlayer.stop();
                  AudioManager.loadMusic("Music/Soundtracks/Audience.ogg", true, false);
                
@@ -164,20 +164,22 @@ public class S2M0_shore extends BaseAppState {
             
             
     //schacks, huts, jettys
-            createModel("Models/Structures/Jetty02/Jetty02_blend.obj", "", -600f, 1f, 400f, 0f, 0f, 2f);
+            //createModel("Models/Structures/Jetty02/Jetty02_blend.obj", "", -600f, 1f, 400f, 0f, 0f, 2f);
+            createModel("Models/Structures/Bridge/Turn_Bridge/Turn_Bridge_blend.obj", "", -590f, 3f, 400f, 2f, 0f, 1f);
             createModel("Models/Structures/JungleHut01/JungleHut01_blend.obj", "", -650f, 15f, 250f, 1f, 0f, 2f);
             createModel("Models/Structures/AfricaDock01/AfricaDock01_blend.obj", "", -640f, 11f, 256f, -0.5f, 0f, 2f);
             createModel("Models/Structures/JungleHut02/JungleHut02_blend.obj", "", -100f, 13f, -600f, 0f, 0f, 2f);
             createModel("Models/Structures/AfricaDock01/AfricaDock01_blend.obj", "", -97f, 11f, -620f, 1.5f, 0f, 2f);
             createModel("Models/Structures/Shack01/Shack01_blend.obj", "", 650f, 7f, 0f, 3f, 0f, 3f);
+            createModel("Models/Structures/Bridge/Bridge_Dock/Bridge_Dock_blend.obj", "", 554f, 5f, 485f, 0f, 0f, 1f);
             createModel("Models/Structures/Bench/Bench_blend.obj", "", -675f, 11f, -640f, -1f, 0f, 5f);
             createModel("Models/Structures/Bench/BeerBench_blend.obj", "", -655f, 14f, 253f, 1f, 0f, 0.8f);
-            createModel("Models/Structures/Hammock/Hammock_blend.obj", "", -644f, 9f, 215f, 1.5f, 0f, 6f);
+            createModel("Models/Structures/Hammock/Hammock_blend.obj", "", -644f, 9f, 209f, 1.5f, 0f, 6f);
             
             
             createModel("Models/Furnishments/Bottles/BoxedBottles1/Bottles.j3o", "", -655f, 17f, 253f, 1f, 0f, 0.5f);
             createModel("Models/Furnishments/Bottles/BoxedBottles2/Bottles2.j3o", "", -640f, 8.6f, 280f, 0f, 0f, 0.2f);
-            createModel("Models/Furnishments/Bottles/ScrollBottle/ScrollBottle_blend.obj", "", 40f, 2.5f, 310f, 0f, 1f, 1f);            
+            createModel("Models/Furnishments/Bottles/ScrollBottle/ScrollBottle_blend.obj", "", 40f, 2.5f, 310f, 0f, 1f, 0.8f);            
             createModel("Models/Furnishments/Bottles/Bottle1/Bottle1.j3o", "", -623f, 3.2f, 400f, 2f, 0.2f, 12f);
             createModel("Models/Furnishments/Bottles/Bottle1/Bottle1.j3o", "", -625f, 3.2f, 390f, 1f, -0.1f, 12f);
             
@@ -186,12 +188,12 @@ public class S2M0_shore extends BaseAppState {
             
     //vegetation in fixed places (e.g. around structures to avoid overlapping each other)
                 createModel("Models/Vegetation/Trees/Palm/Palm01_blender.obj", "", -650, 5f, 350, 2f, 0f, 5f);
-                createModel("Models/Vegetation/Trees/Palm/Palm02_blender.obj", "", -640, 5f, 190, 2f, 0f, 5f);
-                createModel("Models/Vegetation/Trees/Palm/Palm03_blender.obj", "", -643, 5f, 220, 2f, 0f, 5f);
-                createModel("Models/Vegetation/Trees/Palm/Palm01_blender.obj", "", -643, 5f, 210, 2f, 0f, 5f);
-                createModel("Models/Vegetation/Trees/BeachPalm/BeachPalm.obj", "", -642, 5f, 380, 2f, 0f, 5f);
+                createModel("Models/Vegetation/Trees/Palm/Palm02_blender.obj", "", -640, 5f, 190, 1f, 0f, 4f);
+                createModel("Models/Vegetation/Trees/Palm/Palm03_blender.obj", "", -644, 5f, 220, 0f, 0f, 5f);
+                createModel("Models/Vegetation/Trees/Palm/Palm01_blender.obj", "", -642, 5f, 201, 1.5f, 0f, 5f);
+                createModel("Models/Vegetation/Trees/BeachPalm/BeachPalm.obj", "", -642, 5f, 380, 1f, 0f, 5f);
                 createModel("Models/Vegetation/Trees/QueensPalm/QueensPalm.obj", "", -645, 5f, 400, 2f, 0f, 5f);
-                createModel("Models/Vegetation/Trees/Banana/Banana01_blend.obj", "", -665, 5f, 420, 2f, 0f, 5f);
+                createModel("Models/Vegetation/Trees/Banana/Banana01_blend.obj", "", -665, 5f, 420, 0f, 0f, 5f);
                 
                 
     //randomly placed models (trees, bushes also with random scale)
