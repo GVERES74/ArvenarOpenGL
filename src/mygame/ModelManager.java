@@ -23,11 +23,11 @@ import static mygame.PlayGame.app;
 public class ModelManager extends BaseAppState{
    
             
-    private static RigidBodyControl modelRigidBody;
-    private static Spatial model;
+    private RigidBodyControl modelRigidBody;
+    private Spatial model;
     
      
-    public static void createModel(String modelfile, String matfile, float xpos, float ypos, float zpos, float yaw, float pitch, float scale){
+    public void createModel(String modelfile, String matfile, float xpos, float ypos, float zpos, float yaw, float pitch, float scale){
             model = app.getAssetManager().loadModel(modelfile);
                                     
             if(matfile !=""){   
@@ -45,7 +45,7 @@ public class ModelManager extends BaseAppState{
             app.getRootNode().attachChild(model);
         }
         
-        public static void createModelRandomized(String modelfile, String matfile, int count, int minx, int maxx, float ypos, int minz, int maxz, int yaw, float pitch, float minscale, float maxscale){
+        public void createModelRandomized(String modelfile, String matfile, int count, int minx, int maxx, float ypos, int minz, int maxz, int yaw, float pitch, float minscale, float maxscale){
                             
             
             for (int i = 0; i < count; i++){

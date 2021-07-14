@@ -24,7 +24,9 @@ public class AudioManager {
         musicPlayer.setDirectional(false);
         musicPlayer.setPositional(false);
         musicPlayer.setLooping(looping);
+        if (musicPlayer.getStatus() == musicPlayer.getStatus().Playing){
         musicPlayer.stop();
+        }
         app.getRootNode().attachChild(musicPlayer);
         
         if (start == true){

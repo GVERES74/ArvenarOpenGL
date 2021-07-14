@@ -1,0 +1,105 @@
+# Blender MTL File: 'Campfire.blend'
+# Material Count: 9
+
+newmtl 04_-_pillar1
+Ns 19.607843
+Ka 1.000000 1.000000 1.000000
+Kd 0.470588 0.470588 0.470588
+Ks 0.000000 0.000000 0.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.000000
+d 1.000000
+illum 1
+map_Kd Fireplace_pillar_08 - pillar_BaseColor.png
+map_d Fireplace_pillar_08 - pillar_BaseColor.png
+
+newmtl 10_-_Default
+Ns 19.607843
+Ka 1.000000 1.000000 1.000000
+Kd 0.470588 0.470588 0.470588
+Ks 0.000000 0.000000 0.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.000000
+d 1.000000
+illum 1
+
+newmtl ash
+Ns 19.607843
+Ka 1.000000 1.000000 1.000000
+Kd 0.470588 0.470588 0.470588
+Ks 0.000000 0.000000 0.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.000000
+d 1.000000
+illum 1
+map_Kd Fireplace_ashes_07 - Default_BaseColor.png
+
+newmtl crossbar
+Ns 19.607843
+Ka 1.000000 1.000000 1.000000
+Kd 0.470588 0.470588 0.470588
+Ks 0.000000 0.000000 0.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.000000
+d 0.000000
+illum 1
+map_Kd Fireplace_crossbar_crossbar_BaseColor.png
+map_d Fireplace_crossbar_crossbar_BaseColor.png
+
+newmtl pillar2
+Ns 19.607843
+Ka 1.000000 1.000000 1.000000
+Kd 0.470588 0.470588 0.470588
+Ks 0.000000 0.000000 0.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.000000
+d 0.000000
+illum 1
+map_Kd Fireplace_pillar2_pillar2_BaseColor.png
+map_d Fireplace_pillar2_pillar2_BaseColor.png
+
+newmtl rock
+Ns 19.607843
+Ka 1.000000 1.000000 1.000000
+Kd 0.470588 0.470588 0.470588
+Ks 0.000000 0.000000 0.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.000000
+d 0.000000
+illum 1
+map_Kd Fireplace_rock_01 - rock_BaseColor.png
+map_Ks C:\\Users\\te332168\\Documents\\JMonkeyProjects\\ArvenarGL\\assets\\Models\\Others\\scenes
+map_d Fireplace_rock_01 - rock_BaseColor.png
+
+newmtl wood
+Ns 19.607843
+Ka 1.000000 1.000000 1.000000
+Kd 0.470588 0.470588 0.470588
+Ks 0.000000 0.000000 0.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.000000
+d 1.000000
+illum 1
+map_Kd wood\\02 - Default_albedo.jpg
+
+newmtl wood_half
+Ns 19.607843
+Ka 1.000000 1.000000 1.000000
+Kd 0.470588 0.470588 0.470588
+Ks 0.000000 0.000000 0.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.000000
+d 1.000000
+illum 1
+map_Kd wood\\02 - Default_albedo.jpg
+
+newmtl wood_quad
+Ns 19.607843
+Ka 1.000000 1.000000 1.000000
+Kd 0.470588 0.470588 0.470588
+Ks 0.000000 0.000000 0.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.000000
+d 1.000000
+illum 1
+map_Kd wood_quad\\wood_albedo.jpg

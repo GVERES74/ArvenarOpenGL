@@ -82,7 +82,7 @@ public class GameAppState extends BaseAppState
     
     S2M0_shore levelS2M0; 
     
-    private float playerHeight;
+    private float playerHeight = 6f;
     private int playerhp = 100;
     public String target = "Valami";
     private String pressedKey;
@@ -145,8 +145,8 @@ public class GameAppState extends BaseAppState
         }
     
         public void setCollisionPhysics(){
-            playerHeight = 6f;
-            capsulePlayer = new CapsuleCollisionShape(1f,playerHeight,1);
+            
+            capsulePlayer = new CapsuleCollisionShape(1f, playerHeight, 1);
                 firstPersonPlayer = new CharacterControl(capsulePlayer, 0.05f);
                               
                 
@@ -221,7 +221,6 @@ public class GameAppState extends BaseAppState
         this.app.getCamera().setLocation(firstPersonPlayer.getPhysicsLocation());
         
         npcPlayer.move(0.01f, 0, 0.01f);
-              
         
     }
     
@@ -240,7 +239,15 @@ public class GameAppState extends BaseAppState
                     case "Jump": if (keyPressed) {firstPersonPlayer.jump(new Vector3f(0,20f,0));
                                     decreasePlayerHealth(); 
                                  }; break;
-                    case "Crouch": if (keyPressed) {playerHeight = 3f;} else if (!keyPressed){playerHeight = 6f;} break;
+                    case "Crouch": if (keyPressed){
+                                     setCollisionPhysics();
+                                            
+                                   } 
+                            else if (!keyPressed){
+                                     setCollisionPhysics();
+                                 } 
+                    
+                    System.out.println("Player height= "+playerHeight); break;
                                                      
                     case "PauseGame":   hotKeyPressed(PlayGame.paused_screen, keyPressed); break;  
                                         
@@ -336,6 +343,12 @@ public class GameAppState extends BaseAppState
     public Spatial getLevel() {
         return level;
     }
+
+    public CharacterControl getFirstPersonPlayer() {
+        return firstPersonPlayer;
+    }
+    
+    
         
     
     public String getTarget(){
@@ -362,6 +375,14 @@ public class GameAppState extends BaseAppState
             PlayGame.detachAppState(appStateName);
         }
     
+    }
+
+    public float getPlayerHeight() {
+        return playerHeight;
+    }
+
+    public void setPlayerHeight(float playerHeight) {
+        this.playerHeight = playerHeight;
     }
         
     

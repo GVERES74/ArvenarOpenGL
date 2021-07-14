@@ -11,8 +11,6 @@ import com.jme3.app.SimpleApplication;
 import com.jme3.app.state.AppStateManager;
 import com.jme3.app.state.BaseAppState;
 import com.jme3.asset.AssetManager;
-import com.jme3.audio.AudioNode;
-import com.jme3.audio.AudioRenderer;
 import com.jme3.bullet.BulletAppState;
 import com.jme3.bullet.collision.shapes.CollisionShape;
 import com.jme3.bullet.control.RigidBodyControl;
@@ -22,6 +20,8 @@ import com.jme3.effect.ParticleMesh;
 import com.jme3.effect.shapes.EmitterBoxShape;
 import com.jme3.input.InputManager;
 import com.jme3.light.DirectionalLight;
+import com.jme3.light.Light;
+import com.jme3.light.PointLight;
 import com.jme3.material.Material;
 import com.jme3.math.ColorRGBA;
 import com.jme3.math.FastMath;
@@ -36,6 +36,7 @@ import com.jme3.scene.Spatial;
 import com.jme3.water.WaterFilter;
 import mygame.AudioManager;
 import mygame.GameAppState;
+import mygame.ModelManager;
 
 /**
  *  
@@ -59,7 +60,7 @@ public class S2M0_shore extends BaseAppState {
     
     
     private BulletAppState bulletAppState;
-        
+    private ModelManager modelManager;    
     private RigidBodyControl modelRigidBody;
     
     ParticleEmitter particle1;
@@ -85,6 +86,7 @@ public class S2M0_shore extends BaseAppState {
         this.camera       = this.app.getCamera();
         
         bulletAppState = new BulletAppState();
+        modelManager = new ModelManager();
                 
         app.getStateManager().attach(bulletAppState);
         app.setPauseOnLostFocus(true);
@@ -100,7 +102,7 @@ public class S2M0_shore extends BaseAppState {
         sunShine();
         createAdvancedWater();
         loadAudio();
-        createPrecipitationParticleEffects();
+        createGraveParticleEffects();
         createFirePlace();
     }
 
@@ -140,24 +142,26 @@ public class S2M0_shore extends BaseAppState {
         
         updateAdvancedWater(tpf);
         
-        if (camera.getLocation().x < -600f){
+        if ((camera.getLocation().x < -600f) && (camera.getLocation().z > 200f)){
                  AudioManager.musicPlayer.play();
-                 
         }
-//        particle1.setLocalTranslation(
-//                new Vector3f(
-//                        maingameappstate.firstPersonPlayer.getPhysicsLocation().x, 
-//                        50, 
-//                        maingameappstate.firstPersonPlayer.getPhysicsLocation().z)
-//        );
+        
+        if ((camera.getLocation().x > -650f) && (camera.getLocation().z < -630f)){
+                 AudioManager.musicPlayer.stop();
+                 AudioManager.loadMusic("Music/Soundtracks/Audience.ogg", true, false);
+               
+        }
+
         //TODO: implement behavior during runtime    
     }
     
      public void loadSceneModels(){
     //boat and ship
             createModel("Models/Vehicles/Ship/Ship.obj", "", 150f, 6f, 900f, 0f, 0f, 10f);
+            modelManager.createModel("Models/Vehicles/Boat/RowBoat2/Boat2_blend.obj", "", 30f, 2f, 320f, 3f, -  0.1f, 0.2f);
             
-            createModel("Models/Vehicles/Boat/boat_small.obj", "", 30f, 2f, 320f, 0f, 0.1f, 1f);
+            createModel("Models/NPC/Mother_blend.obj", "", -675, 11f, -640f, 2f, 0f, 4f);
+            
             
     //schacks, huts, jettys
             createModel("Models/Structures/Jetty02/Jetty02_blend.obj", "", -600f, 1f, 400f, 0f, 0f, 2f);
@@ -166,16 +170,25 @@ public class S2M0_shore extends BaseAppState {
             createModel("Models/Structures/JungleHut02/JungleHut02_blend.obj", "", -100f, 13f, -600f, 0f, 0f, 2f);
             createModel("Models/Structures/AfricaDock01/AfricaDock01_blend.obj", "", -97f, 11f, -620f, 1.5f, 0f, 2f);
             createModel("Models/Structures/Shack01/Shack01_blend.obj", "", 650f, 7f, 0f, 3f, 0f, 3f);
-            createModel("Models/Structures/Bench/Bench_blend.obj", "", -675f, 11f, -640f, 0f, 0f, 5f);
-                        
+            createModel("Models/Structures/Bench/Bench_blend.obj", "", -675f, 11f, -640f, -1f, 0f, 5f);
+            createModel("Models/Structures/Bench/BeerBench_blend.obj", "", -655f, 14f, 253f, 1f, 0f, 0.8f);
+            createModel("Models/Structures/Hammock/Hammock_blend.obj", "", -644f, 9f, 215f, 1.5f, 0f, 6f);
+            
+            
+            createModel("Models/Furnishments/Bottles/BoxedBottles1/Bottles.j3o", "", -655f, 17f, 253f, 1f, 0f, 0.5f);
+            createModel("Models/Furnishments/Bottles/BoxedBottles2/Bottles2.j3o", "", -640f, 8.6f, 280f, 0f, 0f, 0.2f);
+            createModel("Models/Furnishments/Bottles/ScrollBottle/ScrollBottle_blend.obj", "", 40f, 2.5f, 310f, 0f, 1f, 1f);            
+            createModel("Models/Furnishments/Bottles/Bottle1/Bottle1.j3o", "", -623f, 3.2f, 400f, 2f, 0.2f, 12f);
+            createModel("Models/Furnishments/Bottles/Bottle1/Bottle1.j3o", "", -625f, 3.2f, 390f, 1f, -0.1f, 12f);
             
             createModel("Models/Furnishments/Candle/candle_model.obj", "", -650f, 11f, -660f, 1f, 0f, 0.01f);
             createModel("Models/Furnishments/Candle/candle_model.obj", "", -658f, 11f, -655f, 1f, 0f, 0.01f);
             
     //vegetation in fixed places (e.g. around structures to avoid overlapping each other)
                 createModel("Models/Vegetation/Trees/Palm/Palm01_blender.obj", "", -650, 5f, 350, 2f, 0f, 5f);
-                createModel("Models/Vegetation/Trees/Palm/Palm02_blender.obj", "", -641, 5f, 200, 2f, 0f, 5f);
+                createModel("Models/Vegetation/Trees/Palm/Palm02_blender.obj", "", -640, 5f, 190, 2f, 0f, 5f);
                 createModel("Models/Vegetation/Trees/Palm/Palm03_blender.obj", "", -643, 5f, 220, 2f, 0f, 5f);
+                createModel("Models/Vegetation/Trees/Palm/Palm01_blender.obj", "", -643, 5f, 210, 2f, 0f, 5f);
                 createModel("Models/Vegetation/Trees/BeachPalm/BeachPalm.obj", "", -642, 5f, 380, 2f, 0f, 5f);
                 createModel("Models/Vegetation/Trees/QueensPalm/QueensPalm.obj", "", -645, 5f, 400, 2f, 0f, 5f);
                 createModel("Models/Vegetation/Trees/Banana/Banana01_blend.obj", "", -665, 5f, 420, 2f, 0f, 5f);
@@ -218,13 +231,14 @@ public class S2M0_shore extends BaseAppState {
                 
             
                 createModelRandomized("Models/Naturals/StoneAndPlants/StonePlants_blend.obj", "", 5, 600, 670, 7f, 100, -100, 5, 0f, 1f, 2f);
-                createModelRandomized("Models/Others/Grave/cross_blend.obj", "", 3, -670, -680, 11f, -650, -670, 2, 0.2f, 1f, 2f);
+                createModelRandomized("Models/Others/Grave/cross_blend.obj", "", 3, -660, -680, 11f, -645, -650, 2, 0.2f, 1f, 2f);
                 
             //buildings
             
             //campfire
-            createModel("Models/Others/Campfire/campfire_logs.j3o", "", -620f, 7f, 250f, 1f, 0f, 5f);
-            createModel("Models/Others/Campfire/campfire_stones.obj", "", -620f, 7f, 250f, 1f, 0, 5f);
+                createModel("Models/Others/Campfire/Campfire.j3o", "", -620f, 7f, 250f, 0f, 0, 4f);
+                
+            
             //crates and barrels            
             createModel("Models/Others/Crate/Crate-04.obj", "Models/Others/Crate/wood_crate.j3m", -640f, 7f, 250f, 1f, 0f, 5f);
             createModel("Models/Others/Crate/Crate-01.obj", "Models/Others/Crate/wood_crate.j3m", -640f, 11f, 237f, 0f, 0f, 5f);
@@ -295,7 +309,7 @@ public class S2M0_shore extends BaseAppState {
         
         
     
-    public void createPrecipitationParticleEffects(){
+    public void createGraveParticleEffects(){
         
             particle1 = new ParticleEmitter("Emitter", ParticleMesh.Type.Triangle, 30);
             Material precipitationMaterial = new Material(this.app.getAssetManager(), "Common/MatDefs/Misc/Particle.j3md");
@@ -303,14 +317,14 @@ public class S2M0_shore extends BaseAppState {
             particle1.setMaterial(precipitationMaterial);
             particle1.setImagesX(2);
             particle1.setImagesY(2);
-            particle1.getParticleInfluencer().setInitialVelocity(new Vector3f(-1,-1,0));
+            particle1.getParticleInfluencer().setInitialVelocity(new Vector3f(0,-1,0));
             particle1.getParticleInfluencer().setVelocityVariation(1.0f);
-            particle1.setLocalTranslation(-650, 50, 250);
+            particle1.setLocalTranslation(-674, 30, -651);
             particle1.setStartSize(0.5f);
             particle1.setEndSize(1.0f);
             //particle1.setGravity(1,1,1);
             particle1.setLowLife(10f);
-            particle1.setHighLife(30f);
+            particle1.setHighLife(40f);
             particle1.setNumParticles(200);
             particle1.setParticlesPerSec(10);
 
@@ -336,7 +350,6 @@ public class S2M0_shore extends BaseAppState {
             pemitter.getParticleInfluencer().setInitialVelocity(new Vector3f(0,1,0));
             pemitter.getParticleInfluencer().setVelocityVariation(0.3f);
             pemitter.setLocalTranslation(-620f, 7.5f, 250f);
-            
             pemitter.setNumParticles(200);
             pemitter.setParticlesPerSec(20);
             this.app.getRootNode().attachChild(pemitter);
@@ -348,11 +361,17 @@ public class S2M0_shore extends BaseAppState {
             sun = new DirectionalLight();
             //sun.setColor(ColorRGBA.White);
             sun.setDirection(new Vector3f(1.0f, -1.5f, -4.0f).normalizeLocal());
-            
             this.app.getRootNode().addLight(sun);
-            
-        }
+         }
         
+        public void lightModel(float xpos, float ypos, float zpos){
+        PointLight model_light = new PointLight();
+        model_light.setColor(ColorRGBA.Yellow);
+        model_light.setRadius(4f);
+        model_light.setPosition(new Vector3f(xpos, ypos, zpos));
+        this.app.getRootNode().addLight(model_light);
+        
+        }
         
         public void createAdvancedWater(){
             //post process water
@@ -396,6 +415,7 @@ public class S2M0_shore extends BaseAppState {
          
             bulletAppState.getPhysicsSpace().add(app.getStateManager().getState(GameAppState.class).levelRigidBody);
             bulletAppState.getPhysicsSpace().add(app.getStateManager().getState(GameAppState.class).firstPersonPlayer);
+            
     }
 
     public Vector3f getInitPlayerPosition() {
