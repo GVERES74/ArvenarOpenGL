@@ -82,7 +82,7 @@ public class GameAppState extends BaseAppState
     
     S2M0_shore levelS2M0; 
     
-    private float playerHeight = 6f;
+    private float playerHeight = 5f;
     private int playerhp = 100;
     public String target = "Valami";
     private String pressedKey;

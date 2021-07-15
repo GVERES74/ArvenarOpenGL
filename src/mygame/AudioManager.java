@@ -21,12 +21,11 @@ public class AudioManager {
     
      public static void loadMusic(String filepath, boolean start, boolean looping){
         musicPlayer = new AudioNode(app.getAssetManager(), filepath, AudioData.DataType.Stream);
+        musicPlayer.stop();
         musicPlayer.setDirectional(false);
         musicPlayer.setPositional(false);
         musicPlayer.setLooping(looping);
-        if (musicPlayer.getStatus() == musicPlayer.getStatus().Playing){
-        musicPlayer.stop();
-        }
+        
         app.getRootNode().attachChild(musicPlayer);
         
         if (start == true){

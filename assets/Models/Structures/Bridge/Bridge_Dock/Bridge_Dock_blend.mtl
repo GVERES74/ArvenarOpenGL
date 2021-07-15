@@ -1,17 +1,5 @@
 # Blender MTL File: 'Bridge_Dock.blend'
-# Material Count: 6
-
-newmtl Log
-Ns 96.078431
-Ka 1.000000 1.000000 1.000000
-Kd 0.640000 0.640000 0.640000
-Ks 0.500000 0.500000 0.500000
-Ke 0.000000 0.000000 0.000000
-Ni 1.000000
-d 1.000000
-illum 9
-map_Kd bridge.png
-map_d bridge.png
+# Material Count: 5
 
 newmtl Plank1
 Ns 96.078431
@@ -22,8 +10,8 @@ Ke 0.000000 0.000000 0.000000
 Ni 1.000000
 d 1.000000
 illum 1
-map_Kd bridge.png
-map_d bridge.png
+map_Kd diffuse.tga
+map_d bridge_N.png
 
 newmtl Plank2
 Ns 96.078431
@@ -34,8 +22,8 @@ Ke 0.000000 0.000000 0.000000
 Ni 1.000000
 d 1.000000
 illum 1
-map_Kd bridge.png
-map_d bridge.png
+map_Kd diffuse.tga
+map_d bridge_N.png
 
 newmtl Plank3
 Ns 96.078431
@@ -46,8 +34,8 @@ Ke 0.000000 0.000000 0.000000
 Ni 1.000000
 d 1.000000
 illum 1
-map_Kd bridge.png
-map_d bridge.png
+map_Kd diffuse.tga
+map_d bridge_N.png
 
 newmtl Plank4
 Ns 96.078431
@@ -59,7 +47,7 @@ Ni 1.000000
 d 1.000000
 illum 1
 map_Kd bridge.png
-map_d bridge.png
+map_d bridge_N.png
 
 newmtl Plank5
 Ns 96.078431
@@ -71,4 +59,4 @@ Ni 1.000000
 d 1.000000
 illum 9
 map_Kd bridge.png
-map_d bridge.png
+map_d bridge_N.png

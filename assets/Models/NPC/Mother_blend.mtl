@@ -10,5 +10,5 @@ Ke 0.000000 0.000000 0.000000
 Ni 1.000000
 d 1.000000
 illum 2
-map_Bump -bm 0.350042 9_meshes_Merge_Normal.png
-map_Kd 9_meshes_Merge_Diffuse.png
+map_Bump -bm 0.350042 C:\\Users\\te332168\\Documents\\JMonkeyProjects\\ArvenarGL\\assets\\NPC\\9_meshes_Merge_Normal.png
+map_Kd C:\\Users\\te332168\\Documents\\JMonkeyProjects\\ArvenarGL\\assets\\NPC\\9_meshes_Merge_Diffuse.png

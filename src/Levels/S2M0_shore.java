@@ -143,13 +143,12 @@ public class S2M0_shore extends BaseAppState {
         updateAdvancedWater(tpf);
         
         if ((camera.getLocation().x < -600f) && (camera.getLocation().z > 200f)){
-                 AudioManager.musicPlayer.play();
+                AudioManager.musicPlayer.play();
         }
         
         if ((camera.getLocation().x < -650f) && (camera.getLocation().z < -630f)){
-                 AudioManager.musicPlayer.stop();
-                 AudioManager.loadMusic("Music/Soundtracks/Audience.ogg", true, false);
-               
+                 
+                AudioManager.loadMusic("Music/Soundtracks/Audience.ogg", true, false);
         }
 
         //TODO: implement behavior during runtime    
@@ -157,28 +156,34 @@ public class S2M0_shore extends BaseAppState {
     
      public void loadSceneModels(){
     //boat and ship
-            createModel("Models/Vehicles/Ship/Ship.obj", "", 150f, 6f, 900f, 0f, 0f, 10f);
-            modelManager.createModel("Models/Vehicles/Boat/RowBoat2/Boat2_blend.obj", "", 30f, 2f, 320f, 3f, -  0.1f, 0.2f);
+            createModel("Models/Vehicles/Ship/Pirate/Pship.j3o", "", 150f, 13f, 850f, 0f, 0f, 5f);
+            createModel("Models/Vehicles/Boat/RowBoat2/Boat2.j3o", "", 30f, 2f, 320f, 3f, -0.1f, 0.2f);
+            createModel("Models/Vehicles/Boat/RowBoat1/Boat.j3o", "", 526f, 0.8f, 484f, 3f, 0f, 5f);
             
             createModel("Models/NPC/Mother_blend.obj", "", -675, 11f, -640f, 2f, 0f, 4f);
+            createModel("Models/Animals/Birds/Seagull1/Seagull1.j3o", "", 554f, 6f, 485f, 0f, 0f, 2f);
+            createModel("Models/Animals/Birds/Seagull2/Seagull2.j3o", "", 526f, 2.5f, 489.5f, 0f, 0f, 2f);
+            
             
             
     //schacks, huts, jettys
             //createModel("Models/Structures/Jetty02/Jetty02_blend.obj", "", -600f, 1f, 400f, 0f, 0f, 2f);
-            createModel("Models/Structures/Bridge/Turn_Bridge/Turn_Bridge_blend.obj", "", -590f, 3f, 400f, 2f, 0f, 1f);
+            createModel("Models/Structures/Bridge/Turn_Bridge/Turn_Bridge.j3o", "", -590f, 3.6f, 400f, -1.3f, 0f, 1f);
+            createModel("Models/Structures/Bridge/Turn_Bridge/Stairs.j3o", "", -607f, 1.1f, 404.7f, -1.3f, 0f, 1f);
+            createModel("Models/Structures/Bridge/Bridge_Dock/Bridge_Dock.j3o", "", 554f, 5f, 480f, -0.5f, 0f, 1f);
             createModel("Models/Structures/JungleHut01/JungleHut01_blend.obj", "", -650f, 15f, 250f, 1f, 0f, 2f);
             createModel("Models/Structures/AfricaDock01/AfricaDock01_blend.obj", "", -640f, 11f, 256f, -0.5f, 0f, 2f);
             createModel("Models/Structures/JungleHut02/JungleHut02_blend.obj", "", -100f, 13f, -600f, 0f, 0f, 2f);
             createModel("Models/Structures/AfricaDock01/AfricaDock01_blend.obj", "", -97f, 11f, -620f, 1.5f, 0f, 2f);
             createModel("Models/Structures/Shack01/Shack01_blend.obj", "", 650f, 7f, 0f, 3f, 0f, 3f);
-            createModel("Models/Structures/Bridge/Bridge_Dock/Bridge_Dock_blend.obj", "", 554f, 5f, 485f, 0f, 0f, 1f);
+            
             createModel("Models/Structures/Bench/Bench_blend.obj", "", -675f, 11f, -640f, -1f, 0f, 5f);
             createModel("Models/Structures/Bench/BeerBench_blend.obj", "", -655f, 14f, 253f, 1f, 0f, 0.8f);
             createModel("Models/Structures/Hammock/Hammock_blend.obj", "", -644f, 9f, 209f, 1.5f, 0f, 6f);
             
             
             createModel("Models/Furnishments/Bottles/BoxedBottles1/Bottles.j3o", "", -655f, 17f, 253f, 1f, 0f, 0.5f);
-            createModel("Models/Furnishments/Bottles/BoxedBottles2/Bottles2.j3o", "", -640f, 8.6f, 280f, 0f, 0f, 0.2f);
+            createModel("Models/Furnishments/Bottles/BoxedBottles2/Bottles2.j3o", "", -640f, 8f, 280f, 0f, 0f, 0.6f);
             createModel("Models/Furnishments/Bottles/ScrollBottle/ScrollBottle_blend.obj", "", 40f, 2.5f, 310f, 0f, 1f, 0.8f);            
             createModel("Models/Furnishments/Bottles/Bottle1/Bottle1.j3o", "", -623f, 3.2f, 400f, 2f, 0.2f, 12f);
             createModel("Models/Furnishments/Bottles/Bottle1/Bottle1.j3o", "", -625f, 3.2f, 390f, 1f, -0.1f, 12f);
@@ -190,7 +195,7 @@ public class S2M0_shore extends BaseAppState {
                 createModel("Models/Vegetation/Trees/Palm/Palm01_blender.obj", "", -650, 5f, 350, 2f, 0f, 5f);
                 createModel("Models/Vegetation/Trees/Palm/Palm02_blender.obj", "", -640, 5f, 190, 1f, 0f, 4f);
                 createModel("Models/Vegetation/Trees/Palm/Palm03_blender.obj", "", -644, 5f, 220, 0f, 0f, 5f);
-                createModel("Models/Vegetation/Trees/Palm/Palm01_blender.obj", "", -642, 5f, 201, 1.5f, 0f, 5f);
+                createModel("Models/Vegetation/Trees/Palm/Palm01_blender.obj", "", -642, 5f, 201.7f, 1.5f, 0f, 5f);
                 createModel("Models/Vegetation/Trees/BeachPalm/BeachPalm.obj", "", -642, 5f, 380, 1f, 0f, 5f);
                 createModel("Models/Vegetation/Trees/QueensPalm/QueensPalm.obj", "", -645, 5f, 400, 2f, 0f, 5f);
                 createModel("Models/Vegetation/Trees/Banana/Banana01_blend.obj", "", -665, 5f, 420, 0f, 0f, 5f);
@@ -238,7 +243,7 @@ public class S2M0_shore extends BaseAppState {
             //buildings
             
             //campfire
-                createModel("Models/Others/Campfire/Campfire.j3o", "", -620f, 7f, 250f, 0f, 0, 4f);
+                createModel("Models/Others/Campfire/Campfire.j3o", "", -632f, 7f, 288f, 0f, 0, 4f);
                 
             
             //crates and barrels            
@@ -246,9 +251,9 @@ public class S2M0_shore extends BaseAppState {
             createModel("Models/Others/Crate/Crate-01.obj", "Models/Others/Crate/wood_crate.j3m", -640f, 11f, 237f, 0f, 0f, 5f);
             createModel("Models/Others/Crate/Crate-02.obj", "Models/Others/Crate/wood_crate.j3m", -640f, 7f, 275f, 1f, 0f, 5f);
             createModel("Models/Others/Crate/Crate-03.obj", "Models/Others/Crate/wood_crate.j3m", -640f, 7f, 280f, 1f, 0f, 5f);
-            createModel("Models/Others/Crate/Crate-05.obj", "Models/Others/Crate/wood_crate.j3m", -595f, 4f, 401f, -1f, 0f, 5f);
+            createModel("Models/Others/Crate/Crate-05.obj", "Models/Others/Crate/wood_crate.j3m", -582f, 3.8f, 402f, -1f, 0f, 5f);
             createModel("Models/Others/Crate/Crate-05.obj", "Models/Others/Crate/wood_crate.j3m", -620f, 3f, 390f, 1f, 0f, 6f);
-            createModel("Models/Others/Crate/Crate_jetty_01.j3o", "Models/Others/Crate/Crate_jetty_01.j3m", -595f, 4.1f, 398f, 0f, 0f, 2f);
+            createModel("Models/Others/Crate/Crate_jetty_01.j3o", "Models/Others/Crate/Crate_jetty_01.j3m", -585f, 3.8f, 398f, 0f, 0f, 2f);
             
             
             createModel("Models/Others/Cage/CageBed.j3o", "Models/Others/Cage/cage.j3m", -650f, 7f, 300f, -2f, 0f, 3f);
@@ -343,15 +348,15 @@ public class S2M0_shore extends BaseAppState {
             pemitter.setMaterial(dropMaterial);
             pemitter.setImagesX(2);
             pemitter.setImagesY(2);
-            pemitter.setEndColor(  new ColorRGBA(1f, 0f, 0f, 1f));   // red
+            pemitter.setEndColor(new ColorRGBA(1f, 0f, 0.5f, 0.8f));   // red
             pemitter.setStartColor(new ColorRGBA(1f, 1f, 0f, 0.5f)); // yellow
             pemitter.setLowLife(1.5f);
-            pemitter.setHighLife(4.5f);
+            pemitter.setHighLife(3.5f);
             pemitter.setStartSize(0.5f);
             pemitter.setEndSize(0.1f);
             pemitter.getParticleInfluencer().setInitialVelocity(new Vector3f(0,1,0));
             pemitter.getParticleInfluencer().setVelocityVariation(0.3f);
-            pemitter.setLocalTranslation(-620f, 7.5f, 250f);
+            pemitter.setLocalTranslation(-632f, 7.5f, 288f);
             pemitter.setNumParticles(200);
             pemitter.setParticlesPerSec(20);
             this.app.getRootNode().attachChild(pemitter);
@@ -361,19 +366,10 @@ public class S2M0_shore extends BaseAppState {
         public void sunShine(){
             
             sun = new DirectionalLight();
-            //sun.setColor(ColorRGBA.White);
-            sun.setDirection(new Vector3f(1.0f, -1.5f, -4.0f).normalizeLocal());
+            sun.setDirection(new Vector3f(-4.0f, -1.5f, -4.0f).normalizeLocal());
             this.app.getRootNode().addLight(sun);
          }
         
-        public void lightModel(float xpos, float ypos, float zpos){
-        PointLight model_light = new PointLight();
-        model_light.setColor(ColorRGBA.Yellow);
-        model_light.setRadius(4f);
-        model_light.setPosition(new Vector3f(xpos, ypos, zpos));
-        this.app.getRootNode().addLight(model_light);
-        
-        }
         
         public void createAdvancedWater(){
             //post process water
