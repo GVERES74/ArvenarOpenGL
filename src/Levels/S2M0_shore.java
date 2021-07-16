@@ -157,7 +157,7 @@ public class S2M0_shore extends BaseAppState {
      public void loadSceneModels(){
     //boat and ship
             createModel("Models/Vehicles/Ship/Pirate/Pship.j3o", "", 150f, 13f, 850f, 0f, 0f, 5f);
-            createModel("Models/Vehicles/Boat/RowBoat2/Boat2.j3o", "", 30f, 2f, 320f, 3f, -0.1f, 0.2f);
+            modelManager.createModel("Models/Vehicles/Boat/RowBoat2/Boat2.j3o", "", 30f, 2f, 320f, 3f, -0.1f, 0.2f);
             createModel("Models/Vehicles/Boat/RowBoat1/Boat.j3o", "", 526f, 0.8f, 484f, 3f, 0f, 5f);
             
             createModel("Models/NPC/Mother_blend.obj", "", -675, 11f, -640f, 2f, 0f, 4f);
@@ -234,7 +234,13 @@ public class S2M0_shore extends BaseAppState {
                 createModelRandomized("Models/Vegetation/Flowers/Lily/Lily_blend.obj", "", 5, -680, -600, 7f, 200, 300, 5, 0f, 0.1f, 0.2f);
                 createModelRandomized("Models/Vegetation/Flowers/Lily/Lily_blend.obj", "", 5, 600, 670, 7f, 50, -50, 5, 0f, 0.1f, 0.2f);                    
 
-                createModelRandomized("Models/Vegetation/Grasses/BeachGrass/BeachGrass_blend.obj", "", 100, -650, 620, 6f, 200, 260, 5, 0f, 8f, 10f);                    
+                createModelRandomized("Models/Vegetation/Grasses/BeachGrass/BeachGrass_blend.obj", "", 100, -650, 620, 6f, 200, 260, 5, 0f, 8f, 10f);
+                createModelRandomized("Models/Vegetation/Grasses/Kelp_01/Kelp_blend.obj", "", 25, 530, 0, -5f, 450, 500, 5, 0f, 1f, 2f);
+                createModelRandomized("Models/Vegetation/Grasses/Kelp_01/Kelp_blend.obj", "", 25, 0, -580, -5f, 330, 430, 5, 0f, 1f, 2f);
+                createModelRandomized("Models/Vegetation/Grasses/SeaPlant01/SeaPlant01_blend.obj", "", 50, 530, -580, -5f, 330, 430, 5, 0f, 0.5f, 1f);
+                createModelRandomized("Models/Vegetation/Grasses/SeaPlant_02/SeaPlant02_blend.obj", "", 50, 530, -580, -5f, 330, 430, 5, 0f, 0.5f, 1f);
+                createModelRandomized("Models/Vegetation/Grasses/waterReeds_01/WaterReeds_blend.obj", "", 50, 530, -580, -5f, 330, 430, 5, 0f, 0.5f, 1f);
+                //createModelRandomized("Models/Vegetation/Grasses/ReefBase01/ReefBase_blend.obj", "", 50, 530, -580, -5f, 330, 430, 5, 0f, 0.5f, 1f);
                 
             
                 createModelRandomized("Models/Naturals/StoneAndPlants/StonePlants_blend.obj", "", 5, 600, 670, 7f, 100, -100, 5, 0f, 1f, 2f);
@@ -413,7 +419,7 @@ public class S2M0_shore extends BaseAppState {
          
             bulletAppState.getPhysicsSpace().add(app.getStateManager().getState(GameAppState.class).levelRigidBody);
             bulletAppState.getPhysicsSpace().add(app.getStateManager().getState(GameAppState.class).firstPersonPlayer);
-            
+                        
     }
 
     public Vector3f getInitPlayerPosition() {

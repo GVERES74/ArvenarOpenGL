@@ -156,7 +156,7 @@ public class S0M0_valley extends BaseAppState {
             createModel("Models/Vegetation/Trees/Pine/snow_pine_tree.obj", "Models/Vegetation/Trees/Pine/pine_snow_half.j3m", -8f, 0.0f, -8f, 0f, 0.1f);
             createModel("Models/Vegetation/Trees/Pine/snow_pine_tree.obj", "Models/Vegetation/Trees/Pine/pine_snow_none.j3m", -20f, 0.0f, -3f, 0f, 0.1f);
                         
-            createModel("Models/Structures/Jetty02/Tropical_Jetty02.j3o", "Models/Structures/Jetty02/Tropical_Jetty02.j3m", 3f, -0.7f, -13f, -1.5f, 0.5f);
+            createModel("Models/Structures/Jetty02/Jetty02_blend.obj", "", 3f, -0.7f, -13f, -1.5f, 0.5f);
             createModel("Models/Structures/Bridge/Wooden_Bridge/WoodenBridge_blend.obj", "", 21f, 1f, -13f, -1f, 4f);
             createModel("Models/Vegetation/Grasses/BeachGrass/BeachGrass_blend.obj", "", 20f, -0.5f, -15f, 0f, 5f);
             createModel("Models/Vegetation/Grasses/BeachGrass/BeachGrass_blend.obj", "", 22f, -0.2f, -11f, 1f, 6f);

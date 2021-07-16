@@ -63,11 +63,12 @@ public class GameAppState extends BaseAppState
    
         
     private Spatial level;
-    private BulletAppState bulletAppState;
+    public static BulletAppState bulletAppState;
         
     public RigidBodyControl levelRigidBody;
+    public RigidBodyControl modelRigidBody;
     CapsuleCollisionShape capsulePlayer;        
-    public CharacterControl firstPersonPlayer;
+    public static CharacterControl firstPersonPlayer;
     
     
     private Vector3f walkDirection = new Vector3f();
@@ -105,8 +106,8 @@ public class GameAppState extends BaseAppState
         app.setPauseOnLostFocus(true);
         
         bulletAppState = new BulletAppState();
-                
         app.getStateManager().attach(bulletAppState);
+        
         
         //init levels
         levelS2M0 = new S2M0_shore();
@@ -153,6 +154,7 @@ public class GameAppState extends BaseAppState
             CollisionShape sceneLevel = CollisionShapeFactory.createMeshShape(level); 
             levelRigidBody = new RigidBodyControl(sceneLevel,0);
                 level.addControl(levelRigidBody);
+                
                 
 
         }
@@ -344,11 +346,6 @@ public class GameAppState extends BaseAppState
         return level;
     }
 
-    public CharacterControl getFirstPersonPlayer() {
-        return firstPersonPlayer;
-    }
-    
-    
         
     
     public String getTarget(){

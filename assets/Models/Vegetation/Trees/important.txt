@@ -1,0 +1,2 @@
+Vegetation alpha and transparency only work if blend file is converted to obj.
+j3o file format doesn't work
