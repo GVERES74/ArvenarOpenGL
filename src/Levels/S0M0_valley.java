@@ -11,10 +11,6 @@ import com.jme3.app.SimpleApplication;
 import com.jme3.app.state.AppStateManager;
 import com.jme3.app.state.BaseAppState;
 import com.jme3.asset.AssetManager;
-import com.jme3.bullet.BulletAppState;
-import com.jme3.bullet.collision.shapes.CollisionShape;
-import com.jme3.bullet.control.RigidBodyControl;
-import com.jme3.bullet.util.CollisionShapeFactory;
 import com.jme3.effect.ParticleEmitter;
 import com.jme3.effect.ParticleMesh;
 import com.jme3.effect.shapes.EmitterBoxShape;
@@ -33,9 +29,7 @@ import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
 import com.jme3.water.SimpleWaterProcessor;
 import mygame.AudioManager;
-import mygame.GameAppState;
-import mygame.MainMenuScreen;
-import mygame.PlayGame;
+import mygame.ModelManager;
 
 /**
  *  
@@ -54,20 +48,18 @@ public class S0M0_valley extends BaseAppState {
     private InputManager      inputManager;
     private RenderManager     renderManager;
     
+    private ModelManager modelManager; 
+    
     private ViewPort          viewPort;
     private Camera camera;
         
-    
-    private BulletAppState bulletAppState;
         
-    private RigidBodyControl modelRigidBody;
-    
     ParticleEmitter particle1;
     SimpleWaterProcessor waterCreator;
     //for Post process water effectprocessor
     
     private DirectionalLight sun;
-    private Vector3f initPlayerPosition = new Vector3f(1f,2f,5f);
+    private Vector3f initPlayerPosition = new Vector3f(0f,5f,-50f);
         
     @Override
     protected void initialize(Application app) {
@@ -79,27 +71,19 @@ public class S0M0_valley extends BaseAppState {
         this.viewPort     = this.app.getViewPort();
         this.camera       = this.app.getCamera();
         
-        bulletAppState = new BulletAppState();
+        modelManager = new ModelManager(); 
                 
-        app.getStateManager().attach(bulletAppState);
-    
-    //It is technically safe to do all initialization and cleanup in the         
-        //onEnable()/onDisable() methods. Choosing to use initialize() and         
-        //cleanup() for this is a matter of performance specifics for the         
-        //implementor.        
-        //TODO: initialize your AppState, e.g. attach spatials to rootNode    
-        
+        loadLevel();
         createSun();
         loadSceneModels();
-        createSimpleWater(35, 25, -15f, -1f, -12f);
-        createSimpleWater(10, 20, 22f, -0.5f, 5f);
-        
+                
         createPrecipitation();
         createFirePlace();
         createWaterStream();
         createWaterFall();
-        
         loadAmbientSound();
+        createSimpleWater(100, 100, -50f, 2.5f, -30f);
+        createSimpleWater(50, 120, 55f, 2.2f, 12f);
         
     }
 
@@ -138,70 +122,45 @@ public class S0M0_valley extends BaseAppState {
     
     @Override
     public void update(float tpf) {
-    
-       
-        
-//        particle1.setLocalTranslation(
-//                new Vector3f(
-//                        maingameappstate.firstPersonPlayer.getPhysicsLocation().x, 
-//                        50, 
-//                        maingameappstate.firstPersonPlayer.getPhysicsLocation().z)
-//        );
-        //TODO: implement behavior during runtime    
+
     }
     
      public void loadSceneModels(){
             
-            createModel("Models/Vegetation/Trees/Pine/snow_pine_tree.obj", "Models/Vegetation/Trees/Pine/pine_snow_full.j3m", 30f, 0.1f, -28, 0f, 0.1f);
-            createModel("Models/Vegetation/Trees/Pine/snow_pine_tree.obj", "Models/Vegetation/Trees/Pine/pine_snow_half.j3m", -8f, 0.0f, -8f, 0f, 0.1f);
-            createModel("Models/Vegetation/Trees/Pine/snow_pine_tree.obj", "Models/Vegetation/Trees/Pine/pine_snow_none.j3m", -20f, 0.0f, -3f, 0f, 0.1f);
+            
+            modelManager.createModel("Models/Vegetation/Trees/Pine/Pine_Snow_Full.obj", "", 90f, 0.5f, -75f, 2f, 0f, 3f);
+            modelManager.createModel("Models/Vegetation/Trees/Pine/Pine_Snow_Half.obj", "", -55f, 0.5f, 22f, 2f, 0f, 3f);
+            modelManager.createModel("Models/Vegetation/Trees/Pine/Pine_Snow_None.obj", "", -40f, 0.5f, -3f, 2f, 0f, 2f);
                         
-            createModel("Models/Structures/Jetty02/Jetty02_blend.obj", "", 3f, -0.7f, -13f, -1.5f, 0.5f);
-            createModel("Models/Structures/Bridge/Wooden_Bridge/WoodenBridge_blend.obj", "", 21f, 1f, -13f, -1f, 4f);
-            createModel("Models/Vegetation/Grasses/BeachGrass/BeachGrass_blend.obj", "", 20f, -0.5f, -15f, 0f, 5f);
-            createModel("Models/Vegetation/Grasses/BeachGrass/BeachGrass_blend.obj", "", 22f, -0.2f, -11f, 1f, 6f);
-            createModel("Models/Vegetation/Grasses/BeachGrass/BeachGrass_blend.obj", "", 19f, 0.0f, -18f, 2f, 4f);
-            createModel("Models/Naturals/Stones/stone_largeA.obj", "", 21.5f, -0.65f, -10.5f, -3f, 2f);
+            modelManager.createModel("Models/Structures/Jetty02/Jetty02_blend.obj", "", -2f, 2f, -35f, -1.5f, 0f, 2f);
+            modelManager.createModel("Models/Structures/Bridge/Wooden_Bridge/WoodenBridge_blend.obj", "", 60f, 4.3f, -40f, -1f, 0f, 7f);
+            modelManager.createModel("Models/Vegetation/Grasses/BeachGrass/BeachGrass_blend.obj", "", 20f, 3f, -15f, 0f, 0f, 5f);
+            modelManager.createModel("Models/Vegetation/Grasses/BeachGrass/BeachGrass_blend.obj", "", 22f, 3f, -11f, 1f, 0f, 6f);
+            modelManager.createModel("Models/Vegetation/Grasses/BeachGrass/BeachGrass_blend.obj", "", 19f, 3f, -18f, 2f, 0f, 4f);
+            modelManager.createModel("Models/Naturals/Stones/stone_largeA.obj", "", 56f, 1.5f, -44f, -3f, 0f, 2f);
             
-            createModel("Models/Others/Campfire/campfire_logs.j3o", "", 0f, -0.1f, 0f, 0f, 2f);
-            createModel("Models/Others/Campfire/campfire_stones.j3o", "", 0f, -0.1f, 0f, 0f, 3f);
-            createModel("Models/Others/Floorbed/bed_floor.obj", "Models/Others/Floorbed/bed_floor.j3m", 1f, 0f, 3f, 1f, 3f);
+            modelManager.createModel("Models/Others/Campfire/campfire_logs.j3o", "", -1.5f, 3f, 11f, 0f, 0f, 6f);
+            modelManager.createModel("Models/Others/Campfire/campfire_stones.j3o", "", -1.5f, 3f, 11f, 0f, 0f, 6f);
+            modelManager.createModel("Models/Others/Floorbed/bed_floor.obj", "Models/Others/Floorbed/bed_floor.j3m", 8f, 3f, 14f, 1f, 0f, 6f);
             
-            createModel("Models/Others/Crate/Crate-04.obj", "Models/Others/Crate/wood_crate.j3m", 28f, 0.0f, -20f, 1f, 2f);
-            createModel("Models/Others/Crate/Crate-01.obj", "Models/Others/Crate/wood_crate.j3m", 28f, 1.05f, -20f, 3f, 2f);
-            createModel("Models/Others/Crate/Crate-02.obj", "Models/Others/Crate/wood_crate.j3m", 26f, 0.0f, -18f, 6f, 2f);
-            createModel("Models/Others/Crate/Crate-03.obj", "Models/Others/Crate/wood_crate.j3m", 27f, 0.0f, -22f, 19f, 2f);
-            createModel("Models/Others/Crate/Crate-05.obj", "Models/Others/Crate/wood_crate.j3m", 20f, 0.0f, -8f, 0f, 2f);
-            createModel("Models/Others/Crate/Crate-05.obj", "Models/Others/Crate/wood_crate.j3m", 26f, 0.3f, -18f, 0f, 3f);
+            modelManager.createModel("Models/Others/Crate/Crate04_blend.obj", "", 70f, 3f, -60f, 1f, 0f, 5f);
+            modelManager.createModel("Models/Others/Crate/Crate-01_blend.obj", "", 80f, 3f, -55f, 3f, 0f, 5f);
+            modelManager.createModel("Models/Others/Crate/Crate02_blend.obj", "", 70f, 3f, -75f, 6f, 0f, 5f);
+            modelManager.createModel("Models/Others/Crate/Crate03_blend.obj", "", 85f, 3f, -65f, 19f, 0f, 5f);
+            modelManager.createModel("Models/Others/Crate/Crate05_blend.obj", "", 20f, 3f, -8f, 0f, 0f, 5f);
+            modelManager.createModel("Models/Others/Crate/Crate05_blend.obj", "", 60f, 3f, -30f, 0f, 0f, 4f);
             
-            createModel("Models/Others/Cage/CageBed.j3o", "Models/Others/Cage/cage.j3m", 25f, 0.0f, -24f, 2f, 1f);
+            modelManager.createModel("Models/Others/Cage/CageBed.j3o", "", 65f, 3f, -80f, 2f, 0f, 2f);
 
-            createModel("Models/Others/Barrel/mini_wood_barrel.obj", "Models/Others/Barrel/wood_barrel.j3m", 20f, 0.0f, -19f, 2f, 0.02f);
-            createModel("Models/Others/Barrel/mini_wood_barrel.obj", "Models/Others/Barrel/wood_barrel.j3m", 19f, 0.0f, -23f, 2f, 0.02f);
+            modelManager.createModel("Models/Others/Barrel/mini_wood_barrel.obj", "Models/Others/Barrel/wood_barrel.j3m", 57f, 3f, -61f, 2f, 0f, 0.05f);
+            modelManager.createModel("Models/Others/Barrel/mini_wood_barrel.obj", "Models/Others/Barrel/wood_barrel.j3m", 60f, 3f, -70f, 2f, 0f, 0.05f);
             
-            createModel("Models/Others/Stool/DwarfBeerBarrel.j3o", "Models/Others/Stool/stool.j3m", 2f, 0f, -3f, 0f, 0.5f);
-            createModel("Models/Others/Tent/tent_detailedOpen.j3o", "", -5f, 0f, 3f, 90f, 6f);
-            createModel("Models/Others/Signpost/sign.obj", "Models/Others/Signpost/signpost.j3m", 21f, -0.25f, -8f, -1f, 3f);
+            modelManager.createModel("Models/Others/Stool/DwarfBeerBarrel.j3o", "Models/Others/Stool/stool.j3m", 2f, 3f, -3f, 0f, 0f, 1f);
+            modelManager.createModel("Models/Others/Tent/tent_detailedOpen.j3o", "", -20f, 3f, 10f, 90f, 0f, 18f);
+            modelManager.createModel("Models/Others/Signpost/SignPost_blend.obj", "", 57f, 3f, -25f, -1f, 0f, 6f);
         }   
     
-        public void createModel(String modelfile, String custmatfile, float xpos, float ypos, float zpos, float yaw, float scale){
-            Spatial model = assetManager.loadModel(modelfile);
-            float pitch = 0f; //can be parameter
-                        
-            if(custmatfile !=""){   
-            model.setMaterial(assetManager.loadMaterial(custmatfile));
-            }                    
-            model.setLocalTranslation(xpos, ypos, zpos);
-            model.rotate(pitch, yaw, 0);
-            model.setLocalScale(scale);
-            
-            CollisionShape sceneModel = CollisionShapeFactory.createMeshShape(model);
-            modelRigidBody = new RigidBodyControl(sceneModel,0);
-            model.addControl(modelRigidBody);
-            
-            bulletAppState.getPhysicsSpace().add(modelRigidBody);
-            rootNode.attachChild(model);
-        }
+        
     
      public void createPrecipitation(){
             ParticleEmitter pemitter = new ParticleEmitter("Emitter", ParticleMesh.Type.Triangle, 30);
@@ -240,7 +199,7 @@ public class S0M0_valley extends BaseAppState {
             pemitter.setEndSize(0.1f);
             pemitter.getParticleInfluencer().setInitialVelocity(new Vector3f(0,1,0));
             pemitter.getParticleInfluencer().setVelocityVariation(0.3f);
-            pemitter.setLocalTranslation(0f, 0.3f, 0f);
+            pemitter.setLocalTranslation(-1.5f, 3f, 11f);
             pemitter.setNumParticles(200);
             pemitter.setParticlesPerSec(20);
             rootNode.attachChild(pemitter);
@@ -257,16 +216,16 @@ public class S0M0_valley extends BaseAppState {
             wstreamEmitter.setEndColor(ColorRGBA.Blue);   
             wstreamEmitter.setStartColor(ColorRGBA.Cyan); 
             wstreamEmitter.setLowLife(5f);
-            wstreamEmitter.setHighLife(20f);
+            wstreamEmitter.setHighLife(40f);
             wstreamEmitter.setStartSize(1.0f);
             wstreamEmitter.setEndSize(0.1f);
             wstreamEmitter.setGravity(0, 0, 0);
-            wstreamEmitter.getParticleInfluencer().setInitialVelocity(new Vector3f(-1,-0.1f,-1));
+            wstreamEmitter.getParticleInfluencer().setInitialVelocity(new Vector3f(-1f,-0.1f,-1));
             wstreamEmitter.getParticleInfluencer().setVelocityVariation(0.1f);
-            wstreamEmitter.setLocalTranslation(32f, -0.7f, -2f);
+            wstreamEmitter.setLocalTranslation(90f, 3f, -5f);
             wstreamEmitter.setNumParticles(300);
-            wstreamEmitter.setParticlesPerSec(50);
-            wstreamEmitter.setShape(new EmitterBoxShape(new Vector3f(-1f,-0.5f,-1f),new Vector3f(1f,0.5f,1f)));
+            wstreamEmitter.setParticlesPerSec(100);
+            wstreamEmitter.setShape(new EmitterBoxShape(new Vector3f(-1f,-1f,-1f),new Vector3f(1f,1f,1f)));
             rootNode.attachChild(wstreamEmitter);
             
         }
@@ -287,7 +246,7 @@ public class S0M0_valley extends BaseAppState {
             waterfallemitter.setGravity(0, 0, 0);
             waterfallemitter.getParticleInfluencer().setInitialVelocity(new Vector3f(-0.8f,-2f,0.0f));
             waterfallemitter.getParticleInfluencer().setVelocityVariation(0.1f);
-            waterfallemitter.setLocalTranslation(35.5f, 10f, -3f);
+            waterfallemitter.setLocalTranslation(102f, 20f, -5f);
             waterfallemitter.setNumParticles(300);
             waterfallemitter.setParticlesPerSec(50);
             waterfallemitter.setShape(new EmitterBoxShape(new Vector3f(-1f,-1f,-1f),new Vector3f(1f,1f,1f)));
@@ -298,11 +257,9 @@ public class S0M0_valley extends BaseAppState {
         public void createSimpleWater(float width, float depth, float posx, float posy, float posz){
             
                                 waterCreator = new SimpleWaterProcessor(assetManager);
-                                waterCreator.setReflectionScene(
-                                    PlayGame.getPlayGameApp().getStateManager().getState(MainMenuScreen.class).getLevel()     
-                                 );
+                                waterCreator.setReflectionScene(level_S0M0);
             
-            Vector3f waterLocation = new Vector3f(0,-6,0);
+            Vector3f waterLocation = new Vector3f(0,3,0);
             
             waterCreator.setPlane(new Plane(Vector3f.UNIT_Y, waterLocation.dot(Vector3f.UNIT_Y)));
             viewPort.addProcessor(waterCreator);
@@ -333,6 +290,14 @@ public class S0M0_valley extends BaseAppState {
             AudioManager.playSound("Sounds/Ambient/Water/waterfall_01.ogg", false, false, true, 1000f, 0.5f, 32f, 2f, -2f); 
             AudioManager.playSound("Sounds/Ambient/Fire/torchBurning.ogg", false, true, true, 1000f, 1.0f, 0f, 0f, 0f); 
         }
+        
+        public void loadLevel() {
+        
+        level_S0M0 = this.app.getAssetManager().loadModel("Scenes/S0_Snowenar/S0M0_walley.j3o");
+        level_S0M0.setLocalTranslation(0f, 3f, 0f);
+        this.app.getRootNode().attachChild(level_S0M0);
+                
+        }
        
         
         public Spatial getLevel() {
@@ -343,13 +308,5 @@ public class S0M0_valley extends BaseAppState {
             return initPlayerPosition;        
         }
 
-
-
-        public void addScenePhysics(){
-
-                bulletAppState.getPhysicsSpace().add(app.getStateManager().getState(GameAppState.class).levelRigidBody);
-                bulletAppState.getPhysicsSpace().add(app.getStateManager().getState(GameAppState.class).firstPersonPlayer);
-        }
-        
         
 }

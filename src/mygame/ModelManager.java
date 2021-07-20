@@ -6,10 +6,8 @@
 package mygame;
 
 import com.jme3.app.Application;
-import com.jme3.app.SimpleApplication;
-import com.jme3.app.state.AppStateManager;
 import com.jme3.app.state.BaseAppState;
-import com.jme3.bullet.BulletAppState;
+
 import com.jme3.bullet.collision.shapes.CollisionShape;
 import com.jme3.bullet.control.RigidBodyControl;
 import com.jme3.bullet.util.CollisionShapeFactory;
@@ -27,6 +25,7 @@ public class ModelManager extends BaseAppState{
     public RigidBodyControl modelRigidBody;
     private Spatial model;
     
+    
     public void createModel(String modelfile, String matfile, float xpos, float ypos, float zpos, float yaw, float pitch, float scale){
             model = app.getAssetManager().loadModel(modelfile);
                                     
@@ -40,7 +39,8 @@ public class ModelManager extends BaseAppState{
             CollisionShape sceneModel = CollisionShapeFactory.createMeshShape(model);
             modelRigidBody = new RigidBodyControl(sceneModel,0);
             model.addControl(modelRigidBody);
-            GameAppState.bulletAppState.getPhysicsSpace().add(modelRigidBody);
+            
+            PlayGame.bulletAppState.getPhysicsSpace().add(modelRigidBody); //uses the main GameAppState's BulletAppState
             app.getRootNode().attachChild(model);
         }
         
@@ -67,7 +67,7 @@ public class ModelManager extends BaseAppState{
             CollisionShape sceneModel = CollisionShapeFactory.createMeshShape(model);
             modelRigidBody = new RigidBodyControl(sceneModel,0);
             model.addControl(modelRigidBody);
-            
+            PlayGame.bulletAppState.getPhysicsSpace().add(modelRigidBody); //uses the main GameAppState's BulletAppState
             app.getRootNode().attachChild(model);
             }
         }
@@ -75,7 +75,6 @@ public class ModelManager extends BaseAppState{
     @Override
     protected void initialize(Application app) {
                 
-        
     }
 
     @Override

@@ -64,7 +64,7 @@ public class MainMenuScreenController extends BaseAppState implements ScreenCont
         System.out.println("Play Game button pressed...");
         
         PlayGame.detachAppState(PlayGame.mainMenu_screen);
-        PlayGame.attachAppState(PlayGame.gameplayState);       
+        PlayGame.attachAppState(PlayGame.gameMode_screen);       
         AudioManager.musicPlayer.stop();
         AudioManager.soundPlayer.stop();                       
     }

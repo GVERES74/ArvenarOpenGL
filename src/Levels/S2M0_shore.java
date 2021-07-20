@@ -11,17 +11,11 @@ import com.jme3.app.SimpleApplication;
 import com.jme3.app.state.AppStateManager;
 import com.jme3.app.state.BaseAppState;
 import com.jme3.asset.AssetManager;
-import com.jme3.bullet.BulletAppState;
-import com.jme3.bullet.collision.shapes.CollisionShape;
-import com.jme3.bullet.control.RigidBodyControl;
-import com.jme3.bullet.util.CollisionShapeFactory;
 import com.jme3.effect.ParticleEmitter;
 import com.jme3.effect.ParticleMesh;
 import com.jme3.effect.shapes.EmitterBoxShape;
 import com.jme3.input.InputManager;
 import com.jme3.light.DirectionalLight;
-import com.jme3.light.Light;
-import com.jme3.light.PointLight;
 import com.jme3.material.Material;
 import com.jme3.math.ColorRGBA;
 import com.jme3.math.FastMath;
@@ -35,7 +29,6 @@ import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
 import com.jme3.water.WaterFilter;
 import mygame.AudioManager;
-import mygame.GameAppState;
 import mygame.ModelManager;
 
 /**
@@ -58,11 +51,8 @@ public class S2M0_shore extends BaseAppState {
     private ViewPort          viewPort;
     private Camera camera;
     
-    
-    private BulletAppState bulletAppState;
     private ModelManager modelManager;    
-    private RigidBodyControl modelRigidBody;
-    
+        
     ParticleEmitter particle1;
     //for Post process water effectprocessor
     private FilterPostProcessor ppFilter;
@@ -84,21 +74,12 @@ public class S2M0_shore extends BaseAppState {
         this.inputManager = this.app.getInputManager();
         this.viewPort     = this.app.getViewPort();
         this.camera       = this.app.getCamera();
-        
-        bulletAppState = new BulletAppState();
+                
         modelManager = new ModelManager();
                 
-        app.getStateManager().attach(bulletAppState);
         app.setPauseOnLostFocus(true);
-    
-    //It is technically safe to do all initialization and cleanup in the         
-        //onEnable()/onDisable() methods. Choosing to use initialize() and         
-        //cleanup() for this is a matter of performance specifics for the         
-        //implementor.        
-        //TODO: initialize your AppState, e.g. attach spatials to rootNode    
         
         loadSceneModels();
-        addScenePhysics();
         sunShine();
         createAdvancedWater();
         loadAudio();
@@ -156,170 +137,117 @@ public class S2M0_shore extends BaseAppState {
     
      public void loadSceneModels(){
     //boat and ship
-            createModel("Models/Vehicles/Ship/Pirate/Pship.j3o", "", 150f, 13f, 850f, 0f, 0f, 5f);
+            modelManager.createModel("Models/Vehicles/Ship/Pirate/Pship.j3o", "", 150f, 13f, 850f, 0f, 0f, 5f);
             modelManager.createModel("Models/Vehicles/Boat/RowBoat2/Boat2.j3o", "", 30f, 2f, 320f, 3f, -0.1f, 0.2f);
-            createModel("Models/Vehicles/Boat/RowBoat1/Boat.j3o", "", 526f, 0.8f, 484f, 3f, 0f, 5f);
+            modelManager.createModel("Models/Vehicles/Boat/RowBoat1/Boat.j3o", "", 526f, 0.8f, 484f, 3f, 0f, 5f);
             
-            createModel("Models/NPC/Mother_blend.obj", "", -675, 11f, -640f, 2f, 0f, 4f);
-            createModel("Models/Animals/Birds/Seagull1/Seagull1.j3o", "", 554f, 6f, 485f, 0f, 0f, 2f);
-            createModel("Models/Animals/Birds/Seagull2/Seagull2.j3o", "", 526f, 2.5f, 489.5f, 0f, 0f, 2f);
+            modelManager.createModel("Models/NPC/Mother_blend.obj", "", -675, 11f, -640f, 2f, 0f, 4f);
+            modelManager.createModel("Models/Animals/Birds/Seagull1/Seagull1.j3o", "", 554f, 6f, 485f, 0f, 0f, 2f);
+            modelManager.createModel("Models/Animals/Birds/Seagull2/Seagull2.j3o", "", 526f, 2.5f, 489.5f, 0f, 0f, 2f);
             
             
             
     //schacks, huts, jettys
             //createModel("Models/Structures/Jetty02/Jetty02_blend.obj", "", -600f, 1f, 400f, 0f, 0f, 2f);
-            createModel("Models/Structures/Bridge/Turn_Bridge/Turn_Bridge.j3o", "", -590f, 3.6f, 400f, -1.3f, 0f, 1f);
-            createModel("Models/Structures/Bridge/Turn_Bridge/Stairs.j3o", "", -607f, 1.1f, 404.7f, -1.3f, 0f, 1f);
-            createModel("Models/Structures/Bridge/Bridge_Dock/Bridge_Dock.j3o", "", 554f, 5f, 480f, -0.5f, 0f, 1f);
-            createModel("Models/Structures/JungleHut01/JungleHut01_blend.obj", "", -650f, 15f, 250f, 1f, 0f, 2f);
-            createModel("Models/Structures/AfricaDock01/AfricaDock01_blend.obj", "", -640f, 11f, 256f, -0.5f, 0f, 2f);
-            createModel("Models/Structures/JungleHut02/JungleHut02_blend.obj", "", -100f, 13f, -600f, 0f, 0f, 2f);
-            createModel("Models/Structures/AfricaDock01/AfricaDock01_blend.obj", "", -97f, 11f, -620f, 1.5f, 0f, 2f);
-            createModel("Models/Structures/Shack01/Shack01_blend.obj", "", 650f, 7f, 0f, 3f, 0f, 3f);
+            modelManager.createModel("Models/Structures/Bridge/Turn_Bridge/Turn_Bridge.j3o", "", -590f, 3.6f, 400f, -1.3f, 0f, 1f);
+            modelManager.createModel("Models/Structures/Bridge/Turn_Bridge/Stairs.j3o", "", -607f, 1.1f, 404.7f, -1.3f, 0f, 1f);
+            modelManager.createModel("Models/Structures/Bridge/Bridge_Dock/Bridge_Dock.j3o", "", 554f, 5f, 480f, -0.5f, 0f, 1f);
+            modelManager.createModel("Models/Structures/JungleHut01/JungleHut01_blend.obj", "", -650f, 15f, 250f, 1f, 0f, 2f);
+            modelManager.createModel("Models/Structures/AfricaDock01/AfricaDock01_blend.obj", "", -640f, 11f, 256f, -0.5f, 0f, 2f);
+            modelManager.createModel("Models/Structures/JungleHut02/JungleHut02_blend.obj", "", -100f, 13f, -600f, 0f, 0f, 2f);
+            modelManager.createModel("Models/Structures/AfricaDock01/AfricaDock01_blend.obj", "", -97f, 11f, -620f, 1.5f, 0f, 2f);
+            modelManager.createModel("Models/Structures/Shack01/Shack01_blend.obj", "", 650f, 7f, 0f, 3f, 0f, 3f);
             
-            createModel("Models/Structures/Bench/Bench_blend.obj", "", -675f, 11f, -640f, -1f, 0f, 5f);
-            createModel("Models/Structures/Bench/BeerBench_blend.obj", "", -655f, 14f, 253f, 1f, 0f, 0.8f);
-            createModel("Models/Structures/Hammock/Hammock_blend.obj", "", -644f, 9f, 209f, 1.5f, 0f, 6f);
+            modelManager.createModel("Models/Structures/Bench/Bench_blend.obj", "", -675f, 11f, -640f, -1f, 0f, 5f);
+            modelManager.createModel("Models/Structures/Bench/BeerBench_blend.obj", "", -655f, 14f, 253f, 1f, 0f, 0.8f);
+            modelManager.createModel("Models/Structures/Hammock/Hammock_blend.obj", "", -644f, 9f, 209f, 1.5f, 0f, 6f);
             
             
-            createModel("Models/Furnishments/Bottles/BoxedBottles1/Bottles.j3o", "", -655f, 17f, 253f, 1f, 0f, 0.5f);
-            createModel("Models/Furnishments/Bottles/BoxedBottles2/Bottles2.j3o", "", -640f, 8f, 280f, 0f, 0f, 0.6f);
-            createModel("Models/Furnishments/Bottles/ScrollBottle/ScrollBottle_blend.obj", "", 40f, 2.5f, 310f, 0f, 1f, 0.8f);            
-            createModel("Models/Furnishments/Bottles/Bottle1/Bottle1.j3o", "", -623f, 3.2f, 400f, 2f, 0.2f, 12f);
-            createModel("Models/Furnishments/Bottles/Bottle1/Bottle1.j3o", "", -625f, 3.2f, 390f, 1f, -0.1f, 12f);
+            modelManager.createModel("Models/Furnishments/Bottles/BoxedBottles1/Bottles.j3o", "", -655f, 17f, 253f, 1f, 0f, 0.5f);
+            modelManager.createModel("Models/Furnishments/Bottles/BoxedBottles2/Bottles2.j3o", "", -640f, 8f, 280f, 0f, 0f, 0.6f);
+            modelManager.createModel("Models/Furnishments/Bottles/ScrollBottle/ScrollBottle_blend.obj", "", 40f, 2.5f, 310f, 0f, 1f, 0.8f);            
+            modelManager.createModel("Models/Furnishments/Bottles/Bottle1/Bottle1.j3o", "", -623f, 3.2f, 400f, 2f, 0.2f, 12f);
+            modelManager.createModel("Models/Furnishments/Bottles/Bottle1/Bottle1.j3o", "", -625f, 3.2f, 390f, 1f, -0.1f, 12f);
             
-            createModel("Models/Furnishments/Candle/candle_model.obj", "", -650f, 11f, -660f, 1f, 0f, 0.01f);
-            createModel("Models/Furnishments/Candle/candle_model.obj", "", -658f, 11f, -655f, 1f, 0f, 0.01f);
+            modelManager.createModel("Models/Furnishments/Candle/candle_model.obj", "", -650f, 11f, -660f, 1f, 0f, 0.01f);
+            modelManager.createModel("Models/Furnishments/Candle/candle_model.obj", "", -658f, 11f, -655f, 1f, 0f, 0.01f);
             
     //vegetation in fixed places (e.g. around structures to avoid overlapping each other)
-                createModel("Models/Vegetation/Trees/Palm/Palm01_blender.obj", "", -650, 5f, 350, 2f, 0f, 5f);
-                createModel("Models/Vegetation/Trees/Palm/Palm02_blender.obj", "", -640, 5f, 190, 1f, 0f, 4f);
-                createModel("Models/Vegetation/Trees/Palm/Palm03_blender.obj", "", -644, 5f, 220, 0f, 0f, 5f);
-                createModel("Models/Vegetation/Trees/Palm/Palm01_blender.obj", "", -642, 5f, 201.7f, 1.5f, 0f, 5f);
-                createModel("Models/Vegetation/Trees/BeachPalm/BeachPalm.obj", "", -642, 5f, 380, 1f, 0f, 5f);
-                createModel("Models/Vegetation/Trees/QueensPalm/QueensPalm.obj", "", -645, 5f, 400, 2f, 0f, 5f);
-                createModel("Models/Vegetation/Trees/Banana/Banana01_blend.obj", "", -665, 5f, 420, 0f, 0f, 5f);
+                modelManager.createModel("Models/Vegetation/Trees/Palm/Palm01_blender.obj", "", -650, 5f, 350, 2f, 0f, 5f);
+                modelManager.createModel("Models/Vegetation/Trees/Palm/Palm02_blender.obj", "", -640, 5f, 190, 1f, 0f, 4f);
+                modelManager.createModel("Models/Vegetation/Trees/Palm/Palm03_blender.obj", "", -644, 5f, 220, 0f, 0f, 5f);
+                modelManager.createModel("Models/Vegetation/Trees/Palm/Palm01_blender.obj", "", -642, 5f, 201.7f, 1.5f, 0f, 5f);
+                modelManager.createModel("Models/Vegetation/Trees/BeachPalm/BeachPalm.obj", "", -642, 5f, 380, 1f, 0f, 5f);
+                modelManager.createModel("Models/Vegetation/Trees/QueensPalm/QueensPalm.obj", "", -645, 5f, 400, 2f, 0f, 5f);
+                modelManager.createModel("Models/Vegetation/Trees/Banana/Banana01_blend.obj", "", -665, 5f, 420, 0f, 0f, 5f);
                 
                 
     //randomly placed models (trees, bushes also with random scale)
-                createModelRandomized("Models/Vegetation/Trees/Cecropia/Cecropia_blender.obj", "", 20, -600, 700, 7f, -200, -650, 5, 0f, 3f, 5f);
-                createModelRandomized("Models/Vegetation/Trees/CiabaTree_01/CiabaTree_01_blender.obj", "", 20, -600, 700, 7f, -200, -650, 5, 0f, 3f, 5f);
-                createModelRandomized("Models/Vegetation/Trees/CiabaTree_01/CiabaTree_02_blender.obj", "", 20, -600, 700, 7f, -200, -650, 5, 0f, 3f, 5f);  
-                createModelRandomized("Models/Vegetation/Trees/CopalTree/CopalTree_blender.obj", "", 20, -600, 700, 7f, -200, -650, 5, 0f, 3f, 5f);
+                modelManager.createModelRandomized("Models/Vegetation/Trees/Cecropia/Cecropia_blender.obj", "", 20, -600, 700, 7f, -200, -650, 5, 0f, 3f, 5f);
+                modelManager.createModelRandomized("Models/Vegetation/Trees/CiabaTree_01/CiabaTree_01_blender.obj", "", 20, -600, 700, 7f, -200, -650, 5, 0f, 3f, 5f);
+                modelManager.createModelRandomized("Models/Vegetation/Trees/CiabaTree_01/CiabaTree_02_blender.obj", "", 20, -600, 700, 7f, -200, -650, 5, 0f, 3f, 5f);  
+                modelManager.createModelRandomized("Models/Vegetation/Trees/CopalTree/CopalTree_blender.obj", "", 20, -600, 700, 7f, -200, -650, 5, 0f, 3f, 5f);
                 
-                createModelRandomized("Models/Vegetation/Trees/Palm/Palm01_blender.obj", "", 20, -650, 700, 5f, 250, -200, 5, 0f, 3f, 5f);
-                createModelRandomized("Models/Vegetation/Trees/Palm/Palm02_blender.obj", "", 20, -650, 700, 5f, 250, -200, 5, 0f, 3f, 5f);
-                createModelRandomized("Models/Vegetation/Trees/Palm/Palm03_blender.obj", "", 20, -650, 700, 5f, 250, -200, 5, 0f, 3f, 5f);
-                createModelRandomized("Models/Vegetation/Trees/BeachPalm/BeachPalm.obj", "", 20, -650, 700, 5f, 250, -200, 5, 0f, 3f, 5f);
-                createModelRandomized("Models/Vegetation/Trees/QueensPalm/QueensPalm.obj", "", 20, -650, 700, 5f, 250, -200, 5, 0f, 3f, 5f);
-                createModelRandomized("Models/Vegetation/Trees/Banana/Banana01_blend.obj", "", 20, -650, 700, 5f, 250, -200, 5, 0f, 3f, 5f);
+                modelManager.createModelRandomized("Models/Vegetation/Trees/Palm/Palm01_blender.obj", "", 20, -650, 700, 5f, 250, -200, 5, 0f, 3f, 5f);
+                modelManager.createModelRandomized("Models/Vegetation/Trees/Palm/Palm02_blender.obj", "", 20, -650, 700, 5f, 250, -200, 5, 0f, 3f, 5f);
+                modelManager.createModelRandomized("Models/Vegetation/Trees/Palm/Palm03_blender.obj", "", 20, -650, 700, 5f, 250, -200, 5, 0f, 3f, 5f);
+                modelManager.createModelRandomized("Models/Vegetation/Trees/BeachPalm/BeachPalm.obj", "", 20, -650, 700, 5f, 250, -200, 5, 0f, 3f, 5f);
+                modelManager.createModelRandomized("Models/Vegetation/Trees/QueensPalm/QueensPalm.obj", "", 20, -650, 700, 5f, 250, -200, 5, 0f, 3f, 5f);
+                modelManager.createModelRandomized("Models/Vegetation/Trees/Banana/Banana01_blend.obj", "", 20, -650, 700, 5f, 250, -200, 5, 0f, 3f, 5f);
                 
-//                createModelRandomized("Models/Vegetation/Trees/Monstera/monstera3.j3o", "Models/Vegetation/Trees/Monstera/Monstera.j3m", 10, -650, 700, 5f, 250, -200, 5, 0f, 1f, 3f);
-                createModelRandomized("Models/Vegetation/Trees/Jasmin/Jasmin_blend.obj", "", 3, -650, -680, 10f, -650, -670, 5, 0f, 0.5f, 1f);
-                createModelRandomized("Models/Vegetation/Trees/Cactus/cactus.obj", "Models/Vegetation/Trees/Cactus/cactus.j3m", 10, 400, 650, 7f, 50, -600, 5, 0f, 0.04f, 0.06f);
+                modelManager.createModelRandomized("Models/Vegetation/Trees/Jasmin/Jasmin_blend.obj", "", 3, -650, -680, 10f, -650, -670, 5, 0f, 0.5f, 1f);
+                modelManager.createModelRandomized("Models/Vegetation/Trees/Cactus/cactus.obj", "Models/Vegetation/Trees/Cactus/cactus.j3m", 10, 400, 650, 7f, 50, -600, 5, 0f, 0.04f, 0.06f);
                 
-                createModelRandomized("Models/Vegetation/Bushes/Bush01/Bush01_blend.obj", "", 10, -650, 700, 7f, -200, -650, 5, 0f, 0.5f, 1f);                    
-                createModelRandomized("Models/Vegetation/Plants/TropicFern/TropicFern01_blend.obj", "", 10, -650, 700, 7f, 250, -650, 5, 0f, 2f, 4f);
-                createModelRandomized("Models/Vegetation/Plants/BirdsNest/BirdsNest_blend.obj", "", 10, -650, 700, 7f, 250, -650, 5, 0f, 2f, 4f);                    
-                createModelRandomized("Models/Vegetation/Plants/Phila01/Phila01_blend.obj", "", 10, -650, 700, 7f, 250, -650, 5, 0f, 2f, 4f);                    
-                createModelRandomized("Models/Vegetation/Plants/ElephantEar/ElephantEar_blend.obj", "", 10, -650, 700, 7f, 250, -650, 5, 0f, 2f, 4f);
-                createModelRandomized("Models/Vegetation/Plants/Bamboo01/Bamboo01_blender.obj", "", 10, -650, 700, 6f, 250, -650, 5, 0f, 1f, 2f);                    
+                modelManager.createModelRandomized("Models/Vegetation/Bushes/Bush01/Bush01_blend.obj", "", 10, -650, 700, 7f, -200, -650, 5, 0f, 0.5f, 1f);                    
+                modelManager.createModelRandomized("Models/Vegetation/Plants/TropicFern/TropicFern01_blend.obj", "", 10, -650, 700, 7f, 250, -650, 5, 0f, 2f, 4f);
+                modelManager.createModelRandomized("Models/Vegetation/Plants/BirdsNest/BirdsNest_blend.obj", "", 10, -650, 700, 7f, 250, -650, 5, 0f, 2f, 4f);                    
+                modelManager.createModelRandomized("Models/Vegetation/Plants/Phila01/Phila01_blend.obj", "", 10, -650, 700, 7f, 250, -650, 5, 0f, 2f, 4f);                    
+                modelManager.createModelRandomized("Models/Vegetation/Plants/ElephantEar/ElephantEar_blend.obj", "", 10, -650, 700, 7f, 250, -650, 5, 0f, 2f, 4f);
+                modelManager.createModelRandomized("Models/Vegetation/Plants/Bamboo01/Bamboo01_blender.obj", "", 10, -650, 700, 6f, 250, -650, 5, 0f, 1f, 2f);                    
                 
-                createModelRandomized("Models/Vegetation/Plants/Chamomille/PlantsFBX.j3o", "Models/Vegetation/Plants/Chamomille/Chamomille.j3m", 5, -630, -680, 7f, 200, 300, 5, 0f, 4f, 6f);                    
-                createModelRandomized("Models/Vegetation/Plants/ForestPlant01/Plant1.j3o", "Models/Vegetation/Plants/ForestPlant01/Plant1.j3m", 5, -630, -680, 7f, 200, 300, 5, 0f, 0.5f, 1f);
-                createModelRandomized("Models/Vegetation/Plants/ForestPlant01/Plant1.j3o", "Models/Vegetation/Plants/ForestPlant01/Plant1.j3m", 10, 600, 670, 7f, 50, -50, 5, 0f, 0.5f, 1f);
-                createModelRandomized("Models/Vegetation/Plants/Pumpkin/pumpkin_plant.obj", "Models/Vegetation/Plants/Pumpkin/pumpkin.j3m", 5, -660, -680, 7f, 270, 300, 5, 0f, 0.05f, 0.1f);
-                createModelRandomized("Models/Vegetation/Plants/Vine/vine.obj", "Models/Vegetation/Plants/Vine/vine.j3m", 5, -660, -680, 7f, 200, 290, 5, 0f, 0.08f, 0.1f);                    
+                modelManager.createModelRandomized("Models/Vegetation/Plants/Chamomille/PlantsFBX.j3o", "Models/Vegetation/Plants/Chamomille/Chamomille.j3m", 5, -630, -680, 7f, 200, 300, 5, 0f, 4f, 6f);                    
+                modelManager.createModelRandomized("Models/Vegetation/Plants/ForestPlant01/Plant1.j3o", "Models/Vegetation/Plants/ForestPlant01/Plant1.j3m", 5, -630, -680, 7f, 200, 300, 5, 0f, 0.5f, 1f);
+                modelManager.createModelRandomized("Models/Vegetation/Plants/ForestPlant01/Plant1.j3o", "Models/Vegetation/Plants/ForestPlant01/Plant1.j3m", 10, 600, 670, 7f, 50, -50, 5, 0f, 0.5f, 1f);
+                modelManager.createModelRandomized("Models/Vegetation/Plants/Pumpkin/pumpkin_plant.obj", "Models/Vegetation/Plants/Pumpkin/pumpkin.j3m", 5, -660, -680, 7f, 270, 300, 5, 0f, 0.05f, 0.1f);
+                modelManager.createModelRandomized("Models/Vegetation/Plants/Vine/vine.obj", "Models/Vegetation/Plants/Vine/vine.j3m", 5, -660, -680, 7f, 200, 290, 5, 0f, 0.08f, 0.1f);                    
                   
-                createModelRandomized("Models/Vegetation/Flowers/Lily/Lily_blend.obj", "", 5, -680, -600, 7f, 200, 300, 5, 0f, 0.1f, 0.2f);
-                createModelRandomized("Models/Vegetation/Flowers/Lily/Lily_blend.obj", "", 5, 600, 670, 7f, 50, -50, 5, 0f, 0.1f, 0.2f);                    
+                modelManager.createModelRandomized("Models/Vegetation/Flowers/Lily/Lily_blend.obj", "", 5, -680, -600, 7f, 200, 300, 5, 0f, 0.1f, 0.2f);
+                modelManager.createModelRandomized("Models/Vegetation/Flowers/Lily/Lily_blend.obj", "", 5, 600, 670, 7f, 50, -50, 5, 0f, 0.1f, 0.2f);                    
 
-                createModelRandomized("Models/Vegetation/Grasses/BeachGrass/BeachGrass_blend.obj", "", 100, -650, 620, 6f, 200, 260, 5, 0f, 8f, 10f);
-                createModelRandomized("Models/Vegetation/Grasses/Kelp_01/Kelp_blend.obj", "", 25, 530, 0, -5f, 450, 500, 5, 0f, 1f, 2f);
-                createModelRandomized("Models/Vegetation/Grasses/Kelp_01/Kelp_blend.obj", "", 25, 0, -580, -5f, 330, 430, 5, 0f, 1f, 2f);
-                createModelRandomized("Models/Vegetation/Grasses/SeaPlant01/SeaPlant01_blend.obj", "", 50, 530, -580, -5f, 330, 430, 5, 0f, 0.5f, 1f);
-                createModelRandomized("Models/Vegetation/Grasses/SeaPlant_02/SeaPlant02_blend.obj", "", 50, 530, -580, -5f, 330, 430, 5, 0f, 0.5f, 1f);
-                createModelRandomized("Models/Vegetation/Grasses/waterReeds_01/WaterReeds_blend.obj", "", 50, 530, -580, -5f, 330, 430, 5, 0f, 0.5f, 1f);
+                modelManager.createModelRandomized("Models/Vegetation/Grasses/BeachGrass/BeachGrass_blend.obj", "", 100, -650, 620, 6f, 200, 260, 5, 0f, 8f, 10f);
+                modelManager.createModelRandomized("Models/Vegetation/Grasses/Kelp_01/Kelp_blend.obj", "", 25, 530, 0, -5f, 450, 500, 5, 0f, 1f, 2f);
+                modelManager.createModelRandomized("Models/Vegetation/Grasses/Kelp_01/Kelp_blend.obj", "", 25, 0, -580, -5f, 330, 430, 5, 0f, 1f, 2f);
+                modelManager.createModelRandomized("Models/Vegetation/Grasses/SeaPlant01/SeaPlant01_blend.obj", "", 50, 530, -580, -5f, 330, 430, 5, 0f, 0.5f, 1f);
+                modelManager.createModelRandomized("Models/Vegetation/Grasses/SeaPlant_02/SeaPlant02_blend.obj", "", 50, 530, -580, -5f, 330, 430, 5, 0f, 0.5f, 1f);
+                modelManager.createModelRandomized("Models/Vegetation/Grasses/waterReeds_01/WaterReeds_blend.obj", "", 50, 530, -580, -5f, 330, 430, 5, 0f, 0.5f, 1f);
                 //createModelRandomized("Models/Vegetation/Grasses/ReefBase01/ReefBase_blend.obj", "", 50, 530, -580, -5f, 330, 430, 5, 0f, 0.5f, 1f);
                 
             
-                createModelRandomized("Models/Naturals/StoneAndPlants/StonePlants_blend.obj", "", 5, 600, 670, 7f, 100, -100, 5, 0f, 1f, 2f);
-                createModelRandomized("Models/Others/Grave/cross_blend.obj", "", 3, -660, -680, 11f, -645, -650, 2, 0.2f, 1f, 2f);
+                modelManager.createModelRandomized("Models/Naturals/StoneAndPlants/StonePlants_blend.obj", "", 5, 600, 670, 7f, 100, -100, 5, 0f, 1f, 2f);
+                modelManager.createModelRandomized("Models/Others/Grave/cross_blend.obj", "", 3, -660, -680, 11f, -645, -650, 2, 0.2f, 1f, 2f);
                 
             //buildings
             
             //campfire
-                createModel("Models/Others/Campfire/Campfire.j3o", "", -632f, 7f, 288f, 0f, 0, 4f);
+                modelManager.createModel("Models/Others/Campfire/Campfire.j3o", "", -632f, 7f, 288f, 0f, 0, 4f);
                 
             
             //crates and barrels            
-            createModel("Models/Others/Crate/Crate-04.obj", "Models/Others/Crate/wood_crate.j3m", -640f, 7f, 250f, 1f, 0f, 5f);
-            createModel("Models/Others/Crate/Crate-01.obj", "Models/Others/Crate/wood_crate.j3m", -640f, 11f, 237f, 0f, 0f, 5f);
-            createModel("Models/Others/Crate/Crate-02.obj", "Models/Others/Crate/wood_crate.j3m", -640f, 7f, 275f, 1f, 0f, 5f);
-            createModel("Models/Others/Crate/Crate-03.obj", "Models/Others/Crate/wood_crate.j3m", -640f, 7f, 280f, 1f, 0f, 5f);
-            createModel("Models/Others/Crate/Crate-05.obj", "Models/Others/Crate/wood_crate.j3m", -582f, 3.8f, 402f, -1f, 0f, 5f);
-            createModel("Models/Others/Crate/Crate-05.obj", "Models/Others/Crate/wood_crate.j3m", -620f, 3f, 390f, 1f, 0f, 6f);
-            createModel("Models/Others/Crate/Crate_jetty_01.j3o", "Models/Others/Crate/Crate_jetty_01.j3m", -585f, 3.8f, 398f, 0f, 0f, 2f);
+            modelManager.createModel("Models/Others/Crate/Crate04_blend.obj", "", -640f, 7f, 250f, 1f, 0f, 5f);
+            modelManager.createModel("Models/Others/Crate/Crate-01_blend.obj", "", -640f, 11f, 237f, 0f, 0f, 5f);
+            modelManager.createModel("Models/Others/Crate/Crate02_blend.obj", "", -640f, 7f, 275f, 1f, 0f, 5f);
+            modelManager.createModel("Models/Others/Crate/Crate03_blend.obj", "", -640f, 7f, 280f, 1f, 0f, 5f);
+            modelManager.createModel("Models/Others/Crate/Crate05_blend.obj", "", -582f, 3.8f, 402f, -1f, 0f, 5f);
+            modelManager.createModel("Models/Others/Crate/Crate05_blend.obj", "", -620f, 3f, 390f, 1f, 0f, 6f);
+            modelManager.createModel("Models/Others/Crate/Crate03_blend.obj", "", -585f, 3.8f, 398f, 0f, 0f, 2f);
             
             
-            createModel("Models/Others/Cage/CageBed.j3o", "Models/Others/Cage/cage.j3m", -650f, 7f, 300f, -2f, 0f, 3f);
+            modelManager.createModel("Models/Others/Cage/CageBed.j3o", "", -650f, 7f, 300f, -2f, 0f, 3f);
                         
-            createModel("Models/Others/Barrel/mini_wood_barrel.obj", "Models/Others/Barrel/wood_barrel.j3m", -645f, 7f, 237f, 1f, 0f, 0.05f);
-            createModel("Models/Others/Barrel/mini_wood_barrel.obj", "Models/Others/Barrel/wood_barrel.j3m", -640f, 7f, 237f, 1f, 0f, 0.05f);
+            modelManager.createModel("Models/Others/Barrel/mini_wood_barrel.obj", "Models/Others/Barrel/wood_barrel.j3m", -645f, 7f, 237f, 1f, 0f, 0.05f);
+            modelManager.createModel("Models/Others/Barrel/mini_wood_barrel.obj", "Models/Others/Barrel/wood_barrel.j3m", -640f, 7f, 237f, 1f, 0f, 0.05f);
         }   
     
-        
-        
-        
-    
-    public void createModel(String modelfile, String matfile, float xpos, float ypos, float zpos, float yaw, float pitch, float scale){
-            Spatial model = assetManager.loadModel(modelfile);
-                        
-            if(matfile !=""){   
-            model.setMaterial(assetManager.loadMaterial(matfile));
-            }
-            
-            model.setLocalTranslation(xpos, ypos, zpos);
-            model.rotate(pitch, yaw, 0);
-            model.setLocalScale(scale);
-            
-            CollisionShape sceneModel = CollisionShapeFactory.createMeshShape(model);
-            modelRigidBody = new RigidBodyControl(sceneModel,0);
-            model.addControl(modelRigidBody);
-            
-            bulletAppState.getPhysicsSpace().add(modelRigidBody);
-            rootNode.attachChild(model);
-        }
-        
-        public void createModelRandomized(String modelfile, String matfile, int count, int minx, int maxx, float ypos, int minz, int maxz, int yaw, float pitch, float minscale, float maxscale){
-                            
-            
-            for (int i = 0; i < count; i++){
-                Spatial model = assetManager.loadModel(modelfile);
-                       
-                    if(matfile !=""){   
-                    model.setMaterial(assetManager.loadMaterial(matfile));
-                }    
-                
-                int x = FastMath.nextRandomInt(minx, maxx);
-                int z = FastMath.nextRandomInt(minz, maxz);
-                int ydeg = FastMath.nextRandomInt(0, yaw);
-                float modelsize = (FastMath.nextRandomFloat()%(maxscale-minscale)+minscale);
-                
-                    model.setLocalTranslation(x, ypos, z);
-                    model.rotate(pitch, ydeg, 0);
-                    model.setLocalScale(modelsize);
-                                
-            
-            CollisionShape sceneModel = CollisionShapeFactory.createMeshShape(model);
-            modelRigidBody = new RigidBodyControl(sceneModel,0);
-            model.addControl(modelRigidBody);
-            
-            bulletAppState.getPhysicsSpace().add(modelRigidBody);
-            rootNode.attachChild(model);
-            }
-        }
-        
         
     
     public void createGraveParticleEffects(){
@@ -415,12 +343,6 @@ public class S2M0_shore extends BaseAppState {
         return level_S2M0;
     }
     
-    public void addScenePhysics(){
-         
-            bulletAppState.getPhysicsSpace().add(app.getStateManager().getState(GameAppState.class).levelRigidBody);
-            bulletAppState.getPhysicsSpace().add(app.getStateManager().getState(GameAppState.class).firstPersonPlayer);
-                        
-    }
 
     public Vector3f getInitPlayerPosition() {
         return initPlayerPosition;

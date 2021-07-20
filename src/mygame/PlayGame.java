@@ -26,7 +26,7 @@ public class PlayGame extends SimpleApplication{
     private static Nifty nifty;
     
     public static GameAppState gameplayState;
-    private BulletAppState bulletAppState;
+    public static BulletAppState bulletAppState;
     public S2M0_shore levelS1M0;
     
     public static MainMenuScreen mainMenu_screen;
@@ -37,6 +37,7 @@ public class PlayGame extends SimpleApplication{
     public static MapViewScreen mapview_screen;
     public static ExtrasScreen extras_screen;
     public static DiaryScreen diary_screen;
+    public static GameModeScreen gameMode_screen;
         
                 
     public static void main(String[] args) throws BackingStoreException {
@@ -70,10 +71,11 @@ public class PlayGame extends SimpleApplication{
            nifty = niftyDisplay.getNifty();
            viewPort.addProcessor(niftyDisplay); 
            
-           mainMenu_screen = new MainMenuScreen(); //stateManager.attach(mainMenu_screen); //THIS THE IDEAL WAY!! 
+           mainMenu_screen = new MainMenuScreen(); stateManager.attach(mainMenu_screen); //THIS THE IDEAL WAY!! 
+           gameMode_screen = new GameModeScreen(); //stateManager.attach(gameMode_screen);
            
            //THESE ARE ONLY FOR MODUL TESTING
-           gameplayState = new GameAppState(); stateManager.attach(gameplayState);
+           gameplayState = new GameAppState(); //stateManager.attach(gameplayState);
            settings_screen = new SettingsScreen();//stateManager.attach(settings_screen);
            credits_screen = new CreditsScreen(); //stateManager.attach(credits_screen);
            extras_screen = new ExtrasScreen();  //stateManager.attach(extras_screen);

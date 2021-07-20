@@ -5,6 +5,7 @@
  */
 package mygame;
 
+import Levels.S0M0_valley;
 import Levels.S2M0_shore;
 import com.jme3.animation.AnimChannel;
 import com.jme3.animation.AnimControl;
@@ -63,10 +64,8 @@ public class GameAppState extends BaseAppState
    
         
     private Spatial level;
-    public static BulletAppState bulletAppState;
-        
+            
     public RigidBodyControl levelRigidBody;
-    public RigidBodyControl modelRigidBody;
     CapsuleCollisionShape capsulePlayer;        
     public static CharacterControl firstPersonPlayer;
     
@@ -82,6 +81,8 @@ public class GameAppState extends BaseAppState
     private AnimControl control;
     
     S2M0_shore levelS2M0; 
+    S0M0_valley levelS0M0;
+    private BaseAppState currentLevel;
     
     private float playerHeight = 5f;
     private int playerhp = 100;
@@ -105,19 +106,19 @@ public class GameAppState extends BaseAppState
         inputManager.deleteMapping(SimpleApplication.INPUT_MAPPING_EXIT); //delete ESC key quit app function
         app.setPauseOnLostFocus(true);
         
-        bulletAppState = new BulletAppState();
-        app.getStateManager().attach(bulletAppState);
-        
-        
         //init levels
         levelS2M0 = new S2M0_shore();
+        levelS0M0 = new S0M0_valley();
         
         //load level
-        setLevel("Scenes/S2_Summerdale/S2M0_shore.j3o", levelS2M0);
-                
+        //setLevel("Scenes/S2_Summerdale/S2M0_shore.j3o", levelS2M0);
+          //setLevel("Scenes/S0_Snowenar/S0M0_walley.j3o", levelS0M0);
+        setLevel(GameModeScreenController.selectedLevel, GameModeScreenController.selectedAppStateID);
+          
         setCollisionPhysics();
         initKeyEvent();
         createPlayer();
+        addScenePhysics();
         
         
     }
@@ -137,7 +138,7 @@ public class GameAppState extends BaseAppState
             npcWalkChannel.setAnim("Walk");
 
             firstPersonPlayer.setGravity(new Vector3f(0,-20f,0)); //fallspeed
-            firstPersonPlayer.setPhysicsLocation(levelS2M0.getInitPlayerPosition());
+            firstPersonPlayer.setPhysicsLocation(levelS0M0.getInitPlayerPosition());
             
             firstPersonPlayer.setJumpSpeed(20);
             firstPersonPlayer.setFallSpeed(30);
@@ -155,8 +156,7 @@ public class GameAppState extends BaseAppState
             levelRigidBody = new RigidBodyControl(sceneLevel,0);
                 level.addControl(levelRigidBody);
                 
-                
-
+            
         }
     
     
@@ -339,12 +339,19 @@ public class GameAppState extends BaseAppState
         level.setLocalTranslation(0f, 3f, 0f);
         this.app.getRootNode().attachChild(level);
         app.getStateManager().attach(levelid);
+        currentLevel = levelid;
         
     }
 
     public Spatial getLevel() {
         return level;
     }
+
+    public void setLevel(Spatial level) {
+        this.level = level;
+    }
+    
+    
 
         
     
@@ -374,12 +381,10 @@ public class GameAppState extends BaseAppState
     
     }
 
-    public float getPlayerHeight() {
-        return playerHeight;
-    }
-
-    public void setPlayerHeight(float playerHeight) {
-        this.playerHeight = playerHeight;
+        
+    public void addScenePhysics(){
+        PlayGame.bulletAppState.getPhysicsSpace().add(levelRigidBody);
+        PlayGame.bulletAppState.getPhysicsSpace().add(firstPersonPlayer);
     }
         
     
