@@ -37,12 +37,12 @@ public class LoadingScreen extends BaseAppState implements ScreenController{
     private SimpleApplication app;
     private Nifty nifty;
         
-    private String assetName = "Asset Name";
-    private String loadLevelName = "Level";
-    private Label labelAssetName;
-    private Element img_Loading;
-    private NiftyImage randomLoadingImage;
-    private Label textLoadingLevel;
+    private String lscrAssetName = "Asset Name";
+    private String lscrLevelName = "Level";
+    private Label lscrLabelAssetName;
+    private Element lscrImage;
+    private NiftyImage lscrRandomNiftyImage;
+    private Label lscrLabelLevelName;
     private int frameCount=0;
     
     
@@ -52,8 +52,8 @@ public class LoadingScreen extends BaseAppState implements ScreenController{
         this.app = (SimpleApplication) app;
         
         createLoadingScreen();
-        labelAssetName =  nifty.getScreen("Screen_Loading").findNiftyControl("text_LoadingAssetName", Label.class);         
-        textLoadingLevel =  nifty.getScreen("Screen_Loading").findNiftyControl("text_isLoading", Label.class);         
+        lscrLabelAssetName =  nifty.getScreen("Screen_Loading").findNiftyControl("text_LoadingAssetName", Label.class);         
+        lscrLabelLevelName =  nifty.getScreen("Screen_Loading").findNiftyControl("text_isLoading", Label.class);         
       
     }
     
@@ -90,22 +90,16 @@ public class LoadingScreen extends BaseAppState implements ScreenController{
     @Override
     public void update(float tpf) {
        
-        frameCount++;
+        frameCount++; //no function currently
         
-        textLoadingLevel.setText("LOADING LEVEL - "+getLoadLevelName()); 
-        labelAssetName.setText("Loading asset: "+getAssetName()); 
-                
-             
-       //System.out.println("Loading asset: "+getAssetName());  
+        lscrLabelLevelName.setText("Loading Level - "+getLoadLevelName()); 
+               
+        lscrLabelAssetName.setText("Loading asset: "+getAssetName()); 
+        
+        
     }
     
-    public static void attachGameAppstate(){    
-        
-        PlayGame.detachAppState(PlayGame.screenGameMode);
-        PlayGame.attachAppState(PlayGame.gameplayAppState);
-                
-    }    
-       
+          
     
     public void createLoadingScreen(){
         
@@ -145,7 +139,7 @@ public class LoadingScreen extends BaseAppState implements ScreenController{
                         }});
                         
                         text(new TextBuilder("text_LoadingHints") {{
-                                text("Here comes the hint text for the selected map while loading");
+                                text("getLoadingScreenHintText()");
                                 font("Interface/Fonts/Default.fnt");
                                 height("40%");
                                 width("80%");
@@ -222,9 +216,9 @@ public class LoadingScreen extends BaseAppState implements ScreenController{
     
          
     public void initUIControls(){
-        img_Loading = nifty.getScreen("Screen_Loading").findElementById("img_Loading");
-        randomLoadingImage = nifty.createImage(nifty.getScreen("Screen_Loading"),loadRandomImage(), true);
-        img_Loading.getRenderer(ImageRenderer.class).setImage(randomLoadingImage); 
+        lscrImage = nifty.getScreen("Screen_Loading").findElementById("img_Loading");
+        lscrRandomNiftyImage = nifty.createImage(nifty.getScreen("Screen_Loading"),loadRandomImage(), true);
+        lscrImage.getRenderer(ImageRenderer.class).setImage(lscrRandomNiftyImage); 
     } 
      
      private String loadRandomImage(){
@@ -241,21 +235,75 @@ public class LoadingScreen extends BaseAppState implements ScreenController{
 
     
     public String getAssetName() {
-        return assetName;
+        return lscrAssetName;
     }
 
     public void setAssetName(String assetName) {
-        this.assetName = assetName;
+        this.lscrAssetName = assetName;
     }
 
     public String getLoadLevelName() {
-        return loadLevelName;
+        return lscrLevelName;
     }
 
     public void setLoadLevelName(String loadLevelName) {
-        this.loadLevelName = loadLevelName;
+        this.lscrLevelName = loadLevelName;
     }
 
+    public String getLoadingScreenHintText(){
+        String[] content = {
+        
+                "<< Abandoned Shore >>\n"
+                + "You woke up dizzy\n"
+                + "and feeling sick\n"
+                + "on an abandoned shore.\n"
+                + "The only thing you found\n"
+                + "in the sand, was a diary,\n"
+                + "written by your mother,\n"
+                + "who had died long ago.\n"
+                + "You felt strange and\n"
+                + "were afraid of something\n"
+                + "was not right here...",
+                
+                "<< HotKey bindings >>\n\r"
+                + "F1 = Open Settings Screen\n\r"
+                + "ESC = Open Paused Menu\n\r"
+                + "M = Open Land Map\n\r"
+                + "L = Open Diary",
+                
+                "<< About the Project >>\n\r"
+                + "This project was originally\n\r"
+                + "planned to be developed in\n\r"
+                + "JavaFX. Due to the fact, that\n\r"
+                + "the developer has been working\n\r"
+                + "on the project alone, came the idea\n\r"
+                + "to look for a game engine that not widely\n\r"
+                + "used nowadays, but is easy to learn, and\n\r"
+                + "still capable of create a good software\n\r"
+                + "from the scratch.",
+                
+                "<< About the Game >>\n\r"
+                + "It is always closer to a true gamer\n\r"
+                + "to see and play an RPG, that is not\n\r"
+                + "about cutting edge menus, that are very\n\r"
+                + "beautyful for the eyes, and you can easily\n\r"
+                + "lost yourself in, forgetting what was your\n\r"
+                + "progress or game status 2 minutes ago.....\n\r"
+                + "No. In real life you draw out a map, open a diary\n\r"
+                + "and flipping its pages, and die in the world\n\r"
+                + "from starving or dehydrating.",
+                
+                "<< Game Extras >>\n\r"
+                + "There is an ogg music player\n\r"
+                + "under the Game Extras menu. Go and try it."
+                
+        };
+        
+        int r = FastMath.nextRandomInt(0, content.length-1);
+              
+        
+        return content[r];
+    }
       
      
     @Override
