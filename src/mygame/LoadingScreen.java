@@ -40,10 +40,14 @@ public class LoadingScreen extends BaseAppState implements ScreenController{
     private String lscrAssetName = "Asset Name";
     private String lscrLevelName = "Level";
     private Label lscrLabelAssetName;
+    private Label lscrLabelLevelName;
+    private Label lscrLabelHinttext1;
+    private Label lscrLabelHinttext2;
     private Element lscrImage;
     private NiftyImage lscrRandomNiftyImage;
-    private Label lscrLabelLevelName;
+    
     private int frameCount=0;
+    private Screen screen;
     
     
     @Override
@@ -90,7 +94,12 @@ public class LoadingScreen extends BaseAppState implements ScreenController{
     @Override
     public void update(float tpf) {
        
-        frameCount++; //no function currently
+        frameCount++; 
+        
+        if ((frameCount == 1000) || (frameCount == 2000) || (frameCount ==3000)){
+            lscrLabelHinttext1.setText(getLoadingScreenHintText1());
+            lscrLabelHinttext2.setText(getLoadingScreenHintText2());
+        }
         
         lscrLabelLevelName.setText("Loading Level - "+getLoadLevelName()); 
                
@@ -138,10 +147,19 @@ public class LoadingScreen extends BaseAppState implements ScreenController{
                                 valignCenter();
                         }});
                         
-                        text(new TextBuilder("text_LoadingHints") {{
-                                text("getLoadingScreenHintText()");
+                        text(new TextBuilder("text_LoadingHints1") {{
+                                text(getLoadingScreenHintText1());
                                 font("Interface/Fonts/Default.fnt");
-                                height("40%");
+                                height("20%");
+                                width("80%");
+                                alignCenter();
+                                valignCenter();
+                        }});   
+                        
+                        text(new TextBuilder("text_LoadingHints2") {{
+                                text(getLoadingScreenHintText2());
+                                font("Interface/Fonts/Default.fnt");
+                                height("20%");
                                 width("80%");
                                 alignCenter();
                                 valignCenter();
@@ -250,20 +268,14 @@ public class LoadingScreen extends BaseAppState implements ScreenController{
         this.lscrLevelName = loadLevelName;
     }
 
-    public String getLoadingScreenHintText(){
+    public String getLoadingScreenHintText1(){
         String[] content = {
         
                 "<< Abandoned Shore >>\n"
-                + "You woke up dizzy\n"
-                + "and feeling sick\n"
-                + "on an abandoned shore.\n"
-                + "The only thing you found\n"
-                + "in the sand, was a diary,\n"
-                + "written by your mother,\n"
-                + "who had died long ago.\n"
-                + "You felt strange and\n"
-                + "were afraid of something\n"
-                + "was not right here...",
+                + "You woke up dizzy and feeling sick on an abandoned shore.\n"
+                + "The only thing you found in the sand, was a diary,\n"
+                + "written by your mother,who had died long ago.\n"
+                + "You felt strange and were afraid of something was not right here...",
                 
                 "<< HotKey bindings >>\n\r"
                 + "F1 = Open Settings Screen\n\r"
@@ -272,43 +284,64 @@ public class LoadingScreen extends BaseAppState implements ScreenController{
                 + "L = Open Diary",
                 
                 "<< About the Project >>\n\r"
-                + "This project was originally\n\r"
-                + "planned to be developed in\n\r"
-                + "JavaFX. Due to the fact, that\n\r"
-                + "the developer has been working\n\r"
-                + "on the project alone, came the idea\n\r"
-                + "to look for a game engine that not widely\n\r"
-                + "used nowadays, but is easy to learn, and\n\r"
-                + "still capable of create a good software\n\r"
+                + "This project was originally planned to be developed in\n\r"
+                + "JavaFX. Due to the fact, that the developer has been working\n\r"
+                + "on the project alone, came the idea to look for a game engine that not widely\n\r"
+                + "used nowadays, but is easy to learn, and still capable of create a good software\n\r"
                 + "from the scratch.",
                 
                 "<< About the Game >>\n\r"
-                + "It is always closer to a true gamer\n\r"
-                + "to see and play an RPG, that is not\n\r"
-                + "about cutting edge menus, that are very\n\r"
-                + "beautyful for the eyes, and you can easily\n\r"
-                + "lost yourself in, forgetting what was your\n\r"
-                + "progress or game status 2 minutes ago.....\n\r"
-                + "No. In real life you draw out a map, open a diary\n\r"
-                + "and flipping its pages, and die in the world\n\r"
+                + "It is always closer to a true gamer to see and play an RPG, that is not\n\r"
+                + "about cutting edge menus, that are very beautyful for the eyes, and you can easily\n\r"
+                + "lost yourself in, forgetting what was your progress or game status 2 minutes ago.....\n\r"
+                + "No. In real life you draw out a map, open a diary and flipping its pages, and die in the world\n\r"
                 + "from starving or dehydrating.",
                 
                 "<< Game Extras >>\n\r"
-                + "There is an ogg music player\n\r"
-                + "under the Game Extras menu. Go and try it."
+                + "There is an ogg music player under the Game Extras menu. Go and try it."
                 
         };
         
         int r = FastMath.nextRandomInt(0, content.length-1);
-              
+          
+       return content[r]; 
         
-        return content[r];
     }
       
-     
+    public String getLoadingScreenHintText2(){
+        String[] content = {
+        
+                "In time we hate that which we often fear.",
+                "If one does not know to which port one is sailing, no wind is favorable.",
+                "Fate leads the willing and drags along the unwilling.",
+                "Fidelity purchased with money, money can destroy.",
+                "Death is the wish of some, the relief of many, and the end of all.",
+                "A great fortune is a great slavery.",
+                "Retirement without the love of letters is a living burial.",
+                "Where the fear is, happiness is not.",
+                "Travel and change of place impart new vigor to the mind.",
+                "Sadness usually results from one of the following causes either\n"
+                + " when a man does not succeed, or is ashamed of his success.",
+                "Every new beginning comes from some other beginning's end.",
+                "The display of grief makes more demands than grief itself. How few men are sad in their own company.",
+                "Most powerful is he who has himself in his own power.",
+                "Night brings our troubles to the light, rather than banishes them.",
+                "The mind that is anxious about future events is miserable.",
+                "The worst evil of all is to leave the ranks of the living before one dies."
+                
+        };
+        
+        int r = FastMath.nextRandomInt(0, content.length-1);
+          
+       return content[r]; 
+        
+    }
+    
+    
     @Override
     public void bind(Nifty nifty, Screen screen) {
-        
+        this.nifty = nifty;
+        this.screen = screen;
     }
 
     @Override
