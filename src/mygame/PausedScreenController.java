@@ -80,14 +80,14 @@ public class PausedScreenController extends BaseAppState implements ScreenContro
     public void showMap(){
         
         //PlayGame.detachAppState(PlayGame.paused_screen);
-        PlayGame.attachAppState(PlayGame.mapview_screen);
+        PlayGame.attachAppState(PlayGame.screenMapView);
                 
     }
     
     public void openDiary(){
                
         //PlayGame.detachAppState(PlayGame.paused_screen);
-        PlayGame.attachAppState(PlayGame.diary_screen);
+        PlayGame.attachAppState(PlayGame.screenDiary);
         
     }
     
@@ -148,8 +148,8 @@ public class PausedScreenController extends BaseAppState implements ScreenContro
     }
     
     public void settingsGame(){
-        PlayGame.detachAppState(PlayGame.paused_screen);
-        PlayGame.attachAppState(PlayGame.settings_screen);
+        PlayGame.detachAppState(PlayGame.screenPauseMenu);
+        PlayGame.attachAppState(PlayGame.screenSettings);
                 
         System.out.println("Game Settings button pressed...");
         //PlayGame.musicPlayer.stop();
@@ -159,7 +159,7 @@ public class PausedScreenController extends BaseAppState implements ScreenContro
     
     public void backToGame(){
         System.out.println("Back to game button pressed...");
-        PlayGame.detachAppState(PlayGame.paused_screen);
+        PlayGame.detachAppState(PlayGame.screenPauseMenu);
                 
         //also calls screen's onDisable() method
                 
@@ -167,8 +167,9 @@ public class PausedScreenController extends BaseAppState implements ScreenContro
     
     public void backToMainMenu(){
         System.out.println("Back to Mainmenu button pressed...");
-        PlayGame.detachAppState(PlayGame.gameplayState);
-        PlayGame.attachAppState(PlayGame.mainMenu_screen);
+        PlayGame.detachAppState(PlayGame.gameplayAppState);
+        PlayGame.attachAppState(PlayGame.screenGameMode);
+        //PlayGame.attachAppState(PlayGame.screenMainMenu);
         //System.exit(0);
         
     }

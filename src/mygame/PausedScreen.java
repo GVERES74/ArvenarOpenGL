@@ -76,15 +76,15 @@ public class PausedScreen extends BaseAppState {
     protected void cleanup(Application app) {
         //If an attached AppState is detached then cleanup() will be called on the following render pass.
         System.out.println(this.nifty.getCurrentScreen().getScreenId()+" screen cleanup called.....");
-        PlayGame.gameplayState.setEnabled(true);
+        
         
     }
 
      @Override
     protected void onEnable() {
-        showPausedScreen();
         
-        PlayGame.gameplayState.setEnabled(false);
+        showPausedScreen();
+        System.out.println(this.getClass().getName()+" enabled....."); 
     }
     
 
@@ -92,7 +92,7 @@ public class PausedScreen extends BaseAppState {
     protected void onDisable() {
 
        hidePausedScreen();
-                        
+       System.out.println(this.getClass().getName()+" disabled.....");                  
     }
     
     
@@ -127,7 +127,7 @@ public class PausedScreen extends BaseAppState {
                     }}); 
                 
                     image(new ImageBuilder() {{
-                            filename("Interface/Images/book.png");
+                            filename("Interface/Images/background_book.png");
                             height("100%");
                             width("100%");
                     }});
@@ -312,17 +312,19 @@ public class PausedScreen extends BaseAppState {
     }
     
     public void showPausedScreen(){
+        PlayGame.gameplayAppState.setEnabled(false);
         nifty.gotoScreen("Screen_PausedMenu");
         app.getFlyByCamera().setDragToRotate(true);
     }
     
     public void hidePausedScreen(){
+        PlayGame.gameplayAppState.setEnabled(true);
         nifty.removeScreen("Screen_PausedMenu");
         app.getFlyByCamera().setDragToRotate(false);
         
-        if ((!PlayGame.app.getStateManager().hasState(PlayGame.settings_screen)) ||
-            (!PlayGame.app.getStateManager().hasState(PlayGame.mapview_screen)) ||
-            (!PlayGame.app.getStateManager().hasState(PlayGame.diary_screen))){
+        if ((!PlayGame.app.getStateManager().hasState(PlayGame.screenSettings)) ||
+            (!PlayGame.app.getStateManager().hasState(PlayGame.screenMapView)) ||
+            (!PlayGame.app.getStateManager().hasState(PlayGame.screenDiary))){
                     PlayGame.getNiftyDisplay().getNifty().gotoScreen("Screen_HUD");
         }
         

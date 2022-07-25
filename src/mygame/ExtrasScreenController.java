@@ -160,8 +160,8 @@ public class ExtrasScreenController extends BaseAppState implements ScreenContro
      public void backToMainMenu(){
         System.out.println("Back button pressed...");
         
-        PlayGame.detachAppState(PlayGame.extras_screen);
-        PlayGame.attachAppState(PlayGame.mainMenu_screen);
+        PlayGame.detachAppState(PlayGame.screenExtras);
+        PlayGame.attachAppState(PlayGame.screenMainMenu);
             
     }
         

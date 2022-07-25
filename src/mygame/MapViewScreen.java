@@ -68,7 +68,7 @@ public class MapViewScreen extends BaseAppState {
 
     @Override
     protected void cleanup(Application app) {
-        PlayGame.gameplayState.setEnabled(true);
+        PlayGame.gameplayAppState.setEnabled(true);
         System.out.println(this.nifty.getCurrentScreen().getScreenId()+" screen cleanup called....."); 
     }
 
@@ -79,7 +79,8 @@ public class MapViewScreen extends BaseAppState {
     protected void onEnable() {
         
         showMapViewScreen();
-        PlayGame.gameplayState.setEnabled(false);
+        PlayGame.gameplayAppState.setEnabled(false);
+        System.out.println(this.getClass().getName()+" enabled....."); 
         
     }
     

@@ -74,14 +74,15 @@ public class DiaryScreen extends BaseAppState {
     @Override
     protected void cleanup(Application app) {
         System.out.println(this.nifty.getCurrentScreen().getScreenId()+" screen cleanup called.....");
-        PlayGame.gameplayState.setEnabled(true);
+        PlayGame.gameplayAppState.setEnabled(true);
         
     }
 
     @Override
     protected void onEnable() {
         showDiaryScreen();
-        PlayGame.gameplayState.setEnabled(false);
+        PlayGame.gameplayAppState.setEnabled(false);
+        System.out.println(this.getClass().getName()+" enabled....."); 
         
     }
      
@@ -120,7 +121,7 @@ public class DiaryScreen extends BaseAppState {
                     }}); 
                     
                     image(new ImageBuilder() {{
-                            filename("Interface/Images/book.png");
+                            filename("Interface/Images/background_book.png");
                             height("100%");
                             width("100%");
                     }});
@@ -174,7 +175,7 @@ public class DiaryScreen extends BaseAppState {
                             font("Interface/Fonts/Default.fnt");
                             color("#0009");
                             height("50%");
-                            width("100%");
+                            width("50%");
                             align(Align.Left);
                             valignCenter();
                         }});
@@ -182,7 +183,7 @@ public class DiaryScreen extends BaseAppState {
                         image(new ImageBuilder("Content_Image1"){{
                                 
                                 height("50%");
-                                width("50%"); 
+                                width("*"); 
                                 alignCenter();
                                 valignCenter();
                         }});    
@@ -213,7 +214,7 @@ public class DiaryScreen extends BaseAppState {
                                 font("Interface/Fonts/Default.fnt");
                                 color("#0009");
                                 height("40%");
-                                width("100%");
+                                width("*");
                                 align(Align.Left);
                             }});    
                             

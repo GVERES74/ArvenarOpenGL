@@ -100,8 +100,7 @@ public class DiaryScreenController extends BaseAppState implements ScreenControl
     public void onEndScreen() {
         
     }
-    
-    
+        
     
     public String getContentText1() throws FileNotFoundException, IOException{
         
@@ -132,8 +131,7 @@ public class DiaryScreenController extends BaseAppState implements ScreenControl
         return content;
     }
     
-    
-    
+        
     public void nextPage() throws IOException{
         AudioManager.playSoundInstance("Interface/sound/book_flip_3.ogg");
         
@@ -161,8 +159,8 @@ public class DiaryScreenController extends BaseAppState implements ScreenControl
     }
     
     public void settingsGame(){
-        PlayGame.attachAppState(PlayGame.settings_screen);
-        PlayGame.detachAppState(PlayGame.diary_screen);
+        PlayGame.attachAppState(PlayGame.screenSettings);
+        PlayGame.detachAppState(PlayGame.screenDiary);
             
         System.out.println("Game Settings button pressed...");
         //PlayGame.musicPlayer.stop();
@@ -171,7 +169,7 @@ public class DiaryScreenController extends BaseAppState implements ScreenControl
     
     public void backToGame(){
         System.out.println("Back to game button pressed...");
-        PlayGame.detachAppState(PlayGame.diary_screen);
+        PlayGame.detachAppState(PlayGame.screenDiary);
                 
         //also calls screen's onDisable() method
                 
@@ -179,13 +177,9 @@ public class DiaryScreenController extends BaseAppState implements ScreenControl
     
     public void backToMainMenu(){
         System.out.println("Back to Mainmenu button pressed...");
-        PlayGame.detachAppState(PlayGame.gameplayState);
+        PlayGame.detachAppState(PlayGame.gameplayAppState);
         System.exit(0);
         
     }
-    
-    
-    
-    
-
+  
 }

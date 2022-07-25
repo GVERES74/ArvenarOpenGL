@@ -25,8 +25,8 @@ import de.lessvoid.nifty.builder.ScreenBuilder;
 import de.lessvoid.nifty.builder.TextBuilder;
 import de.lessvoid.nifty.controls.dropdown.builder.DropDownBuilder;
 import de.lessvoid.nifty.controls.label.builder.LabelBuilder;
-import de.lessvoid.nifty.controls.scrollpanel.builder.ScrollPanelBuilder;
 import de.lessvoid.nifty.screen.Screen;
+import mygame.GameModeScreenController;
 
 /**
  *  
@@ -47,6 +47,8 @@ public class GameModeScreen extends BaseAppState {
     private Nifty nifty;
     private Screen screen;
     private int screenHeight, screenWidth;
+    public boolean load = false;
+    public int frameCount = 0;  
     
     @Override
     protected void initialize(Application app) {
@@ -58,6 +60,7 @@ public class GameModeScreen extends BaseAppState {
         this.inputManager = this.app.getInputManager();
         this.viewPort     = this.app.getViewPort();
         
+                
         screenHeight = PlayGame.getPlayGameAppSettings().getHeight();
         screenWidth = PlayGame.getPlayGameAppSettings().getWidth();
                     
@@ -68,8 +71,11 @@ public class GameModeScreen extends BaseAppState {
 
     @Override
     protected void cleanup(Application app) {
-        PlayGame.gameplayState.setEnabled(true);
-        System.out.println(this.nifty.getCurrentScreen().getScreenId()+" screen cleanup called....."); 
+        PlayGame.gameplayAppState.setEnabled(true); //required
+                
+        System.out.println(this.nifty.getCurrentScreen().getScreenId()+" screen cleanup called.....");
+        
+                
     }
 
     //onEnable()/onDisable() can be used for managing things that should     
@@ -79,23 +85,40 @@ public class GameModeScreen extends BaseAppState {
     protected void onEnable() {
         
         showGameModeScreen();
-        PlayGame.gameplayState.setEnabled(false);
+                
+        //AudioManager.loadMusic("Music/Soundtracks/ambient_snow1.ogg", true, true);
         
+        PlayGame.gameplayAppState.setEnabled(false);
+        
+        
+        System.out.println(this.getClass().getName()+" enabled....."); 
+                
     }
     
     @Override
     protected void onDisable() {
         
         hideGameModeScreen();
+        
             //Called when the state was previously enabled but is now disabled         
         //either because setEnabled(false) was called or the state is being         
         //cleaned up.    
     }
     
     @Override
-    public void update(float tpf) {
-        
+    public void update(float tpf) {       
         //TODO: implement behavior during runtime    
+        if (load){
+            frameCount++;
+       
+        if(frameCount == 300){
+                
+            GameModeScreenController.attachSelectedSingleLevel();
+                load = false;
+        }
+//        System.out.println(this.getClass().getName()+" FrameCount: "+frameCount);
+         
+       } 
     }
     
     public void createGameModeScreen(){
@@ -109,11 +132,12 @@ public class GameModeScreen extends BaseAppState {
         
             nifty.registerSound("btnclick", "Interface/sound/click.wav");
             nifty.registerSound("openmap", "Interface/sound/book_flip_2.ogg");
-                   
+                       
             nifty.addScreen("Screen_GameMode", new ScreenBuilder("Select_GameMode"){{
                 controller(new mygame.GameModeScreenController());
                 defaultFocusElement("Back");
                 
+                       
                 layer(new LayerBuilder("Layer_GameMode_Background"){{
                     childLayoutCenter();
                     
@@ -127,10 +151,10 @@ public class GameModeScreen extends BaseAppState {
                     }}); 
                         
                     
-                    image(new ImageBuilder() {{
-                            filename("Interface/Images/background_scroll.png");
-                            height("100%");
-                            width("100%");
+                    image(new ImageBuilder("img_Background") {{
+                            filename("Interface/Images/background_book.png");
+                            height("*");
+                            width("*");
                     }});
                 }}); //end layer background
                 
@@ -138,23 +162,33 @@ public class GameModeScreen extends BaseAppState {
                     childLayoutVertical();
                                
                     panel(new PanelBuilder("Panel_GameMode_Title"){{
-                        height("10%");
-                        width("30%"); 
-                        //backgroundColor("#fff6");
-                        childLayoutCenter();
-                            text(new TextBuilder() {{
+                        height("15%");
+                        width("100%"); 
+                        //backgroundColor("#ccc3");
+                        
+                        childLayoutHorizontal();
+                            text(new TextBuilder("static_title") {{
                                 text("Select Game Mode");
                                 font("Interface/Fonts/verdana-48-regular.fnt");
                                 height("50%");
-                                width("100%");
+                                width("50%");
                                 alignCenter();
-                                                                
+                                valignBottom();
+                            }});
+                            
+                            control(new LabelBuilder("text_GameMode") {{
+                                text("Single Player - Story Mode");
+                                font("Interface/Fonts/verdana-48-regular.fnt");
+                                height("50%");
+                                width("50%");
+                                alignCenter();
+                                valignBottom();
                             }});
                     }}); //end panel title 
                     
                     
-                    panel(new PanelBuilder("Panel_GameMode_Content"){{
-                        height("80%");
+                    panel(new PanelBuilder("Panel_GameMode_Content"){{ //consists of 2 panels (right and left)
+                        height("70%");
                         width("100%"); 
                         //backgroundColor("#fff6");
                         childLayoutHorizontal();
@@ -164,13 +198,13 @@ public class GameModeScreen extends BaseAppState {
                         valignCenter();
                         height("100%");
                         width("50%"); 
-                        padding("20px");
+                        padding("10px");
                         childLayoutVertical();
-                        //backgroundColor("#ffc1");
+                        //backgroundColor("#fcc1");
                                                                      
                     
                         panel(new PanelBuilder("Panel_GameMode_SelectMode"){{
-                        height("20%");
+                        height("40%");
                         width("100%"); 
                         childLayoutVertical();
                                  
@@ -181,9 +215,9 @@ public class GameModeScreen extends BaseAppState {
                                 alignCenter();    
                                 interactOnClick("showSPMenu()");
                                 onStartHoverEffect(new HoverEffectBuilder("changeImage"){{
-                                    effectParameter("active", "Interface/Images/MenuUI/button_1_gm_sp.png"); neverStopRendering(true);
-                                    effectParameter("inactive", "Interface/Images/MenuUI/button_0_gm_sp.png"); neverStopRendering(true);}});
-                                    onStartHoverEffect(new HoverEffectBuilder("move"){{effectParameter("mode", "toOffset"); effectParameter("offsetX", "+10");}});
+                                    effectParameter("active", "Interface/Images/MenuUI/button_1_gm_sp.png"); 
+                                    effectParameter("inactive", "Interface/Images/MenuUI/button_0_gm_sp.png"); }});
+                                
                                 onStartHoverEffect(new HoverEffectBuilder("playSound"){{effectParameter("sound", "btnclick");}});
 
                             }});
@@ -195,9 +229,9 @@ public class GameModeScreen extends BaseAppState {
                                 alignCenter();    
                                 interactOnClick("showMPMenu()");
                                 onStartHoverEffect(new HoverEffectBuilder("changeImage"){{
-                                    effectParameter("active", "Interface/Images/MenuUI/button_1_gm_mp.png"); neverStopRendering(true);
-                                    effectParameter("inactive", "Interface/Images/MenuUI/button_0_gm_mp.png"); neverStopRendering(true);}});
-                                    onStartHoverEffect(new HoverEffectBuilder("move"){{effectParameter("mode", "toOffset"); effectParameter("offsetX", "+10");}});
+                                    effectParameter("active", "Interface/Images/MenuUI/button_1_gm_mp.png"); 
+                                    effectParameter("inactive", "Interface/Images/MenuUI/button_0_gm_mp.png"); }});
+                                
                                 onStartHoverEffect(new HoverEffectBuilder("playSound"){{effectParameter("sound", "btnclick");}});
 
                             }});
@@ -209,11 +243,17 @@ public class GameModeScreen extends BaseAppState {
                                 alignCenter();    
                                 interactOnClick("showSLMenu()");
                                 onStartHoverEffect(new HoverEffectBuilder("changeImage"){{
-                                    effectParameter("active", "Interface/Images/MenuUI/button_1_gm_sl.png"); neverStopRendering(true);
-                                    effectParameter("inactive", "Interface/Images/MenuUI/button_0_gm_sl.png"); neverStopRendering(true);}});
-                                    onStartHoverEffect(new HoverEffectBuilder("move"){{effectParameter("mode", "toOffset"); effectParameter("offsetX", "+10");}});
+                                    effectParameter("active", "Interface/Images/MenuUI/button_1_gm_sl.png"); 
+                                    effectParameter("inactive", "Interface/Images/MenuUI/button_0_gm_sl.png"); }});
+                                
                                 onStartHoverEffect(new HoverEffectBuilder("playSound"){{effectParameter("sound", "btnclick");}});
-
+//                                onClickEffect(new EffectBuilder("gradient") {{
+//                                  effectValue("offset", "0%", "color", "#66666fff"); 
+//                                  effectValue("offset", "85%", "color", "#000f"); 
+//                                  effectValue("offset", "100%", "color", "#44444fff"); 
+//                                  neverStopRendering(false);
+//                                }}); 
+                                
                             }});
                             
 
@@ -221,12 +261,22 @@ public class GameModeScreen extends BaseAppState {
                         }});  //end Select Game Mode panel  
                             
                         panel(new PanelBuilder("Panel_GameMode_Settings"){{ //bottom panel if you add controls to set gameplay
-                        alignLeft();
-                        height("80%");
-                        width("100%"); 
+                        alignCenter();
+                        height("60%");
+                        width("80%"); 
+                        backgroundColor("#ffc3");
                         childLayoutVertical();
+                            control(new LabelBuilder("text_Settings"){{
+                                text("Empty right now");    
+                                font("Interface/Fonts/verdana-48-regular.fnt");
+                                color("#00f9");
+                                height("100%");
+                                width("100%");
+                                align(Align.Center);
+                                valignCenter();
+                            }});
                                                     
-                           //add some controls, checkboxes, etc.
+                           //add some more controls, checkboxes, etc.
                                                 
                         }});
                                               
@@ -238,6 +288,7 @@ public class GameModeScreen extends BaseAppState {
                         width("50%");
                         alignCenter();
                         childLayoutCenter();
+                        //backgroundColor("#ccc8");
                             
                             panel(new PanelBuilder("Panel_GameMode_SP"){{
                             height("100%"); 
@@ -295,7 +346,7 @@ public class GameModeScreen extends BaseAppState {
                             
                                     control(new DropDownBuilder("dropDown_MPLevelList") {{
                                                 width("100%");
-                                                height("100%");
+                                                height("110%");
 
                                     }});
                                 }});    
@@ -319,7 +370,7 @@ public class GameModeScreen extends BaseAppState {
                                 alignCenter();
                                 childLayoutCenter();
                         
-                                    control(new LabelBuilder("Content_Text1"){{
+                                    control(new LabelBuilder("label_MultiPlayer"){{
                                     text("Play Multi Player\n"
                                             + "");    
                                     font("Interface/Fonts/verdana-48-regular.fnt");
@@ -341,26 +392,27 @@ public class GameModeScreen extends BaseAppState {
                             alignCenter();
                             childLayoutVertical();
                             
+                            
                                 panel(new PanelBuilder("Panel_GameMode_SL_DropDown"){{
                                 height("10%"); 
                                 width("100%");
                                 alignCenter();
                                 childLayoutCenter();
-                            
-                            
+                                
                                     control(new DropDownBuilder("dropDown_SLLevelList") {{
-                                                width("100%");
-                                                height("100%");
+                                                width("*");
+                                                height("110%");
 
                                     }});
                                 }});   
                             
                                 panel(new PanelBuilder("Panel_GameMode_SL_Image"){{
                                 height("70%"); 
-                                width("100%");
+                                width("90%");
                                 alignCenter();
                                 childLayoutCenter();
-                        
+                                //backgroundColor("#ff01");
+                                
                                     image(new ImageBuilder("img_SingleLevel") {{
                                     filename("Interface/Images/gm_tour.png");
                                     height("100%");
@@ -369,17 +421,18 @@ public class GameModeScreen extends BaseAppState {
                                 }}); 
                                 
                                 panel(new PanelBuilder("Panel_GameMode_SL_Text"){{
-                                height("30%"); 
+                                height("20%"); 
                                 width("100%");
                                 alignCenter();
+                                valignCenter();
                                 childLayoutCenter();
-                        
-                                    control(new LabelBuilder("Content_Text1"){{
+                                                        
+                                    control(new LabelBuilder("label_SingleLevel"){{
                                     text("Take a free tour on a \n"
                                             + "selected map");    
-                                    font("Interface/Fonts/verdana-48-regular.fnt");
+                                    font("Interface/Fonts/Default.fnt");
                                     color("#0009");
-                                    height("50%");
+                                    height("100%");
                                     width("100%");
                                     align(Align.Center);
                                     valignCenter();
@@ -393,31 +446,50 @@ public class GameModeScreen extends BaseAppState {
                         }}); //panel content end
                         
                        panel(new PanelBuilder("Panel_GameMode_ScreenButtons"){{
-                            height("10%");
-                            width("20%");
-                            alignCenter();
-                            //paddingLeft("20px");
+                            height("15%");
+                            width("50%");
+                            //backgroundColor("#ccc8");
+                            alignRight();
                             childLayoutHorizontal();
+                            
+                                panel(new PanelBuilder("Panel_ScreenButtons_PlayGame"){{
+                                height("*");
+                                width("50%");
+                                alignCenter();
+                                childLayoutCenter();
                             
                                 image(new ImageBuilder("gamemode_PlayGame"){{
                                 filename("Interface/Images/MenuUI/button_0_playgame.png");
                                 height("40px");
-                                width("150px");    
-                                interactOnClick("playSelectedGameMode()");
+                                width("150px");
+                                alignCenter();
+                                valignTop();
+                                padding("10px");
+                                interactOnClick("playSingleLevel()");
                                 interactOnMouseOver("buttonEffect()");
 
                                 onStartHoverEffect(new HoverEffectBuilder("changeImage"){{
                                     effectParameter("active", "Interface/Images/MenuUI/button_1_playgame.png"); neverStopRendering(true);
                                     effectParameter("inactive", "Interface/Images/MenuUI/button_0_playgame.png"); neverStopRendering(true);}});
-                                onStartHoverEffect(new HoverEffectBuilder("move"){{effectParameter("mode", "toOffset"); effectParameter("offsetX", "+15");}});
+                                onStartHoverEffect(new HoverEffectBuilder("move"){{effectParameter("mode", "toOffset"); effectParameter("offsetX", "-15");}});
                                 onStartHoverEffect(new HoverEffectBuilder("playSound"){{effectParameter("sound", "btnclick");}});
 
                                 }});
+                                }}); //panel for playgame button
                         
+                                
+                                panel(new PanelBuilder("Panel_ScreenButtons_Back"){{
+                                height("*");
+                                width("50%");
+                                alignCenter();
+                                childLayoutCenter();
                                 image(new ImageBuilder("gamemode_Back"){{
                                 filename("Interface/Images/MenuUI/button_0_back.png");
                                 height("40px");
-                                width("150px");    
+                                width("150px"); 
+                                alignCenter();
+                                valignTop();
+                                padding("10px");
                                 interactOnClick("backToMainMenu()");
                                 interactOnMouseOver("buttonEffect()");
 
@@ -428,6 +500,7 @@ public class GameModeScreen extends BaseAppState {
                                 onStartHoverEffect(new HoverEffectBuilder("playSound"){{effectParameter("sound", "btnclick");}});
 
                                 }});
+                                }}); //panel for back button
                       
                         }}); //end panel screenbuttons 
                         
@@ -441,12 +514,17 @@ public class GameModeScreen extends BaseAppState {
     public void showGameModeScreen(){
         app.getFlyByCamera().setDragToRotate(true);
         nifty.gotoScreen("Screen_GameMode");
+        
+        
     }
     
     public void hideGameModeScreen(){
+        
         app.getFlyByCamera().setDragToRotate(false);
         nifty.removeScreen("Screen_GameMode");
-        PlayGame.getNiftyDisplay().getNifty().gotoScreen("Screen_HUD");        
+        
     }
+    
+    
        
 }

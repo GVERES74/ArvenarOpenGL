@@ -11,13 +11,10 @@ import com.jme3.app.state.AppStateManager;
 import com.jme3.app.state.BaseAppState;
 import de.lessvoid.nifty.Nifty;
 import de.lessvoid.nifty.NiftyEventSubscriber;
-import de.lessvoid.nifty.controls.ListBox;
 import de.lessvoid.nifty.controls.ListBoxSelectionChangedEvent;
 import de.lessvoid.nifty.controls.NiftyControl;
-import de.lessvoid.nifty.controls.SliderChangedEvent;
 import de.lessvoid.nifty.screen.Screen;
 import de.lessvoid.nifty.screen.ScreenController;
-import javax.annotation.Nonnull;
 
 /**
  *  
@@ -29,9 +26,7 @@ public class HUDScreenController extends BaseAppState implements ScreenControlle
 
  private Nifty nifty;
  private Screen screen;
- private NiftyControl imghealthbarvalue;
- 
-  
+    
  private SimpleApplication app;
  private AppStateManager stateManager;
  
@@ -87,10 +82,7 @@ public class HUDScreenController extends BaseAppState implements ScreenControlle
     public void bind(Nifty nifty, Screen screen) {
         this.nifty = nifty;
         this.screen = screen;
-        
-        imghealthbarvalue = screen.findNiftyControl("HUD_PlayerHealthValueBar", NiftyControl.class);
-               
-        
+                
     }
 
     @Override

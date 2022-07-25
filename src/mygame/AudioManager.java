@@ -30,6 +30,7 @@ public class AudioManager {
         
         if (start == true){
             musicPlayer.play();
+            System.out.println(filepath+" music started.....");
         }
         else {
             musicPlayer.stop();
@@ -43,7 +44,7 @@ public class AudioManager {
         soundPlayer.setLocalTranslation(xpos, ypos, zpos);
         soundPlayer.setLooping(looping);
         soundPlayer.setVolume(volume);
-        soundPlayer.setMaxDistance(maxdist);
+        soundPlayer.setMaxDistance(maxdist); //lower value keeps the sound longer to hear!!
         app.getRootNode().attachChild(soundPlayer);
         soundPlayer.play();
         //audioRenderer.playSource(soundPlayer);

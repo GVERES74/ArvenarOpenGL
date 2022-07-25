@@ -174,7 +174,7 @@ public class MapViewScreenController extends BaseAppState implements ScreenContr
     
     public void backToGame(){
         System.out.println("Back button pressed...");
-        PlayGame.detachAppState(PlayGame.mapview_screen);
+        PlayGame.detachAppState(PlayGame.screenMapView);
         
                
     }

@@ -73,8 +73,8 @@ public class CreditsScreenController extends BaseAppState implements ScreenContr
     public void backToMainMenu(){
         System.out.println("back button pressed...");
         
-        PlayGame.attachAppState(PlayGame.mainMenu_screen);
-        PlayGame.detachAppState(PlayGame.credits_screen);
+        PlayGame.attachAppState(PlayGame.screenMainMenu);
+        PlayGame.detachAppState(PlayGame.screenCredits);
         AudioManager.musicPlayer.stop();
         
             

@@ -13,6 +13,7 @@ import com.jme3.font.BitmapText;
 import com.jme3.math.FastMath;
 import com.jme3.ui.Picture;
 import de.lessvoid.nifty.Nifty;
+import de.lessvoid.nifty.builder.EffectBuilder;
 import de.lessvoid.nifty.builder.ImageBuilder;
 import de.lessvoid.nifty.builder.LayerBuilder;
 import de.lessvoid.nifty.builder.PanelBuilder;
@@ -36,6 +37,7 @@ public class HUDScreen extends BaseAppState {
     private Screen hudscreen;
     private ListBox dialogListBox;    
     private int screenWidth, screenHeight;
+    private Label gpsInfo;
     
     
     @Override
@@ -44,7 +46,7 @@ public class HUDScreen extends BaseAppState {
         this.app = (SimpleApplication) app;
         screenWidth = PlayGame.getPlayGameAppSettings().getWidth();
         screenHeight = PlayGame.getPlayGameAppSettings().getHeight();
-        
+
         createHUDScreen();
       
     }
@@ -61,8 +63,9 @@ public class HUDScreen extends BaseAppState {
     //graph attachment or input listener attachment.    
     @Override
     protected void onEnable() {
-        
-           showHUDScreen(); 
+        gpsInfo = nifty.getScreen("Screen_HUD").findNiftyControl("cameraLocationInfo", Label.class);
+        showHUDScreen();
+        System.out.println(this.getClass().getName()+" enabled....."); 
            
            
         //Called when the state is fully enabled, ie: is attached and         
@@ -82,7 +85,8 @@ public class HUDScreen extends BaseAppState {
     @Override
     public void update(float tpf) {
        
-        //TODO: implement behavior during runtime    
+    gpsInfo.setText("Location: "+app.getCamera().getLocation());       
+    //TODO: implement behavior during runtime    
     }
     
        
@@ -101,6 +105,17 @@ public class HUDScreen extends BaseAppState {
                 layer(new LayerBuilder("Layer_HUD"){{
                     childLayoutHorizontal();
                     
+                    onStartScreenEffect(new EffectBuilder("fade") {{
+                    
+                    startDelay(1000);
+                    effectValue("time", "0", "value", "0.0");
+                    effectValue("time", "2000", "value", "1.0");
+                    inherit();
+                    post(false);
+                    neverStopRendering(true);
+                    
+                    }});
+                    
                     panel(new PanelBuilder("Panel_HUD_Left"){{ //left main panel
                         alignCenter();
                         height("100%");
@@ -109,7 +124,7 @@ public class HUDScreen extends BaseAppState {
                         childLayoutVertical();
                         
                         panel(new PanelBuilder("Panel_HUD_PlayerStats"){{
-                        //backgroundColor("#ee02");  
+                        //backgroundColor("#ff02");  
                         alignCenter();                       
                         height("50%");
                         width("100%");
@@ -166,6 +181,7 @@ public class HUDScreen extends BaseAppState {
                             }});
                                              
                         }}); //player health info panel end
+                        
                     }});    
                          panel(new PanelBuilder("Panel_HUD_MiniMap"){{
                         //backgroundColor("#ee02");  
@@ -173,18 +189,37 @@ public class HUDScreen extends BaseAppState {
                             height("50%");
                             width("100%");
                             childLayoutCenter();
+                            
+                            control(new LabelBuilder("cameraLocationInfo"){{
+                                text("CamLoc: ");
+                                alignCenter();
+                                height("20%");
+                                width("50%");
+                            }});
+                                                        
                             image(new ImageBuilder("HUD_MinimapImg"){{
-                            filename("Interface/Images/Hud/minimap_base.png");
-                            alignLeft();
-                            valignBottom();
-                            height("250px");
-                            width("250px");                          
+                                filename("Interface/Images/Hud/minimap_base.png");
+                                alignLeft();
+                                valignBottom();
+                                height("250px");
+                                width("250px");                          
                             }}); 
-                        }}); //panel MiniMap end
+                                                       
+                                                        
+                         }}); //panel MiniMap end
                     
-                    }}); //left main panel end   
+                    }}); //left main panel end
+                    
+                    panel(new PanelBuilder("Panel_HUD_Right"){{ //right main panel
+                        alignCenter();
+                        height("100%");
+                        width("50%");
+                        //padding("10px");
+                        childLayoutVertical();
+                        
+                    }});   //right main panel end  
                 
-            }}); //layer HUD end
+            }}); //layer HUD end ---------------------------------------------------------------
             
             layer(new LayerBuilder("Layer_CrossHair"){{
                     childLayoutCenter();    
@@ -299,9 +334,14 @@ public class HUDScreen extends BaseAppState {
     }
     
     public void decreasePlayerHealthBar(){
-        int healthpoints = nifty.getCurrentScreen().findElementById("HUD_PlayerHealthValueBar").getWidth();
-            nifty.getCurrentScreen().findElementById("HUD_PlayerHealthValueBar").setWidth(healthpoints-10);
+        int healthpoints = nifty.getScreen("Screen_HUD").findElementById("HUD_PlayerHealthValueBar").getWidth();
+            nifty.getScreen("Screen_HUD").findElementById("HUD_PlayerHealthValueBar").setWidth(healthpoints-10);
+            if (healthpoints < 10){
+                nifty.getScreen("Screen_HUD").findElementById("HUD_PlayerHealthValueBar").setWidth(200);
+            }
     }
+    
+    
     
     public void showLookAtDialog(Boolean enabled, String text){ //not used at the moment - alternative solution for dialog
        
@@ -340,7 +380,7 @@ public class HUDScreen extends BaseAppState {
                 nifty.getCurrentScreen().findNiftyControl("dialogText", Label.class).setText(comment[r]+text);
             
             if (text.contains("Oto")){
-                PlayGame.ingameHud.showCharacterDialog();
+                PlayGame.screenInGameHUD.showCharacterDialog();
             }
         
     }
@@ -357,9 +397,9 @@ public class HUDScreen extends BaseAppState {
     
     public void createDialogPanel(){
         dialogListBox = nifty.getCurrentScreen().findNiftyControl("ListBox_Dialog", ListBox.class);
-        nifty.getCurrentScreen().findNiftyControl("Text_npcDialogText", Label.class).setText(PlayGame.gameplayState.getTarget()+": \n"
+        nifty.getCurrentScreen().findNiftyControl("Text_npcDialogText", Label.class).setText(PlayGame.gameplayAppState.getTarget()+": \n"
                 + "Hello Stranger,\n"
-                + "I'm "+ PlayGame.gameplayState.getTarget()+"\n"
+                + "I'm "+ PlayGame.gameplayAppState.getTarget()+"\n"
                 + "How can I help you?"
                 + "This place is long forgotten and abandoned\n"
                 + "You won't find here anything, but ruins.\n"

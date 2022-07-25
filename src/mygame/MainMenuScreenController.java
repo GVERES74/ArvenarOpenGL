@@ -63,10 +63,12 @@ public class MainMenuScreenController extends BaseAppState implements ScreenCont
     public void startGame(){
         System.out.println("Play Game button pressed...");
         
-        PlayGame.detachAppState(PlayGame.mainMenu_screen);
-        PlayGame.attachAppState(PlayGame.gameMode_screen);       
-        AudioManager.musicPlayer.stop();
-        AudioManager.soundPlayer.stop();                       
+        PlayGame.detachAppState(PlayGame.screenMainMenu);
+        PlayGame.attachAppState(PlayGame.screenGameMode);
+        
+        //Optional
+        //AudioManager.musicPlayer.stop();
+                              
     }
         
         
@@ -78,17 +80,16 @@ public class MainMenuScreenController extends BaseAppState implements ScreenCont
         When the user clicks on the options button, the StartScreenAppState method
         attaches an OptionsScreenAppState object and detaches itself.
         */
-        PlayGame.attachAppState(PlayGame.settings_screen);
-        PlayGame.detachAppState(PlayGame.mainMenu_screen);
-        AudioManager.musicPlayer.stop();
-        AudioManager.soundPlayer.stop();       
+        PlayGame.attachAppState(PlayGame.screenSettings);
+        PlayGame.detachAppState(PlayGame.screenMainMenu);
+        
     }
     
     public void creditsGame(){
         System.out.println("Game Credits button pressed...");
         
         
-        PlayGame.attachAppState(PlayGame.credits_screen);
+        PlayGame.attachAppState(PlayGame.screenCredits);
         AudioManager.musicPlayer.stop();
         AudioManager.soundPlayer.stop(); 
         
@@ -97,8 +98,8 @@ public class MainMenuScreenController extends BaseAppState implements ScreenCont
     public void gameExtras(){
         System.out.println("Game Extras button pressed...");
         
-        PlayGame.attachAppState(PlayGame.extras_screen);
-        AudioManager.musicPlayer.stop();
+        PlayGame.attachAppState(PlayGame.screenExtras);
+        //AudioManager.musicPlayer.stop();
         AudioManager.soundPlayer.stop();       
         
     }

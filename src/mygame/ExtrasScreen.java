@@ -78,14 +78,15 @@ public class ExtrasScreen extends BaseAppState {
     
     @Override
     protected void cleanup(Application app) {
-        PlayGame.gameplayState.setEnabled(true);
+        PlayGame.gameplayAppState.setEnabled(true);
         System.out.println("Extras Screen cleanup called.....");
     }
 
      @Override
     protected void onEnable() {
-        PlayGame.gameplayState.setEnabled(false);
+        PlayGame.gameplayAppState.setEnabled(false);
         enableExtrasScreen();
+        System.out.println(this.getClass().getName()+" enabled....."); 
         
        
     }

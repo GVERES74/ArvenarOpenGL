@@ -96,13 +96,32 @@ public class LoadingScreen extends BaseAppState implements ScreenController{
        
         frameCount++; 
         
-        if ((frameCount == 1000) || (frameCount == 2000) || (frameCount ==3000)){
+             
+        if (frameCount == 1000) {
             lscrLabelHinttext1.setText(getLoadingScreenHintText1());
             lscrLabelHinttext2.setText(getLoadingScreenHintText2());
+            lscrLabelLevelName.setText("Loading Level - "+getLoadLevelName()); 
+            lscrLabelAssetName.setText("Loading asset: "+getAssetName()); 
+        }
+        
+        else if (frameCount == 2000) {
+            lscrLabelHinttext1.setText(getLoadingScreenHintText1());
+            lscrLabelHinttext2.setText(getLoadingScreenHintText2());
+            lscrLabelLevelName.setText("Loading Level - "+getLoadLevelName()); 
+            lscrLabelAssetName.setText("Loading asset: "+getAssetName());
+
+        }
+        
+        else if (frameCount == 3000) {
+            lscrLabelHinttext1.setText(getLoadingScreenHintText1());
+            lscrLabelHinttext2.setText(getLoadingScreenHintText2());
+            lscrLabelLevelName.setText("Loading Level - "+getLoadLevelName()); 
+            lscrLabelAssetName.setText("Loading asset: "+getAssetName());
+
         }
         
         lscrLabelLevelName.setText("Loading Level - "+getLoadLevelName()); 
-               
+              
         lscrLabelAssetName.setText("Loading asset: "+getAssetName()); 
         
         
@@ -150,7 +169,7 @@ public class LoadingScreen extends BaseAppState implements ScreenController{
                         text(new TextBuilder("text_LoadingHints1") {{
                                 text(getLoadingScreenHintText1());
                                 font("Interface/Fonts/Default.fnt");
-                                height("20%");
+                                height("30%");
                                 width("80%");
                                 alignCenter();
                                 valignCenter();
@@ -159,7 +178,7 @@ public class LoadingScreen extends BaseAppState implements ScreenController{
                         text(new TextBuilder("text_LoadingHints2") {{
                                 text(getLoadingScreenHintText2());
                                 font("Interface/Fonts/Default.fnt");
-                                height("20%");
+                                height("10%");
                                 width("80%");
                                 alignCenter();
                                 valignCenter();
@@ -174,7 +193,7 @@ public class LoadingScreen extends BaseAppState implements ScreenController{
                         width("100%");    
                     
                         control(new LabelBuilder("text_isLoading") {{
-                                text("LOADING LEVEL - LEVEL");
+                                text("Loading Level....Done");
                                 font("Interface/Fonts/verdana-48-regular.fnt");
                                 height("100%");
                                 width("100%");
@@ -201,7 +220,7 @@ public class LoadingScreen extends BaseAppState implements ScreenController{
                         width("100%");    
                     
                         control(new LabelBuilder("text_LoadingAssetName") {{
-                                text("Loading..");
+                                text("Loading Assets....Done");
                                 font("Interface/Fonts/Default.fnt");
                                 height("50%");
                                 width("100%");

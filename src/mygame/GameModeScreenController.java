@@ -5,16 +5,18 @@
  */
 package mygame;
 
-import Levels.S2M0_shore;
 import com.jme3.app.Application;
+import com.jme3.app.SimpleApplication;
+import com.jme3.app.state.AppStateManager;
 import com.jme3.app.state.BaseAppState;
-import com.jme3.scene.Spatial;
 import de.lessvoid.nifty.Nifty;
 import de.lessvoid.nifty.NiftyEventSubscriber;
 import de.lessvoid.nifty.controls.DropDown;
 import de.lessvoid.nifty.controls.DropDownSelectionChangedEvent;
-import de.lessvoid.nifty.controls.SliderChangedEvent;
+import de.lessvoid.nifty.controls.Label;
 import de.lessvoid.nifty.elements.Element;
+import de.lessvoid.nifty.elements.render.ImageRenderer;
+import de.lessvoid.nifty.render.NiftyImage;
 import de.lessvoid.nifty.screen.Screen;
 import de.lessvoid.nifty.screen.ScreenController;
 import javax.annotation.Nonnull;
@@ -29,24 +31,29 @@ public class GameModeScreenController extends BaseAppState implements ScreenCont
 
     private Nifty nifty;
     private Screen screen;
-    public static String selectedLevel;
-    public static BaseAppState selectedAppStateID;
-    private GameAppState gameAppState;
-        
+    private BaseAppState selectedAppStateID;
     
-    private Element visiblePanel;
-    private DropDown dropDownSingleLevel, dropDownMultiPlayer;
+    private Element visiblePanel, img_activeGameMode;
+    private static DropDown dropDownSingleLevel, dropDownMultiPlayer;
+    private NiftyImage niftyImg_Summer, niftyImg_Winter, niftyImg_Spring, niftyImg_Autumn;
     
-        
+    private SimpleApplication app;
+    private AppStateManager stateManager;
+    
+    public boolean load = false;
+    public int frameCount = 0;  
+    
     
     @Override
     protected void initialize(Application app) {
-        gameAppState = new GameAppState();
+    this.app = (SimpleApplication) app;   
+    this.stateManager = this.app.getStateManager();
+    
     }
 
     @Override
     protected void cleanup(Application app) {
-    
+        
     
         //TODO: clean up what you initialized in the initialize method,        
         //e.g. remove all spatials from rootNode    
@@ -68,7 +75,7 @@ public class GameModeScreenController extends BaseAppState implements ScreenCont
     @Override
     protected void onDisable() {
     
-
+     
 
         //Called when the state was previously enabled but is now disabled         
         //either because setEnabled(false) was called or the state is being         
@@ -77,10 +84,18 @@ public class GameModeScreenController extends BaseAppState implements ScreenCont
     
     @Override
     public void update(float tpf) {
+         //TODO: implement behavior during runtime      
         
-    
-        //TODO: implement behavior during runtime    
+        frameCount++;
+                
+        if (frameCount == 300){
+            
+        PlayGame.detachAppState(PlayGame.screenGameMode);
+        PlayGame.attachAppState(PlayGame.gameplayAppState);
+        attachSelectedSingleLevel();  
+        }
     }
+           
 
     @Override
     public void bind(Nifty nifty, Screen screen) {
@@ -92,69 +107,178 @@ public class GameModeScreenController extends BaseAppState implements ScreenCont
         
         dropDownSingleLevel = screen.findNiftyControl("dropDown_SLLevelList", DropDown.class);
         dropDownMultiPlayer = screen.findNiftyControl("dropDown_MPLevelList", DropDown.class);
-                
+        
+        
+        niftyImg_Summer = nifty.createImage(screen,"Interface/Images/Levels/S2/sl_tropical.png", true);
+        niftyImg_Winter = nifty.createImage(screen,"Interface/Images/Levels/S0/sl_snowy.png", true);
+        niftyImg_Spring = nifty.createImage(screen,"Interface/Images/Levels/S1/sl_forest.png", true);
+        niftyImg_Autumn = nifty.createImage(screen,"Interface/Images/Levels/S3/sl_town.png", true);
+        img_activeGameMode = screen.findElementById("img_SingleLevel");
+                        
     }
 
     @Override
     public void onStartScreen() {
         
-        dropDownSingleLevel.addItem("Tropical Beach");
-        dropDownSingleLevel.addItem("Snowy Walley");
-        
-        dropDownSingleLevel.selectItemByIndex(0);
+        initDropDownSingleLevelList();
+        initDropDownMultiPlayerLevelList();
         
                 
     }
 
     @Override
     public void onEndScreen() {
-        
+                
     }
     
     public void showSLMenu(){
         visiblePanel.setVisible(false);
         screen.findElementById("Panel_GameMode_SL").setVisible(true);
         visiblePanel = screen.findElementById("Panel_GameMode_SL");
+        screen.findNiftyControl("text_GameMode", Label.class).setText("Single Level - Tour Mode");
     }
     
     public void showSPMenu(){
         visiblePanel.setVisible(false);
         screen.findElementById("Panel_GameMode_SP").setVisible(true);
         visiblePanel = screen.findElementById("Panel_GameMode_SP");
+        screen.findNiftyControl("text_GameMode", Label.class).setText("Single Player - Story Mode");
     }
             
     public void showMPMenu(){
         visiblePanel.setVisible(false);
         screen.findElementById("Panel_GameMode_MP").setVisible(true);
         visiblePanel = screen.findElementById("Panel_GameMode_MP");
+        screen.findNiftyControl("text_GameMode", Label.class).setText("Multi Player - LAN / Internet");
     }
     
-    public void playSelectedGameMode(){
-        System.out.println("Play Game button pressed...");
-        PlayGame.detachAppState(PlayGame.gameMode_screen);
+        
+    public void playSingleLevel(){
+        PlayGame.screenGameMode.load = true;
+        PlayGame.attachAppState(PlayGame.screenLoading);                 
+                              
+    }
+    
+    public static void attachSelectedSingleLevel(){    
+        
+        PlayGame.detachAppState(PlayGame.screenGameMode);
+        PlayGame.attachAppState(PlayGame.gameplayAppState);
         
         switch (dropDownSingleLevel.getSelectedIndex()){
-            case 0: selectedLevel = "Scenes/S2_Summerdale/S2M0_shore.j3o"; selectedAppStateID = gameAppState.levelS2M0;
-            case 1: selectedLevel = "Scenes/S0_Snowenar/S0M0_walley.j3o"; selectedAppStateID = gameAppState.levelS0M0;
+            case 0: 
+                    PlayGame.attachAppState(PlayGame.levelS2M0);
+                    break;
+            case 1: 
+                    PlayGame.attachAppState(PlayGame.levelS0M0);
+                    break;
+            case 2:                     
+                    PlayGame.attachAppState(PlayGame.levelS1M0);
+                    break;
+            case 3:                     
+                    PlayGame.attachAppState(PlayGame.levelS3M0);
+                    break; 
+        }    
         
+        PlayGame.screenLoading.setLoadLevelName(dropDownSingleLevel.getSelection().toString());
+    }    
+    
+    public void playStoryMode(){
+        
+        PlayGame.screenGameMode.load = true;
+        PlayGame.attachAppState(PlayGame.screenLoading); 
+        
+        
+    }   
+    
+    
+    public void playMultiPlayer(){
+       
+       PlayGame.screenGameMode.load = true;
+       PlayGame.attachAppState(PlayGame.screenLoading);
+       
+    }   
+                
+    public static void attachSelectedMPLevel(){ 
+    
+        switch (dropDownMultiPlayer.getSelectedIndex()){
+            case 0: 
+                    PlayGame.attachAppState(PlayGame.levelS2M0);
+                    break;
+            case 1: 
+                    PlayGame.attachAppState(PlayGame.levelS0M0);
+                    break;
+            case 2:                     
+                    PlayGame.attachAppState(PlayGame.levelS1M0);
+                    break;
+            case 3:                     
+                    PlayGame.attachAppState(PlayGame.levelS3M0);
+                    break; 
         }
         
-        PlayGame.attachAppState(PlayGame.gameplayState);
-    }    
+        PlayGame.screenLoading.setLoadLevelName(dropDownMultiPlayer.getSelection().toString());
+    }   
+    
     
     public void backToMainMenu(){
         System.out.println("Back button pressed...");
-        PlayGame.detachAppState(PlayGame.gameMode_screen);
-    
+        PlayGame.detachAppState(PlayGame.screenGameMode);
+        PlayGame.attachAppState(PlayGame.screenMainMenu);
     }
     
     @NiftyEventSubscriber(id="dropDown_SLLevelList")
     public void onDropDownChanged(final String id, @Nonnull final DropDownSelectionChangedEvent dropDownChangedEvent) {
                        
-        System.out.println(dropDownSingleLevel.getSelectedIndex());
+                //System.out.println(dropDownSingleLevel.getSelectedIndex());
+        
+        
+        switch (dropDownSingleLevel.getSelectedIndex()){
+            case 0: img_activeGameMode.getRenderer(ImageRenderer.class).setImage(niftyImg_Summer); 
+                    screen.findNiftyControl("label_SingleLevel", Label.class).setText("You wake up on a deserted beach.\n"
+                            + "At least it looks deserted and abandoned.");
+            break;
+            
+            case 1: img_activeGameMode.getRenderer(ImageRenderer.class).setImage(niftyImg_Winter); 
+                    screen.findNiftyControl("label_SingleLevel", Label.class).setText("Lost in a snowy valley.\n"
+                            + "This valley is very cold and snow covered,\n"
+                            + "finding a shelter is vital.");
+            break;
+            
+            case 2: img_activeGameMode.getRenderer(ImageRenderer.class).setImage(niftyImg_Spring); 
+                    screen.findNiftyControl("label_SingleLevel", Label.class).setText("What is better than roam\n "
+                            + "a green grassy plain\n"
+                            + " and a deep forest at dawn.");
+            break;
+
+            case 3: img_activeGameMode.getRenderer(ImageRenderer.class).setImage(niftyImg_Autumn); 
+                    screen.findNiftyControl("label_SingleLevel", Label.class).setText("Harbor Town\n "
+                            + "is usually crowded with various folks.\n"
+                            + "Watch out for thieves and drunken mobs.");
+            break;
+            
+                    
+        }
         
     }
     
-       
+    public void initDropDownSingleLevelList(){
         
+        dropDownSingleLevel.addItem("Tropical Beach");
+        dropDownSingleLevel.addItem("Snowy Walley");
+        dropDownSingleLevel.addItem("Green Forest");
+        dropDownSingleLevel.addItem("Harbor Town");
+        
+        dropDownSingleLevel.selectItemByIndex(0);
+               
+    }
+    
+    public void initDropDownMultiPlayerLevelList(){
+        dropDownMultiPlayer.addItem("Abandoned Shore");
+        dropDownMultiPlayer.addItem("Woodcutter's camp");
+        dropDownMultiPlayer.addItem("Lost in the forest");
+        dropDownMultiPlayer.addItem("Urban legends");
+        
+        dropDownMultiPlayer.selectItemByIndex(0);
+    }
+    
+    
 }

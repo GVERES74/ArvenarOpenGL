@@ -82,21 +82,22 @@ public class SettingsScreen extends BaseAppState {
     
     @Override
     protected void cleanup(Application app) {
-        PlayGame.gameplayState.setEnabled(true);
+        PlayGame.gameplayAppState.setEnabled(true);
         System.out.println(this.nifty.getCurrentScreen().getScreenId()+" screen cleanup called.....");
     }
 
     @Override
     protected void onEnable() {
         showSettingsScreen();
-       PlayGame.gameplayState.setEnabled(false);
+       PlayGame.gameplayAppState.setEnabled(false);
+       System.out.println(this.getClass().getName()+" enabled....."); 
        
     }
     
     @Override
     protected void onDisable() {
         hideSettingsScreen();
-        
+        PlayGame.gameplayAppState.setEnabled(true);
     }
     
     public void createSettingsGUI(){
@@ -109,7 +110,6 @@ public class SettingsScreen extends BaseAppState {
             nifty.loadControlFile("nifty-default-controls.xml");
         
             nifty.registerSound("btnclick", "Interface/sound/click.wav");
-//            nifty.registerMusic("settingstheme", "Music/Soundtracks/RPG_Ambient_4.ogg");
             
         
             nifty.addScreen("Screen_GameSettings", new ScreenBuilder("Game Settings"){{
@@ -159,7 +159,7 @@ public class SettingsScreen extends BaseAppState {
                             backgroundColor("#ffc1");
                         
                             
-                        control(new TabBuilder("tab_GameplaySettings", "Gameplay"){{
+                        control(new TabBuilder("tab_GameplaySettings", "Gameplay"){{ //GAMEPLAY SETTINGS
                             childLayoutAbsoluteInside();     
                                 
                                     control(new LabelBuilder("label_ShowFps") {{
@@ -176,7 +176,7 @@ public class SettingsScreen extends BaseAppState {
                                     }});
                         }});
                         
-                        control(new TabBuilder("tab_VideoSettings", "Video"){{
+                        control(new TabBuilder("tab_VideoSettings", "Video"){{  //DISPLAY SETTINGS
                                 childLayoutAbsoluteInside();     
                                 
                                     control(new LabelBuilder("label_Fullscreen") {{
@@ -234,9 +234,118 @@ public class SettingsScreen extends BaseAppState {
                                         y("180px");
 
                                     }});
-                            }});
+                            }}); //end Video settings
                         
-                        control(new TabBuilder("tab_AudioSettings", "Audio"){{
+                        control(new TabBuilder("tab_GraphicsSettings", "Graphics"){{ //GRAPHICS QUALITY SETTINGS
+                                childLayoutAbsoluteInside();     
+                                
+                                    control(new LabelBuilder("label_Shadows") {{
+                                        text("Shadows");   
+                                        x("20px");
+                                        y("60px");  
+                                                                                
+                                    }});
+                                
+                                    control(new CheckboxBuilder("cb_Shadows") {{
+
+                                        x("150px");
+                                        y("60px");   
+                                    }});
+                                    
+                                    control(new LabelBuilder("label_Shadow_Quality") {{
+                                        text("Shadow Quality");   
+                                        x("20px");
+                                        y("100px");    
+
+                                    }});
+//
+                                    control(new DropDownBuilder("dropdown_Shadow_Quality") {{
+                                        width("80px");
+                                        x("150px");
+                                        y("100px");
+
+                                    }});
+//                            
+                                    control(new LabelBuilder("label_DOF") {{
+                                        text("Depth of Field");   
+                                        x("20px");
+                                        y("140px");    
+
+                                    }});
+//
+                                    control(new CheckboxBuilder("cb_DOF") {{
+                                        x("150px");
+                                        y("140px");   
+                                    }});
+                                    
+                                     control(new LabelBuilder("label_DOF_Quality") {{
+                                        text("Depth of Field Quality");   
+                                        x("20px");
+                                        y("180px");    
+
+                                    }});
+//
+                                    control(new DropDownBuilder("dropdown_DOF_Quality") {{
+                                        width("80px");
+                                        x("150px");
+                                        y("180px");
+
+                                    }});
+                                    
+                                    
+                                    control(new LabelBuilder("label_SSAO") {{
+                                        text("SSAO");   
+                                        x("20px");
+                                        y("220px");    
+
+                                    }});
+//
+                                    control(new CheckboxBuilder("cb_SSAO") {{
+                                        x("150px");
+                                        y("220px");   
+                                    }});
+                                    
+                                    control(new LabelBuilder("label_GodRays") {{
+                                        text("GodRays");   
+                                        x("20px");
+                                        y("260px");    
+                                    }});
+//
+                                    control(new CheckboxBuilder("cb_GodRays") {{
+                                        x("150px");
+                                        y("260px");   
+                                    }});
+                                    
+
+                                    control(new LabelBuilder("label_Bloom") {{
+                                        text("Bloom");   
+                                        x("20px");
+                                        y("300px");    
+
+                                    }});
+//
+                                    control(new CheckboxBuilder("cb_Bloom") {{
+                                        x("150px");
+                                        y("300px");   
+                                    }});
+                                    
+                                     control(new LabelBuilder("label_Bloom_Quality") {{
+                                        text("Bloom Quality");   
+                                        x("20px");
+                                        y("340px");    
+
+                                    }});
+//
+                                    control(new DropDownBuilder("dropdown_Bloom_Quality") {{
+                                        width("80px");
+                                        x("150px");
+                                        y("340px");
+
+                                    }});
+                                    
+                            }}); //end Graphics settings
+                        
+                        control(new TabBuilder("tab_AudioSettings", "Audio"){{  //AUDIO (MUSIC / SOUND) SETTINGS
                                 childLayoutAbsoluteInside();    
                                     control(new LabelBuilder("label_MusicVolume") {{
                                         text("Music Volume");   
@@ -292,7 +401,7 @@ public class SettingsScreen extends BaseAppState {
                                                                  
                         }});
                         
-                        control(new TabBuilder("tab_ControlSettings", "Controls"){{
+                        control(new TabBuilder("tab_ControlSettings", "Controls"){{ //KEYBOARD / MOUSE SETTINGS
                             
                                     x("0px");  
                                     y("0px");
@@ -315,7 +424,7 @@ public class SettingsScreen extends BaseAppState {
                             filename("Interface/Images/MenuUI/button_0_apply.png");
                             height("40px");
                             width("150px");  
-                            interactOnClick("popupApplySettings()");  
+                            interactOnClick("ApplySettings()");  
                             onStartHoverEffect(new HoverEffectBuilder("changeImage"){{
                                 effectParameter("active", "Interface/Images/MenuUI/button_1_apply.png"); neverStopRendering(true);
                                 effectParameter("inactive", "Interface/Images/MenuUI/button_0_apply.png"); neverStopRendering(true);}});
@@ -324,16 +433,31 @@ public class SettingsScreen extends BaseAppState {
                           
                         }});
                         
-                        image(new ImageBuilder("settings_Back"){{
+                        image(new ImageBuilder("settings_BacktoGame"){{
                             filename("Interface/Images/MenuUI/button_0_back.png");
                             height("40px");
                             width("150px");    
-                            interactOnClick("backToMainMenu()");
+                            interactOnClick("backToGame()");
                             interactOnMouseOver("buttonEffect()");
                             backgroundColor("#0c01");
                             onStartHoverEffect(new HoverEffectBuilder("changeImage"){{
                                 effectParameter("active", "Interface/Images/MenuUI/button_1_back.png"); neverStopRendering(true);
                                 effectParameter("inactive", "Interface/Images/MenuUI/button_0_back.png"); neverStopRendering(true);}});
+                            onStartHoverEffect(new HoverEffectBuilder("move"){{effectParameter("mode", "toOffset"); effectParameter("offsetX", "+15");}});
+                            onStartHoverEffect(new HoverEffectBuilder("playSound"){{effectParameter("sound", "btnclick");}});
+                                
+                        }});
+                        
+                        image(new ImageBuilder("settings_BacktoMenu"){{
+                            filename("Interface/Images/MenuUI/button_0_backtomenu.png");
+                            height("40px");
+                            width("150px");    
+                            interactOnClick("backToMainMenu()"); 
+                            interactOnMouseOver("buttonEffect()");
+                            backgroundColor("#0c01");
+                            onStartHoverEffect(new HoverEffectBuilder("changeImage"){{
+                                effectParameter("active", "Interface/Images/MenuUI/button_1_backtomenu.png"); neverStopRendering(true);
+                                effectParameter("inactive", "Interface/Images/MenuUI/button_0_backtomenu.png"); neverStopRendering(true);}});
                             onStartHoverEffect(new HoverEffectBuilder("move"){{effectParameter("mode", "toOffset"); effectParameter("offsetX", "+15");}});
                             onStartHoverEffect(new HoverEffectBuilder("playSound"){{effectParameter("sound", "btnclick");}});
                                 

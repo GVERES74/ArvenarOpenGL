@@ -6,7 +6,7 @@
 package mygame;
 
 
-import Levels.S0M0_valley;
+import Levels.IntroMap;
 import com.jme3.app.Application;
 import com.jme3.app.SimpleApplication;
 import com.jme3.app.state.AppStateManager;
@@ -25,7 +25,6 @@ import com.jme3.renderer.Camera;
 import com.jme3.renderer.RenderManager;
 import com.jme3.renderer.ViewPort;
 import com.jme3.scene.Node;
-import com.jme3.scene.Spatial;
 import de.lessvoid.nifty.Nifty;
 import de.lessvoid.nifty.builder.EffectBuilder;
 import de.lessvoid.nifty.builder.HoverEffectBuilder;
@@ -57,22 +56,16 @@ public class MainMenuScreen extends BaseAppState {
     private Camera camera;
     private AudioNode soundPlayer;
     
-    public S0M0_valley levelS0M0;
-    private Spatial level;
-    
     private Node startRootNode = new Node("Main Menu RootNode");
     private Node startGUINode = new Node("Main Menu GUINode");
     
-    float screenHeight, screenWidth;
-    boolean animated = true;
+    float screenHeight, screenWidth, timer;
+    boolean animated = true; //Switch ON / OFF fly camera moving
     
     BitmapText menuItemText, camPosInfoText;
-
-//    public MainMenuScreen() {
-//        
-//    }
-        
     
+    IntroMap menuScene;
+
     @Override
     public void initialize(Application app) {
         
@@ -89,26 +82,22 @@ public class MainMenuScreen extends BaseAppState {
         screenHeight = app.getCamera().getHeight();
         screenWidth = app.getCamera().getWidth();
         
-        rootNode.attachChild(startRootNode);
-       // rootNode.attachChild(startGUINode);
         
         inputManager.deleteMapping(SimpleApplication.INPUT_MAPPING_EXIT); //delete ESC key quit app function
+        camera.setLocation(new Vector3f(960f,42f,-1225f)); //flycam initposition
+        camera.setRotation(new Quaternion().fromAngleNormalAxis(0.1f, Vector3f.UNIT_X)); //flycam looks down a bit
+        this.app.getFlyByCamera().setEnabled(false); //disable camera movement with keyboard / mouse
         
-        levelS0M0 = new S0M0_valley();
-        
-        setLevel("Scenes/S0_Snowenar/S0M0_walley.j3o", levelS0M0);
-        
-        camera.setLocation(levelS0M0.getInitPlayerPosition());
-       
-        //this.app.getFlyByCamera().setEnabled(false);
-        
+        menuScene = new IntroMap();
+        PlayGame.attachAppState(menuScene);
+         
         initMenuControls();
-        //createAnimatedMainMenu();
-        createSimpleMainMenu();
-        AudioManager.loadRandomMusic();
+        createAnimatedMainMenu();
+//        createSimpleMainMenu();
+        enableMainMenuScreen();
         
-    //TODO: initialize your AppState, e.g. attach spatials to rootNode
-        //this is called on the OpenGL thread after the AppState has been attached
+        AudioManager.loadRandomMusic();
+           
     }
     
             
@@ -127,8 +116,8 @@ public class MainMenuScreen extends BaseAppState {
             Vector3f camDirection = camera.getDirection();
             Vector3f camLocation = camera.getLocation();
                       
-            float moveX = camDirection.x/500;
-            float moveZ = camDirection.z/300;
+            float moveX = camDirection.x/10;
+            float moveZ = camDirection.z/10;
             float camx = camLocation.x;
             float camz = camLocation.z;
             float camy = camLocation.y;
@@ -136,7 +125,8 @@ public class MainMenuScreen extends BaseAppState {
             }    
             
             else if (enabled == false){
-                camera.setLocation(new Vector3f(0, 3, 0));
+                camera.setLocation(new Vector3f(923f,45f,-1246f));
+                camera.setRotation(new Quaternion(0.05f, -0.3f, -0.02f, 0.8962425f));
             }
 
         }
@@ -144,12 +134,10 @@ public class MainMenuScreen extends BaseAppState {
                 
         public void initMenuControls(){
         
-            
             inputManager.addMapping("SkipIntro", new KeyTrigger(KeyInput.KEY_ESCAPE));
             
             inputManager.addListener(actionListener, "SkipIntro");
-        
-        
+                
         }
     
         private final ActionListener actionListener = new ActionListener() {
@@ -169,13 +157,15 @@ public class MainMenuScreen extends BaseAppState {
         
     @Override
     public void update(float tpf) {
-        //TODO: implement behavior during runtime
+        timer +=tpf;
+        //changeIntroCam();
+        
         if (animated == true){
         rotateCamera(-0.1f, 1,tpf,Vector3f.UNIT_Y);
         moveCamera(true);
         }
         else if (animated == false){
-            rotateCamera(0f, 0,0,Vector3f.UNIT_Y);
+            rotateCamera(0f,0f,0f,Vector3f.UNIT_Y);
             moveCamera(false);                                
         }
        
@@ -185,19 +175,22 @@ public class MainMenuScreen extends BaseAppState {
     public void cleanup(Application app) {
         System.out.println("MainMenuScreen cleanup called.....");
         inputManager.deleteMapping("SkipIntro");
-               
+                
+        this.app.getFlyByCamera().setEnabled(true); //enable camera movement with keyboard / mouse       
     }    
           
    
     @Override
     protected void onEnable(){
-        enableMainMenuScreen();       
+        timer = 0;               
+        System.out.println(this.getClass().getName()+" enabled....."); 
     }
     
 
     @Override
     protected void onDisable() {
         disableMainMenuScreen();
+        //AudioManager.musicPlayer.stop();
     }
     
     public void createAnimatedMainMenu(){
@@ -214,8 +207,7 @@ public class MainMenuScreen extends BaseAppState {
         nifty.addScreen("Screen_AnimatedMainMenu", new ScreenBuilder("Main Menu"){{
                 controller(new mygame.MainMenuScreenController());
                 defaultFocusElement("menuimg_Play");
-                
-           
+                     
 
                     layer(new LayerBuilder("Layer_Menu_Intro"){{
                         childLayoutVertical();
@@ -459,6 +451,17 @@ public class MainMenuScreen extends BaseAppState {
                 controller(new mygame.MainMenuScreenController());
                 defaultFocusElement("menuimg_Play");
                 
+                //this is only for static menuscreen, i prefer moving the camera accross the landscape
+                layer(new LayerBuilder("Layer_MainMenu_BackgroundImage"){{
+                        
+                        childLayoutCenter();
+//                        image(new ImageBuilder("img_Loading_Background") {{
+//                            filename("Interface/Images/bkg_pirate_table.jpg");
+//                            height("100%");
+//                            width("100%");
+//                        }});
+                }}); //end layer bkgimage
+                
                 layer(new LayerBuilder("Layer_Menu_Main"){{
                     childLayoutVertical();
                    
@@ -585,21 +588,11 @@ public class MainMenuScreen extends BaseAppState {
         
     }
     
-    
-    public void setLevel(String levelname, BaseAppState levelid) {
-        
-        level = this.app.getAssetManager().loadModel(levelname);
-        level.setLocalTranslation(0f, 0f, 0f);
-        this.app.getRootNode().attachChild(level);
-        app.getStateManager().attach(levelid);
+    public void changeIntroCam(){
+        if (timer > 500) camera.setLocation(new Vector3f(1150f,50f,-950f)); //camera position 1}
+        if (timer > 1000) camera.setLocation(new Vector3f(800f,80f,-1400f)); //camera position 2}
         
     }
-
-    public Spatial getLevel() {
-        return level;
-    }
-    
-    
  }
 
                                   

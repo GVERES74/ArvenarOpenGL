@@ -185,6 +185,8 @@ public class CreditsScreen extends BaseAppState {
         
         @Override
         protected void onEnable() {
+            
+            System.out.println(this.getClass().getName()+" enabled....."); 
             app.setDisplayStatView(false); app.setDisplayFps(false);
             app.getFlyByCamera().setDragToRotate(true);
             nifty = PlayGame.getNiftyDisplay().getNifty();
