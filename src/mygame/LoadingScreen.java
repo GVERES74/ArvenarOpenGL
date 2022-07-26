@@ -37,8 +37,8 @@ public class LoadingScreen extends BaseAppState implements ScreenController{
     private SimpleApplication app;
     private Nifty nifty;
         
-    private String lscrAssetName = "Asset Name";
-    private String lscrLevelName = "Level";
+    private String lscrAssetName = "Initial Asset Name";
+    private String lscrLevelName = "Initial Level Name";
     private Label lscrLabelAssetName;
     private Label lscrLabelLevelName;
     private Label lscrLabelHinttext1;
@@ -46,7 +46,7 @@ public class LoadingScreen extends BaseAppState implements ScreenController{
     private Element lscrImage;
     private NiftyImage lscrRandomNiftyImage;
     
-    private int frameCount=0;
+    private int lsFrameCount=0;
     private Screen screen;
     
     
@@ -57,8 +57,9 @@ public class LoadingScreen extends BaseAppState implements ScreenController{
         
         createLoadingScreen();
         lscrLabelAssetName =  nifty.getScreen("Screen_Loading").findNiftyControl("text_LoadingAssetName", Label.class);         
-        lscrLabelLevelName =  nifty.getScreen("Screen_Loading").findNiftyControl("text_isLoading", Label.class);         
-      
+        lscrLabelLevelName =  nifty.getScreen("Screen_Loading").findNiftyControl("text_isLoading", Label.class); 
+       
+        
     }
     
     
@@ -75,6 +76,7 @@ public class LoadingScreen extends BaseAppState implements ScreenController{
     protected void onEnable() {
         showLoadingScreen(); 
         initUIControls();
+        
         System.out.println(this.getClass().getName()+" enabled....."); 
            
         //Called when the state is fully enabled, ie: is attached and         
@@ -94,37 +96,15 @@ public class LoadingScreen extends BaseAppState implements ScreenController{
     @Override
     public void update(float tpf) {
        
-        frameCount++; 
+        lsFrameCount++; 
         
-             
-        if (frameCount == 1000) {
-            lscrLabelHinttext1.setText(getLoadingScreenHintText1());
-            lscrLabelHinttext2.setText(getLoadingScreenHintText2());
             lscrLabelLevelName.setText("Loading Level - "+getLoadLevelName()); 
             lscrLabelAssetName.setText("Loading asset: "+getAssetName()); 
-        }
-        
-        else if (frameCount == 2000) {
-            lscrLabelHinttext1.setText(getLoadingScreenHintText1());
-            lscrLabelHinttext2.setText(getLoadingScreenHintText2());
-            lscrLabelLevelName.setText("Loading Level - "+getLoadLevelName()); 
-            lscrLabelAssetName.setText("Loading asset: "+getAssetName());
-
-        }
-        
-        else if (frameCount == 3000) {
-            lscrLabelHinttext1.setText(getLoadingScreenHintText1());
-            lscrLabelHinttext2.setText(getLoadingScreenHintText2());
-            lscrLabelLevelName.setText("Loading Level - "+getLoadLevelName()); 
-            lscrLabelAssetName.setText("Loading asset: "+getAssetName());
-
-        }
-        
-        lscrLabelLevelName.setText("Loading Level - "+getLoadLevelName()); 
-              
-        lscrLabelAssetName.setText("Loading asset: "+getAssetName()); 
-        
-        
+            
+            if (lsFrameCount == 500){
+              lscrLabelAssetName.setText("Loading asset: "+getAssetName());  
+            }
+             
     }
     
           
@@ -361,6 +341,7 @@ public class LoadingScreen extends BaseAppState implements ScreenController{
     public void bind(Nifty nifty, Screen screen) {
         this.nifty = nifty;
         this.screen = screen;
+        
     }
 
     @Override

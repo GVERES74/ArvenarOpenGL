@@ -59,6 +59,8 @@ public class PlayGame extends SimpleApplication{
         app = new PlayGame();
         appsettings = new AppSettings(true);
         appsettings.setResolution(1366, 768);
+        appsettings.setFullscreen(false);
+
         app.setSettings(appsettings);        
         appsettings.setTitle("Arvenar 3D - OpenGl");
         appsettings.setSettingsDialogImage("Interface/Images/splash.png");

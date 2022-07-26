@@ -84,16 +84,15 @@ public class MainMenuScreen extends BaseAppState {
         
         
         inputManager.deleteMapping(SimpleApplication.INPUT_MAPPING_EXIT); //delete ESC key quit app function
-        camera.setLocation(new Vector3f(960f,42f,-1225f)); //flycam initposition
-        camera.setRotation(new Quaternion().fromAngleNormalAxis(0.1f, Vector3f.UNIT_X)); //flycam looks down a bit
+        camera.setLocation(new Vector3f(800f,60f,-1000f)); //flycam initposition
+        camera.setRotation(new Quaternion().fromAngleNormalAxis(0.2f, Vector3f.UNIT_X)); //flycam looks down a bit
         this.app.getFlyByCamera().setEnabled(false); //disable camera movement with keyboard / mouse
         
-        menuScene = new IntroMap();
-        PlayGame.attachAppState(menuScene);
+//        menuScene = new IntroMap(); PlayGame.attachAppState(menuScene); createAnimatedMainMenu();
          
         initMenuControls();
-        createAnimatedMainMenu();
-//        createSimpleMainMenu();
+        
+        createSimpleMainMenu();
         enableMainMenuScreen();
         
         AudioManager.loadRandomMusic();

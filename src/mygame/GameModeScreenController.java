@@ -86,14 +86,7 @@ public class GameModeScreenController extends BaseAppState implements ScreenCont
     public void update(float tpf) {
          //TODO: implement behavior during runtime      
         
-        frameCount++;
-                
-        if (frameCount == 300){
-            
-        PlayGame.detachAppState(PlayGame.screenGameMode);
-        PlayGame.attachAppState(PlayGame.gameplayAppState);
-        attachSelectedSingleLevel();  
-        }
+         
     }
            
 

@@ -114,7 +114,7 @@ public class GameModeScreen extends BaseAppState {
         if(frameCount == 300){
                 
             GameModeScreenController.attachSelectedSingleLevel();
-                load = false;
+            load = false;
         }
 //        System.out.println(this.getClass().getName()+" FrameCount: "+frameCount);
          

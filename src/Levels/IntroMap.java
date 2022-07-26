@@ -98,12 +98,12 @@ public class IntroMap extends BaseAppState{
     
     private float timer = 0.0f;
     private int randomNumber = 0;
-    private final int GRASS_COUNT = 5;
-    private final int FLOWER_COUNT = 5;
-    private final int TREE_COUNT = 5;
-    private final int BUSH_COUNT = 5;
-    private final int PLANT_COUNT = 5;
-    private final int OTHER_COUNT = 5;
+    private final int GRASS_COUNT = 1;
+    private final int FLOWER_COUNT = 1;
+    private final int TREE_COUNT = 1;
+    private final int BUSH_COUNT = 1;
+    private final int PLANT_COUNT = 1;
+    private final int OTHER_COUNT = 1;
     
         
     @Override
@@ -143,8 +143,7 @@ public class IntroMap extends BaseAppState{
         initStaticParticles(); //e.g. leaves, fireplace, candle flame that do not change location
         initDynamicParticles(); //e.g. bugs, butterflies, rain, snow that change location through update, e.g. follow player        
                 
-        loadAmbientSound();
-       
+              
         initGraphicsEffects();
         
     }
@@ -153,6 +152,7 @@ public class IntroMap extends BaseAppState{
     protected void cleanup(Application app) {
         
           rootNode.detachAllChildren();
+//          rootNode.getParent().detachAllChildren();
         //TODO: clean up what you initialized in the initialize method,        
         //e.g. remove all spatials from rootNode    
     }
@@ -211,10 +211,7 @@ public class IntroMap extends BaseAppState{
             modelManager.createStaticModel("Models/Structures/OldShack/OldShack_blend.obj", ModelManager.staticNode, 2930f, 0f, -2520f, 1.6f, 0f, 3f);
             modelManager.createStaticModel("Models/Structures/Well/Well1_blend.obj", ModelManager.staticNode, 950f, 0f, -1143f, 1.6f, 0f, 1f);
             modelManager.createStaticModel("Models/Structures/MedievalShack/medievalshackwood.j3o", ModelManager.staticNode, 908f, 0f, -1195f, 1f, 0f, 0.06f);
-            modelManager.createStaticModel("Models/Props/Lantern/CandleLantern_blend.obj", ModelManager.destroyableNode, 905.6f, 12.8f, -1190.5f, 1f, 0f, 2.0f);
-            modelManager.createStaticModel("Models/Weapons/HuntingRifle/HuntingRifle.j3o", ModelManager.destroyableNode, 899f, 5f, -1194f, 1f, 0f, 2.0f);
-            modelManager.createStaticModel("Models/Props/Painting/Painting_Death.obj", ModelManager.destroyableNode, 901.5f, 5.5f, -1198f, 1f, 0f, 2.0f);
-            modelManager.createStaticModel("Models/Props/Painting/Painting_rev.obj", ModelManager.destroyableNode, 905f, 5.5f, -1181.5f, 1f, 0f, 2.0f);
+                        
             modelManager.createStaticModel("Models/Structures/WoodenFence/WoodenFence_blend.obj", ModelManager.staticNode, 842f, 0f, -1190f, 1f, 0f, 0.7f);
             modelManager.createStaticModel("Models/Structures/Ruins/Ruins_blend.obj", ModelManager.staticNode, -290f, 0.1f, -1650f, 0f, 0f, 2.0f);
             modelManager.createStaticModel("Models/Structures/Ruins/Abbey_wallruins_blend.obj", ModelManager.staticNode, -155f, 0.1f, -1795f, 0f, 0f, 1.0f);
@@ -222,7 +219,7 @@ public class IntroMap extends BaseAppState{
             modelManager.createStaticModel("Models/Props/Torch/Torch_blend.obj", ModelManager.destroyableNode, 1818.3f, 5f, 3341f, 1.5f, 0f, 2.0f);
             modelManager.createStaticModel("Models/Others/Campfire/Campfire.j3o", ModelManager.staticNode, 1100f, 0f, -970f, 0f, 0, 4f);
             modelManager.createStaticModel("Models/Structures/Jetty02/Jetty02_blend.obj", ModelManager.staticNode, 1125f, 0.5f, -978f, 0f, 0f, 2f);
-            modelManager.createStaticModel("Models/Furnishments/Bed/Bed_blend.obj", ModelManager.destroyableNode, 910f, 0f, -1202f, 1f, 0f, 0.8f);
+            
             modelManager.createStaticModel("Models/Props/CartWheel/CartWheel_blend.obj", ModelManager.destroyableNode, 913f, 0.5f, -1208f, 1.1f, 0.8f, 0.025f);
             modelManager.createStaticModel("Models/Props/Ladder/Ladder_blend.obj", ModelManager.destroyableNode, 920f, -1f, -1212f, 2.6f, -0.48f, 0.04f);
             modelManager.createStaticModel("Models/Props/Ladder0/WoodenLadder_blend.obj", ModelManager.destroyableNode, 882f, -1f, -1228f, 2f, 0f, 0.04f);
@@ -230,7 +227,7 @@ public class IntroMap extends BaseAppState{
             modelManager.createStaticModel("Models/Props/OldWagon/OldWagon_blend.obj", ModelManager.destroyableNode, 996f, 0f, -1206f, 1f, 0f, 3f);
             modelManager.createStaticModel("Models/Props/WoodenCart/WoodenCart_blend.obj", ModelManager.destroyableNode, 980f, 0, -1218f, 1f, 0f, 3f);
             modelManager.createStaticModel("Models/Props/Bench/BeerBench_blend.obj", ModelManager.destroyableNode, 902f, 0, -1190f, 1.0f, 0f, 1f);
-            modelManager.createStaticModel("Models/Props/DinnerSet/DinnerSet_blend.obj", ModelManager.destroyableNode, 902f, 3.2f, -1189f, 1.0f, 0f, 1f);
+            
             modelManager.createStaticModel("Models/Props/Bench/Bench_blend.obj", ModelManager.destroyableNode, 919f, 0, -1195f, 1f, 0f, 3f);
             modelManager.createStaticModel("Models/Props/Hatchet/Hatchet_blend.obj", ModelManager.destroyableNode, 911f, 1.4f, -1212.5f, 1f, 2f, 1.5f);
 
@@ -434,13 +431,7 @@ public class IntroMap extends BaseAppState{
          }
         
                 
-        public void loadAmbientSound(){
-            
-            AudioManager.playSound("Sounds/Ambient/Water/AfricaRiver01.ogg", false, false, true, 50f, 0.5f, 1440f, 10f, -1050f);
-            AudioManager.playSound("Sounds/Ambient/Environment/nature.ogg", false, false, true, 20f, 2.0f, 0f, 10f, 0f);
-                        
-        }
-       
+             
         
         public void generateLandScape(){
             matTerrain = new Material(assetManager, "Common/MatDefs/Terrain/TerrainLighting.j3md");
@@ -523,14 +514,7 @@ public class IntroMap extends BaseAppState{
             PlayGame.bulletAppState.getPhysicsSpace().add(levelRigidBody);
         }
         
-        public Vector3f setRandomPlayerSpawnPoint(){
-            
-            int x = FastMath.nextRandomInt(-4096, 4096);
-            int z = FastMath.nextRandomInt(-4096, 4096);
-            float y = terrainIntroMap.getHeight(new Vector2f(x,z))+20f;
-            return new Vector3f(x,y,z);
-        }
-        
+                
         public void initGraphicsEffects(){
             
             //effect.directionalLightShadowRenderer(sunPosition);

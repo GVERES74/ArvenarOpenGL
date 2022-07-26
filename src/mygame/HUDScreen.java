@@ -179,6 +179,13 @@ public class HUDScreen extends BaseAppState {
                             height("9px");
                             width("200px");                          
                             }});
+                            
+                            control(new LabelBuilder("HUD_PlayerHealthValueText"){{
+                                text("");
+                                alignCenter();
+                                height("20%");
+                                width("50%");
+                            }});
                                              
                         }}); //player health info panel end
                         
@@ -335,7 +342,8 @@ public class HUDScreen extends BaseAppState {
     
     public void decreasePlayerHealthBar(){
         int healthpoints = nifty.getScreen("Screen_HUD").findElementById("HUD_PlayerHealthValueBar").getWidth();
-            nifty.getScreen("Screen_HUD").findElementById("HUD_PlayerHealthValueBar").setWidth(healthpoints-10);
+            nifty.getScreen("Screen_HUD").findElementById("HUD_PlayerHealthValueBar").setWidth(healthpoints-1);
+            nifty.getScreen("Screen_HUD").findNiftyControl("HUD_PlayerHealthValueText", Label.class).setText(""+healthpoints);
             if (healthpoints < 10){
                 nifty.getScreen("Screen_HUD").findElementById("HUD_PlayerHealthValueBar").setWidth(200);
             }

@@ -352,7 +352,7 @@ public class GameAppState extends BaseAppState
     
     public void decreasePlayerHealth(){
         PlayGame.screenInGameHUD.decreasePlayerHealthBar();
-        playerhp -=10;
+        playerhp -=1;
     }
 
     
@@ -377,8 +377,9 @@ public class GameAppState extends BaseAppState
                     
                     System.out.println("parent= "+shootable.getParent().getParent());
                         if (shootable.getParent().getParent() == shootableNode){
-                            shootableNode.detachChild(shootable);
-                            shootable.getParent().removeFromParent();
+//                            shootableNode.detachChild(shootable);
+//                            shootable.getParent().removeFromParent();
+                                shootable.rotate(2f, 0f, 1f);
                     }
                 }
     }

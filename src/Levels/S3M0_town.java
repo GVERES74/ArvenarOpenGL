@@ -279,7 +279,7 @@ public class S3M0_town extends BaseAppState {
 //            ambient.setColor(ColorRGBA.White.clone()); 
 //            rootNode.addLight(ambient);
             AmbientLight al = new AmbientLight();
-            al.setColor(ColorRGBA.White.multLocal(0.5f));
+            al.setColor(ColorRGBA.White.multLocal(0.1f));
             rootNode.addLight(al);
                         
          }
@@ -301,11 +301,11 @@ public class S3M0_town extends BaseAppState {
         
         public void initSpotLights(){
             slLightHouse = new SpotLight();
-            slLightHouse.setSpotRange(500f);
+            slLightHouse.setSpotRange(100f);
             slLightHouse.setSpotOuterAngle(20f*FastMath.DEG_TO_RAD);
             slLightHouse.setSpotInnerAngle(5f*FastMath.DEG_TO_RAD);
             slLightHouse.setDirection(new Vector3f(-1f,0f,0f));
-            slLightHouse.setPosition(new Vector3f(800f, 50f, 520f));
+            slLightHouse.setPosition(new Vector3f(800f, 210f, 520f));
             rootNode.addLight(slLightHouse);
         }
         
