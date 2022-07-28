@@ -291,9 +291,9 @@ public class S3M0_town extends BaseAppState {
 //            ambient.setColor(ColorRGBA.White.clone()); 
 //            rootNode.addLight(ambient);
             plLantern = new PointLight();
-            plLantern.setColor(ColorRGBA.White.multLocal(3f));
+            plLantern.setColor(ColorRGBA.Yellow.mult(2f));
             plLantern.setRadius(20f);
-            plLantern.setPosition(new Vector3f(905.6f, 44.8f, -1190.5f));
+            plLantern.setPosition(new Vector3f(800f, 210f, 527f));
             plLantern.setEnabled(true);
             rootNode.addLight(plLantern);
                        
@@ -301,11 +301,12 @@ public class S3M0_town extends BaseAppState {
         
         public void initSpotLights(){
             slLightHouse = new SpotLight();
-            slLightHouse.setSpotRange(100f);
-            slLightHouse.setSpotOuterAngle(20f*FastMath.DEG_TO_RAD);
-            slLightHouse.setSpotInnerAngle(5f*FastMath.DEG_TO_RAD);
-            slLightHouse.setDirection(new Vector3f(-1f,0f,0f));
-            slLightHouse.setPosition(new Vector3f(800f, 210f, 520f));
+            slLightHouse.setSpotRange(1000f);
+            slLightHouse.setSpotOuterAngle(25f*FastMath.DEG_TO_RAD);
+            slLightHouse.setSpotInnerAngle(15f*FastMath.DEG_TO_RAD);
+            slLightHouse.setColor(ColorRGBA.Yellow.mult(2.0f));
+            slLightHouse.setDirection(new Vector3f(1f, 0f, 2f));
+            slLightHouse.setPosition(new Vector3f(799f, 210f, 527f));
             rootNode.addLight(slLightHouse);
         }
         

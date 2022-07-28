@@ -37,8 +37,8 @@ public class LoadingScreen extends BaseAppState implements ScreenController{
     private SimpleApplication app;
     private Nifty nifty;
         
-    private String lscrAssetName = "Initial Asset Name";
-    private String lscrLevelName = "Initial Level Name";
+    private String lscrAssetName = "Initialize Assets..";
+    private String lscrLevelName = "Initialize Level..";
     private Label lscrLabelAssetName;
     private Label lscrLabelLevelName;
     private Label lscrLabelHinttext1;
@@ -56,8 +56,7 @@ public class LoadingScreen extends BaseAppState implements ScreenController{
         this.app = (SimpleApplication) app;
         
         createLoadingScreen();
-        lscrLabelAssetName =  nifty.getScreen("Screen_Loading").findNiftyControl("text_LoadingAssetName", Label.class);         
-        lscrLabelLevelName =  nifty.getScreen("Screen_Loading").findNiftyControl("text_isLoading", Label.class); 
+        
        
         
     }
@@ -102,7 +101,8 @@ public class LoadingScreen extends BaseAppState implements ScreenController{
             lscrLabelAssetName.setText("Loading asset: "+getAssetName()); 
             
             if (lsFrameCount == 500){
-              lscrLabelAssetName.setText("Loading asset: "+getAssetName());  
+              lscrLabelAssetName.setText("Loading asset: "+getAssetName()); 
+              lscrImage.getRenderer(ImageRenderer.class).setImage(nifty.createImage(nifty.getScreen("Screen_Loading"),loadRandomImage(), true)); 
             }
              
     }
@@ -139,7 +139,7 @@ public class LoadingScreen extends BaseAppState implements ScreenController{
                         padding("20px");
                                            
                         image(new ImageBuilder("img_Loading") {{
-                                filename("Interface/Images/Levels/S1/ruins.jpg");
+                                filename("Interface/Images/Loading/ruins.jpg");
                                 height("50%");
                                 width("50%");
                                 alignCenter();
@@ -236,11 +236,13 @@ public class LoadingScreen extends BaseAppState implements ScreenController{
         lscrImage = nifty.getScreen("Screen_Loading").findElementById("img_Loading");
         lscrRandomNiftyImage = nifty.createImage(nifty.getScreen("Screen_Loading"),loadRandomImage(), true);
         lscrImage.getRenderer(ImageRenderer.class).setImage(lscrRandomNiftyImage); 
+        lscrLabelAssetName =  nifty.getScreen("Screen_Loading").findNiftyControl("text_LoadingAssetName", Label.class);         
+        lscrLabelLevelName =  nifty.getScreen("Screen_Loading").findNiftyControl("text_isLoading", Label.class); 
     } 
      
      private String loadRandomImage(){
         
-        String path = "Interface/Images/Levels/S1";
+        String path = "Interface/Images/Loading";
         File folder = new File("assets/"+path);
         
         File[] content = folder.listFiles();
