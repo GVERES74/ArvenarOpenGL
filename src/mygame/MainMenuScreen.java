@@ -84,15 +84,16 @@ public class MainMenuScreen extends BaseAppState {
         
         
         inputManager.deleteMapping(SimpleApplication.INPUT_MAPPING_EXIT); //delete ESC key quit app function
-        camera.setLocation(new Vector3f(800f,60f,-1000f)); //flycam initposition
+        camera.setLocation(new Vector3f(1100f,50f,-980f)); //flycam initposition
         camera.setRotation(new Quaternion().fromAngleNormalAxis(0.2f, Vector3f.UNIT_X)); //flycam looks down a bit
         this.app.getFlyByCamera().setEnabled(false); //disable camera movement with keyboard / mouse
         
-//        menuScene = new IntroMap(); PlayGame.attachAppState(menuScene); createAnimatedMainMenu();
-         
-        initMenuControls();
+        menuScene = new IntroMap(); PlayGame.attachAppState(menuScene); createAnimatedMainMenu();
+//          createSimpleMainMenu();
         
-        createSimpleMainMenu();
+          initMenuControls();
+        
+       
         enableMainMenuScreen();
         
         AudioManager.loadRandomMusic();
@@ -115,8 +116,8 @@ public class MainMenuScreen extends BaseAppState {
             Vector3f camDirection = camera.getDirection();
             Vector3f camLocation = camera.getLocation();
                       
-            float moveX = camDirection.x/10;
-            float moveZ = camDirection.z/10;
+            float moveX = camDirection.x/15;
+            float moveZ = camDirection.z/15;
             float camx = camLocation.x;
             float camz = camLocation.z;
             float camy = camLocation.y;

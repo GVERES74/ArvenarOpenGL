@@ -98,12 +98,13 @@ public class IntroMap extends BaseAppState{
     
     private float timer = 0.0f;
     private int randomNumber = 0;
-    private final int GRASS_COUNT = 1;
-    private final int FLOWER_COUNT = 1;
-    private final int TREE_COUNT = 1;
-    private final int BUSH_COUNT = 1;
-    private final int PLANT_COUNT = 1;
-    private final int OTHER_COUNT = 1;
+    private final int GRASS_COUNT = 50;
+    private final int FLOWER_COUNT = 50;
+    private final int TREE_COUNT = 10;
+    private final int BUSH_COUNT = 20;
+    private final int PLANT_COUNT = 20;
+    private final int OTHER_COUNT = 50;
+    private final int ANIMAL_COUNT = 10;
     
         
     @Override
@@ -245,8 +246,8 @@ public class IntroMap extends BaseAppState{
             modelManager.createStaticModel("Models/Vegetation/Plants/Vine/Vine_blend.obj", ModelManager.staticNode, 920, 0f, -1138, 0f, 0.0f, 0.1f);                    
             modelManager.createStaticModel("Models/Vegetation/Plants/Vine/Vine_blend.obj", ModelManager.staticNode, 930, 0f, -1137, 0f, 0.0f, 0.1f);                    
             modelManager.createStaticModel("Models/Vegetation/Plants/Vine/Vine_blend.obj", ModelManager.staticNode, 940, 0f, -1136, 0f, 0.0f, 0.1f);                    
-            modelManager.createStaticModel("Models/Vegetation/Grasses/GrassPatch/MariaTach/Maria_blend.obj", ModelManager.staticNode, 790, 0f, -1435, 2f, 0.0f, 0.1f);                    
-            modelManager.createStaticModel("Models/Vegetation/Grasses/GrassPatch/MariaTach/Maria_blend.obj", ModelManager.staticNode, 810, 0f, -1445, 2f, 0.0f, 0.08f);                              
+//            modelManager.createStaticModel("Models/Vegetation/Grasses/GrassPatch/MariaTach/Maria_blend.obj", ModelManager.staticNode, 790, 0f, -1435, 2f, 0.0f, 0.1f);                    
+//            modelManager.createStaticModel("Models/Vegetation/Grasses/GrassPatch/MariaTach/Maria_blend.obj", ModelManager.staticNode, 810, 0f, -1445, 2f, 0.0f, 0.08f);                              
             
             modelManager.createStaticModel("Models/Animals/Fish/Szardinia_blend.obj", ModelManager.shootableNode, 1151f, 1f, -998f, 2f, 0f, 0.3f);
             modelManager.createStaticModel("Models/Animals/Rabbit/Rabbit0_blend.obj", ModelManager.shootableNode, 920f, 0f, -1275f, 0f, 0f, 0.1f);
@@ -332,7 +333,11 @@ public class IntroMap extends BaseAppState{
             modelManager.createRandomizedModel("Models/Vegetation/Plants/ForestPlant01/ForestPlant01_blend.obj", ModelManager.staticNode, PLANT_COUNT, -2000, 2000, -2000, 2000, 5, 0f, 0.5f, 1f, false);
                         
             modelManager.createRandomizedModel("Models/Naturals/SmallRock01/SmallRock_blend.obj", ModelManager.staticNode, OTHER_COUNT, -2000, 2000, -2000, 2000, 5, 0f, 2f, 10f, true);            
-            modelManager.createRandomizedModel("Models/Naturals/SticksandStones_01/Sticks_blend.obj", ModelManager.staticNode, OTHER_COUNT, -2000, 2000, -2000, 2000, 5, 0f, 2f, 5f, true);            
+            modelManager.createRandomizedModel("Models/Naturals/SticksandStones_01/Sticks_blend.obj", ModelManager.staticNode, OTHER_COUNT, -2000, 2000, -2000, 2000, 5, 0f, 2f, 5f, true);  
+            
+            modelManager.createRandomizedModel("Models/Animals/Rabbit/Rabbit0_blend.obj", ModelManager.shootableNode, ANIMAL_COUNT, -2000, 2000, -2000, 2000, 5, 0f, 0.1f, 0.1f, true);
+//            modelManager.createRandomizedModel("Models/Animals/Deer/Doe_anim.obj", ModelManager.shootableNode, ANIMAL_COUNT, -2000, 2000, -2000, 2000, 5, 0f, 1f, 1f, true);
+//            modelManager.createRandomizedModel("Models/Animals/Deer/Doe_idle.obj", ModelManager.shootableNode, ANIMAL_COUNT, -2000, 2000, -2000, 2000, 5, 0f, 1f, 1f, true);
      }        
     
      
