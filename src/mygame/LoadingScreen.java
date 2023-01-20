@@ -258,15 +258,17 @@ public class LoadingScreen extends BaseAppState implements ScreenController{
     }
 
     public void setAssetName(String assetName) {
-        this.lscrAssetName = assetName;
+        lscrAssetName = assetName;
+        assetName = "";
     }
 
     public String getLoadLevelName() {
         return lscrLevelName;
+        
     }
 
     public void setLoadLevelName(String loadLevelName) {
-        this.lscrLevelName = loadLevelName;
+        lscrLevelName = loadLevelName;
     }
 
     public String getLoadingScreenHintText1(){
