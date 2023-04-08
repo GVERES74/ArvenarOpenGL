@@ -58,6 +58,7 @@ public class PausedScreen extends BaseAppState {
         this.stateManager = this.app.getStateManager();
         this.inputManager = this.app.getInputManager();
         this.viewPort     = this.app.getViewPort();
+        nifty = PlayGame.nifty;
         screenWidth = PlayGame.getPlayGameAppSettings().getWidth();
         screenHeight = PlayGame.getPlayGameAppSettings().getHeight();
         inputManager.deleteMapping(SimpleApplication.INPUT_MAPPING_EXIT); //delete ESC key quit app function
@@ -82,26 +83,29 @@ public class PausedScreen extends BaseAppState {
 
      @Override
     protected void onEnable() {
-        
-        showPausedScreen();
-        System.out.println(this.getClass().getName()+" enabled....."); 
+         app.getFlyByCamera().setDragToRotate(true);
+        PlayGame.gameplayAppState.setEnabled(false);
+        nifty.gotoScreen("Screen_PausedMenu");
     }
     
 
     @Override
     protected void onDisable() {
-
-       hidePausedScreen();
-       System.out.println(this.getClass().getName()+" disabled.....");                  
+        PlayGame.gameplayAppState.setEnabled(true);
+        nifty.removeScreen("Screen_PausedMenu");
+        
+        
+        if ((!PlayGame.app.getStateManager().hasState(PlayGame.screenSettings)) ||
+            (!PlayGame.app.getStateManager().hasState(PlayGame.screenMapView)) ||
+            (!PlayGame.app.getStateManager().hasState(PlayGame.screenDiary))){
+                    nifty.gotoScreen("Screen_HUD");
+        }
+                      
     }
     
     
     public void createPausedScreen(){
         
-        app.getFlyByCamera().setDragToRotate(true);
-        
-        nifty = PlayGame.getNiftyDisplay().getNifty();
-            app.getGuiViewPort().addProcessor(PlayGame.getNiftyDisplay());
             nifty.loadStyleFile("nifty-default-styles.xml");
             nifty.loadControlFile("nifty-default-controls.xml");
         
@@ -311,23 +315,5 @@ public class PausedScreen extends BaseAppState {
                 nifty.gotoScreen("Screen_PausedMenu");
     }
     
-    public void showPausedScreen(){
-        PlayGame.gameplayAppState.setEnabled(false);
-        nifty.gotoScreen("Screen_PausedMenu");
-        app.getFlyByCamera().setDragToRotate(true);
-    }
     
-    public void hidePausedScreen(){
-        PlayGame.gameplayAppState.setEnabled(true);
-        nifty.removeScreen("Screen_PausedMenu");
-        app.getFlyByCamera().setDragToRotate(false);
-        
-        if ((!PlayGame.app.getStateManager().hasState(PlayGame.screenSettings)) ||
-            (!PlayGame.app.getStateManager().hasState(PlayGame.screenMapView)) ||
-            (!PlayGame.app.getStateManager().hasState(PlayGame.screenDiary))){
-                    PlayGame.getNiftyDisplay().getNifty().gotoScreen("Screen_HUD");
-        }
-        
-        
-    }
 }

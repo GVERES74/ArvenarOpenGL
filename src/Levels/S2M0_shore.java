@@ -38,12 +38,12 @@ import com.jme3.terrain.heightmap.AbstractHeightMap;
 import com.jme3.terrain.heightmap.ImageBasedHeightMap;
 import com.jme3.texture.Texture;
 import com.jme3.water.WaterFilter;
-import mygame.AudioManager;
-import mygame.EffectsManager;
+import Managers.AudioManager;
+import Managers.EffectsManager;
 import mygame.GameAppState;
-import mygame.ModelManager;
+import Managers.ModelManager;
 import mygame.PlayGame;
-import mygame.SkyBoxManager;
+import Managers.SkyBoxManager;
 
 /**
  *  

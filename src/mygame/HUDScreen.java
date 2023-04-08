@@ -8,18 +8,12 @@ package mygame;
 import com.jme3.app.Application;
 import com.jme3.app.SimpleApplication;
 import com.jme3.app.state.BaseAppState;
-import com.jme3.font.BitmapFont;
-import com.jme3.font.BitmapText;
-import com.jme3.math.FastMath;
-import com.jme3.ui.Picture;
 import de.lessvoid.nifty.Nifty;
 import de.lessvoid.nifty.builder.EffectBuilder;
 import de.lessvoid.nifty.builder.ImageBuilder;
 import de.lessvoid.nifty.builder.LayerBuilder;
 import de.lessvoid.nifty.builder.PanelBuilder;
 import de.lessvoid.nifty.builder.ScreenBuilder;
-import de.lessvoid.nifty.controls.Label;
-import de.lessvoid.nifty.controls.ListBox;
 import de.lessvoid.nifty.controls.label.builder.LabelBuilder;
 import de.lessvoid.nifty.controls.listbox.builder.ListBoxBuilder;
 import de.lessvoid.nifty.screen.Screen;
@@ -35,20 +29,16 @@ public class HUDScreen extends BaseAppState {
     private SimpleApplication app;
     private Nifty nifty;
     private Screen hudscreen;
-    private ListBox dialogListBox;    
-    private int screenWidth, screenHeight;
-    private Label gpsInfo;
+       
+    
+    
     
     
     @Override
     protected void initialize(Application app) {
-        
         this.app = (SimpleApplication) app;
-        screenWidth = PlayGame.getPlayGameAppSettings().getWidth();
-        screenHeight = PlayGame.getPlayGameAppSettings().getHeight();
-
+        nifty = PlayGame.nifty; 
         createHUDScreen();
-      
     }
     
     
@@ -63,9 +53,8 @@ public class HUDScreen extends BaseAppState {
     //graph attachment or input listener attachment.    
     @Override
     protected void onEnable() {
-        gpsInfo = nifty.getScreen("Screen_HUD").findNiftyControl("cameraLocationInfo", Label.class);
-        showHUDScreen();
-        System.out.println(this.getClass().getName()+" enabled....."); 
+     
+       
            
            
         //Called when the state is fully enabled, ie: is attached and         
@@ -76,7 +65,7 @@ public class HUDScreen extends BaseAppState {
     @Override
     protected void onDisable() {
        
-        hideHUDScreen();
+       
         //Called when the state was previously enabled but is now disabled         
         //either because setEnabled(false) was called or the state is being         
         //cleaned up.    
@@ -85,16 +74,14 @@ public class HUDScreen extends BaseAppState {
     @Override
     public void update(float tpf) {
        
-    gpsInfo.setText("Location: "+app.getCamera().getLocation());       
-    //TODO: implement behavior during runtime    
+    
     }
     
        
     
     public void createHUDScreen(){
         
-        nifty = PlayGame.getNiftyDisplay().getNifty();
-            app.getGuiViewPort().addProcessor(PlayGame.getNiftyDisplay());
+        
             nifty.loadStyleFile("nifty-default-styles.xml");
             nifty.loadControlFile("nifty-default-controls.xml");
                 
@@ -327,98 +314,5 @@ public class HUDScreen extends BaseAppState {
                                     
     } //method end   
 
-    
-    public void showHUDScreen(){
-        nifty.gotoScreen("Screen_HUD");
-        app.getFlyByCamera().setDragToRotate(false);
-        
-    }
-    
-    public void hideHUDScreen(){
-        nifty.removeScreen("Screen_HUD");
-        app.getFlyByCamera().setDragToRotate(true);
-        
-    }
-    
-    public void decreasePlayerHealthBar(){
-        int healthpoints = nifty.getScreen("Screen_HUD").findElementById("HUD_PlayerHealthValueBar").getWidth();
-            nifty.getScreen("Screen_HUD").findElementById("HUD_PlayerHealthValueBar").setWidth(healthpoints-1);
-            nifty.getScreen("Screen_HUD").findNiftyControl("HUD_PlayerHealthValueText", Label.class).setText(""+healthpoints);
-            if (healthpoints < 10){
-                nifty.getScreen("Screen_HUD").findElementById("HUD_PlayerHealthValueBar").setWidth(200);
-            }
-    }
-    
-    
-    
-    public void showLookAtDialog(Boolean enabled, String text){ //not used at the moment - alternative solution for dialog
-       
-        Picture pic = new Picture("DialogPanel");
-            pic.setImage(app.getAssetManager(), "Interface/Images/Hud/dialogbox.png", true);
-            pic.setWidth(600);
-            pic.setHeight(100);
-            pic.setPosition(screenWidth/2-300, screenHeight-200);
-            
-            
-        
-        BitmapFont dialogFont = app.getAssetManager().loadFont("Interface/Fonts/Default.fnt");
-        BitmapText dialogText = new BitmapText(dialogFont, false);
-        dialogText.setText(text);
-        dialogText.setLocalTranslation(screenWidth/2-100, screenHeight-200, 0); // position
-        
-            if (enabled){
-                app.getGuiNode().attachChild(pic);
-                app.getGuiNode().attachChild(dialogText);
-            }
-            else if (!enabled){
-                app.getGuiNode().getChildren().clear();
-
-            }
-        
-    }//not used right now - alternative solution for dialog
-    
-    public void createAssetInfoPanel(Boolean enabled, String text){
-                
-        String[] comment = {"This is just a ", "This should be a ", "This looks to be a ", "Hmm, I would say it's a ", "I'm wondering if it's not a "};
-        int r = FastMath.nextRandomInt(0, comment.length-1);
-        
-            
-                nifty.getCurrentScreen().findElementById("dialogText").setVisible(enabled);
-                nifty.getCurrentScreen().findElementById("Panel_HUD_Dialog").setVisible(enabled);
-                nifty.getCurrentScreen().findNiftyControl("dialogText", Label.class).setText(comment[r]+text);
-            
-            if (text.contains("Oto")){
-                PlayGame.screenInGameHUD.showCharacterDialog();
-            }
-        
-    }
-       
-    
-    public void showCharacterDialog(){
-            createDialogPanel();    
-            app.getFlyByCamera().setDragToRotate(true);
-            nifty.getCurrentScreen().findElementById("Panel_Dialog_Container").setVisible(true);
-            nifty.getCurrentScreen().findElementById("Text_npcDialogText").setVisible(true);
-                     
-        
-    }
-    
-    public void createDialogPanel(){
-        dialogListBox = nifty.getCurrentScreen().findNiftyControl("ListBox_Dialog", ListBox.class);
-        nifty.getCurrentScreen().findNiftyControl("Text_npcDialogText", Label.class).setText(PlayGame.gameplayAppState.getTarget()+": \n"
-                + "Hello Stranger,\n"
-                + "I'm "+ PlayGame.gameplayAppState.getTarget()+"\n"
-                + "How can I help you?"
-                + "This place is long forgotten and abandoned\n"
-                + "You won't find here anything, but ruins.\n"
-                );
-            dialogListBox.clear();
-            dialogListBox.addItem("I'm looking for my mother");
-            dialogListBox.addItem("I'm lost, please tell me where I am");
-            dialogListBox.addItem("Not now. (end conversation)");
-    }
-    
-    
-    
-
+  
 }//end class

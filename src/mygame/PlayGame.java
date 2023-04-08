@@ -1,21 +1,19 @@
 package mygame;
 
-import Levels.S0M0_valley;
-import Levels.S1M0_forest;
-import Levels.S2M0_shore;
-import Levels.S3M0_town;
-import com.jme3.app.SimpleApplication;
-import com.jme3.app.state.AppState;
-import com.jme3.bullet.BulletAppState;
 
-import com.jme3.export.binary.BinaryImporter;
+import com.jme3.app.SimpleApplication;
+import com.jme3.bullet.BulletAppState;
 import com.jme3.niftygui.NiftyJmeDisplay;
 import com.jme3.renderer.RenderManager;
 import com.jme3.system.AppSettings;
 import de.lessvoid.nifty.Nifty;
-import java.util.concurrent.Future;
-import java.util.concurrent.ScheduledThreadPoolExecutor;
-import java.util.prefs.BackingStoreException;
+import Levels.S0M0_valley;
+import Levels.S1M0_forest;
+import Levels.S2M0_shore;
+import Levels.S3M0_town;
+
+
+
 
 /**
  * This is the Main Class of your Game. You should only do initialization here.
@@ -27,9 +25,8 @@ public class PlayGame extends SimpleApplication{
        
     public static PlayGame app;
     static AppSettings appsettings;
-    static NiftyJmeDisplay niftyDisplay;
-    private static Nifty nifty;
-        
+    public static NiftyJmeDisplay niftyDisplay;
+    public static Nifty nifty;
     public static GameAppState gameplayAppState;
     public static BulletAppState bulletAppState;
     public static S2M0_shore levelS2M0; 
@@ -48,13 +45,13 @@ public class PlayGame extends SimpleApplication{
     public static DiaryScreen screenDiary;
     public static GameModeScreen screenGameMode;
     public static LoadingScreen screenLoading;
+
     
+        
     public static boolean displayFpsEnabled;
     
-    ScheduledThreadPoolExecutor executor = new ScheduledThreadPoolExecutor(4);
-    Future future = null; 
-                
-    public static void main(String[] args) throws BackingStoreException {
+                    
+    public static void main(String[] args) {
                 
         app = new PlayGame();
         appsettings = new AppSettings(true);
@@ -64,18 +61,46 @@ public class PlayGame extends SimpleApplication{
         app.setSettings(appsettings);        
         appsettings.setTitle("Arvenar 3D - OpenGl");
         appsettings.setSettingsDialogImage("Interface/Images/splash.png");
-        appsettings.save("ArvenarGL.cfg");
+        
         app.setShowSettings(false); //default jMonkey settings ON / OFF
         app.setPauseOnLostFocus(true);
         app.start();
         
-        loadLastSettings(); //load game settings, options, etc.
+        
+       
     }
 
     
     @Override
     public void simpleInitApp() {
         
+        niftyDisplay = NiftyJmeDisplay.newNiftyJmeDisplay(assetManager, inputManager, audioRenderer, viewPort);
+        nifty = niftyDisplay.getNifty();
+        viewPort.addProcessor(niftyDisplay); 
+        
+        screenMainMenu = new MainMenuScreen(); 
+        stateManager.attach(screenMainMenu); //THIS THE IDEAL WAY!! 
+               
+        bulletAppState = new BulletAppState(); 
+        app.getStateManager().attach(bulletAppState);
+        
+        screenGameMode = new GameModeScreen(); 
+        screenLoading = new LoadingScreen(); 
+                     
+        gameplayAppState = new GameAppState(); 
+        screenSettings = new SettingsScreen();
+        screenCredits = new CreditsScreen(); 
+        screenExtras = new ExtrasScreen();  
+        screenPauseMenu = new PausedScreen(); 
+        screenInGameHUD = new HUDScreen();       
+        screenMapView = new MapViewScreen();
+        screenDiary = new DiaryScreen();
+        levelS2M0 = new S2M0_shore();
+        levelS0M0 = new S0M0_valley(); 
+        levelS1M0 = new S1M0_forest();
+        levelS3M0 = new S3M0_town();
+       
+       
         
         /*The beauty of AppStates and controls
             The ideal jMonkeyEngine application's simpleInitApp() method would have only two
@@ -83,52 +108,8 @@ public class PlayGame extends SimpleApplication{
             line that attaches it to the stateManager object of the SimpleApplication class.*/
         
            
-           bulletAppState = new BulletAppState();
-           app.getStateManager().attach(bulletAppState);
-           
            app.setDisplayFps(false); app.setDisplayStatView(false);
-           
-           niftyDisplay = NiftyJmeDisplay.newNiftyJmeDisplay(assetManager, inputManager, audioRenderer, viewPort);
-           nifty = niftyDisplay.getNifty();
-           viewPort.addProcessor(niftyDisplay); 
-           
-           screenMainMenu = new MainMenuScreen(); 
-           stateManager.attach(screenMainMenu); //THIS THE IDEAL WAY!! 
-           
-           
-           //THESE ARE ONLY FOR UNIT / MODUL TESTING
-           screenGameMode = new GameModeScreen(); //stateManager.attach(gameMode_screen);
-           screenLoading = new LoadingScreen(); //stateManager.attach(game_loadscreen);
-                     
-           gameplayAppState = new GameAppState(); //stateManager.attach(gameplayState);
-           screenSettings = new SettingsScreen();//stateManager.attach(settings_screen);
-           screenCredits = new CreditsScreen(); //stateManager.attach(credits_screen);
-           screenExtras = new ExtrasScreen();  //stateManager.attach(extras_screen);
-           screenPauseMenu = new PausedScreen(); //stateManager.attach(paused_screen);
-           screenInGameHUD = new HUDScreen();       //stateManager.attach(ingameHud);
-           
-           screenMapView = new MapViewScreen();
-           screenDiary = new DiaryScreen();    //stateManager.attach(diary_screen);
-            
-           initGameLevels();
-                        
-         /** Load a Node from a .j3o file */
-         
-                           
-         BinaryImporter importer = BinaryImporter.getInstance();
-         importer.setAssetManager(assetManager);
-        
-            //         File file = new File("assets/Scenes/mainScene.j3o");
-//         try {
-//           Node loadedNode = (Node)importer.load(file);
-//           loadedNode.setName("loaded node");
-//           rootNode.attachChild(loadedNode);
-//         } catch (IOException ex) {
-//           Logger.getLogger(PlayGame.class.getName()).log(Level.SEVERE, "No saved node loaded.", ex);
-//                 }
-    
-    
-                
+              
     }
     
     @Override
@@ -146,36 +127,11 @@ public class PlayGame extends SimpleApplication{
         //TODO: add render code
     }
     
-    
-    public static NiftyJmeDisplay getNiftyDisplay() {
-        return niftyDisplay;
-    }
-
-    public static PlayGame getPlayGameApp() {
-        return app;
-    }
+        
 
     public static AppSettings getPlayGameAppSettings() {
         return appsettings;
     }
     
-       
-    public static void attachAppState(AppState appstate){
-        app.getStateManager().attach(appstate);
-    }
-       
-    public static void detachAppState(AppState appstate){
-        app.getStateManager().detach(appstate);
-    }
     
-    public static void loadLastSettings() throws BackingStoreException{
-                appsettings.load("com/foo/ArvenarGL");
-    } 
-    
-    public void initGameLevels(){
-        levelS2M0 = new S2M0_shore();
-        levelS0M0 = new S0M0_valley(); 
-        levelS1M0 = new S1M0_forest();
-        levelS3M0 = new S3M0_town();
-    }
 }

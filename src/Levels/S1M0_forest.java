@@ -47,13 +47,13 @@ import com.jme3.texture.Texture;
 import com.jme3.texture.Texture.WrapMode;
 import com.jme3.water.SimpleWaterProcessor;
 import com.jme3.water.WaterFilter;
-import mygame.AudioManager;
-import mygame.EffectsManager;
+import Managers.AudioManager;
+import Managers.EffectsManager;
 import mygame.GameAppState;
-import mygame.ModelManager;
-import mygame.ParticleManager;
+import Managers.ModelManager;
+import Managers.ParticleManager;
 import mygame.PlayGame;
-import mygame.SkyBoxManager;
+import Managers.SkyBoxManager;
 
 /**
  *  
@@ -166,7 +166,7 @@ public class S1M0_forest extends BaseAppState{
         effectManager.fadeScreen(true,10);
         
         AudioManager.musicPlayer.stop();
-        stateManager.getState(GameAppState.class).firstPersonPlayer.setPhysicsLocation(setRandomPlayerSpawnPoint());
+//        PlayGame.gameplayAppState.firstPersonPlayer.setPhysicsLocation(setRandomPlayerSpawnPoint());
         System.out.println(setRandomPlayerSpawnPoint()); 
         System.out.println(this.getClass().getName()+" enabled....."); 
         
@@ -655,7 +655,7 @@ public class S1M0_forest extends BaseAppState{
         }
         
         public void createSceneAtDay(){
-            skyBoxCreate.loadBasicSkyBox("rocky_mountain");
+            skyBoxCreate.loadBasicSkyBox("foresthill");
             //skyBoxCreate.loadCubeMapSky("skybox.dds");
             //skyBoxCreate.loadSphereMapSky("mountains-lake.jpg");
             sunPosition.setDirection(new Vector3f(-5f, -3f, 5.9f).normalizeLocal()); //higher negative y value makes the shadow distance shorter

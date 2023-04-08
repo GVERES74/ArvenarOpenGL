@@ -5,6 +5,7 @@
  */
 package mygame;
 
+import Managers.AudioManager;
 import com.jme3.animation.AnimChannel;
 import com.jme3.animation.AnimControl;
 import com.jme3.animation.AnimEventListener;
@@ -34,9 +35,9 @@ import com.jme3.renderer.RenderManager;
 import com.jme3.renderer.ViewPort;
 import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
-import static mygame.ModelManager.destroyableNode;
-import static mygame.ModelManager.shootableNode;
-import static mygame.ModelManager.staticNode;
+import static Managers.ModelManager.destroyableNode;
+import static Managers.ModelManager.shootableNode;
+import static Managers.ModelManager.staticNode;
 
 
 /**
@@ -195,7 +196,7 @@ public class GameAppState extends BaseAppState
             this.app.getInputManager().addListener(this, "lookat_target", "shoot_target");
             
             //footsteps are analog
-            this.app.getInputManager().addListener(this, "Forward", "Backward", "StrafeLeft", "StrafeRight", "Jump", "Crouch", "FallRandom", "Run", "StartMap");
+            this.app.getInputManager().addListener(this, "Jump", "Crouch", "FallRandom", "Run", "StartMap");
             
         }
         
@@ -273,13 +274,13 @@ public class GameAppState extends BaseAppState
                                                            
                     case "lookat_target": 
                         if ((keyPressed) && PlayGame.gameplayAppState.isEnabled()){
-                            PlayGame.screenInGameHUD.createAssetInfoPanel(true, getTarget());
+//                            PlayGame.screenInGameHUD.createAssetInfoPanel(true, getTarget());
                         
                         } 
                     
                         else if (!keyPressed){
                     
-                            PlayGame.screenInGameHUD.createAssetInfoPanel(false, "a vision...");
+//                            PlayGame.screenInGameHUD.createAssetInfoPanel(false, "a vision...");
                         
                         }
                         break;
@@ -335,23 +336,25 @@ public class GameAppState extends BaseAppState
     @Override
     protected void onEnable() {
        
-        PlayGame.attachAppState(PlayGame.screenInGameHUD);
-        this.app.getFlyByCamera().setEnabled(true);
+       app.getFlyByCamera().setEnabled(true);
+       app.getFlyByCamera().setDragToRotate(false);
         System.out.println(this.getClass().getName()+" enabled....."); 
-        PlayGame.detachAppState(PlayGame.screenLoading);
+        PlayGame.app.getStateManager().detach(PlayGame.screenLoading);
+        PlayGame.app.getStateManager().attach(PlayGame.screenInGameHUD);
+
        }
 
     @Override
     protected void onDisable() {
-               
+             
         this.app.getFlyByCamera().setDragToRotate(true);
-        this.app.getFlyByCamera().setEnabled(false);
+        
         System.out.println(this.getClass().getName()+" disabled....."); 
         
     }
     
     public void decreasePlayerHealth(){
-        PlayGame.screenInGameHUD.decreasePlayerHealthBar();
+//        mygame.HUDScreenController.decreasePlayerHealthBar();
         playerhp -=1;
     }
 
@@ -386,12 +389,13 @@ public class GameAppState extends BaseAppState
     
     public void hotKeyPressed(AppState appStateName, Boolean keyPressed){
      
-        if (!PlayGame.getPlayGameApp().getStateManager().hasState(appStateName) && keyPressed){
-            PlayGame.attachAppState(appStateName);
+        if (!PlayGame.app.getStateManager().hasState(appStateName) && keyPressed){
+            PlayGame.app.getStateManager().attach(appStateName);
         }
         
-        else if (PlayGame.getPlayGameApp().getStateManager().hasState(appStateName) && keyPressed) {
-            PlayGame.detachAppState(appStateName);
+                
+        else if (PlayGame.app.getStateManager().hasState(appStateName) && keyPressed) {
+            PlayGame.app.getStateManager().detach(appStateName);
         }       
         
     }

@@ -145,78 +145,72 @@ public class GameModeScreenController extends BaseAppState implements ScreenCont
         screen.findNiftyControl("text_GameMode", Label.class).setText("Multi Player - LAN / Internet");
     }
     
+    
+    public static void startStoryMode(){
+        PlayGame.app.getStateManager().detach(PlayGame.screenGameMode);
+        PlayGame.app.getStateManager().attach(PlayGame.levelS0M0);
         
-    public void playSingleLevel(){
-        PlayGame.screenGameMode.load = true;
-        PlayGame.attachAppState(PlayGame.screenLoading);                 
-                              
     }
     
-    public static void attachSelectedSingleLevel(){    
-        
-        PlayGame.detachAppState(PlayGame.screenGameMode);
-        PlayGame.attachAppState(PlayGame.gameplayAppState);
-        
+    
+    public static void startSingleLevel(){    
+        PlayGame.app.getStateManager().detach(PlayGame.screenGameMode);
+        PlayGame.app.getStateManager().attach(PlayGame.gameplayAppState);
+                
         switch (dropDownSingleLevel.getSelectedIndex()){
             case 0: 
-                    PlayGame.attachAppState(PlayGame.levelS2M0);
+                    PlayGame.app.getStateManager().attach(PlayGame.levelS2M0);
                     break;
             case 1: 
-                    PlayGame.attachAppState(PlayGame.levelS0M0);
+                    PlayGame.app.getStateManager().attach(PlayGame.levelS0M0);
                     break;
             case 2:                     
-                    PlayGame.attachAppState(PlayGame.levelS1M0);
+                    PlayGame.app.getStateManager().attach(PlayGame.levelS1M0);
                     break;
             case 3:                     
-                    PlayGame.attachAppState(PlayGame.levelS3M0);
+                    PlayGame.app.getStateManager().attach(PlayGame.levelS3M0);
                     break; 
         }    
         
         PlayGame.screenLoading.setLoadLevelName(dropDownSingleLevel.getSelection().toString());
         PlayGame.screenLoading.setAssetName("Static model");
     }    
-    
-    public void playStoryMode(){
-        
-        PlayGame.screenGameMode.load = true;
-        PlayGame.attachAppState(PlayGame.screenLoading); 
-        
-        
-    }   
-    
-    
-    public void playMultiPlayer(){
        
-       PlayGame.screenGameMode.load = true;
-       PlayGame.attachAppState(PlayGame.screenLoading);
-       
-    }   
+    
                 
-    public static void attachSelectedMPLevel(){ 
+    public static void startMultiPlayer(){ 
     
         switch (dropDownMultiPlayer.getSelectedIndex()){
             case 0: 
-                    PlayGame.attachAppState(PlayGame.levelS2M0);
+                    PlayGame.app.getStateManager().attach(PlayGame.levelS2M0);
                     break;
             case 1: 
-                    PlayGame.attachAppState(PlayGame.levelS0M0);
+                    PlayGame.app.getStateManager().attach(PlayGame.levelS0M0);
                     break;
             case 2:                     
-                    PlayGame.attachAppState(PlayGame.levelS1M0);
+                    PlayGame.app.getStateManager().attach(PlayGame.levelS1M0);
                     break;
             case 3:                     
-                    PlayGame.attachAppState(PlayGame.levelS3M0);
+                    PlayGame.app.getStateManager().attach(PlayGame.levelS3M0);
                     break; 
         }
         
         PlayGame.screenLoading.setLoadLevelName(dropDownMultiPlayer.getSelection().toString());
     }   
     
+    public void playGame(){
+        PlayGame.screenGameMode.load = true;
+        PlayGame.app.getStateManager().attach(PlayGame.screenLoading);
+        
+        
+        
+    }
+    
     
     public void backToMainMenu(){
         System.out.println("Back button pressed...");
-        PlayGame.detachAppState(PlayGame.screenGameMode);
-        PlayGame.attachAppState(PlayGame.screenMainMenu);
+        PlayGame.app.getStateManager().detach(PlayGame.screenGameMode);
+        PlayGame.app.getStateManager().attach(PlayGame.screenMainMenu);
     }
     
     @NiftyEventSubscriber(id="dropDown_SLLevelList")

@@ -5,6 +5,7 @@
  */
 package mygame;
 
+import Managers.AudioManager;
 import com.jme3.app.Application;
 import com.jme3.app.SimpleApplication;
 import com.jme3.app.state.AppStateManager;
@@ -29,12 +30,16 @@ public class MainMenuScreenController extends BaseAppState implements ScreenCont
             
     private Element popup;
     
+    
+    
     @Override
     public void initialize(Application app) {
        
        this.app = (SimpleApplication) app;
-       this.stateManager = this.app.getStateManager();
+       this.stateManager = PlayGame.app.getStateManager();
        this.inputManager = this.app.getInputManager();
+       
+       
     }  
         
     @Override
@@ -62,9 +67,8 @@ public class MainMenuScreenController extends BaseAppState implements ScreenCont
     
     public void startGame(){
         System.out.println("Play Game button pressed...");
-        
-        PlayGame.detachAppState(PlayGame.screenMainMenu);
-        PlayGame.attachAppState(PlayGame.screenGameMode);
+        PlayGame.app.getStateManager().detach(PlayGame.screenMainMenu);
+        PlayGame.app.getStateManager().attach(PlayGame.screenGameMode);
         
         //Optional
         //AudioManager.musicPlayer.stop();
@@ -80,16 +84,14 @@ public class MainMenuScreenController extends BaseAppState implements ScreenCont
         When the user clicks on the options button, the StartScreenAppState method
         attaches an OptionsScreenAppState object and detaches itself.
         */
-        PlayGame.attachAppState(PlayGame.screenSettings);
-        PlayGame.detachAppState(PlayGame.screenMainMenu);
+        PlayGame.app.getStateManager().attach(PlayGame.screenSettings);
+        
         
     }
     
     public void creditsGame(){
         System.out.println("Game Credits button pressed...");
-        
-        
-        PlayGame.attachAppState(PlayGame.screenCredits);
+        PlayGame.app.getStateManager().attach(PlayGame.screenCredits);
         AudioManager.musicPlayer.stop();
         AudioManager.soundPlayer.stop(); 
         
@@ -98,7 +100,7 @@ public class MainMenuScreenController extends BaseAppState implements ScreenCont
     public void gameExtras(){
         System.out.println("Game Extras button pressed...");
         
-        PlayGame.attachAppState(PlayGame.screenExtras);
+        PlayGame.app.getStateManager().attach(PlayGame.screenExtras);
         //AudioManager.musicPlayer.stop();
         AudioManager.soundPlayer.stop();       
         
@@ -106,7 +108,7 @@ public class MainMenuScreenController extends BaseAppState implements ScreenCont
     
     public void quitGame(){
         System.out.println("Game left...");
-        PlayGame.getPlayGameApp().stop();
+        PlayGame.app.stop();
                 //System.exit(0);
         
     }

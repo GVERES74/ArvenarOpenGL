@@ -66,6 +66,7 @@ public class SettingsScreen extends BaseAppState {
         this.stateManager = this.app.getStateManager();
         this.inputManager = this.app.getInputManager();
         this.viewPort     = this.app.getViewPort();
+        nifty = PlayGame.nifty;
         screenWidth = PlayGame.getPlayGameAppSettings().getWidth();
         screenHeight = PlayGame.getPlayGameAppSettings().getHeight();
         inputManager.deleteMapping(SimpleApplication.INPUT_MAPPING_EXIT); //delete ESC key quit app function
@@ -82,30 +83,33 @@ public class SettingsScreen extends BaseAppState {
     
     @Override
     protected void cleanup(Application app) {
-        PlayGame.gameplayAppState.setEnabled(true);
+        
         System.out.println(this.nifty.getCurrentScreen().getScreenId()+" screen cleanup called.....");
     }
 
     @Override
     protected void onEnable() {
-        showSettingsScreen();
-       PlayGame.gameplayAppState.setEnabled(false);
-       System.out.println(this.getClass().getName()+" enabled....."); 
+        
+        nifty.gotoScreen("Screen_GameSettings");
+        
+        PlayGame.gameplayAppState.setEnabled(false);
+        System.out.println(this.getClass().getName()+" enabled....."); 
        
     }
     
     @Override
     protected void onDisable() {
-        hideSettingsScreen();
+        
+        nifty.removeScreen("Screen_GameSettings");
+        
+        nifty.gotoScreen("Screen_HUD");
         PlayGame.gameplayAppState.setEnabled(true);
     }
     
     public void createSettingsGUI(){
         
-        app.getFlyByCamera().setDragToRotate(true);
         
-        nifty = PlayGame.getNiftyDisplay().getNifty();
-            app.getGuiViewPort().addProcessor(PlayGame.getNiftyDisplay());
+            
             nifty.loadStyleFile("nifty-default-styles.xml");
             nifty.loadControlFile("nifty-default-controls.xml");
         
@@ -470,19 +474,5 @@ public class SettingsScreen extends BaseAppState {
                 
                 nifty.gotoScreen("Screen_GameSettings");
     }
-    
-    public void showSettingsScreen(){
-         
-        nifty.gotoScreen("Screen_GameSettings");
-        app.getFlyByCamera().setDragToRotate(true);
-    }
-     
-    public void hideSettingsScreen(){
-         
-        nifty.removeScreen("Screen_GameSettings");
-        app.getFlyByCamera().setDragToRotate(false);
-        PlayGame.getNiftyDisplay().getNifty().gotoScreen("Screen_HUD");
-    }
-     
     
 }

@@ -45,15 +45,18 @@ import com.jme3.texture.Texture;
 import com.jme3.texture.Texture.WrapMode;
 import com.jme3.water.SimpleWaterProcessor;
 import com.jme3.water.WaterFilter;
-import mygame.AudioManager;
-import mygame.EffectsManager;
-import mygame.ModelManager;
-import mygame.ParticleManager;
+import Managers.EffectsManager;
+import Managers.ModelManager;
+import Managers.ParticleManager;
 import mygame.PlayGame;
-import mygame.SkyBoxManager;
-import static mygame.ModelManager.destroyableNode;
-import static mygame.ModelManager.shootableNode;
-import static mygame.ModelManager.staticNode;
+import Managers.SkyBoxManager;
+import static Managers.ModelManager.destroyableNode;
+import static Managers.ModelManager.shootableNode;
+import static Managers.ModelManager.staticNode;
+import com.jme3.input.KeyInput;
+import com.jme3.input.controls.ActionListener;
+import com.jme3.input.controls.KeyTrigger;
+import com.jme3.math.Quaternion;
 
 /**
  *  
@@ -80,7 +83,7 @@ public class IntroMap extends BaseAppState{
     
     private ViewPort          viewPort;
     private Camera camera;
-    
+     boolean animated = true; //Switch ON / OFF fly camera moving
     
     ParticleEmitter butterflyEmitter, bugsEmitter;
     
@@ -98,13 +101,13 @@ public class IntroMap extends BaseAppState{
     
     private float timer = 0.0f;
     private int randomNumber = 0;
-    private final int GRASS_COUNT = 50;
-    private final int FLOWER_COUNT = 50;
-    private final int TREE_COUNT = 10;
-    private final int BUSH_COUNT = 20;
-    private final int PLANT_COUNT = 20;
-    private final int OTHER_COUNT = 50;
-    private final int ANIMAL_COUNT = 10;
+    private final int GRASS_COUNT = 5;
+    private final int FLOWER_COUNT = 5;
+    private final int TREE_COUNT = 1;
+    private final int BUSH_COUNT = 2;
+    private final int PLANT_COUNT = 2;
+    private final int OTHER_COUNT = 5;
+    private final int ANIMAL_COUNT = 1;
     
         
     @Override
@@ -146,6 +149,9 @@ public class IntroMap extends BaseAppState{
                 
               
         initGraphicsEffects();
+        initMenuControls();
+        camera.setLocation(new Vector3f(800f,50f,-780f)); //flycam initposition
+        camera.setRotation(new Quaternion().fromAngleNormalAxis(0.2f, Vector3f.UNIT_X)); //flycam looks down a bit
         
     }
 
@@ -200,6 +206,18 @@ public class IntroMap extends BaseAppState{
             randomNumber = FastMath.nextRandomInt(30,90);
             
         }
+        
+         
+        //changeIntroCam();
+        
+        if (animated == true){
+        rotateCamera(-0.1f, 1,tpf,Vector3f.UNIT_Y);
+        moveCamera(true);
+        }
+        else if (animated == false){
+            rotateCamera(0f,0f,0f,Vector3f.UNIT_Y);
+            moveCamera(false);                                
+        }
     }
     
      public void loadSceneModels(){
@@ -246,8 +264,7 @@ public class IntroMap extends BaseAppState{
             modelManager.createStaticModel("Models/Vegetation/Plants/Vine/Vine_blend.obj", ModelManager.staticNode, 920, 0f, -1138, 0f, 0.0f, 0.1f);                    
             modelManager.createStaticModel("Models/Vegetation/Plants/Vine/Vine_blend.obj", ModelManager.staticNode, 930, 0f, -1137, 0f, 0.0f, 0.1f);                    
             modelManager.createStaticModel("Models/Vegetation/Plants/Vine/Vine_blend.obj", ModelManager.staticNode, 940, 0f, -1136, 0f, 0.0f, 0.1f);                    
-//            modelManager.createStaticModel("Models/Vegetation/Grasses/GrassPatch/MariaTach/Maria_blend.obj", ModelManager.staticNode, 790, 0f, -1435, 2f, 0.0f, 0.1f);                    
-//            modelManager.createStaticModel("Models/Vegetation/Grasses/GrassPatch/MariaTach/Maria_blend.obj", ModelManager.staticNode, 810, 0f, -1445, 2f, 0.0f, 0.08f);                              
+                            
             
             modelManager.createStaticModel("Models/Animals/Fish/Szardinia_blend.obj", ModelManager.shootableNode, 1151f, 1f, -998f, 2f, 0f, 0.3f);
             modelManager.createStaticModel("Models/Animals/Rabbit/Rabbit0_blend.obj", ModelManager.shootableNode, 920f, 0f, -1275f, 0f, 0f, 0.1f);
@@ -322,7 +339,7 @@ public class IntroMap extends BaseAppState{
             modelManager.createRandomizedModel("Models/Vegetation/Trees/HillTop/HillTop_blend.obj", ModelManager.staticNode, TREE_COUNT, -2000, 2000, -2000, 2000, 5, 0f, 4f, 6f, true);
             modelManager.createRandomizedModel("Models/Vegetation/Trees/Apple/AppleTree_blend.obj", ModelManager.staticNode, TREE_COUNT, -2000, 2000, -2000, 2000, 5, 0f, 6f, 8f, true);
             modelManager.createRandomizedModel("Models/Vegetation/Trees/JapanMaple/JapanMaple_blend.obj", ModelManager.staticNode, TREE_COUNT, -2000, 2000, -2000, 2000, 5, 0f, 4f, 6f, true);
-            modelManager.createRandomizedModel("Models/Vegetation/Trees/Poplar/Poplar_blend.obj", ModelManager.staticNode, TREE_COUNT, -2000, 2000, -2000, 2000, 5, 0f, 4f, 6f, true);
+//            modelManager.createRandomizedModel("Models/Vegetation/Trees/Poplar/Poplar_blend.obj", ModelManager.staticNode, TREE_COUNT, -2000, 2000, -2000, 2000, 5, 0f, 4f, 6f, true);
             modelManager.createRandomizedModel("Models/Vegetation/Trees/PineTree/PineA/Pine_b.obj", ModelManager.staticNode, TREE_COUNT, -2000, 2000, -2000, 2000, 5, 0f, 1f, 2f, true);
             modelManager.createRandomizedModel("Models/Vegetation/Trees/PineTree/PineD/FirTree_b.obj", ModelManager.staticNode, TREE_COUNT, -2000, 2000, -2000, 2000, 5, 0f, 3f, 5f, true);
             
@@ -336,8 +353,7 @@ public class IntroMap extends BaseAppState{
             modelManager.createRandomizedModel("Models/Naturals/SticksandStones_01/Sticks_blend.obj", ModelManager.staticNode, OTHER_COUNT, -2000, 2000, -2000, 2000, 5, 0f, 2f, 5f, true);  
             
             modelManager.createRandomizedModel("Models/Animals/Rabbit/Rabbit0_blend.obj", ModelManager.shootableNode, ANIMAL_COUNT, -2000, 2000, -2000, 2000, 5, 0f, 0.1f, 0.1f, true);
-//            modelManager.createRandomizedModel("Models/Animals/Deer/Doe_anim.obj", ModelManager.shootableNode, ANIMAL_COUNT, -2000, 2000, -2000, 2000, 5, 0f, 1f, 1f, true);
-//            modelManager.createRandomizedModel("Models/Animals/Deer/Doe_idle.obj", ModelManager.shootableNode, ANIMAL_COUNT, -2000, 2000, -2000, 2000, 5, 0f, 1f, 1f, true);
+
      }        
     
      
@@ -542,4 +558,63 @@ public class IntroMap extends BaseAppState{
             particleButterfly(); //loacation varies through SimpleUpdate
             particleBugs(); //loacation varies through SimpleUpdate
         }
+        
+          protected void rotateCamera(float rotationSpeed, float value, float tpf
+                            , Vector3f axis){
+            
+            Quaternion rotate = new Quaternion().fromAngleNormalAxis(rotationSpeed * value * tpf, axis);
+            Quaternion q = rotate.mult(camera.getRotation());
+            camera.setRotation(q);
+              
+        }
+        
+        
+        protected void moveCamera(boolean enabled){
+            if (enabled == true){
+            Vector3f camDirection = camera.getDirection();
+            Vector3f camLocation = camera.getLocation();
+                      
+            float moveX = camDirection.x/15;
+            float moveZ = camDirection.z/15;
+            float camx = camLocation.x;
+            float camz = camLocation.z;
+            float camy = camLocation.y;
+                camera.setLocation(new Vector3f(camx+moveX, camy, camz+moveZ));
+            }    
+            
+            else if (enabled == false){
+                camera.setLocation(new Vector3f(923f,45f,-1246f));
+                camera.setRotation(new Quaternion(0.05f, -0.3f, -0.02f, 0.8962425f));
+            }
+
+        }
+        
+         public void initMenuControls(){
+        
+            inputManager.addMapping("SkipIntro", new KeyTrigger(KeyInput.KEY_ESCAPE));
+            
+            inputManager.addListener(actionListener, "SkipIntro");
+                
+        }
+    
+        private final ActionListener actionListener = new ActionListener() {
+            @Override
+            public void onAction(String mappedName, boolean isPressed, float tpf) {
+                switch (mappedName) {
+                    case "SkipIntro":                         
+                        if (isPressed){
+                        animated = false;
+                        
+                        break;
+                        }
+                }
+                }
+                             
+            };
+        
+        public void changeIntroCam(){
+        if (timer > 500) camera.setLocation(new Vector3f(1150f,50f,-950f)); //camera position 1}
+        if (timer > 1000) camera.setLocation(new Vector3f(800f,80f,-1400f)); //camera position 2}
+        
+    }
 }

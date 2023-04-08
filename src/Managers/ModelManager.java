@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package mygame;
+package Managers;
 
 import com.jme3.animation.AnimChannel;
 import com.jme3.animation.AnimControl;
@@ -20,6 +20,7 @@ import com.jme3.renderer.queue.RenderQueue.ShadowMode;
 import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
 import com.jme3.terrain.geomipmap.TerrainQuad;
+import mygame.PlayGame;
 
 
 /**
@@ -61,7 +62,7 @@ public class ModelManager extends BaseAppState{
             PlayGame.bulletAppState.getPhysicsSpace().add(modelRigidBody); //uses the main GameAppState's BulletAppState
             subNode.attachChild(model);
             //System.out.println("Child "+subNode.getName()+" added: "+subNode.getChild(model.getName()));
-            PlayGame.screenLoading.setAssetName(model.getName());
+//            PlayGame.screenLoading.setAssetName(model.getName());
             System.out.println("Loading model: "+model.getName()); 
             
         }
@@ -101,7 +102,7 @@ public class ModelManager extends BaseAppState{
             }
             subNode.attachChild(model);
             //System.out.println("Child random "+subNode.getName()+" added: "+subNode.getChild(model.getName()));
-            PlayGame.screenLoading.setAssetName(model.getName());
+//            PlayGame.screenLoading.setAssetName(model.getName());
             System.out.println("Loading model: "+model.getName()); 
             
             }

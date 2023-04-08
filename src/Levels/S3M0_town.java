@@ -47,12 +47,12 @@ import com.jme3.texture.Texture;
 import com.jme3.texture.Texture.WrapMode;
 import com.jme3.water.SimpleWaterProcessor;
 import com.jme3.water.WaterFilter;
-import mygame.AudioManager;
-import mygame.EffectsManager;
+import Managers.AudioManager;
+import Managers.EffectsManager;
 import mygame.GameAppState;
-import mygame.ModelManager;
+import Managers.ModelManager;
 import mygame.PlayGame;
-import mygame.SkyBoxManager;
+import Managers.SkyBoxManager;
 
 /**
  *  
@@ -115,7 +115,7 @@ public class S3M0_town extends BaseAppState {
         this.inputManager = this.app.getInputManager();
         this.viewPort     = this.app.getViewPort();
         this.camera       = this.app.getCamera();
-        
+                
         
         modelManager = new ModelManager(); 
         effectManager = new EffectsManager();
@@ -164,7 +164,7 @@ public class S3M0_town extends BaseAppState {
         stateManager.getState(GameAppState.class).firstPersonPlayer.setPhysicsLocation(setRandomPlayerSpawnPoint());
         System.out.println(setRandomPlayerSpawnPoint()); 
         System.out.println(this.getClass().getName()+" enabled....."); 
-        System.out.println("CurrentScreen =" + PlayGame.getNiftyDisplay().getNifty().getCurrentScreen().getScreenId());
+        System.out.println("CurrentScreen =" + PlayGame.nifty.getCurrentScreen().getScreenId());
         
         //Called when the state is fully enabled, ie: is attached and         
         //isEnabled() is true or when the setEnabled() status changes after the         

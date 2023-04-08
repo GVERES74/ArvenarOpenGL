@@ -26,7 +26,6 @@ import de.lessvoid.nifty.builder.TextBuilder;
 import de.lessvoid.nifty.controls.dropdown.builder.DropDownBuilder;
 import de.lessvoid.nifty.controls.label.builder.LabelBuilder;
 import de.lessvoid.nifty.screen.Screen;
-import mygame.GameModeScreenController;
 
 /**
  *  
@@ -59,6 +58,7 @@ public class GameModeScreen extends BaseAppState {
         this.stateManager = this.app.getStateManager();
         this.inputManager = this.app.getInputManager();
         this.viewPort     = this.app.getViewPort();
+        nifty = PlayGame.nifty;
         
                 
         screenHeight = PlayGame.getPlayGameAppSettings().getHeight();
@@ -84,10 +84,10 @@ public class GameModeScreen extends BaseAppState {
     @Override
     protected void onEnable() {
         
-        showGameModeScreen();
-                
-        //AudioManager.loadMusic("Music/Soundtracks/ambient_snow1.ogg", true, true);
         
+        nifty.gotoScreen("Screen_GameMode");
+                
+                
         PlayGame.gameplayAppState.setEnabled(false);
         
         
@@ -98,7 +98,8 @@ public class GameModeScreen extends BaseAppState {
     @Override
     protected void onDisable() {
         
-        hideGameModeScreen();
+        
+        nifty.removeScreen("Screen_GameMode");
         
             //Called when the state was previously enabled but is now disabled         
         //either because setEnabled(false) was called or the state is being         
@@ -113,7 +114,7 @@ public class GameModeScreen extends BaseAppState {
        
         if(frameCount == 300){
                 
-            GameModeScreenController.attachSelectedSingleLevel();
+            GameModeScreenController.startSingleLevel();
             load = false;
         }
 //        System.out.println(this.getClass().getName()+" FrameCount: "+frameCount);
@@ -123,10 +124,8 @@ public class GameModeScreen extends BaseAppState {
     
     public void createGameModeScreen(){
         
-        app.getFlyByCamera().setDragToRotate(true);
+               
         
-        nifty = PlayGame.getNiftyDisplay().getNifty();
-            app.getGuiViewPort().addProcessor(PlayGame.getNiftyDisplay());
             nifty.loadStyleFile("nifty-default-styles.xml");
             nifty.loadControlFile("nifty-default-controls.xml");
         
@@ -465,7 +464,7 @@ public class GameModeScreen extends BaseAppState {
                                 alignCenter();
                                 valignTop();
                                 padding("10px");
-                                interactOnClick("playSingleLevel()");
+                                interactOnClick("playGame()");
                                 interactOnMouseOver("buttonEffect()");
 
                                 onStartHoverEffect(new HoverEffectBuilder("changeImage"){{
@@ -511,20 +510,4 @@ public class GameModeScreen extends BaseAppState {
                 nifty.gotoScreen("Screen_GameMode");
     }
     
-    public void showGameModeScreen(){
-        app.getFlyByCamera().setDragToRotate(true);
-        nifty.gotoScreen("Screen_GameMode");
-        
-        
-    }
-    
-    public void hideGameModeScreen(){
-        
-        app.getFlyByCamera().setDragToRotate(false);
-        nifty.removeScreen("Screen_GameMode");
-        
-    }
-    
-    
-       
 }

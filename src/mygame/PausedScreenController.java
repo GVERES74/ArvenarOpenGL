@@ -80,14 +80,14 @@ public class PausedScreenController extends BaseAppState implements ScreenContro
     public void showMap(){
         
         //PlayGame.detachAppState(PlayGame.paused_screen);
-        PlayGame.attachAppState(PlayGame.screenMapView);
+        PlayGame.app.getStateManager().attach(PlayGame.screenMapView);
                 
     }
     
     public void openDiary(){
                
         //PlayGame.detachAppState(PlayGame.paused_screen);
-        PlayGame.attachAppState(PlayGame.screenDiary);
+        PlayGame.app.getStateManager().attach(PlayGame.screenDiary);
         
     }
     
@@ -148,8 +148,8 @@ public class PausedScreenController extends BaseAppState implements ScreenContro
     }
     
     public void settingsGame(){
-        PlayGame.detachAppState(PlayGame.screenPauseMenu);
-        PlayGame.attachAppState(PlayGame.screenSettings);
+        PlayGame.app.getStateManager().detach(PlayGame.screenPauseMenu);
+        PlayGame.app.getStateManager().attach(PlayGame.screenSettings);
                 
         System.out.println("Game Settings button pressed...");
         //PlayGame.musicPlayer.stop();
@@ -159,7 +159,7 @@ public class PausedScreenController extends BaseAppState implements ScreenContro
     
     public void backToGame(){
         System.out.println("Back to game button pressed...");
-        PlayGame.detachAppState(PlayGame.screenPauseMenu);
+        PlayGame.app.getStateManager().detach(PlayGame.screenPauseMenu);
                 
         //also calls screen's onDisable() method
                 
@@ -167,8 +167,8 @@ public class PausedScreenController extends BaseAppState implements ScreenContro
     
     public void backToMainMenu(){
         System.out.println("Back to Mainmenu button pressed...");
-        PlayGame.detachAppState(PlayGame.gameplayAppState);
-        PlayGame.attachAppState(PlayGame.screenGameMode);
+        PlayGame.app.getStateManager().detach(PlayGame.gameplayAppState);
+        PlayGame.app.getStateManager().attach(PlayGame.screenGameMode);
         //PlayGame.attachAppState(PlayGame.screenMainMenu);
         //System.exit(0);
         

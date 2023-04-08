@@ -54,6 +54,7 @@ public class LoadingScreen extends BaseAppState implements ScreenController{
     protected void initialize(Application app) {
         
         this.app = (SimpleApplication) app;
+        nifty = PlayGame.nifty;
         
         createLoadingScreen();
         
@@ -73,7 +74,8 @@ public class LoadingScreen extends BaseAppState implements ScreenController{
     //graph attachment or input listener attachment.    
     @Override
     protected void onEnable() {
-        showLoadingScreen(); 
+        nifty.gotoScreen("Screen_Loading");
+        
         initUIControls();
         
         System.out.println(this.getClass().getName()+" enabled....."); 
@@ -86,7 +88,7 @@ public class LoadingScreen extends BaseAppState implements ScreenController{
     @Override
     protected void onDisable() {
        
-        hideLoadingScreen();
+        nifty.removeScreen("Screen_Loading");
         //Called when the state was previously enabled but is now disabled         
         //either because setEnabled(false) was called or the state is being         
         //cleaned up.    
@@ -111,8 +113,7 @@ public class LoadingScreen extends BaseAppState implements ScreenController{
     
     public void createLoadingScreen(){
         
-        nifty = PlayGame.getNiftyDisplay().getNifty();
-            app.getGuiViewPort().addProcessor(PlayGame.getNiftyDisplay());
+        
             nifty.loadStyleFile("nifty-default-styles.xml");
             nifty.loadControlFile("nifty-default-controls.xml");
                 
@@ -218,19 +219,6 @@ public class LoadingScreen extends BaseAppState implements ScreenController{
                                     
     } //method end   
 
-    
-    public void showLoadingScreen(){
-        nifty.gotoScreen("Screen_Loading");
-        app.getFlyByCamera().setDragToRotate(false);
-                
-    }
-    
-    public void hideLoadingScreen(){
-        nifty.removeScreen("Screen_Loading");
-        app.getFlyByCamera().setDragToRotate(true);
-        
-    }
-    
          
     public void initUIControls(){
         lscrImage = nifty.getScreen("Screen_Loading").findElementById("img_Loading");

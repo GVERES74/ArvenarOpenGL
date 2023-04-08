@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package mygame;
+package Managers;
 
 import static mygame.PlayGame.app;
 import com.jme3.effect.ParticleEmitter;
