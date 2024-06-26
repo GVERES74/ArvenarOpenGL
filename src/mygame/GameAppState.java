@@ -275,13 +275,13 @@ public class GameAppState extends BaseAppState
                                                            
                     case "lookat_target": 
                         if ((keyPressed) && PlayGame.gameplayAppState.isEnabled()){
-                            this.stateManager.getState(HUDScreenController.class).createAssetInfoPanel(true, getTarget());
+                            app.getStateManager().getState(HUDScreenController.class).createAssetInfoPanel(true, getTarget());
                         
                         } 
                     
                         else if (!keyPressed){
                     
-                            this.stateManager.getState(HUDScreenController.class).createAssetInfoPanel(false, "...a vision..");
+                            app.getStateManager().getState(HUDScreenController.class).createAssetInfoPanel(false, "...a vision..");
                         
                         }
                         break;

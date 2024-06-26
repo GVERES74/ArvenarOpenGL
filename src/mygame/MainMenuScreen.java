@@ -119,7 +119,7 @@ public class MainMenuScreen extends BaseAppState {
         if (load){
             frameCount++;
        
-            if(frameCount == 5000){
+            if(frameCount == 2000){
                 
 //            stateManager.attach(menuScene); //On = animated intro screen
             load = false;

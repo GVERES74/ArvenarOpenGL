@@ -5,6 +5,7 @@
  */
 package mygame;
 
+import Managers.ModelManager;
 import com.jme3.app.Application;
 import com.jme3.app.SimpleApplication;
 import com.jme3.app.state.BaseAppState;
@@ -77,6 +78,7 @@ public class LoadingScreen extends BaseAppState implements ScreenController{
         nifty.gotoScreen("Screen_Loading");
         
         initUIControls();
+//        lscrImage.getRenderer(ImageRenderer.class).setImage(nifty.createImage(nifty.getScreen("Screen_Loading"),loadRandomImage(), true)); 
         
         System.out.println(this.getClass().getName()+" enabled....."); 
            
@@ -98,14 +100,15 @@ public class LoadingScreen extends BaseAppState implements ScreenController{
     public void update(float tpf) {
        
         lsFrameCount++; 
-        
-            lscrLabelLevelName.setText("Loading Level - "+getLoadLevelName()); 
-            lscrLabelAssetName.setText("Loading asset: "+getAssetName()); 
-            
-            if (lsFrameCount == 500){
+         
+         for (lsFrameCount =0; lsFrameCount < 2000; lsFrameCount++){
               lscrLabelAssetName.setText("Loading asset: "+getAssetName()); 
-              lscrImage.getRenderer(ImageRenderer.class).setImage(nifty.createImage(nifty.getScreen("Screen_Loading"),loadRandomImage(), true)); 
-            }
+              
+         }
+                
+              lscrLabelLevelName.setText("Loading Level - "+getLoadLevelName()); 
+             
+             
              
     }
     
@@ -140,7 +143,8 @@ public class LoadingScreen extends BaseAppState implements ScreenController{
                         padding("20px");
                                            
                         image(new ImageBuilder("img_Loading") {{
-                                filename("Interface/Images/Loading/ruins.jpg");
+//                                filename("Interface/Images/Loading/ruins.jpg");
+                                  filename(loadRandomImage());  
                                 height("50%");
                                 width("50%");
                                 alignCenter();
@@ -174,7 +178,7 @@ public class LoadingScreen extends BaseAppState implements ScreenController{
                         width("100%");    
                     
                         control(new LabelBuilder("text_isLoading") {{
-                                text("Loading Level....Done");
+                                text("");
                                 font("Interface/Fonts/verdana-48-regular.fnt");
                                 height("100%");
                                 width("100%");
@@ -201,7 +205,7 @@ public class LoadingScreen extends BaseAppState implements ScreenController{
                         width("100%");    
                     
                         control(new LabelBuilder("text_LoadingAssetName") {{
-                                text("Loading Assets....Done");
+                                text(getAssetName());
                                 font("Interface/Fonts/Default.fnt");
                                 height("50%");
                                 width("100%");
@@ -247,7 +251,7 @@ public class LoadingScreen extends BaseAppState implements ScreenController{
 
     public void setAssetName(String assetName) {
         lscrAssetName = assetName;
-        assetName = "";
+       
     }
 
     public String getLoadLevelName() {

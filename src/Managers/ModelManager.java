@@ -63,7 +63,7 @@ public class ModelManager extends BaseAppState{
             subNode.attachChild(model);
             //System.out.println("Child "+subNode.getName()+" added: "+subNode.getChild(model.getName()));
             PlayGame.screenLoading.setAssetName(model.getName());
-            System.out.println("Loading model: "+model.getName()); 
+//            System.out.println("Loading model: "+model.getName()); 
             
         }
         
@@ -102,7 +102,7 @@ public class ModelManager extends BaseAppState{
             }
             subNode.attachChild(model);
             //System.out.println("Child random "+subNode.getName()+" added: "+subNode.getChild(model.getName()));
-//            PlayGame.screenLoading.setAssetName(model.getName());
+            PlayGame.screenLoading.setAssetName(model.getName());
             System.out.println("Loading model: "+model.getName()); 
             
             }
@@ -137,6 +137,8 @@ public class ModelManager extends BaseAppState{
         public Spatial getModel() {
             return model;
         }
+        
+       
 
    
     @Override
@@ -155,7 +157,7 @@ public class ModelManager extends BaseAppState{
     public void update(float tpf) {
         
 //        System.out.println(this.getClass().getName()+" updated....."); 
-        
+       
     }
 
     @Override

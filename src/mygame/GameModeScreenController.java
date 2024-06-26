@@ -180,7 +180,7 @@ public class GameModeScreenController extends BaseAppState implements ScreenCont
         }    
         
         PlayGame.screenLoading.setLoadLevelName(dropDownSingleLevel.getSelection().toString());
-        PlayGame.screenLoading.setAssetName("Static model");
+       
     }    
        
     
