@@ -57,8 +57,10 @@ public class DiaryScreen extends BaseAppState {
         this.stateManager = this.app.getStateManager();
         this.inputManager = this.app.getInputManager();
         this.viewPort     = this.app.getViewPort();
-        screenWidth = PlayGame.getPlayGameAppSettings().getWidth();
-        screenHeight = PlayGame.getPlayGameAppSettings().getHeight();
+        nifty = PlayGame.nifty;
+        app.getGuiViewPort().addProcessor(PlayGame.niftyDisplay);
+        screenWidth = PlayGame.appsettings.getWidth();
+        screenHeight = PlayGame.appsettings.getHeight();
         inputManager.deleteMapping(SimpleApplication.INPUT_MAPPING_EXIT); //delete ESC key quit app function
                 
         createDiaryScreen();
@@ -97,8 +99,8 @@ public class DiaryScreen extends BaseAppState {
         
         app.getFlyByCamera().setDragToRotate(true);
         
-        nifty = PlayGame.getNiftyDisplay().getNifty();
-            app.getGuiViewPort().addProcessor(PlayGame.getNiftyDisplay());
+        
+            
             nifty.loadStyleFile("nifty-default-styles.xml");
             nifty.loadControlFile("nifty-default-controls.xml");
         
@@ -327,7 +329,7 @@ public class DiaryScreen extends BaseAppState {
     public void hideDiaryScreen(){
         nifty.removeScreen("Screen_DiaryBook");
         app.getFlyByCamera().setDragToRotate(false);
-            PlayGame.getNiftyDisplay().getNifty().gotoScreen("Screen_HUD");
+            nifty.gotoScreen("Screen_HUD");
         
     }
 }

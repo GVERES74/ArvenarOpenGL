@@ -190,8 +190,8 @@ public class CreditsScreen extends BaseAppState {
             System.out.println(this.getClass().getName()+" enabled....."); 
             app.setDisplayStatView(false); app.setDisplayFps(false);
             app.getFlyByCamera().setDragToRotate(true);
-            nifty = PlayGame.getNiftyDisplay().getNifty();
-            app.getGuiViewPort().addProcessor(PlayGame.getNiftyDisplay());
+            nifty = PlayGame.niftyDisplay.getNifty();
+            app.getGuiViewPort().addProcessor(PlayGame.niftyDisplay);
 
             nifty.loadStyleFile("nifty-default-styles.xml");
             nifty.loadControlFile("nifty-default-controls.xml");

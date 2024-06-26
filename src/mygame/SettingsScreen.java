@@ -67,8 +67,9 @@ public class SettingsScreen extends BaseAppState {
         this.inputManager = this.app.getInputManager();
         this.viewPort     = this.app.getViewPort();
         nifty = PlayGame.nifty;
-        screenWidth = PlayGame.getPlayGameAppSettings().getWidth();
-        screenHeight = PlayGame.getPlayGameAppSettings().getHeight();
+        app.getGuiViewPort().addProcessor(PlayGame.niftyDisplay);
+        screenWidth = PlayGame.appsettings.getWidth();
+        screenHeight = PlayGame.appsettings.getHeight();
         inputManager.deleteMapping(SimpleApplication.INPUT_MAPPING_EXIT); //delete ESC key quit app function
         
         createSettingsGUI();
@@ -428,7 +429,8 @@ public class SettingsScreen extends BaseAppState {
                             filename("Interface/Images/MenuUI/button_0_apply.png");
                             height("40px");
                             width("150px");  
-                            interactOnClick("ApplySettings()");  
+                            interactOnClick("ApplySettings()"); 
+                            interactOnMouseOver("buttonEffect()");
                             onStartHoverEffect(new HoverEffectBuilder("changeImage"){{
                                 effectParameter("active", "Interface/Images/MenuUI/button_1_apply.png"); neverStopRendering(true);
                                 effectParameter("inactive", "Interface/Images/MenuUI/button_0_apply.png"); neverStopRendering(true);}});

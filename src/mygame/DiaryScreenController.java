@@ -160,8 +160,8 @@ public class DiaryScreenController extends BaseAppState implements ScreenControl
     }
     
     public void settingsGame(){
-        PlayGame.attachAppState(PlayGame.screenSettings);
-        PlayGame.detachAppState(PlayGame.screenDiary);
+        PlayGame.app.getStateManager().attach(PlayGame.screenSettings);
+        PlayGame.app.getStateManager().detach(PlayGame.screenDiary);
             
         System.out.println("Game Settings button pressed...");
         //PlayGame.musicPlayer.stop();
@@ -170,7 +170,7 @@ public class DiaryScreenController extends BaseAppState implements ScreenControl
     
     public void backToGame(){
         System.out.println("Back to game button pressed...");
-        PlayGame.detachAppState(PlayGame.screenDiary);
+        PlayGame.app.getStateManager().detach(PlayGame.screenDiary);
                 
         //also calls screen's onDisable() method
                 
@@ -178,7 +178,7 @@ public class DiaryScreenController extends BaseAppState implements ScreenControl
     
     public void backToMainMenu(){
         System.out.println("Back to Mainmenu button pressed...");
-        PlayGame.detachAppState(PlayGame.gameplayAppState);
+        PlayGame.app.getStateManager().detach(PlayGame.gameplayAppState);
         System.exit(0);
         
     }

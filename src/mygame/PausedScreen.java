@@ -46,7 +46,7 @@ public class PausedScreen extends BaseAppState {
     private Nifty nifty;
     private Screen screen;
                 
-    int screenWidth, screenHeight;
+   
     
     @Override
     public void initialize(Application app) {
@@ -59,8 +59,8 @@ public class PausedScreen extends BaseAppState {
         this.inputManager = this.app.getInputManager();
         this.viewPort     = this.app.getViewPort();
         nifty = PlayGame.nifty;
-        screenWidth = PlayGame.getPlayGameAppSettings().getWidth();
-        screenHeight = PlayGame.getPlayGameAppSettings().getHeight();
+        app.getGuiViewPort().addProcessor(PlayGame.niftyDisplay);
+        
         inputManager.deleteMapping(SimpleApplication.INPUT_MAPPING_EXIT); //delete ESC key quit app function
         
         createPausedScreen();

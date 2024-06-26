@@ -14,6 +14,7 @@ import de.lessvoid.nifty.builder.ImageBuilder;
 import de.lessvoid.nifty.builder.LayerBuilder;
 import de.lessvoid.nifty.builder.PanelBuilder;
 import de.lessvoid.nifty.builder.ScreenBuilder;
+import de.lessvoid.nifty.controls.Label;
 import de.lessvoid.nifty.controls.label.builder.LabelBuilder;
 import de.lessvoid.nifty.controls.listbox.builder.ListBoxBuilder;
 import de.lessvoid.nifty.screen.Screen;
@@ -29,6 +30,8 @@ public class HUDScreen extends BaseAppState {
     private SimpleApplication app;
     private Nifty nifty;
     private Screen hudscreen;
+    private Label gpsInfo;
+    
        
     
     
@@ -38,12 +41,14 @@ public class HUDScreen extends BaseAppState {
     protected void initialize(Application app) {
         this.app = (SimpleApplication) app;
         nifty = PlayGame.nifty; 
+        app.getGuiViewPort().addProcessor(PlayGame.niftyDisplay);
         createHUDScreen();
     }
     
     
     @Override
     protected void cleanup(Application app) {
+        
         
         //TODO: clean up what you initialized in the initialize method,        
         //e.g. remove all spatials from rootNode    
@@ -53,7 +58,7 @@ public class HUDScreen extends BaseAppState {
     //graph attachment or input listener attachment.    
     @Override
     protected void onEnable() {
-     
+     gpsInfo = nifty.getScreen("Screen_HUD").findNiftyControl("cameraLocationInfo", Label.class);
        
            
            
@@ -74,7 +79,11 @@ public class HUDScreen extends BaseAppState {
     @Override
     public void update(float tpf) {
        
-    
+    gpsInfo.setText("Location: \n"
+            +"X:"+app.getCamera().getLocation().x+"\n"
+            +"Y:"+app.getCamera().getLocation().y+"\n"
+            +"Z:"+app.getCamera().getLocation().z
+                    ); 
     }
     
        
@@ -185,8 +194,8 @@ public class HUDScreen extends BaseAppState {
                             childLayoutCenter();
                             
                             control(new LabelBuilder("cameraLocationInfo"){{
-                                text("CamLoc: ");
-                                alignCenter();
+                                text(""+gpsInfo);
+                                valignBottom();
                                 height("20%");
                                 width("50%");
                             }});

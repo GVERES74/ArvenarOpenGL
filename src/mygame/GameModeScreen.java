@@ -23,8 +23,11 @@ import de.lessvoid.nifty.builder.LayerBuilder;
 import de.lessvoid.nifty.builder.PanelBuilder;
 import de.lessvoid.nifty.builder.ScreenBuilder;
 import de.lessvoid.nifty.builder.TextBuilder;
+import de.lessvoid.nifty.controls.checkbox.builder.CheckboxBuilder;
 import de.lessvoid.nifty.controls.dropdown.builder.DropDownBuilder;
 import de.lessvoid.nifty.controls.label.builder.LabelBuilder;
+import de.lessvoid.nifty.controls.radiobutton.builder.RadioButtonBuilder;
+import de.lessvoid.nifty.controls.radiobutton.builder.RadioGroupBuilder;
 import de.lessvoid.nifty.screen.Screen;
 
 /**
@@ -45,7 +48,7 @@ public class GameModeScreen extends BaseAppState {
     
     private Nifty nifty;
     private Screen screen;
-    private int screenHeight, screenWidth;
+    
     public boolean load = false;
     public int frameCount = 0;  
     
@@ -60,10 +63,6 @@ public class GameModeScreen extends BaseAppState {
         this.viewPort     = this.app.getViewPort();
         nifty = PlayGame.nifty;
         
-                
-        screenHeight = PlayGame.getPlayGameAppSettings().getHeight();
-        screenWidth = PlayGame.getPlayGameAppSettings().getWidth();
-                    
         
         createGameModeScreen();
         
@@ -112,7 +111,7 @@ public class GameModeScreen extends BaseAppState {
         if (load){
             frameCount++;
        
-        if(frameCount == 300){
+        if(frameCount == 1000){
                 
             GameModeScreenController.startSingleLevel();
             load = false;
@@ -264,17 +263,51 @@ public class GameModeScreen extends BaseAppState {
                         height("60%");
                         width("80%"); 
                         backgroundColor("#ffc3");
-                        childLayoutVertical();
+                        childLayoutAbsoluteInside();  
+                        
                             control(new LabelBuilder("text_Settings"){{
-                                text("Empty right now");    
+                                text("Level settings");    
                                 font("Interface/Fonts/verdana-48-regular.fnt");
                                 color("#00f9");
-                                height("100%");
-                                width("100%");
-                                align(Align.Center);
-                                valignCenter();
+                                height("30%");
+                                width("100%"); 
+                                x("20px");
+                                y("0px");  
+                                
                             }});
-                                                    
+                            
+                            
+                            control(new RadioGroupBuilder("RadioGroup_SceneTime"));
+                            
+                            control(new LabelBuilder("label_DayTime") {{
+                                        text("DayTime");   
+                                        x("20px");
+                                        y("80px");    
+
+                            }});
+
+                            control(new RadioButtonBuilder("rb_DayTime") {{
+                                        x("100px");
+                                        y("80px");
+                                        group("RadioGroup_SceneTime");
+                                        
+                            }});
+                            
+                            control(new LabelBuilder("label_NightTime") {{
+                                        text("NightTime");   
+                                        x("20px");
+                                        y("120px");    
+
+                            }});
+
+                            control(new RadioButtonBuilder("rb_NightTime") {{
+                                        x("100px");
+                                        y("120px");
+                                        group("RadioGroup_SceneTime");
+                            }});
+                          
+                            
+                                                
                            //add some more controls, checkboxes, etc.
                                                 
                         }});

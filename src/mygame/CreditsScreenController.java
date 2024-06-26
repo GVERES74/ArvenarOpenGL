@@ -29,7 +29,7 @@ public class CreditsScreenController extends BaseAppState implements ScreenContr
     @Override
     public void initialize(Application app) {
         this.app = (SimpleApplication) app;
-        this.stateManager = PlayGame.getPlayGameApp().getStateManager();
+        this.stateManager = PlayGame.app.getStateManager();
         //TODO: initialize your AppState, e.g. attach spatials to rootNode
         //this is called on the OpenGL thread after the AppState has been attached
     }
@@ -74,8 +74,8 @@ public class CreditsScreenController extends BaseAppState implements ScreenContr
     public void backToMainMenu(){
         System.out.println("back button pressed...");
         
-        PlayGame.attachAppState(PlayGame.screenMainMenu);
-        PlayGame.detachAppState(PlayGame.screenCredits);
+        PlayGame.app.getStateManager().attach(PlayGame.screenMainMenu);
+        PlayGame.app.getStateManager().detach(PlayGame.screenCredits);
         AudioManager.musicPlayer.stop();
         
             

@@ -65,8 +65,7 @@ public class SettingsScreenController extends BaseAppState implements ScreenCont
     @Override
     protected void initialize(Application app) {
         this.app = (SimpleApplication) app;
-        this.stateManager = PlayGame.getPlayGameApp().getStateManager();
-    }
+            }
     
     @Override
     public void update(float tpf) {
@@ -204,7 +203,7 @@ public class SettingsScreenController extends BaseAppState implements ScreenCont
         dropdownRefreshRate = screen.findNiftyControl("dropdown_RefreshRate", DropDown.class);
         
         checkboxFullscreen = screen.findNiftyControl("cb_Fullscreen", CheckBox.class);
-        checkboxFullscreen.setChecked(PlayGame.getPlayGameAppSettings().isFullscreen());
+        checkboxFullscreen.setChecked(PlayGame.appsettings.isFullscreen());
         
     }    
     
@@ -354,12 +353,12 @@ public class SettingsScreenController extends BaseAppState implements ScreenCont
         int selectedBitDepth = dropdownBitDepth.getSelectedIndex();
         int selectedRefreshRate = dropdownRefreshRate.getSelectedIndex();
         
-        PlayGame.getPlayGameAppSettings().setResolution(sorted.get(selectedResolution).getWidth(), sorted.get(selectedResolution).getHeight());
-//        PlayGame.getPlayGameAppSettings().setDepthBits(modes[selectedBitDepth].getBitDepth());
-        PlayGame.getPlayGameAppSettings().setFrequency(currentMode.getRefreshRate());
+        PlayGame.appsettings.setResolution(sorted.get(selectedResolution).getWidth(), sorted.get(selectedResolution).getHeight());
+//        PlayGame.appsettings.setDepthBits(modes[selectedBitDepth].getBitDepth());
+        PlayGame.appsettings.setFrequency(currentMode.getRefreshRate());
         
-        PlayGame.getPlayGameAppSettings().setFullscreen(checkboxFullscreen.isChecked()&& device.isFullScreenSupported());
-        PlayGame.getPlayGameApp().setSettings(PlayGame.getPlayGameAppSettings());
+        PlayGame.appsettings.setFullscreen(checkboxFullscreen.isChecked()&& device.isFullScreenSupported());
+        PlayGame.app.setSettings(PlayGame.appsettings);
         
     }
     
@@ -382,24 +381,24 @@ public class SettingsScreenController extends BaseAppState implements ScreenCont
         changeKeyboardMouseSettings();
         saveSettings();
         
-        PlayGame.getPlayGameApp().restart();
+        PlayGame.app.restart();
         
     }
    
     public void saveSettings() throws BackingStoreException{
-        PlayGame.getPlayGameAppSettings().save("com/foo/ArvenarGL");
+        PlayGame.appsettings.save("com/foo/ArvenarGL");
     }
     
     
     public void setDefaultSettings(){
         
         //DEFAULT SETTINGS FOR GAMEPLAY OPTIONS
-        PlayGame.app.setDisplayFps(false);
+        PlayGame.app.setDisplayFps(true);
         PlayGame.displayFpsEnabled = false;
         
         //DEFAULT SETTINGS FOR VIDEO OPTIONS
-        PlayGame.getPlayGameAppSettings().setResolution(PlayGame.getPlayGameAppSettings().getWidth(), PlayGame.getPlayGameAppSettings().getHeight());
-        PlayGame.getPlayGameAppSettings().setFullscreen(false);
+        PlayGame.appsettings.setResolution(PlayGame.appsettings.getWidth(), PlayGame.appsettings.getHeight());
+        PlayGame.appsettings.setFullscreen(false);
         
         //DEFAULT SETTINGS FOR GRAPHICS OPTIONS
         EffectsManager.dlsf.setEnabled(true);
@@ -421,7 +420,7 @@ public class SettingsScreenController extends BaseAppState implements ScreenCont
     public void backToGame(){
         System.out.println("Back to game button pressed...");
         
-        PlayGame.detachAppState(PlayGame.screenSettings);
+        PlayGame.app.getStateManager().detach(PlayGame.screenSettings);
         
         
     }
@@ -433,8 +432,8 @@ public class SettingsScreenController extends BaseAppState implements ScreenCont
         When the user clicks on the save button, the OptionsScreenAppState object
         attaches the StartScreenAppState method again, and detaches itself.
         */
-        PlayGame.detachAppState(PlayGame.screenSettings);
-        PlayGame.attachAppState(PlayGame.screenMainMenu);
+        PlayGame.app.getStateManager().detach(PlayGame.screenSettings);
+        PlayGame.app.getStateManager().attach(PlayGame.screenMainMenu);
                
     }
     

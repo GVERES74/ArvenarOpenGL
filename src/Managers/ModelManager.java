@@ -44,7 +44,7 @@ public class ModelManager extends BaseAppState{
     private AnimChannel channel;
     
     public void createStaticModel(String modelfile, Node subNode, float xpos, float elevation, float zpos, float yaw, float pitch, float scale){
-            model = PlayGame.app.getAssetManager().loadModel(modelfile);
+            model = PlayGame.app.getAssetManager().loadModel(modelfile).clone();
                                                 
 //            if(matfile !=""){   
 //                model.setMaterial(PlayGame.app.getAssetManager().loadMaterial(matfile));
@@ -62,7 +62,7 @@ public class ModelManager extends BaseAppState{
             PlayGame.bulletAppState.getPhysicsSpace().add(modelRigidBody); //uses the main GameAppState's BulletAppState
             subNode.attachChild(model);
             //System.out.println("Child "+subNode.getName()+" added: "+subNode.getChild(model.getName()));
-//            PlayGame.screenLoading.setAssetName(model.getName());
+            PlayGame.screenLoading.setAssetName(model.getName());
             System.out.println("Loading model: "+model.getName()); 
             
         }
@@ -73,7 +73,7 @@ public class ModelManager extends BaseAppState{
                             
             
             for (int i = 0; i < count; i++){
-                model = PlayGame.app.getAssetManager().loadModel(modelfile);
+                model = PlayGame.app.getAssetManager().loadModel(modelfile).clone();
                                        
 //                if(matfile !=""){   
 //                    model.setMaterial(PlayGame.app.getAssetManager().loadMaterial(matfile));
@@ -110,7 +110,7 @@ public class ModelManager extends BaseAppState{
             
             
         public void createAnimatedModel(String modelPath, float scale, float xloc, float yloc, float zloc, String animName){
-            aniModel = (Node)PlayGame.app.getAssetManager().loadModel(modelPath);
+            aniModel = (Node)PlayGame.app.getAssetManager().loadModel(modelPath).clone();
             aniModel.setLocalScale(scale);
             aniModel.setLocalTranslation(xloc, yloc, zloc);
             
@@ -123,7 +123,7 @@ public class ModelManager extends BaseAppState{
         }    
             
         public void createUpdateAnimatedModel(String modelPath, float scale, float xloc, float yloc, float zloc){
-            aniModel = (Node)PlayGame.app.getAssetManager().loadModel(modelPath);
+            aniModel = (Node)PlayGame.app.getAssetManager().loadModel(modelPath).clone();
             
             aniModel.setLocalScale(scale);
             aniModel.setLocalTranslation(xloc, yloc, zloc);

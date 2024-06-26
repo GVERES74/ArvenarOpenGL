@@ -44,7 +44,7 @@ public class ExtrasScreenController extends BaseAppState implements ScreenContro
     protected void initialize(Application app) {
     
         this.app = (SimpleApplication) app;
-        this.stateManager = PlayGame.getPlayGameApp().getStateManager();
+        this.stateManager = PlayGame.app.getStateManager();
         //It is technically safe to do all initialization and cleanup in the         
         //onEnable()/onDisable() methods. Choosing to use initialize() and         
         //cleanup() for this is a matter of performance specifics for the         
@@ -161,8 +161,8 @@ public class ExtrasScreenController extends BaseAppState implements ScreenContro
      public void backToMainMenu(){
         System.out.println("Back button pressed...");
         
-        PlayGame.detachAppState(PlayGame.screenExtras);
-        PlayGame.attachAppState(PlayGame.screenMainMenu);
+        PlayGame.app.getStateManager().detach(PlayGame.screenExtras);
+        PlayGame.app.getStateManager().attach(PlayGame.screenMainMenu);
             
     }
         

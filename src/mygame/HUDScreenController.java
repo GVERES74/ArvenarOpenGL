@@ -18,7 +18,6 @@ import de.lessvoid.nifty.NiftyEventSubscriber;
 import de.lessvoid.nifty.controls.Label;
 import de.lessvoid.nifty.controls.ListBox;
 import de.lessvoid.nifty.controls.ListBoxSelectionChangedEvent;
-import de.lessvoid.nifty.controls.NiftyControl;
 import de.lessvoid.nifty.screen.Screen;
 import de.lessvoid.nifty.screen.ScreenController;
 
@@ -37,16 +36,17 @@ public class HUDScreenController extends BaseAppState implements ScreenControlle
  private AppStateManager stateManager;
  
  private int screenWidth, screenHeight;
- private Label gpsInfo;
+ 
  private ListBox dialogListBox; 
+ 
  
     
     @Override
     protected void initialize(Application app) {
       this.app = (SimpleApplication) app;
       this.stateManager = this.app.getStateManager();
-      screenWidth = PlayGame.getPlayGameAppSettings().getWidth();
-      screenHeight = PlayGame.getPlayGameAppSettings().getHeight();
+      screenWidth = PlayGame.appsettings.getWidth();
+      screenHeight = PlayGame.appsettings.getHeight();
       
     }
  
@@ -63,7 +63,7 @@ public class HUDScreenController extends BaseAppState implements ScreenControlle
     //graph attachment or input listener attachment.    
     @Override
     protected void onEnable() {
-    gpsInfo = nifty.getScreen("Screen_HUD").findNiftyControl("cameraLocationInfo", Label.class);
+    
     
     showHUDScreen();
     System.out.println(this.getClass().getName()+" enabled....."); 
@@ -86,7 +86,7 @@ public class HUDScreenController extends BaseAppState implements ScreenControlle
     @Override
     public void update(float tpf) {
             
-    gpsInfo.setText("Location: "+app.getCamera().getLocation());       
+          
             
 
 //targetName = stateManager.getState(GameAppState.class).getTargetName();
@@ -124,14 +124,7 @@ public class HUDScreenController extends BaseAppState implements ScreenControlle
         
     }
     
-     public void decreasePlayerHealthBar(){
-        int healthpoints = nifty.getScreen("Screen_HUD").findElementById("HUD_PlayerHealthValueBar").getWidth();
-            nifty.getScreen("Screen_HUD").findElementById("HUD_PlayerHealthValueBar").setWidth(healthpoints-1);
-            nifty.getScreen("Screen_HUD").findNiftyControl("HUD_PlayerHealthValueText", Label.class).setText(""+healthpoints);
-            if (healthpoints < 10){
-                nifty.getScreen("Screen_HUD").findElementById("HUD_PlayerHealthValueBar").setWidth(200);
-            }
-    }
+     
      
     public void showLookAtDialog(Boolean enabled, String text){ //not used at the moment - alternative solution for dialog
        
@@ -159,34 +152,35 @@ public class HUDScreenController extends BaseAppState implements ScreenControlle
         
     }//not used right now - alternative solution for dialog
     
-     public void createAssetInfoPanel(Boolean enabled, String text){
+     
+    public void createAssetInfoPanel(Boolean enabled, String text){
                 
         String[] comment = {"This is just a ", "This should be a ", "This looks to be a ", "Hmm, I would say it's a ", "I'm wondering if it's not a "};
         int r = FastMath.nextRandomInt(0, comment.length-1);
         
             
-                nifty.getCurrentScreen().findElementById("dialogText").setVisible(enabled);
-                nifty.getCurrentScreen().findElementById("Panel_HUD_Dialog").setVisible(enabled);
-                nifty.getCurrentScreen().findNiftyControl("dialogText", Label.class).setText(comment[r]+text);
+                PlayGame.nifty.getCurrentScreen().findElementById("dialogText").setVisible(enabled);
+                PlayGame.nifty.getCurrentScreen().findElementById("Panel_HUD_Dialog").setVisible(enabled);
+                PlayGame.nifty.getCurrentScreen().findNiftyControl("dialogText", Label.class).setText(comment[r]+text);
             
             if (text.contains("Oto")){
                 showCharacterDialog();
             }
         
     }
-     
-      public void showCharacterDialog(){
+    
+    public void showCharacterDialog(){
             createDialogPanel();    
             app.getFlyByCamera().setDragToRotate(true);
-            nifty.getCurrentScreen().findElementById("Panel_Dialog_Container").setVisible(true);
-            nifty.getCurrentScreen().findElementById("Text_npcDialogText").setVisible(true);
+            PlayGame.nifty.getCurrentScreen().findElementById("Panel_Dialog_Container").setVisible(true);
+            PlayGame.nifty.getCurrentScreen().findElementById("Text_npcDialogText").setVisible(true);
                      
         
     }
-      
-     public void createDialogPanel(){
-        dialogListBox = nifty.getCurrentScreen().findNiftyControl("ListBox_Dialog", ListBox.class);
-        nifty.getCurrentScreen().findNiftyControl("Text_npcDialogText", Label.class).setText(PlayGame.gameplayAppState.getTarget()+": \n"
+    
+    public void createDialogPanel(){
+        dialogListBox = PlayGame.nifty.getCurrentScreen().findNiftyControl("ListBox_Dialog", ListBox.class);
+        PlayGame.nifty.getCurrentScreen().findNiftyControl("Text_npcDialogText", Label.class).setText(PlayGame.gameplayAppState.getTarget()+": \n"
                 + "Hello Stranger,\n"
                 + "I'm "+ PlayGame.gameplayAppState.getTarget()+"\n"
                 + "How can I help you?"
@@ -198,6 +192,10 @@ public class HUDScreenController extends BaseAppState implements ScreenControlle
             dialogListBox.addItem("I'm lost, please tell me where I am");
             dialogListBox.addItem("Not now. (end conversation)");
     }
+ 
+         
+     
+    
     
     @NiftyEventSubscriber(id="ListBox_Dialog")
     public void onListBoxSelectionChanged(final String id, final ListBoxSelectionChangedEvent event) {
@@ -207,7 +205,7 @@ public class HUDScreenController extends BaseAppState implements ScreenControlle
         }
         else {
         System.out.println(event.getSelection());
-        nifty.getCurrentScreen().findElementById("Panel_Dialog_Container").setVisible(false);
+        PlayGame.nifty.getCurrentScreen().findElementById("Panel_Dialog_Container").setVisible(false);
 
         
         }

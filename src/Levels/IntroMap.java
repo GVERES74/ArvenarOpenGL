@@ -101,12 +101,12 @@ public class IntroMap extends BaseAppState{
     
     private float timer = 0.0f;
     private int randomNumber = 0;
-    private final int GRASS_COUNT = 5;
-    private final int FLOWER_COUNT = 5;
-    private final int TREE_COUNT = 1;
-    private final int BUSH_COUNT = 2;
-    private final int PLANT_COUNT = 2;
-    private final int OTHER_COUNT = 5;
+    private final int GRASS_COUNT = 50;
+    private final int FLOWER_COUNT = 50;
+    private final int TREE_COUNT = 5;
+    private final int BUSH_COUNT = 50;
+    private final int PLANT_COUNT = 50;
+    private final int OTHER_COUNT = 50;
     private final int ANIMAL_COUNT = 1;
     
         
@@ -150,7 +150,7 @@ public class IntroMap extends BaseAppState{
               
         initGraphicsEffects();
         initMenuControls();
-        camera.setLocation(new Vector3f(800f,50f,-780f)); //flycam initposition
+        camera.setLocation(new Vector3f(850f,50f,-900f)); //flycam initposition
         camera.setRotation(new Quaternion().fromAngleNormalAxis(0.2f, Vector3f.UNIT_X)); //flycam looks down a bit
         
     }
@@ -158,7 +158,8 @@ public class IntroMap extends BaseAppState{
     @Override
     protected void cleanup(Application app) {
         
-          rootNode.detachAllChildren();
+        animated = false; //stop flyby move and rotate 
+        rootNode.detachAllChildren();
 //          rootNode.getParent().detachAllChildren();
         //TODO: clean up what you initialized in the initialize method,        
         //e.g. remove all spatials from rootNode    
@@ -211,11 +212,11 @@ public class IntroMap extends BaseAppState{
         //changeIntroCam();
         
         if (animated == true){
-        rotateCamera(-0.1f, 1,tpf,Vector3f.UNIT_Y);
+        rotateCamera(-0.1f, 1,tpf,Vector3f.UNIT_Y, true);
         moveCamera(true);
         }
         else if (animated == false){
-            rotateCamera(0f,0f,0f,Vector3f.UNIT_Y);
+            rotateCamera(0f,0f,0f,Vector3f.UNIT_Y, false);
             moveCamera(false);                                
         }
     }
@@ -559,13 +560,12 @@ public class IntroMap extends BaseAppState{
             particleBugs(); //loacation varies through SimpleUpdate
         }
         
-          protected void rotateCamera(float rotationSpeed, float value, float tpf
-                            , Vector3f axis){
-            
+        protected void rotateCamera(float rotationSpeed, float value, float tpf, Vector3f axis, boolean enabled){
+            if (enabled = true){
             Quaternion rotate = new Quaternion().fromAngleNormalAxis(rotationSpeed * value * tpf, axis);
             Quaternion q = rotate.mult(camera.getRotation());
             camera.setRotation(q);
-              
+            }  
         }
         
         
@@ -578,8 +578,8 @@ public class IntroMap extends BaseAppState{
             float moveZ = camDirection.z/15;
             float camx = camLocation.x;
             float camz = camLocation.z;
-            float camy = camLocation.y;
-                camera.setLocation(new Vector3f(camx+moveX, camy, camz+moveZ));
+            float camy = terrainIntroMap.getHeight(new Vector2f(camx, camz)); //camLocation.y;
+                camera.setLocation(new Vector3f(camx+moveX, camy+50, camz+moveZ)); //keep the camera's y location by 50 WO above the current terrainheight x & z coordinates
             }    
             
             else if (enabled == false){

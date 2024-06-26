@@ -62,8 +62,8 @@ public class ExtrasScreen extends BaseAppState {
         this.stateManager = this.app.getStateManager();
         this.inputManager = this.app.getInputManager();
         this.viewPort     = this.app.getViewPort();
-        screenWidth = PlayGame.getPlayGameAppSettings().getWidth();
-        screenHeight = PlayGame.getPlayGameAppSettings().getHeight();
+        screenWidth = PlayGame.appsettings.getWidth();
+        screenHeight = PlayGame.appsettings.getHeight();
         inputManager.deleteMapping(SimpleApplication.INPUT_MAPPING_EXIT); //delete ESC key quit app function
         
         createExtrasScreen();
@@ -101,8 +101,8 @@ public class ExtrasScreen extends BaseAppState {
         
         app.getFlyByCamera().setDragToRotate(true);
         
-        nifty = PlayGame.getNiftyDisplay().getNifty();
-            app.getGuiViewPort().addProcessor(PlayGame.getNiftyDisplay());
+        nifty = PlayGame.niftyDisplay.getNifty();
+            app.getGuiViewPort().addProcessor(PlayGame.niftyDisplay);
             nifty.loadStyleFile("nifty-default-styles.xml");
             nifty.loadControlFile("nifty-default-controls.xml");
         
@@ -388,7 +388,7 @@ public class ExtrasScreen extends BaseAppState {
          
         nifty.removeScreen("Screen_Extras");
         app.getFlyByCamera().setDragToRotate(false);
-        PlayGame.getNiftyDisplay().getNifty().gotoScreen("Screen_MainMenu");
+        nifty.gotoScreen("Screen_MainMenu");
      }
      
     

@@ -54,6 +54,7 @@ import Managers.ModelManager;
 import Managers.ParticleManager;
 import mygame.PlayGame;
 import Managers.SkyBoxManager;
+import de.lessvoid.nifty.controls.RadioButton;
 
 /**
  *  
@@ -100,12 +101,12 @@ public class S1M0_forest extends BaseAppState{
     
     private float timer = 0.0f;
     private int randomNumber = 0;
-    private final int GRASS_COUNT = 1;
-    private final int FLOWER_COUNT = 1;
-    private final int TREE_COUNT = 0;
-    private final int BUSH_COUNT = 1;
-    private final int PLANT_COUNT = 1;
-    private final int OTHER_COUNT = 1;
+    private final int GRASS_COUNT = 100;
+    private final int FLOWER_COUNT = 100;
+    private final int TREE_COUNT = 10;
+    private final int BUSH_COUNT = 50;
+    private final int PLANT_COUNT = 50;
+    private final int OTHER_COUNT = 50;
     
         
     @Override
@@ -143,16 +144,20 @@ public class S1M0_forest extends BaseAppState{
         initGraphicsEffects();
         
         initAmbientSound();
-        createSceneAtDay();
-        //createSceneAtNight();
         
+        if (PlayGame.isNightTime == true){
+            createSceneAtNight();
+        }    
+        else if (PlayGame.isNightTime == false){ 
+                createSceneAtDay();
+        }      
         
     }
 
     @Override
     protected void cleanup(Application app) {
         
-            
+       rootNode.detachAllChildren();
         //TODO: clean up what you initialized in the initialize method,        
         //e.g. remove all spatials from rootNode    
     }
@@ -169,6 +174,8 @@ public class S1M0_forest extends BaseAppState{
 //        PlayGame.gameplayAppState.firstPersonPlayer.setPhysicsLocation(setRandomPlayerSpawnPoint());
         System.out.println(setRandomPlayerSpawnPoint()); 
         System.out.println(this.getClass().getName()+" enabled....."); 
+        System.out.println("NigtTime: "+PlayGame.isNightTime);
+        
         
         //Called when the state is fully enabled, ie: is attached and         
         //isEnabled() is true or when the setEnabled() status changes after the         
@@ -548,7 +555,7 @@ public class S1M0_forest extends BaseAppState{
             
                         
             // DiffuseMaps
-            Texture forestGrass = assetManager.loadTexture("Textures/Terrain/Grass/forestgrass.jpg");
+            Texture forestGrass = assetManager.loadTexture("Textures/Terrain/Grass/Weedy Lawn.jpg");
             forestGrass.setWrap(WrapMode.Repeat);
             matTerrain.setTexture("DiffuseMap", forestGrass);
             matTerrain.setFloat("DiffuseMap_0_scale", 512f);
@@ -556,9 +563,9 @@ public class S1M0_forest extends BaseAppState{
             Texture grass110 = assetManager.loadTexture("Textures/Terrain/Grass/Grass110.jpg");
             grass110.setWrap(WrapMode.Repeat);
             matTerrain.setTexture("DiffuseMap_1", grass110);
-            matTerrain.setFloat("DiffuseMap_1_scale", 640f);
+            matTerrain.setFloat("DiffuseMap_1_scale", 512f);
             
-            Texture grass112 = assetManager.loadTexture("Textures/Terrain/Grass/Grass112.jpg");
+            Texture grass112 = assetManager.loadTexture("Textures/Terrain/Rock/Rock_Grass.jpg");
             grass112.setWrap(WrapMode.Repeat);
             matTerrain.setTexture("DiffuseMap_2", grass112);
             matTerrain.setFloat("DiffuseMap_2_scale", 512f);
@@ -568,11 +575,11 @@ public class S1M0_forest extends BaseAppState{
                                     
             Texture normalMapGrass110 = assetManager.loadTexture("Textures/Terrain/Grass/Grass110_NRM.png");
             normalMapGrass110.setWrap(WrapMode.Repeat);
-            matTerrain.setTexture("NormalMap", normalMapGrass110);
+            matTerrain.setTexture("NormalMap_1", normalMapGrass110);
             
-            Texture normalMapGrass112 = assetManager.loadTexture("Textures/Terrain/Grass/Grass112_NRM.png");
+            Texture normalMapGrass112 = assetManager.loadTexture("Textures/Terrain/Rock/Rock_Grass_NRM.png");
             normalMapGrass112.setWrap(WrapMode.Repeat);
-            matTerrain.setTexture("NormalMap_1", normalMapGrass112);
+            matTerrain.setTexture("NormalMap_2", normalMapGrass112);
         }
         
         public void generateHeightMap(){

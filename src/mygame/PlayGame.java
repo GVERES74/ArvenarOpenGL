@@ -49,14 +49,15 @@ public class PlayGame extends SimpleApplication{
     
         
     public static boolean displayFpsEnabled;
+    public static boolean isNightTime;
     
                     
     public static void main(String[] args) {
                 
         app = new PlayGame();
         appsettings = new AppSettings(true);
-        appsettings.setResolution(1366, 768);
-        appsettings.setFullscreen(false);
+        appsettings.setResolution(1920, 1080);
+        appsettings.setFullscreen(true);
 
         app.setSettings(appsettings);        
         appsettings.setTitle("Arvenar 3D - OpenGl");
@@ -129,9 +130,6 @@ public class PlayGame extends SimpleApplication{
     
         
 
-    public static AppSettings getPlayGameAppSettings() {
-        return appsettings;
-    }
-    
+        
     
 }

@@ -14,6 +14,8 @@ import de.lessvoid.nifty.NiftyEventSubscriber;
 import de.lessvoid.nifty.controls.DropDown;
 import de.lessvoid.nifty.controls.DropDownSelectionChangedEvent;
 import de.lessvoid.nifty.controls.Label;
+import de.lessvoid.nifty.controls.RadioButton;
+import de.lessvoid.nifty.controls.RadioButtonStateChangedEvent;
 import de.lessvoid.nifty.elements.Element;
 import de.lessvoid.nifty.elements.render.ImageRenderer;
 import de.lessvoid.nifty.render.NiftyImage;
@@ -35,6 +37,7 @@ public class GameModeScreenController extends BaseAppState implements ScreenCont
     
     private Element visiblePanel, img_activeGameMode;
     private static DropDown dropDownSingleLevel, dropDownMultiPlayer;
+    private static RadioButton rb_Night, rb_Day;
     private NiftyImage niftyImg_Summer, niftyImg_Winter, niftyImg_Spring, niftyImg_Autumn;
     
     private SimpleApplication app;
@@ -65,10 +68,9 @@ public class GameModeScreenController extends BaseAppState implements ScreenCont
     @Override
     protected void onEnable() {
     
-
-
-        //Called when the state is fully enabled, ie: is attached and         
-        //isEnabled() is true or when the setEnabled() status changes after the         
+        
+        //Called when the state is fully enabled, ie: is attached and        
+        //isEnabled() is true or when the setEnabled() status changes after the        
         //state is attached.    
     }
     
@@ -101,6 +103,11 @@ public class GameModeScreenController extends BaseAppState implements ScreenCont
         dropDownSingleLevel = screen.findNiftyControl("dropDown_SLLevelList", DropDown.class);
         dropDownMultiPlayer = screen.findNiftyControl("dropDown_MPLevelList", DropDown.class);
         
+        rb_Day = screen.findNiftyControl("rb_DayTime", RadioButton.class);
+        
+        rb_Night = screen.findNiftyControl("rb_NightTime", RadioButton.class);
+
+               
         
         niftyImg_Summer = nifty.createImage(screen,"Interface/Images/Levels/S2/sl_tropical.png", true);
         niftyImg_Winter = nifty.createImage(screen,"Interface/Images/Levels/S0/sl_snowy.png", true);
@@ -211,6 +218,19 @@ public class GameModeScreenController extends BaseAppState implements ScreenCont
         System.out.println("Back button pressed...");
         PlayGame.app.getStateManager().detach(PlayGame.screenGameMode);
         PlayGame.app.getStateManager().attach(PlayGame.screenMainMenu);
+    }
+    
+    
+    @NiftyEventSubscriber(id="rb_NightTime")
+    public void onNightChanged(final String id, final RadioButtonStateChangedEvent event) {
+        System.out.println("RadioButton [" + event.getRadioButton().getId() + "] is selected [" + event.isSelected() + "]");
+        PlayGame.isNightTime = true;
+    }
+    
+    @NiftyEventSubscriber(id="rb_DayTime")
+    public void onDayChanged(final String id, final RadioButtonStateChangedEvent event) {
+        System.out.println("RadioButton [" + event.getRadioButton().getId() + "] is selected [" + event.isSelected() + "]");
+        PlayGame.isNightTime = false;
     }
     
     @NiftyEventSubscriber(id="dropDown_SLLevelList")

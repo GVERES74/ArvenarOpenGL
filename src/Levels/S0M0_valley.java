@@ -271,8 +271,8 @@ public class S0M0_valley extends BaseAppState {
             snowStormEmitter.getParticleInfluencer().setVelocityVariation(0.3f);
             snowStormEmitter.setRotateSpeed(1f);
             snowStormEmitter.setLocalTranslation(0f, 100f, 0f);
-            snowStormEmitter.setNumParticles(500);
-            snowStormEmitter.setParticlesPerSec(100);
+            snowStormEmitter.setNumParticles(1000);
+            snowStormEmitter.setParticlesPerSec(200);
             snowStormEmitter.setSelectRandomImage(true);
             snowStormEmitter.setRandomAngle(true);
             snowStormEmitter.setShape(new EmitterSphereShape(Vector3f.ZERO,100f));

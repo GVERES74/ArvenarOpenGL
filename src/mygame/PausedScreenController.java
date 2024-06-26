@@ -44,7 +44,7 @@ public class PausedScreenController extends BaseAppState implements ScreenContro
     
     @Override
     protected void onEnable() {
-    
+    app.getStateManager().detach(PlayGame.screenInGameHUD);
 
      
     }

@@ -59,7 +59,8 @@ public class MainMenuScreen extends BaseAppState {
     private Node startGUINode = new Node("Main Menu GUINode");
     
     float screenHeight, screenWidth, timer;
-   
+    public boolean load = false;
+    public int frameCount = 0;  
     
     BitmapText menuItemText, camPosInfoText;
     
@@ -71,6 +72,7 @@ public class MainMenuScreen extends BaseAppState {
         
         this.app = PlayGame.app;  
         nifty = PlayGame.nifty;
+        app.getGuiViewPort().addProcessor(PlayGame.niftyDisplay);
         
         this.rootNode     = this.app.getRootNode();
         this.assetManager = this.app.getAssetManager();
@@ -99,9 +101,10 @@ public class MainMenuScreen extends BaseAppState {
         this.app.getFlyByCamera().setEnabled(false); //disable camera movement with keyboard / mouse
         
         createAnimatedMainMenu();
+        load = true;
              
         
-//        menuScene = new IntroMap(); stateManager.attach(menuScene); 
+        menuScene = new IntroMap(); 
         
        
         
@@ -113,13 +116,24 @@ public class MainMenuScreen extends BaseAppState {
     @Override
     public void update(float tpf) {
        
+        if (load){
+            frameCount++;
        
+            if(frameCount == 5000){
+                
+//            stateManager.attach(menuScene); //On = animated intro screen
+            load = false;
+            }
+         
+       } 
     }
     
     @Override
     public void cleanup(Application app) {
         System.out.println("MainMenuScreen cleanup called.....");
         inputManager.deleteMapping("SkipIntro");
+        
+        stateManager.detach(menuScene);
                 
                
     }    
@@ -159,112 +173,7 @@ public class MainMenuScreen extends BaseAppState {
                 defaultFocusElement("menuimg_Play");
                      
 
-                    layer(new LayerBuilder("Layer_Menu_Intro"){{
-                        childLayoutVertical();
-
-                        panel(new PanelBuilder("Panel_Menu_Cat"){{    
-                            childLayoutCenter();
-                                height("30%");
-                                width("100%");
-                            image(new ImageBuilder("logo_Cat") {{
-                                filename("Interface/Images/greetingcat.png");
-                                height("100%");
-                                width("20%");
-                                                                                                
-                                onActiveEffect(new EffectBuilder("fade") {{ //fade in and fade out effect :)
-                                startDelay(1000);
-                                //length(8000);    
-                                effectValue("time", "3000", "value", "0.0");
-                                effectValue("time", "5000", "value", "1.0");
-                                effectValue("time", "10000", "value", "1.0");
-                                effectValue("time", "12000", "value", "0.0");
-                                post(false);
-                                neverStopRendering(true);
-                                }});
-                            }});
-                        }}); //panel catlogo end        
-                            
-                        panel(new PanelBuilder("Panel_Menu_Texts"){{
-                                childLayoutCenter();
-                                height("50%");
-                                width("100%");
-                            
-                            text(new TextBuilder() {{
-                                text("Greeting Cat Game Studio presents\n"
-                                        + "Arvenar - The Lost Traveller");
-                                font("Interface/Fonts/Default.fnt");
-                                color("#fff9");
-                                height("100%");
-                                width("100%");
-                                alignCenter();
-                                
-                                onActiveEffect(new EffectBuilder("fade") {{
-                                startDelay(1000);
-                                //length(8000);    
-                                effectValue("time", "3000", "value", "0.0");
-                                effectValue("time", "5000", "value", "1.0");
-                                effectValue("time", "10000", "value", "1.0");
-                                effectValue("time", "12000", "value", "0.0");
-                                post(false);
-                                neverStopRendering(true);
-                                }});
-                            }});    
-                             
-                             text(new TextBuilder() {{
-                                text("A Greeting Cat Production\n"
-                                        + "Design and programming by Gabor Veres\n"
-                                        + "Powered by jMonkeyEngine3.0\n"
-                                        + "Powered by NiftyGUI\n"
-                                        + "Powered by OpenGameArt.org\n"
-                                        + "https://opengameart.org");
-                                font("Interface/Fonts/Default.fnt");
-                                color("#fff9");
-                                height("100%");
-                                width("100%");
-                                alignCenter();
-                                
-                                onStartScreenEffect(new EffectBuilder("fade") {{
-                                startDelay(12000);
-                                //length(8000);    
-                                effectValue("time", "3000", "value", "0.0");
-                                effectValue("time", "5000", "value", "1.0");
-                                effectValue("time", "10000", "value", "1.0");
-                                effectValue("time", "12000", "value", "0.0");
-                                post(false);
-                                neverStopRendering(true);
-                                }});
-                            }});
-                    
-                    }}); //panel texts end
-                                                                               
-                    panel(new PanelBuilder("Panel_Menu_SkipIntroText"){{
-                            childLayoutCenter();
-                            height("20%");
-                            width("50%");
-                                
-                                text(new TextBuilder() {{
-                                text("Press ESC to skip intro");
-                                font("Interface/Fonts/Default.fnt");
-                                color("#0009");
-                                height("80%");
-                                width("80%");
-                                alignCenter();
-                                                                                                
-                                onActiveEffect(new EffectBuilder("colorPulsate") {{
-                                    
-                                    effectParameter("startColor", "#fff6");
-                                    effectParameter("endColor", "#0009");
-                                    effectParameter("pulsateType", "sin");
-                                    effectParameter("period", "2000");
-
-                                }});  
-                           
-                                
-                        }}); 
-                        }}); //panel skipintro end            
-                        }}); //layer intro end
-                     
-                    layer(new LayerBuilder("Layer_Menu_Main"){{
+                layer(new LayerBuilder("Layer_Menu_Main"){{
                     childLayoutVertical();
                     
                     onActiveEffect(new EffectBuilder("fade") {{
@@ -374,8 +283,117 @@ public class MainMenuScreen extends BaseAppState {
                             onStartHoverEffect(new HoverEffectBuilder("playSound"){{effectParameter("sound", "btnclick");}});
                         }});
                         
-                    }});    
-                       
+                    }});     //layer MainMenu end  
+                
+                               
+                
+                
+                layer(new LayerBuilder("Layer_Menu_Intro"){{
+                        childLayoutVertical();
+
+                        panel(new PanelBuilder("Panel_Menu_Cat"){{    
+                            childLayoutCenter();
+                                height("30%");
+                                width("100%");
+                            image(new ImageBuilder("logo_Cat") {{
+                                filename("Interface/Images/greetingcat.png");
+                                height("100%");
+                                width("20%");
+                                                                                                
+                                onActiveEffect(new EffectBuilder("fade") {{ //fade in and fade out effect :)
+                                startDelay(1000);
+                                //length(8000);    
+                                effectValue("time", "3000", "value", "0.0");
+                                effectValue("time", "5000", "value", "1.0");
+                                effectValue("time", "10000", "value", "1.0");
+                                effectValue("time", "12000", "value", "0.0");
+                                post(false);
+                                neverStopRendering(true);
+                                }});
+                            }});
+                        }}); //panel catlogo end        
+                            
+                        panel(new PanelBuilder("Panel_Menu_Texts"){{
+                                childLayoutCenter();
+                                height("50%");
+                                width("100%");
+                            
+                            text(new TextBuilder() {{
+                                text("Greeting Cat Game Studio presents\n"
+                                        + "Arvenar - The Lost Traveller");
+                                font("Interface/Fonts/Default.fnt");
+                                color("#fff9");
+                                height("100%");
+                                width("100%");
+                                alignCenter();
+                                
+                                onActiveEffect(new EffectBuilder("fade") {{
+                                startDelay(1000);
+                                //length(8000);    
+                                effectValue("time", "3000", "value", "0.0");
+                                effectValue("time", "5000", "value", "1.0");
+                                effectValue("time", "10000", "value", "1.0");
+                                effectValue("time", "12000", "value", "0.0");
+                                post(false);
+                                neverStopRendering(true);
+                                }});
+                            }});    
+                             
+                             text(new TextBuilder() {{
+                                text("A Greeting Cat Production\n"
+                                        + "Design and programming by Gabor Veres\n"
+                                        + "Powered by jMonkeyEngine3.0\n"
+                                        + "Powered by NiftyGUI\n"
+                                        + "Powered by OpenGameArt.org\n"
+                                        + "https://opengameart.org");
+                                font("Interface/Fonts/Default.fnt");
+                                color("#fff9");
+                                height("100%");
+                                width("100%");
+                                alignCenter();
+                                
+                                onStartScreenEffect(new EffectBuilder("fade") {{
+                                startDelay(12000);
+                                //length(8000);    
+                                effectValue("time", "3000", "value", "0.0");
+                                effectValue("time", "5000", "value", "1.0");
+                                effectValue("time", "10000", "value", "1.0");
+                                effectValue("time", "12000", "value", "0.0");
+                                post(false);
+                                neverStopRendering(true);
+                                }});
+                            }});
+                    
+                    }}); //panel texts end
+                                                                               
+                    panel(new PanelBuilder("Panel_Menu_SkipIntroText"){{
+                            childLayoutCenter();
+                            height("20%");
+                            width("50%");
+                                
+                                text(new TextBuilder() {{
+                                text("Press ESC to skip intro");
+                                font("Interface/Fonts/Default.fnt");
+                                color("#0009");
+                                height("80%");
+                                width("80%");
+                                alignCenter();
+                                                                                                
+                                onActiveEffect(new EffectBuilder("colorPulsate") {{
+                                    
+                                    effectParameter("startColor", "#fff6");
+                                    effectParameter("endColor", "#0009");
+                                    effectParameter("pulsateType", "sin");
+                                    effectParameter("period", "2000");
+
+                                }});  
+                           
+                                
+                        }}); 
+                        }}); //panel skipintro end            
+                        }}); //layer intro end
+                     
+                  
 
                 }});
                     

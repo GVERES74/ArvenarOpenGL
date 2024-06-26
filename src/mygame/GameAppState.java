@@ -38,6 +38,7 @@ import com.jme3.scene.Spatial;
 import static Managers.ModelManager.destroyableNode;
 import static Managers.ModelManager.shootableNode;
 import static Managers.ModelManager.staticNode;
+import de.lessvoid.nifty.controls.Label;
 
 
 /**
@@ -136,7 +137,7 @@ public class GameAppState extends BaseAppState
         
         public void createPlayer(){
 
-            firstPersonPlayer.setGravity(new Vector3f(0,-20f,0)); //fallspeed
+            //firstPersonPlayer.setGravity(new Vector3f(0,-20,0)); //fallspeed
             firstPersonPlayer.setPhysicsLocation(playerSpawnPoint);
             
             firstPersonPlayer.setJumpSpeed(20);
@@ -234,7 +235,7 @@ public class GameAppState extends BaseAppState
                 switch (keyBinding){
                     
                     
-                    case "Jump": if (keyPressed) firstPersonPlayer.jump(new Vector3f(0f,20f,0f));
+                    case "Jump": if (!keyPressed) firstPersonPlayer.jump();
                                     decreasePlayerHealth(); 
                                     break;
                                     
@@ -263,7 +264,7 @@ public class GameAppState extends BaseAppState
                                  
                     case "StartMap": firstPersonPlayer.setPhysicsLocation(playerSpawnPoint); break;
                                                      
-                    case "PauseGame":   hotKeyPressed(PlayGame.screenPauseMenu, keyPressed); break;  
+                    case "PauseGame":   hotKeyPressed(PlayGame.screenPauseMenu, keyPressed); break; 
                                         
                     case "MapView":     hotKeyPressed(PlayGame.screenMapView, keyPressed); break;  
                                         
@@ -274,13 +275,13 @@ public class GameAppState extends BaseAppState
                                                            
                     case "lookat_target": 
                         if ((keyPressed) && PlayGame.gameplayAppState.isEnabled()){
-//                            PlayGame.screenInGameHUD.createAssetInfoPanel(true, getTarget());
+                            this.stateManager.getState(HUDScreenController.class).createAssetInfoPanel(true, getTarget());
                         
                         } 
                     
                         else if (!keyPressed){
                     
-//                            PlayGame.screenInGameHUD.createAssetInfoPanel(false, "a vision...");
+                            this.stateManager.getState(HUDScreenController.class).createAssetInfoPanel(false, "...a vision..");
                         
                         }
                         break;
@@ -354,10 +355,18 @@ public class GameAppState extends BaseAppState
     }
     
     public void decreasePlayerHealth(){
-//        mygame.HUDScreenController.decreasePlayerHealthBar();
+        
+        int healthpoints = PlayGame.nifty.getScreen("Screen_HUD").findElementById("HUD_PlayerHealthValueBar").getWidth();
+            PlayGame.nifty.getScreen("Screen_HUD").findElementById("HUD_PlayerHealthValueBar").setWidth(healthpoints-1);
+            PlayGame.nifty.getScreen("Screen_HUD").findNiftyControl("HUD_PlayerHealthValueText", Label.class).setText(""+healthpoints);
+            if (healthpoints < 10){
+                PlayGame.nifty.getScreen("Screen_HUD").findElementById("HUD_PlayerHealthValueBar").setWidth(200);
+            }
+    
         playerhp -=1;
     }
-
+    
+    
     
     public String getTarget(){
         CollisionResults results = new CollisionResults();
@@ -389,12 +398,12 @@ public class GameAppState extends BaseAppState
     
     public void hotKeyPressed(AppState appStateName, Boolean keyPressed){
      
-        if (!PlayGame.app.getStateManager().hasState(appStateName) && keyPressed){
+        if (!PlayGame.app.getStateManager().hasState(appStateName) && !keyPressed){
             PlayGame.app.getStateManager().attach(appStateName);
         }
         
                 
-        else if (PlayGame.app.getStateManager().hasState(appStateName) && keyPressed) {
+        else if (PlayGame.app.getStateManager().hasState(appStateName) && !keyPressed) {
             PlayGame.app.getStateManager().detach(appStateName);
         }       
         

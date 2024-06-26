@@ -56,8 +56,8 @@ public class MapViewScreen extends BaseAppState {
         this.inputManager = this.app.getInputManager();
         this.viewPort     = this.app.getViewPort();
         
-        screenHeight = PlayGame.getPlayGameAppSettings().getHeight();
-        screenWidth = PlayGame.getPlayGameAppSettings().getWidth();
+        screenHeight = PlayGame.appsettings.getHeight();
+        screenWidth = PlayGame.appsettings.getWidth();
         inputManager.deleteMapping(SimpleApplication.INPUT_MAPPING_EXIT); //delete ESC key quit app function
         
         //ScrollPanelBuilder scrollpanel = new ScrollPanelBuilder("scroll");
@@ -103,8 +103,8 @@ public class MapViewScreen extends BaseAppState {
         
         app.getFlyByCamera().setDragToRotate(true);
         
-        nifty = PlayGame.getNiftyDisplay().getNifty();
-            app.getGuiViewPort().addProcessor(PlayGame.getNiftyDisplay());
+        nifty = PlayGame.nifty;
+            app.getGuiViewPort().addProcessor(PlayGame.niftyDisplay);
             nifty.loadStyleFile("nifty-default-styles.xml");
             nifty.loadControlFile("nifty-default-controls.xml");
         
@@ -388,7 +388,7 @@ public class MapViewScreen extends BaseAppState {
     public void hideMapViewScreen(){
         app.getFlyByCamera().setDragToRotate(false);
         nifty.removeScreen("Screen_MapScreen");
-        PlayGame.getNiftyDisplay().getNifty().gotoScreen("Screen_HUD");        
+        nifty.gotoScreen("Screen_HUD");        
     }
        
 }
