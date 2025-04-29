@@ -31,17 +31,13 @@ import javax.annotation.Nonnull;
  */
 public class GameModeScreenController extends BaseAppState implements ScreenController{
 
-    private Nifty nifty;
     private Screen screen;
-    private BaseAppState selectedAppStateID;
     
     private Element visiblePanel, img_activeGameMode;
     private static DropDown dropDownSingleLevel, dropDownMultiPlayer;
-    private static RadioButton rb_Night, rb_Day;
     private NiftyImage niftyImg_Summer, niftyImg_Winter, niftyImg_Spring, niftyImg_Autumn;
     
     private SimpleApplication app;
-    private AppStateManager stateManager;
     
     public boolean load = false;
     public int frameCount = 0;  
@@ -50,7 +46,7 @@ public class GameModeScreenController extends BaseAppState implements ScreenCont
     @Override
     protected void initialize(Application app) {
     this.app = (SimpleApplication) app;   
-    this.stateManager = this.app.getStateManager();
+    this.app.getStateManager();
     
     }
 
@@ -86,15 +82,15 @@ public class GameModeScreenController extends BaseAppState implements ScreenCont
     
     @Override
     public void update(float tpf) {
-         //TODO: implement behavior during runtime      
         
+         //TODO: implement behavior during runtime      
+       
          
     }
            
 
     @Override
     public void bind(Nifty nifty, Screen screen) {
-        this.nifty = nifty;
         this.screen = screen;
         
         visiblePanel = screen.findElementById("Panel_GameMode_SP");
@@ -103,9 +99,9 @@ public class GameModeScreenController extends BaseAppState implements ScreenCont
         dropDownSingleLevel = screen.findNiftyControl("dropDown_SLLevelList", DropDown.class);
         dropDownMultiPlayer = screen.findNiftyControl("dropDown_MPLevelList", DropDown.class);
         
-        rb_Day = screen.findNiftyControl("rb_DayTime", RadioButton.class);
+        screen.findNiftyControl("rb_DayTime", RadioButton.class);
         
-        rb_Night = screen.findNiftyControl("rb_NightTime", RadioButton.class);
+        screen.findNiftyControl("rb_NightTime", RadioButton.class);
 
                
         
@@ -177,6 +173,10 @@ public class GameModeScreenController extends BaseAppState implements ScreenCont
             case 3:                     
                     PlayGame.app.getStateManager().attach(PlayGame.levelS3M0);
                     break; 
+            case 4:                     
+                    PlayGame.app.getStateManager().attach(PlayGame.testMap);
+                    break;         
+                    
         }    
         
         PlayGame.screenLoading.setLoadLevelName(dropDownSingleLevel.getSelection().toString());
@@ -263,7 +263,9 @@ public class GameModeScreenController extends BaseAppState implements ScreenCont
                             + "Watch out for thieves and drunken mobs.");
             break;
             
-                    
+            case 4: img_activeGameMode.getRenderer(ImageRenderer.class).setImage(niftyImg_Spring); 
+                    screen.findNiftyControl("label_SingleLevel", Label.class).setText("Test map");
+            break;        
         }
         
     }
@@ -274,6 +276,7 @@ public class GameModeScreenController extends BaseAppState implements ScreenCont
         dropDownSingleLevel.addItem("Snowy Walley");
         dropDownSingleLevel.addItem("Green Forest");
         dropDownSingleLevel.addItem("Harbor Town");
+        dropDownSingleLevel.addItem("Test level");
         
         dropDownSingleLevel.selectItemByIndex(0);
                

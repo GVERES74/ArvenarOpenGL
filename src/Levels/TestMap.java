@@ -24,6 +24,7 @@ import com.jme3.bullet.util.CollisionShapeFactory;
 import com.jme3.effect.ParticleEmitter;
 import com.jme3.effect.ParticleMesh;
 import com.jme3.effect.shapes.EmitterSphereShape;
+import com.jme3.input.InputManager;
 import com.jme3.light.AmbientLight;
 import com.jme3.light.DirectionalLight;
 import com.jme3.light.PointLight;
@@ -34,6 +35,8 @@ import com.jme3.math.FastMath;
 import com.jme3.math.Vector2f;
 import com.jme3.math.Vector3f;
 import com.jme3.renderer.Camera;
+import com.jme3.renderer.RenderManager;
+import com.jme3.renderer.ViewPort;
 import com.jme3.scene.Node;
 import com.jme3.terrain.geomipmap.TerrainLodControl;
 import com.jme3.terrain.geomipmap.TerrainQuad;
@@ -42,6 +45,7 @@ import com.jme3.terrain.heightmap.AbstractHeightMap;
 import com.jme3.terrain.heightmap.ImageBasedHeightMap;
 import com.jme3.texture.Texture;
 import com.jme3.texture.Texture.WrapMode;
+import com.jme3.water.SimpleWaterProcessor;
 import com.jme3.water.WaterFilter;
 import Managers.AudioManager;
 import Managers.EffectsManager;
@@ -56,7 +60,7 @@ import Managers.SkyBoxManager;
  *
  * @author TE332168 
  */
-public class S3M0_town extends BaseAppState {
+public class TestMap extends BaseAppState {
 
     
     private SimpleApplication app;
@@ -80,7 +84,7 @@ public class S3M0_town extends BaseAppState {
     private DirectionalLight sunPosition;
     private PointLight plLantern;
     private SpotLight slLightHouse;
-    private Vector3f playerSpawnPoint = new Vector3f(-960f, 12f, -2450f);
+    private Vector3f playerSpawnPoint = new Vector3f(-960f, 15f, -2450f);
         
     private TerrainQuad terrainS3M0;
     private Material matTerrain;
@@ -91,8 +95,8 @@ public class S3M0_town extends BaseAppState {
     
     private float timer = 0;
     
-    private final int GRASS_COUNT = 5000;
-    private final int FLOWER_COUNT = 500;
+    private final int GRASS_COUNT = 1000;
+    private final int FLOWER_COUNT = 100;
     private final int TREE_COUNT = 100;
     private final int BUSH_COUNT = 100;
     private final int PLANT_COUNT = 100;
@@ -154,7 +158,7 @@ public class S3M0_town extends BaseAppState {
         
         effectManager.fadeScreen(true,10);
         AudioManager.musicPlayer.stop();
-       //stateManager.getState(GameAppState.class).firstPersonPlayer.setPhysicsLocation(setRandomPlayerSpawnPoint());
+//      stateManager.getState(GameAppState.class).firstPersonPlayer.setPhysicsLocation(setRandomPlayerSpawnPoint());
         stateManager.getState(GameAppState.class).firstPersonPlayer.setPhysicsLocation(playerSpawnPoint);
         
         System.out.println(this.getClass().getName()+" enabled....."); 
@@ -263,9 +267,9 @@ public class S3M0_town extends BaseAppState {
             rainEmitter.setEndColor(ColorRGBA.DarkGray);
             rainEmitter.setLowLife(3f);
             rainEmitter.setHighLife(10f);
-            rainEmitter.setStartSize(0.02f);
-            rainEmitter.setEndSize(0.05f);
-            rainEmitter.getParticleInfluencer().setInitialVelocity(new Vector3f(-1,-50,-5));
+            rainEmitter.setStartSize(0.05f);
+            rainEmitter.setEndSize(0.1f);
+            rainEmitter.getParticleInfluencer().setInitialVelocity(new Vector3f(-1,-30,-5));
             rainEmitter.getParticleInfluencer().setVelocityVariation(0.1f);
             //rainEmitter.setRotateSpeed(1f);
             rainEmitter.setLocalTranslation(0f, 100f, 0f);

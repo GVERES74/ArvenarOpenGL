@@ -11,7 +11,7 @@ import Levels.S0M0_valley;
 import Levels.S1M0_forest;
 import Levels.S2M0_shore;
 import Levels.S3M0_town;
-
+import Levels.TestMap;
 
 
 
@@ -33,7 +33,7 @@ public class PlayGame extends SimpleApplication{
     public static S0M0_valley levelS0M0;
     public static S1M0_forest levelS1M0;
     public static S3M0_town levelS3M0;
-       
+    public static TestMap testMap;   
         
     public static MainMenuScreen screenMainMenu;
     public static SettingsScreen screenSettings;
@@ -57,7 +57,7 @@ public class PlayGame extends SimpleApplication{
         app = new PlayGame();
         appsettings = new AppSettings(true);
         appsettings.setResolution(1920, 1080);
-        appsettings.setFullscreen(true);
+        appsettings.setFullscreen(false);
 
         app.setSettings(appsettings);        
         appsettings.setTitle("Arvenar 3D - OpenGl");
@@ -100,6 +100,7 @@ public class PlayGame extends SimpleApplication{
         levelS0M0 = new S0M0_valley(); 
         levelS1M0 = new S1M0_forest();
         levelS3M0 = new S3M0_town();
+        testMap = new TestMap();
        
        
         

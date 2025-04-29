@@ -17,7 +17,6 @@ import com.jme3.post.ssao.SSAOFilter;
 import com.jme3.scene.Node;
 import com.jme3.shadow.DirectionalLightShadowFilter;
 import com.jme3.shadow.DirectionalLightShadowRenderer;
-import com.jme3.shadow.EdgeFilteringMode;
 import com.jme3.water.WaterFilter;
 import static mygame.PlayGame.app;
 

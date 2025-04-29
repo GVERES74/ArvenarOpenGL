@@ -64,7 +64,6 @@ public class S0M0_valley extends BaseAppState {
     private Node              rootNode;
     private AssetManager      assetManager;
     private AppStateManager   stateManager;
-    private InputManager      inputManager;
         
     private ModelManager modelManager;
     private EffectsManager effectManager;
@@ -80,7 +79,7 @@ public class S0M0_valley extends BaseAppState {
     //for Post process water effectprocessor
     
     private DirectionalLight sun;
-    private Vector3f playerSpawnPoint = new Vector3f(600f,500f,-1200f);
+    private Vector3f playerSpawnPoint = new Vector3f(540f, 700f, -1234f);
     
     private TerrainQuad terrainS0M0;
     private Material matTerrain;
@@ -89,7 +88,7 @@ public class S0M0_valley extends BaseAppState {
     private final int TERRAIN_SIZE = 2049;
     private TerrainLodControl lodControl;
     
-    private final int GRASS_COUNT = 1000;
+    private final int GRASS_COUNT = 5000;
     private final int FLOWER_COUNT = 500;
     private final int TREE_COUNT = 100;
     private final int BUSH_COUNT = 500;
@@ -103,7 +102,7 @@ public class S0M0_valley extends BaseAppState {
         this.rootNode     = this.app.getRootNode();
         this.assetManager = this.app.getAssetManager();
         this.stateManager = this.app.getStateManager();
-        this.inputManager = this.app.getInputManager();
+        this.app.getInputManager();
         this.viewPort     = this.app.getViewPort();
         this.camera       = this.app.getCamera();
         
@@ -154,7 +153,8 @@ public class S0M0_valley extends BaseAppState {
     @Override
     protected void onEnable() {
     effectManager.fadeScreen(true, 5);
-    stateManager.getState(GameAppState.class).firstPersonPlayer.setPhysicsLocation(setRandomPlayerSpawnPoint());
+   //stateManager.getState(GameAppState.class).firstPersonPlayer.setPhysicsLocation(setRandomPlayerSpawnPoint());
+    stateManager.getState(GameAppState.class).firstPersonPlayer.setPhysicsLocation(playerSpawnPoint);
     System.out.println(camera.getLocation());
     System.out.println(this.getClass().getName()+" enabled....."); 
     
@@ -185,6 +185,7 @@ public class S0M0_valley extends BaseAppState {
     
      public void loadSceneModels(){
             
+            //Vegetation
             modelManager.createRandomizedModel("Models/Vegetation/Grasses/GrassSingle/BeachGrass/BeachGrass_blend.obj", ModelManager.staticNode, GRASS_COUNT, -2048, 2048, -2048, 2048, 5, 0f, 4f, 6f, false);
             modelManager.createRandomizedModel("Models/Vegetation/Grasses/GrassSingle/FieldGrass/FieldGrass_blend.obj", ModelManager.staticNode, GRASS_COUNT, -2048, 2048, -2048, 2048, 5, 0f, 1f, 3f, false);
             
@@ -202,8 +203,12 @@ public class S0M0_valley extends BaseAppState {
             modelManager.createRandomizedModel("Models/Vegetation/Bushes/Bush01/Bush01_blend.obj", ModelManager.staticNode, BUSH_COUNT, -2000, 2000, -2000, 2000, 5, 0f, 0.5f, 1f, true);                    
             modelManager.createRandomizedModel("Models/Vegetation/Bushes/Bush01/Bush01_snow_blend.obj", ModelManager.staticNode, BUSH_COUNT, -2000, 2000, -2000, 2000, 5, 0f, 0.5f, 1f, true);                    
             
+            
+            //Structures
             modelManager.createStaticModel("Models/Structures/Jetty02/Jetty02_blend.obj", ModelManager.staticNode, -375f, 1f, 4090f, 0f, 0f, 2f);
-                        
+            modelManager.createStaticModel("Models/Structures/MedievalShack/medievalshackwood.j3o", ModelManager.staticNode, 540f, 0f, -1234f, 1f, 0f, 0.06f);            
+            
+            //Others
             modelManager.createStaticModel("Models/Others/Campfire/campfire_logs.j3o", ModelManager.staticNode, 560f, 0f, -1200f, 0f, 0f, 6f);
             modelManager.createStaticModel("Models/Others/Campfire/campfire_stones.j3o", ModelManager.staticNode, 560f, 0f, -1200f, 0f, 0f, 6f);
             modelManager.createStaticModel("Models/Others/Floorbed/bed_floor.obj", ModelManager.staticNode, 565f, 0f, -1205f, 1f, 0f, 6f);
@@ -241,11 +246,11 @@ public class S0M0_valley extends BaseAppState {
             snowEmitter.setStartSize(0.1f);
             snowEmitter.setEndSize(0.3f);
             snowEmitter.getParticleInfluencer().setInitialVelocity(new Vector3f(1,-5,-1));
-            snowEmitter.getParticleInfluencer().setVelocityVariation(0.3f);
+            snowEmitter.getParticleInfluencer().setVelocityVariation(0.1f);
             snowEmitter.setRotateSpeed(1f);
             snowEmitter.setLocalTranslation(0f, 100f, 0f);
-            snowEmitter.setNumParticles(500);
-            snowEmitter.setParticlesPerSec(50);
+            snowEmitter.setNumParticles(1000);
+            snowEmitter.setParticlesPerSec(100);
             snowEmitter.setSelectRandomImage(true);
             snowEmitter.setRandomAngle(true);
             snowEmitter.setShape(new EmitterSphereShape(Vector3f.ZERO,200f));
@@ -267,12 +272,12 @@ public class S0M0_valley extends BaseAppState {
             snowStormEmitter.setHighLife(10f);
             snowStormEmitter.setStartSize(0.1f);
             snowStormEmitter.setEndSize(0.3f);
-            snowStormEmitter.getParticleInfluencer().setInitialVelocity(new Vector3f(25,-1,-5));
-            snowStormEmitter.getParticleInfluencer().setVelocityVariation(0.3f);
+            snowStormEmitter.getParticleInfluencer().setInitialVelocity(new Vector3f(15,-10,-5));
+            snowStormEmitter.getParticleInfluencer().setVelocityVariation(0.1f);
             snowStormEmitter.setRotateSpeed(1f);
             snowStormEmitter.setLocalTranslation(0f, 100f, 0f);
-            snowStormEmitter.setNumParticles(1000);
-            snowStormEmitter.setParticlesPerSec(200);
+            snowStormEmitter.setNumParticles(5000);
+            snowStormEmitter.setParticlesPerSec(500);
             snowStormEmitter.setSelectRandomImage(true);
             snowStormEmitter.setRandomAngle(true);
             snowStormEmitter.setShape(new EmitterSphereShape(Vector3f.ZERO,100f));

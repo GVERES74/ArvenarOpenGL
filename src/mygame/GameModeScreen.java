@@ -23,12 +23,12 @@ import de.lessvoid.nifty.builder.LayerBuilder;
 import de.lessvoid.nifty.builder.PanelBuilder;
 import de.lessvoid.nifty.builder.ScreenBuilder;
 import de.lessvoid.nifty.builder.TextBuilder;
-import de.lessvoid.nifty.controls.checkbox.builder.CheckboxBuilder;
 import de.lessvoid.nifty.controls.dropdown.builder.DropDownBuilder;
 import de.lessvoid.nifty.controls.label.builder.LabelBuilder;
 import de.lessvoid.nifty.controls.radiobutton.builder.RadioButtonBuilder;
 import de.lessvoid.nifty.controls.radiobutton.builder.RadioGroupBuilder;
 import de.lessvoid.nifty.screen.Screen;
+import static mygame.GameModeScreenController.startSingleLevel;
 
 /**
  *  
@@ -38,16 +38,8 @@ import de.lessvoid.nifty.screen.Screen;
  */
 public class GameModeScreen extends BaseAppState {
     private SimpleApplication app;
-    private Node              rootNode;
-    private AssetManager      assetManager;
-    private AppStateManager   stateManager;
-    private InputManager      inputManager;
-    private RenderManager     renderManager;
-    private AudioRenderer     audioRenderer;
-    private ViewPort          viewPort;
     
     private Nifty nifty;
-    private Screen screen;
     
     public boolean load = false;
     public int frameCount = 0;  
@@ -56,11 +48,11 @@ public class GameModeScreen extends BaseAppState {
     protected void initialize(Application app) {
     
         this.app = (SimpleApplication) app; // can cast Application to something more specific
-        this.rootNode     = this.app.getRootNode();
-        this.assetManager = this.app.getAssetManager();
-        this.stateManager = this.app.getStateManager();
-        this.inputManager = this.app.getInputManager();
-        this.viewPort     = this.app.getViewPort();
+        this.app.getRootNode();
+        this.app.getAssetManager();
+        this.app.getStateManager();
+        this.app.getInputManager();
+        this.app.getViewPort();
         nifty = PlayGame.nifty;
         
         
@@ -108,13 +100,13 @@ public class GameModeScreen extends BaseAppState {
     @Override
     public void update(float tpf) {       
         //TODO: implement behavior during runtime    
-        if (load){
+         if (load){
             frameCount++;
        
-        if(frameCount == 1000){
+        if(frameCount == 300){
                 
-            GameModeScreenController.startSingleLevel();
-            load = false;
+            startSingleLevel();
+//            load = false;
         }
 //        System.out.println(this.getClass().getName()+" FrameCount: "+frameCount);
          

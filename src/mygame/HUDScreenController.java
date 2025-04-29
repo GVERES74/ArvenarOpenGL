@@ -34,9 +34,7 @@ public class HUDScreenController extends BaseAppState implements ScreenControlle
     
  private SimpleApplication app;
  private AppStateManager stateManager;
- 
  private int screenWidth, screenHeight;
- 
  private ListBox dialogListBox; 
  
  
@@ -45,8 +43,10 @@ public class HUDScreenController extends BaseAppState implements ScreenControlle
     protected void initialize(Application app) {
       this.app = (SimpleApplication) app;
       this.stateManager = this.app.getStateManager();
+      
       screenWidth = PlayGame.appsettings.getWidth();
       screenHeight = PlayGame.appsettings.getHeight();
+      
       
     }
  
@@ -129,26 +129,26 @@ public class HUDScreenController extends BaseAppState implements ScreenControlle
     public void showLookAtDialog(Boolean enabled, String text){ //not used at the moment - alternative solution for dialog
        
         Picture pic = new Picture("DialogPanel");
-            pic.setImage(app.getAssetManager(), "Interface/Images/Hud/dialogbox.png", true);
+            pic.setImage(PlayGame.app.getAssetManager(), "Interface/Images/Hud/dialogbox.png", true);
             pic.setWidth(600);
             pic.setHeight(100);
             pic.setPosition(screenWidth/2-300, screenHeight-200);
             
             
         
-        BitmapFont dialogFont = app.getAssetManager().loadFont("Interface/Fonts/Default.fnt");
+        BitmapFont dialogFont = PlayGame.app.getAssetManager().loadFont("Interface/Fonts/Default.fnt");
         BitmapText dialogText = new BitmapText(dialogFont, false);
         dialogText.setText(text);
         dialogText.setLocalTranslation(screenWidth/2-100, screenHeight-200, 0); // position
         
             if (enabled){
-                app.getGuiNode().attachChild(pic);
-                app.getGuiNode().attachChild(dialogText);
+                PlayGame.app.getGuiNode().attachChild(pic);
+                PlayGame.app.getGuiNode().attachChild(dialogText);
             }
             else if (!enabled){
-                app.getGuiNode().getChildren().clear();
+                PlayGame.app.getGuiNode().getChildren().clear();
 
-            }
+    }
         
     }//not used right now - alternative solution for dialog
     
@@ -171,7 +171,7 @@ public class HUDScreenController extends BaseAppState implements ScreenControlle
     
     public void showCharacterDialog(){
             createDialogPanel();    
-            app.getFlyByCamera().setDragToRotate(true);
+            PlayGame.app.getFlyByCamera().setDragToRotate(true);
             PlayGame.nifty.getCurrentScreen().findElementById("Panel_Dialog_Container").setVisible(true);
             PlayGame.nifty.getCurrentScreen().findElementById("Text_npcDialogText").setVisible(true);
                      
@@ -193,8 +193,7 @@ public class HUDScreenController extends BaseAppState implements ScreenControlle
             dialogListBox.addItem("Not now. (end conversation)");
     }
  
-         
-     
+       
     
     
     @NiftyEventSubscriber(id="ListBox_Dialog")

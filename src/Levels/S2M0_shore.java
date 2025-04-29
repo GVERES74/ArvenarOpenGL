@@ -42,6 +42,7 @@ import Managers.AudioManager;
 import Managers.EffectsManager;
 import mygame.GameAppState;
 import Managers.ModelManager;
+import Managers.ParticleManager;
 import mygame.PlayGame;
 import Managers.SkyBoxManager;
 
@@ -59,18 +60,15 @@ public class S2M0_shore extends BaseAppState {
     private Node              rootNode;
     private AssetManager      assetManager;
     private AppStateManager   stateManager;
-    private InputManager      inputManager;
-    private RenderManager     renderManager;
     
-    private ViewPort          viewPort;
     private Camera camera;
     
     private ModelManager modelManager;    
-    private EffectsManager effect;    
+    private EffectsManager effectManager;    
     private SkyBoxManager skyBoxCreate;
         
-    ParticleEmitter particle1;
-    //for Post process water effectprocessor
+    ParticleEmitter leafEmitter;
+   
     
     private DirectionalLight sunPosition;
     
@@ -78,7 +76,7 @@ public class S2M0_shore extends BaseAppState {
     private float waveTime = 0.0f;
     private float ppWaterHeight = 0.0f;
             
-    private Vector3f playerSpawnPoint = new Vector3f(-3400f,20f,-1770f);
+    private Vector3f playerSpawnPoint = new Vector3f(-3350f, 6f, -3485f);
     
     
     private TerrainQuad terrainS2M0;
@@ -89,12 +87,13 @@ public class S2M0_shore extends BaseAppState {
     private TerrainLodControl lodControl;
     private String heightMapFile = "Textures/Terrain/HeightMaps/HM_S2M0.png";
     
-    private final int GRASS_COUNT = 1000;
-    private final int FLOWER_COUNT = 500;
-    private final int TREE_COUNT = 100;
-    private final int BUSH_COUNT = 500;
-    private final int PLANT_COUNT = 500;
-    private final int OTHER_COUNT = 500;
+    private final int GRASS_COUNT = 5000;
+    private final int FLOWER_COUNT = 1000;
+    private final int TREE_COUNT = 500;
+    private final int BUSH_COUNT = 1000;
+    private final int PLANT_COUNT = 1000;
+    private final int OTHER_COUNT = 1000;
+    private final int LAND_SIZE = 3500;
     
     
     @Override
@@ -103,13 +102,14 @@ public class S2M0_shore extends BaseAppState {
         this.rootNode     = this.app.getRootNode();
         this.assetManager = this.app.getAssetManager();
         this.stateManager = this.app.getStateManager();
-        this.inputManager = this.app.getInputManager();
-        this.viewPort     = this.app.getViewPort();
+        this.app.getInputManager();
+        this.app.getViewPort();
         this.camera       = this.app.getCamera();
                 
-        modelManager = new ModelManager();
-        effect = new EffectsManager(); 
+        modelManager = new ModelManager(); 
+        effectManager = new EffectsManager();
         skyBoxCreate = new SkyBoxManager();
+        
         app.setPauseOnLostFocus(true);
         GameAppState.playerSpawnPoint.set(playerSpawnPoint); //sets spawnpoint for ENTER
                 
@@ -145,7 +145,8 @@ public class S2M0_shore extends BaseAppState {
     @Override
     protected void onEnable() {
     AudioManager.musicPlayer.stop();
-    stateManager.getState(GameAppState.class).firstPersonPlayer.setPhysicsLocation(setRandomPlayerSpawnPoint());
+//    stateManager.getState(GameAppState.class).firstPersonPlayer.setPhysicsLocation(setRandomPlayerSpawnPoint());
+      stateManager.getState(GameAppState.class).firstPersonPlayer.setPhysicsLocation(playerSpawnPoint);
     System.out.println(this.getClass().getName()+" enabled....."); 
         //Called when the state is fully enabled, ie: is attached and         
         //isEnabled() is true or when the setEnabled() status changes after the         
@@ -165,37 +166,66 @@ public class S2M0_shore extends BaseAppState {
     @Override
     public void update(float tpf) {
         
-        particle1.clone().setLocalTranslation(camera.getLocation().x, camera.getLocation().y+50f, camera.getLocation().z); //clouds follow player
+        leafEmitter.clone().setLocalTranslation(camera.getLocation().x, camera.getLocation().y+50f, camera.getLocation().z); //clouds follow player
         
         updateAdvancedWater(tpf);
         
-        if ((camera.getLocation().x < -600f) && (camera.getLocation().z > 200f)){
-                
-                AudioManager.musicPlayer.play();
-        }
-        
-        if ((camera.getLocation().x < -650f) && (camera.getLocation().z < -630f)){
-                AudioManager.musicPlayer.stop();
-                AudioManager.loadMusic("Music/Soundtracks/Audience.ogg", true, false);
-        }
-
+        PlayGame.screenLoading.update(tpf);
+      
         //TODO: implement behavior during runtime    
     }
     
      public void loadSceneModels(){
-    //boat and ship
-            modelManager.createStaticModel("Models/Vehicles/Ship/Pirate/Pship.j3o", ModelManager.staticNode, -4000f, -10f, -2870f, 2f, 0f, 5f);
-            modelManager.createStaticModel("Models/Vehicles/Boat/RowBoat2/Boat2.j3o", ModelManager.staticNode, -3900f, 0f, -2000f, -1f, -0.1f, 0.2f);
-            modelManager.createStaticModel("Models/Vehicles/Boat/RowBoat1/Boat.j3o", ModelManager.staticNode, -3350f, 1f, -3485f, 3f, 0f, 5f);
-            
-            
+    
+        //Animals
             modelManager.createStaticModel("Models/Animals/Birds/Seagull1/Seagull1.j3o", ModelManager.shootableNode, 554f, 1f, -485f, 2f, 0f, 2f);
             modelManager.createStaticModel("Models/Animals/Birds/Seagull2/Seagull2.j3o", ModelManager.shootableNode, 526f, 1f, -489.5f, 2f, 0f, 2f);
-            
-            
-            
-    //schacks, huts, jettys
-           
+
+
+
+        //Buildings
+
+        
+        
+        
+        //Furnishments
+            modelManager.createStaticModel("Models/Furnishments/Bottles/BoxedBottles1/Bottles.j3o", ModelManager.destroyableNode, -3355f, 10f, -1733f, 1f, 0f, 0.5f);
+            modelManager.createStaticModel("Models/Furnishments/Bottles/BoxedBottles2/Bottles2.j3o", ModelManager.destroyableNode, -3326f, 1.2f, -1651f, 0f, 0f, 0.6f);
+            modelManager.createStaticModel("Models/Furnishments/Bottles/ScrollBottle/ScrollBottle_blend.obj", ModelManager.destroyableNode, -3873f, 0f, -1980f, 0f, 1f, 0.8f);            
+            modelManager.createStaticModel("Models/Furnishments/Bottles/Bottle1/Bottle1.j3o", ModelManager.destroyableNode, -3380f, 0f, -2061f, 2f, 0.2f, 12f);
+            modelManager.createStaticModel("Models/Furnishments/Bottles/Bottle1/Bottle1.j3o", ModelManager.destroyableNode, -3400f, 0f, -2110f, 1f, -0.1f, 12f);
+            modelManager.createStaticModel("Models/Furnishments/Candle/candle_model.obj", ModelManager.destroyableNode, -650f, 0f, -660f, 1f, 0f, 0.01f);
+            modelManager.createStaticModel("Models/Furnishments/Candle/candle_model.obj", ModelManager.destroyableNode, -658f, 0f, -655f, 1f, 0f, 0.01f);
+        
+        
+        //NPC
+        
+        
+        
+        //Naturals
+            modelManager.createRandomizedModel("Models/Naturals/StoneAndPlants/StonePlants_blend.obj", ModelManager.staticNode, 5, -3500, -3400, -2000, -1700, 5, 0f, 1f, 2f, true);
+        
+        
+        //Others
+            modelManager.createStaticModel("Models/Others/Campfire/Campfire.j3o", ModelManager.staticNode, -3395f, 0f, -1778f, 0f, 0, 4f);
+            modelManager.createStaticModel("Models/Others/Crate/Crate04_blend.obj", ModelManager.destroyableNode, -3320f, 0f, -1665f, 1f, 0f, 5f);
+            modelManager.createStaticModel("Models/Others/Crate/Crate-01_blend.obj", ModelManager.destroyableNode, -3322f, 0f, -1660f, 0f, 0f, 5f);
+            modelManager.createStaticModel("Models/Others/Crate/Crate02_blend.obj", ModelManager.destroyableNode, -3324f, 0f, -1659f, 1f, 0f, 5f);
+            modelManager.createStaticModel("Models/Others/Crate/Crate03_blend.obj", ModelManager.destroyableNode, -3326f, 0f, -1651f, 1f, 0f, 5f);
+            modelManager.createStaticModel("Models/Others/Crate/Crate05_blend.obj", ModelManager.destroyableNode, -3328f, 0f, -1657f, -1f, 0f, 5f);
+            modelManager.createStaticModel("Models/Others/Crate/Crate05_blend.obj", ModelManager.destroyableNode, -3330f, 0f, -1655f, 1f, 0f, 6f);
+            modelManager.createStaticModel("Models/Others/Crate/Crate03_blend.obj", ModelManager.destroyableNode, -3332f, 0f, -1652f, 0f, 0f, 4f);
+            modelManager.createStaticModel("Models/Others/Barrel/mini_wood_barrel.obj", ModelManager.destroyableNode, -3365f, 0f, -2100f, 1f, 0f, 0.05f);
+            modelManager.createStaticModel("Models/Others/Barrel/mini_wood_barrel.obj", ModelManager.destroyableNode, -2100f, 0f, -2090f, 1f, 0f, 0.05f);
+            modelManager.createRandomizedModel("Models/Others/Grave/cross_blend.obj", ModelManager.staticNode, 3, -3300, -3320, -1700, -1720, 2, 0.2f, 1f, 2f, true);
+        
+        
+        //Props
+             modelManager.createStaticModel("Models/Props/Bench/BeerBench_blend.obj", ModelManager.destroyableNode, -3355f, 7f, -1733f, 1.2f, 0f, 0.8f);
+        
+        
+        
+        //Structures
             modelManager.createStaticModel("Models/Structures/Bridge/Turn_Bridge/Turn_Bridge.j3o", ModelManager.staticNode, -3356f, 5f, -2115f, 0f, 0f, 1f);
             modelManager.createStaticModel("Models/Structures/Bridge/Turn_Bridge/Stairs.j3o", ModelManager.staticNode, -3356f, 1.5f, -2098f, 0f, 0f, 1f);
             modelManager.createStaticModel("Models/Structures/Bridge/Bridge_Dock/Bridge_Dock.j3o", ModelManager.staticNode, -3360f, 2f, -3480f, 0f, 0f, 1f);
@@ -204,122 +234,91 @@ public class S2M0_shore extends BaseAppState {
             modelManager.createStaticModel("Models/Structures/JungleHut02/JungleHut02_blend.obj", ModelManager.staticNode, 320f, 2f, -140f, 0f, 0f, 2f);
             modelManager.createStaticModel("Models/Structures/AfricaDock01/AfricaDock01_blend.obj", ModelManager.staticNode, 324f, 0f, -160f, 1.5f, 0f, 2f);
             modelManager.createStaticModel("Models/Structures/Shack01/Shack01_blend.obj", ModelManager.staticNode, 2680f, 0f, 2074f, 3f, 0f, 3f);
-            
-            
-            modelManager.createStaticModel("Models/Structures/Bench/BeerBench_blend.obj", ModelManager.destroyableNode, -3355f, 7f, -1733f, 1.2f, 0f, 0.8f);
             modelManager.createStaticModel("Models/Structures/Hammock/Hammock_blend.obj", ModelManager.destroyableNode, -3392f, 2f, -1700f, -0.1f, 0f, 6f);
+        
+        
+        
+        //Vegetation
+            modelManager.createStaticModel("Models/Vegetation/Trees/Palm/Palm01_blender.obj", ModelManager.staticNode, -3400f, 0f, -1700f, 2f, 0f, 5f);
+            modelManager.createStaticModel("Models/Vegetation/Trees/Palm/Palm02_blender.obj", ModelManager.staticNode, -3385f, 0f, -1705f, 2f, 0f, 5f);
+            modelManager.createStaticModel("Models/Vegetation/Trees/Palm/Palm02_blender.obj", ModelManager.staticNode, -3200f, 0f, -1730f, 1f, 0f, 4f);
+            modelManager.createStaticModel("Models/Vegetation/Trees/Palm/Palm03_blender.obj", ModelManager.staticNode, -3325f, 0f, -1735f, 0f, 0f, 5f);
+            modelManager.createStaticModel("Models/Vegetation/Trees/Palm/Palm01_blender.obj", ModelManager.staticNode, -3310f, 0f, -1734f, 1.5f, 0f, 5f);
+            modelManager.createStaticModel("Models/Vegetation/Trees/BeachPalm/BeachPalm.obj", ModelManager.staticNode, -3360f, 0f, -1760f, 1f, 0f, 5f);
+            modelManager.createStaticModel("Models/Vegetation/Trees/QueensPalm/QueensPalm.obj", ModelManager.staticNode, -3300f, 0f, -1700f, 2f, 0f, 5f);
+            modelManager.createStaticModel("Models/Vegetation/Trees/Banana/Banana01_blend.obj", ModelManager.staticNode, -3330f, 0f, -1720f, 0f, 0f, 5f);
+            modelManager.createRandomizedModel("Models/Vegetation/Trees/Cecropia/Cecropia_blender.obj", ModelManager.staticNode, TREE_COUNT, -LAND_SIZE, LAND_SIZE, -LAND_SIZE, LAND_SIZE, 5, 0f, 3f, 5f, true);
+            modelManager.createRandomizedModel("Models/Vegetation/Trees/CiabaTree_01/CiabaTree_01_blender.obj", ModelManager.staticNode, TREE_COUNT, -LAND_SIZE, LAND_SIZE, -LAND_SIZE, LAND_SIZE, 5, 0f, 3f, 5f, true);
+            modelManager.createRandomizedModel("Models/Vegetation/Trees/CiabaTree_01/CiabaTree_02_blender.obj", ModelManager.staticNode, TREE_COUNT, -LAND_SIZE, LAND_SIZE, -LAND_SIZE, LAND_SIZE, 5, 0f, 3f, 5f, true);  
+            modelManager.createRandomizedModel("Models/Vegetation/Trees/CopalTree/CopalTree_blender.obj", ModelManager.staticNode, TREE_COUNT, -LAND_SIZE, LAND_SIZE, -LAND_SIZE, LAND_SIZE, 5, 0f, 3f, 5f, true);
+            modelManager.createRandomizedModel("Models/Vegetation/Trees/Palm/Palm01_blender.obj", ModelManager.staticNode, TREE_COUNT, -LAND_SIZE, LAND_SIZE, -LAND_SIZE, LAND_SIZE, 5, 0f, 3f, 5f, true);
+            modelManager.createRandomizedModel("Models/Vegetation/Trees/Palm/Palm02_blender.obj", ModelManager.staticNode, TREE_COUNT, -LAND_SIZE, LAND_SIZE, -LAND_SIZE, LAND_SIZE, 5, 0f, 3f, 5f, true);
+            modelManager.createRandomizedModel("Models/Vegetation/Trees/Palm/Palm03_blender.obj", ModelManager.staticNode, TREE_COUNT, -LAND_SIZE, LAND_SIZE, -LAND_SIZE, LAND_SIZE, 5, 0f, 3f, 5f, true);
+            modelManager.createRandomizedModel("Models/Vegetation/Trees/BeachPalm/BeachPalm.obj", ModelManager.staticNode, TREE_COUNT, -LAND_SIZE, LAND_SIZE, -LAND_SIZE, LAND_SIZE, 5, 0f, 3f, 5f, true);
+            modelManager.createRandomizedModel("Models/Vegetation/Trees/QueensPalm/QueensPalm.obj", ModelManager.staticNode, TREE_COUNT, -LAND_SIZE, LAND_SIZE, -LAND_SIZE, LAND_SIZE, 5, 0f, 3f, 5f, true);
+            modelManager.createRandomizedModel("Models/Vegetation/Trees/Banana/Banana01_blend.obj", ModelManager.staticNode, TREE_COUNT, -LAND_SIZE, LAND_SIZE, -LAND_SIZE, LAND_SIZE, 5, 0f, 3f, 5f, true);
+            modelManager.createRandomizedModel("Models/Vegetation/Trees/Jasmin/Jasmin_blend.obj", ModelManager.staticNode, TREE_COUNT, -LAND_SIZE, LAND_SIZE, -LAND_SIZE, LAND_SIZE, 5, 0f, 0.5f, 1f, true);
+            modelManager.createRandomizedModel("Models/Vegetation/Trees/Cactus/Cactus_blend.obj", ModelManager.staticNode, TREE_COUNT, -LAND_SIZE, LAND_SIZE, -LAND_SIZE, LAND_SIZE, 5, 0f, 0.04f, 0.06f, true);
+            modelManager.createRandomizedModel("Models/Vegetation/Bushes/Bush01/Bush01_blend.obj", ModelManager.staticNode, BUSH_COUNT, -LAND_SIZE, LAND_SIZE, -LAND_SIZE, LAND_SIZE, 5, 0f, 0.5f, 1f, true);                    
+            modelManager.createRandomizedModel("Models/Vegetation/Plants/TropicFern/TropicFern01_blend.obj", ModelManager.staticNode, PLANT_COUNT, -LAND_SIZE, LAND_SIZE, -LAND_SIZE, LAND_SIZE, 5, 0f, 2f, 4f, false);
+            modelManager.createRandomizedModel("Models/Vegetation/Plants/BirdsNest/BirdsNest_blend.obj", ModelManager.staticNode, PLANT_COUNT, -LAND_SIZE, LAND_SIZE, -LAND_SIZE, LAND_SIZE, 5, 0f, 2f, 4f, false);                    
+            modelManager.createRandomizedModel("Models/Vegetation/Plants/Phila01/Phila01_blend.obj", ModelManager.staticNode, PLANT_COUNT, -LAND_SIZE, LAND_SIZE, -LAND_SIZE, LAND_SIZE, 5, 0f, 2f, 4f, false);                    
+            modelManager.createRandomizedModel("Models/Vegetation/Plants/ElephantEar/ElephantEar_blend.obj", ModelManager.staticNode, PLANT_COUNT, -LAND_SIZE, LAND_SIZE, -LAND_SIZE, LAND_SIZE, 5, 0f, 2f, 4f, false);
+            modelManager.createRandomizedModel("Models/Vegetation/Plants/Bamboo01/Bamboo01_blender.obj", ModelManager.staticNode, PLANT_COUNT, -LAND_SIZE, LAND_SIZE, -LAND_SIZE, LAND_SIZE, 5, 0f, 1f, 2f, false);                    
+            modelManager.createRandomizedModel("Models/Vegetation/Plants/ForestPlant01/ForestPlant01_blend.obj", ModelManager.staticNode, PLANT_COUNT, -LAND_SIZE, LAND_SIZE, -LAND_SIZE, LAND_SIZE, 5, 0f, 0.5f, 1f, false);
+            modelManager.createRandomizedModel("Models/Vegetation/Flowers/Lily/Lily_blend.obj", ModelManager.staticNode, FLOWER_COUNT, -LAND_SIZE, LAND_SIZE, -LAND_SIZE, LAND_SIZE, 5, 0f, 0.1f, 0.2f, false);
+            modelManager.createRandomizedModel("Models/Vegetation/Grasses/GrassSingle/BeachGrass/BeachGrass_blend.obj", ModelManager.staticNode, GRASS_COUNT, -LAND_SIZE, LAND_SIZE, -LAND_SIZE, LAND_SIZE, 5, 0f, 8f, 10f, false);
+            modelManager.createRandomizedModel("Models/Vegetation/Grasses/GrassSingle/BeachGrass/WillowGrass_blend.obj", ModelManager.staticNode, GRASS_COUNT, -LAND_SIZE, LAND_SIZE, -LAND_SIZE, LAND_SIZE, 5, 0f, 8f, 10f, false);
+            modelManager.createRandomizedModel("Models/Vegetation/Grasses/GrassSingle/BeachGrass/Weeds_blend.obj", ModelManager.staticNode, GRASS_COUNT, -LAND_SIZE, LAND_SIZE, -LAND_SIZE, LAND_SIZE, 5, 0f, 8f, 10f, false);
+            modelManager.createRandomizedModel("Models/Vegetation/Grasses/GrassSingle/BeachGrass/JGrass_blend.obj", ModelManager.staticNode, GRASS_COUNT, -LAND_SIZE, LAND_SIZE, -LAND_SIZE, LAND_SIZE, 5, 0f, 8f, 10f, false);
+            modelManager.createRandomizedModel("Models/Vegetation/Grasses/GrassSingle/BeachGrass/FoxTail_blend.obj", ModelManager.staticNode, GRASS_COUNT, -LAND_SIZE, LAND_SIZE, -LAND_SIZE, LAND_SIZE, 5, 0f, 8f, 10f, false);
+            modelManager.createRandomizedModel("Models/Vegetation/Grasses/GrassSingle/Kelp_01/Kelp_blend.obj", ModelManager.staticNode, GRASS_COUNT,-LAND_SIZE, LAND_SIZE, -LAND_SIZE, LAND_SIZE, 3, 0f, 1f, 2f, false);
+            modelManager.createRandomizedModel("Models/Vegetation/Grasses/GrassSingle/SeaPlant01/SeaPlant01_blend.obj", ModelManager.staticNode, GRASS_COUNT, -LAND_SIZE, LAND_SIZE, -LAND_SIZE, LAND_SIZE, 3, 0f, 0.5f, 1f, false);
+            modelManager.createRandomizedModel("Models/Vegetation/Grasses/GrassSingle/SeaPlant_02/SeaPlant02_blend.obj", ModelManager.staticNode, GRASS_COUNT, -LAND_SIZE, LAND_SIZE, -LAND_SIZE, LAND_SIZE, 3, 0f, 0.5f, 1f, false);
+            modelManager.createRandomizedModel("Models/Vegetation/Grasses/GrassSingle/waterReeds_01/WaterReeds_blend.obj", ModelManager.staticNode, GRASS_COUNT, -LAND_SIZE, LAND_SIZE, -LAND_SIZE, LAND_SIZE, 3, 0f, 0.5f, 1f, false);
+        
+        
+        //Vehicles
+            modelManager.createStaticModel("Models/Vehicles/Ship/Pirate/Pship.j3o", ModelManager.staticNode, -4000f, -10f, -2870f, 2f, 0f, 5f);
+            modelManager.createStaticModel("Models/Vehicles/Boat/RowBoat2/Boat2.j3o", ModelManager.staticNode, -3900f, 0f, -2000f, -1f, -0.1f, 0.2f);
+            modelManager.createStaticModel("Models/Vehicles/Boat/RowBoat1/Boat.j3o", ModelManager.staticNode, -3350f, 1f, -3485f, 3f, 0f, 5f);
+        
+        
+        
+        
+        //Weapons
+        
+               
+                 
             
-            
-            modelManager.createStaticModel("Models/Furnishments/Bottles/BoxedBottles1/Bottles.j3o", ModelManager.destroyableNode, -3355f, 10f, -1733f, 1f, 0f, 0.5f);
-            modelManager.createStaticModel("Models/Furnishments/Bottles/BoxedBottles2/Bottles2.j3o", ModelManager.destroyableNode, -3326f, 1.2f, -1651f, 0f, 0f, 0.6f);
-            modelManager.createStaticModel("Models/Furnishments/Bottles/ScrollBottle/ScrollBottle_blend.obj", ModelManager.destroyableNode, -3873f, 0f, -1980f, 0f, 1f, 0.8f);            
-            modelManager.createStaticModel("Models/Furnishments/Bottles/Bottle1/Bottle1.j3o", ModelManager.destroyableNode, -3380f, 0f, -2061f, 2f, 0.2f, 12f);
-            modelManager.createStaticModel("Models/Furnishments/Bottles/Bottle1/Bottle1.j3o", ModelManager.destroyableNode, -3400f, 0f, -2110f, 1f, -0.1f, 12f);
-            
-            modelManager.createStaticModel("Models/Furnishments/Candle/candle_model.obj", ModelManager.destroyableNode, -650f, 0f, -660f, 1f, 0f, 0.01f);
-            modelManager.createStaticModel("Models/Furnishments/Candle/candle_model.obj", ModelManager.destroyableNode, -658f, 0f, -655f, 1f, 0f, 0.01f);
-            
-    //vegetation in fixed places (e.g. around structures to avoid overlapping each other)
-                modelManager.createStaticModel("Models/Vegetation/Trees/Palm/Palm01_blender.obj", ModelManager.staticNode, -3400f, 0f, -1700f, 2f, 0f, 5f);
-                modelManager.createStaticModel("Models/Vegetation/Trees/Palm/Palm02_blender.obj", ModelManager.staticNode, -3385f, 0f, -1705f, 2f, 0f, 5f);
-                modelManager.createStaticModel("Models/Vegetation/Trees/Palm/Palm02_blender.obj", ModelManager.staticNode, -3200f, 0f, -1730f, 1f, 0f, 4f);
-                modelManager.createStaticModel("Models/Vegetation/Trees/Palm/Palm03_blender.obj", ModelManager.staticNode, -3325f, 0f, -1735f, 0f, 0f, 5f);
-                modelManager.createStaticModel("Models/Vegetation/Trees/Palm/Palm01_blender.obj", ModelManager.staticNode, -3310f, 0f, -1734f, 1.5f, 0f, 5f);
-                modelManager.createStaticModel("Models/Vegetation/Trees/BeachPalm/BeachPalm.obj", ModelManager.staticNode, -3360f, 0f, -1760f, 1f, 0f, 5f);
-                modelManager.createStaticModel("Models/Vegetation/Trees/QueensPalm/QueensPalm.obj", ModelManager.staticNode, -3300f, 0f, -1700f, 2f, 0f, 5f);
-                modelManager.createStaticModel("Models/Vegetation/Trees/Banana/Banana01_blend.obj", ModelManager.staticNode, -3330f, 0f, -1720f, 0f, 0f, 5f);
-                
-                
-    //randomly placed models (trees, bushes also with random scale)
-                modelManager.createRandomizedModel("Models/Vegetation/Trees/Cecropia/Cecropia_blender.obj", ModelManager.staticNode, 100, -3000, 3000, -3000, 3000, 5, 0f, 3f, 5f, true);
-                modelManager.createRandomizedModel("Models/Vegetation/Trees/CiabaTree_01/CiabaTree_01_blender.obj", ModelManager.staticNode, 100, -3000, 3000, -3000, 3000, 5, 0f, 3f, 5f, true);
-                modelManager.createRandomizedModel("Models/Vegetation/Trees/CiabaTree_01/CiabaTree_02_blender.obj", ModelManager.staticNode, 100, -3000, 3000, -3000, 3000, 5, 0f, 3f, 5f, true);  
-                modelManager.createRandomizedModel("Models/Vegetation/Trees/CopalTree/CopalTree_blender.obj", ModelManager.staticNode, 100, -3000, 3000, -3000, 3000, 5, 0f, 3f, 5f, true);
-                
-                modelManager.createRandomizedModel("Models/Vegetation/Trees/Palm/Palm01_blender.obj", ModelManager.staticNode, 100, -3000, 3000, -3000, 3000, 5, 0f, 3f, 5f, true);
-                modelManager.createRandomizedModel("Models/Vegetation/Trees/Palm/Palm02_blender.obj", ModelManager.staticNode, 100, -3000, 3000, -3000, 3000, 5, 0f, 3f, 5f, true);
-                modelManager.createRandomizedModel("Models/Vegetation/Trees/Palm/Palm03_blender.obj", ModelManager.staticNode, 100, -3000, 3000, -3000, 3000, 5, 0f, 3f, 5f, true);
-                modelManager.createRandomizedModel("Models/Vegetation/Trees/BeachPalm/BeachPalm.obj", ModelManager.staticNode, 100, -3000, 3000, -3000, 3000, 5, 0f, 3f, 5f, true);
-                modelManager.createRandomizedModel("Models/Vegetation/Trees/QueensPalm/QueensPalm.obj", ModelManager.staticNode, 100, -3000, 3000, -3000, 3000, 5, 0f, 3f, 5f, true);
-                modelManager.createRandomizedModel("Models/Vegetation/Trees/Banana/Banana01_blend.obj", ModelManager.staticNode, 100, -3000, 3000, -3000, 3000, 5, 0f, 3f, 5f, true);
-                
-                modelManager.createRandomizedModel("Models/Vegetation/Trees/Jasmin/Jasmin_blend.obj", ModelManager.staticNode, 100, -3000, 3000, -3000, 3000, 5, 0f, 0.5f, 1f, true);
-                modelManager.createRandomizedModel("Models/Vegetation/Trees/Cactus/Cactus_blend.obj", ModelManager.staticNode, 100, -1000, 1000, -1000, 1000, 5, 0f, 0.04f, 0.06f, true);
-                
-                modelManager.createRandomizedModel("Models/Vegetation/Bushes/Bush01/Bush01_blend.obj", ModelManager.staticNode, 100, -3000, 3000, -3000, 3000, 5, 0f, 0.5f, 1f, true);                    
-                modelManager.createRandomizedModel("Models/Vegetation/Plants/TropicFern/TropicFern01_blend.obj", ModelManager.staticNode, 100, -3000, 3000, -3000, 3000, 5, 0f, 2f, 4f, false);
-                modelManager.createRandomizedModel("Models/Vegetation/Plants/BirdsNest/BirdsNest_blend.obj", ModelManager.staticNode, 100, -3000, 3000, -3000, 3000, 5, 0f, 2f, 4f, false);                    
-                modelManager.createRandomizedModel("Models/Vegetation/Plants/Phila01/Phila01_blend.obj", ModelManager.staticNode, 100, -3000, 3000, -3000, 3000, 5, 0f, 2f, 4f, false);                    
-                modelManager.createRandomizedModel("Models/Vegetation/Plants/ElephantEar/ElephantEar_blend.obj", ModelManager.staticNode, 100, -3000, 3000, -3000, 3000, 5, 0f, 2f, 4f, false);
-                modelManager.createRandomizedModel("Models/Vegetation/Plants/Bamboo01/Bamboo01_blender.obj", ModelManager.staticNode, 100, -3000, 3000, -3000, 3000, 5, 0f, 1f, 2f, false);                    
-                
-                
-                modelManager.createRandomizedModel("Models/Vegetation/Plants/ForestPlant01/ForestPlant01_blend.obj", ModelManager.staticNode, 200, -3000, 3000, -3000, 3000, 5, 0f, 0.5f, 1f, false);
-                                  
-                modelManager.createRandomizedModel("Models/Vegetation/Flowers/Lily/Lily_blend.obj", ModelManager.staticNode, 200, -3000, 3000, -3000, 3000, 5, 0f, 0.1f, 0.2f, false);
-                
-                modelManager.createRandomizedModel("Models/Vegetation/Grasses/BeachGrass/BeachGrass_blend.obj", ModelManager.staticNode, 1000, -3000, 3000, -3000, 3000, 5, 0f, 8f, 10f, false);
-                modelManager.createRandomizedModel("Models/Vegetation/Grasses/BeachGrass/WillowGrass_blend.obj", ModelManager.staticNode, 1000, -4096, 4096, -4096, 4096, 5, 0f, 8f, 10f, false);
-                modelManager.createRandomizedModel("Models/Vegetation/Grasses/BeachGrass/Weeds_blend.obj", ModelManager.staticNode, 1000, -4096, 4096, -4096, 4096, 5, 0f, 8f, 10f, false);
-                modelManager.createRandomizedModel("Models/Vegetation/Grasses/BeachGrass/JGrass_blend.obj", ModelManager.staticNode, 1000, -4096, 4096, -4096, 4096, 5, 0f, 8f, 10f, false);
-                modelManager.createRandomizedModel("Models/Vegetation/Grasses/BeachGrass/FoxTail_blend.obj", ModelManager.staticNode, 1000, -4096, 4096, -4096, 4096, 5, 0f, 8f, 10f, false);
-                
-                
-                modelManager.createRandomizedModel("Models/Vegetation/Grasses/Kelp_01/Kelp_blend.obj", ModelManager.staticNode, 20, -3700, -4000, -2200, -3500, 3, 0f, 1f, 2f, false);
-                modelManager.createRandomizedModel("Models/Vegetation/Grasses/SeaPlant01/SeaPlant01_blend.obj", ModelManager.staticNode, 20, -3700, -4000, -2200, -3500, 3, 0f, 0.5f, 1f, false);
-                modelManager.createRandomizedModel("Models/Vegetation/Grasses/SeaPlant_02/SeaPlant02_blend.obj", ModelManager.staticNode, 20, -3700, -4000, -2200, -3500, 3, 0f, 0.5f, 1f, false);
-                modelManager.createRandomizedModel("Models/Vegetation/Grasses/waterReeds_01/WaterReeds_blend.obj", ModelManager.staticNode, 20, -3700, -4000, -2200, -3500, 3, 0f, 0.5f, 1f, false);
-                
-                
-            
-                modelManager.createRandomizedModel("Models/Naturals/StoneAndPlants/StonePlants_blend.obj", ModelManager.staticNode, 5, -3500, -3400, -2000, -1700, 5, 0f, 1f, 2f, true);
-                modelManager.createRandomizedModel("Models/Others/Grave/cross_blend.obj", ModelManager.staticNode, 3, -660, -680, -645, -650, 2, 0.2f, 1f, 2f, true);
-                
-            //buildings
-            
-            //campfire
-                modelManager.createStaticModel("Models/Others/Campfire/Campfire.j3o", ModelManager.staticNode, -3395f, 0f, -1778f, 0f, 0, 4f);
-                
-            
-            //crates and barrels            
-            modelManager.createStaticModel("Models/Others/Crate/Crate04_blend.obj", ModelManager.destroyableNode, -3320f, 0f, -1665f, 1f, 0f, 5f);
-            modelManager.createStaticModel("Models/Others/Crate/Crate-01_blend.obj", ModelManager.destroyableNode, -3322f, 0f, -1660f, 0f, 0f, 5f);
-            modelManager.createStaticModel("Models/Others/Crate/Crate02_blend.obj", ModelManager.destroyableNode, -3324f, 0f, -1659f, 1f, 0f, 5f);
-            modelManager.createStaticModel("Models/Others/Crate/Crate03_blend.obj", ModelManager.destroyableNode, -3326f, 0f, -1651f, 1f, 0f, 5f);
-            modelManager.createStaticModel("Models/Others/Crate/Crate05_blend.obj", ModelManager.destroyableNode, -3328f, 0f, -1657f, -1f, 0f, 5f);
-            modelManager.createStaticModel("Models/Others/Crate/Crate05_blend.obj", ModelManager.destroyableNode, -3330f, 0f, -1655f, 1f, 0f, 6f);
-            modelManager.createStaticModel("Models/Others/Crate/Crate03_blend.obj", ModelManager.destroyableNode, -3332f, 0f, -1652f, 0f, 0f, 4f);
-                        
-            modelManager.createStaticModel("Models/Others/Barrel/mini_wood_barrel.obj", ModelManager.destroyableNode, -3365f, 0f, -2100f, 1f, 0f, 0.05f);
-            modelManager.createStaticModel("Models/Others/Barrel/mini_wood_barrel.obj", ModelManager.destroyableNode, -3340f, 0f, -2090f, 1f, 0f, 0.05f);
         }   
     
         
     
     public void leafParticle(){
         
-            particle1 = new ParticleEmitter("Emitter", ParticleMesh.Type.Triangle, 30);
+            leafEmitter = new ParticleEmitter("Emitter", ParticleMesh.Type.Triangle, 30);
             Material precipitationMaterial = new Material(this.app.getAssetManager(), "Common/MatDefs/Misc/Particle.j3md");
             precipitationMaterial.setTexture("Texture", this.app.getAssetManager().loadTexture("Effects/Particles/Leaves/palmleaf.png"));
-            particle1.setMaterial(precipitationMaterial);
-            particle1.setImagesX(1);
-            particle1.setImagesY(1);
-            particle1.getParticleInfluencer().setInitialVelocity(new Vector3f(0,-1,-5));
-            particle1.getParticleInfluencer().setVelocityVariation(0.5f);
-            particle1.setLocalTranslation(-3321, 20, -1730);
-            particle1.setStartSize(0.5f);
-            particle1.setEndSize(0.5f);
-            //particle1.setGravity(1,1,1);
-            particle1.setLowLife(10f);
-            particle1.setHighLife(100f);
-            particle1.setNumParticles(200);
-            particle1.setParticlesPerSec(10);
-            particle1.setRotateSpeed(2f);
-            particle1.setRandomAngle(true);
-            particle1.setSelectRandomImage(true); 
-            particle1.setShape(new EmitterBoxShape(new Vector3f(-50f,-50f,-50f),new Vector3f(50f,50f,50f)));
+            leafEmitter.setMaterial(precipitationMaterial);
+            leafEmitter.setImagesX(1);
+            leafEmitter.setImagesY(1);
+            leafEmitter.getParticleInfluencer().setInitialVelocity(new Vector3f(0,-1,-5));
+            leafEmitter.getParticleInfluencer().setVelocityVariation(0.5f);
+            leafEmitter.setLocalTranslation(-3321, 20, -1730);
+            leafEmitter.setStartSize(0.5f);
+            leafEmitter.setEndSize(0.5f);
+            //leafEmitter.setGravity(1,1,1);
+            leafEmitter.setLowLife(10f);
+            leafEmitter.setHighLife(100f);
+            leafEmitter.setNumParticles(200);
+            leafEmitter.setParticlesPerSec(10);
+            leafEmitter.setRotateSpeed(2f);
+            leafEmitter.setRandomAngle(true);
+            leafEmitter.setSelectRandomImage(true); 
+            leafEmitter.setShape(new EmitterBoxShape(new Vector3f(-50f,-50f,-50f),new Vector3f(50f,50f,50f)));
            
-            this.app.getRootNode().attachChild(particle1);
+            this.app.getRootNode().attachChild(leafEmitter);
 
         }
         
@@ -354,30 +353,30 @@ public class S2M0_shore extends BaseAppState {
          }
         
         public void sunLight(){
-            effect.sunGodRays = new LightScatteringFilter(new Vector3f(3000f, 1500f, -8000f));
+            effectManager.sunGodRays = new LightScatteringFilter(new Vector3f(3000f, 1500f, -8000f));
             
-            effect.sunGodRays.setLightDensity(1f);
-            effect.filterPostProc.addFilter(effect.sunGodRays);
+            effectManager.sunGodRays.setLightDensity(1f);
+            effectManager.filterPostProc.addFilter(effectManager.sunGodRays);
         }
         
         
         public void createAdvancedWater(){
             //post process water
         
-        effect.waterFilter = new WaterFilter(rootNode, sunPosition.getDirection());
-        effect.waterFilter.setSunScale(1f);
-        effect.waterFilter.setLightColor(ColorRGBA.LightGray);
-        effect.waterFilter.setWaterHeight(ppInitialWaterHeight);
-        effect.waterFilter.setMaxAmplitude(1f);
-        effect.waterFilter.setWaveScale(0.005f);
-        effect.waterFilter.setWindDirection(new Vector2f(0.2f,-0.8f));     
-        effect.waterFilter.setNormalScale(0.5f);
-        effect.waterFilter.setFoamHardness(1.0f);
-        effect.waterFilter.setFoamExistence(new Vector3f(0.5f,-2f,1f));
-        effect.waterFilter.setUseRipples(true);
-        effect.waterFilter.setRefractionConstant(0.2f);
-        effect.waterFilter.setShininess(0.3f);
-        effect.filterPostProc.addFilter(effect.waterFilter);
+        effectManager.waterFilter = new WaterFilter(rootNode, sunPosition.getDirection());
+        effectManager.waterFilter.setSunScale(1f);
+        effectManager.waterFilter.setLightColor(ColorRGBA.LightGray);
+        effectManager.waterFilter.setWaterHeight(ppInitialWaterHeight);
+        effectManager.waterFilter.setMaxAmplitude(1f);
+        effectManager.waterFilter.setWaveScale(0.005f);
+        effectManager.waterFilter.setWindDirection(new Vector2f(0.2f,-0.8f));     
+        effectManager.waterFilter.setNormalScale(0.5f);
+        effectManager.waterFilter.setFoamHardness(1.0f);
+        effectManager.waterFilter.setFoamExistence(new Vector3f(0.5f,-2f,1f));
+        effectManager.waterFilter.setUseRipples(true);
+        effectManager.waterFilter.setRefractionConstant(0.2f);
+        effectManager.waterFilter.setShininess(0.3f);
+        effectManager.filterPostProc.addFilter(effectManager.waterFilter);
         
         
         }
@@ -386,7 +385,7 @@ public class S2M0_shore extends BaseAppState {
             
             waveTime += tpf;
             ppWaterHeight = (float) Math.cos(((waveTime * 0.5f) % FastMath.TWO_PI)) * 1.0f;
-            effect.waterFilter.setWaterHeight(ppInitialWaterHeight + ppWaterHeight);
+            effectManager.waterFilter.setWaterHeight(ppInitialWaterHeight + ppWaterHeight);
                         
         }
         

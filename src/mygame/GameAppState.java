@@ -12,10 +12,7 @@ import com.jme3.animation.AnimEventListener;
 import com.jme3.app.Application;
 import com.jme3.app.SimpleApplication;
 import com.jme3.app.state.AppState;
-import com.jme3.app.state.AppStateManager;
 import com.jme3.app.state.BaseAppState;
-import com.jme3.asset.AssetManager;
-import com.jme3.audio.AudioRenderer;
 import com.jme3.bullet.collision.shapes.CapsuleCollisionShape;
 import com.jme3.bullet.control.CharacterControl;
 import com.jme3.collision.CollisionResults;
@@ -31,8 +28,6 @@ import com.jme3.math.FastMath;
 import com.jme3.math.Ray;
 import com.jme3.math.Vector3f;
 import com.jme3.renderer.Camera;
-import com.jme3.renderer.RenderManager;
-import com.jme3.renderer.ViewPort;
 import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
 import static Managers.ModelManager.destroyableNode;
@@ -49,19 +44,14 @@ public class GameAppState extends BaseAppState
         implements AnimEventListener, ActionListener, AnalogListener{
     
     private SimpleApplication app;
+    mygame.HUDScreenController hudScreenController;
     
     Node npcPlayer;
         
     private Node              rootNode;
-    private AssetManager      assetManager;
-    private AppStateManager   stateManager;
     private InputManager      inputManager;
-    private RenderManager     renderManager;
-    private AudioRenderer     audioRenderer;
-    private ViewPort          viewPort;
     private Camera camera;
         
-    private Spatial level;
                 
     CapsuleCollisionShape capsulePlayer;        
     public CharacterControl firstPersonPlayer;
@@ -85,7 +75,6 @@ public class GameAppState extends BaseAppState
     public String targetName = "Valami";
     public Spatial shootable;
     public String assetLocation = "Location";
-    private String pressedKey;
     
     private float walkSpeed = 0.5f;
     
@@ -95,12 +84,13 @@ public class GameAppState extends BaseAppState
         
         this.app = (SimpleApplication) app;   
         this.rootNode     = this.app.getRootNode();
-        this.assetManager = this.app.getAssetManager();
-        this.stateManager = this.app.getStateManager();
+        this.app.getAssetManager();
+        this.app.getStateManager();
         this.inputManager = this.app.getInputManager();
-        this.viewPort     = this.app.getViewPort();
+        this.app.getViewPort();
         this.camera       = this.app.getCamera();
-                
+        
+        hudScreenController = new mygame.HUDScreenController();        
         inputManager.deleteMapping(SimpleApplication.INPUT_MAPPING_EXIT); //delete ESC key quit app function
         
         rootNode.attachChild(shootableNode);
@@ -225,7 +215,6 @@ public class GameAppState extends BaseAppState
     
             @Override
             public void onAction (String keyBinding, boolean keyPressed, float tpf){
-                pressedKey = keyBinding; //track the pressed key
                 
                 if (keyBinding.equals(MovementKeys.FORWARD.name())) {keyW = keyPressed;}
                 if (keyBinding.equals(MovementKeys.BACKWARD.name())) {keyS = keyPressed;}
@@ -262,7 +251,8 @@ public class GameAppState extends BaseAppState
                     break;
                                  
                                  
-                    case "StartMap": firstPersonPlayer.setPhysicsLocation(playerSpawnPoint); break;
+                    case "StartMap": firstPersonPlayer.setPhysicsLocation(playerSpawnPoint); 
+                                     npcPlayer.setLocalTranslation(playerSpawnPoint);                                                       break;
                                                      
                     case "PauseGame":   hotKeyPressed(PlayGame.screenPauseMenu, keyPressed); break; 
                                         
@@ -275,14 +265,14 @@ public class GameAppState extends BaseAppState
                                                            
                     case "lookat_target": 
                         if ((keyPressed) && PlayGame.gameplayAppState.isEnabled()){
-                            app.getStateManager().getState(HUDScreenController.class).createAssetInfoPanel(true, getTarget());
-                        
+                      hudScreenController.createAssetInfoPanel(true, getTarget());
+//                      hudScreenController.showLookAtDialog(true, getTarget());
                         } 
                     
                         else if (!keyPressed){
                     
-                            app.getStateManager().getState(HUDScreenController.class).createAssetInfoPanel(false, "...a vision..");
-                        
+                          hudScreenController.createAssetInfoPanel(false, "...a vision..");
+//                          hudScreenController.showLookAtDialog(false, "......a vision");
                         }
                         break;
                         
@@ -373,6 +363,7 @@ public class GameAppState extends BaseAppState
             Ray ray = new Ray(camera.getLocation(), camera.getDirection());
             rootNode.collideWith(ray, results);
                 if (results.size() > 0){
+                    //targetName = results.getClosestCollision().getGeometry().getName();
                     targetName = results.getClosestCollision().getGeometry().getName();
                     assetLocation = (""+results.getClosestCollision().getGeometry().getLocalTranslation());
                 }

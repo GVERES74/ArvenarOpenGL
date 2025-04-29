@@ -5,9 +5,7 @@
  */
 package mygame;
 
-import Managers.ModelManager;
 import com.jme3.app.Application;
-import com.jme3.app.SimpleApplication;
 import com.jme3.app.state.BaseAppState;
 import com.jme3.math.FastMath;
 import de.lessvoid.nifty.Nifty;
@@ -35,26 +33,21 @@ import java.io.File;
  */
 public class LoadingScreen extends BaseAppState implements ScreenController{
 
-    private SimpleApplication app;
     private Nifty nifty;
         
     private String lscrAssetName = "Initialize Assets..";
     private String lscrLevelName = "Initialize Level..";
     private Label lscrLabelAssetName;
     private Label lscrLabelLevelName;
-    private Label lscrLabelHinttext1;
-    private Label lscrLabelHinttext2;
     private Element lscrImage;
     private NiftyImage lscrRandomNiftyImage;
     
     private int lsFrameCount=0;
-    private Screen screen;
     
     
     @Override
     protected void initialize(Application app) {
         
-        this.app = (SimpleApplication) app;
         nifty = PlayGame.nifty;
         
         createLoadingScreen();
@@ -101,11 +94,11 @@ public class LoadingScreen extends BaseAppState implements ScreenController{
        
         lsFrameCount++; 
          
-         for (lsFrameCount =0; lsFrameCount < 2000; lsFrameCount++){
-              lscrLabelAssetName.setText("Loading asset: "+getAssetName()); 
-              
-         }
-                
+//         for (lsFrameCount =0; lsFrameCount < 2000; lsFrameCount++){
+//              lscrLabelAssetName.setText("Loading asset: "+getAssetName()); 
+//              
+//         }
+              lscrLabelAssetName.setText("Loading asset: "+getAssetName());   
               lscrLabelLevelName.setText("Loading Level - "+getLoadLevelName()); 
              
              
@@ -126,7 +119,8 @@ public class LoadingScreen extends BaseAppState implements ScreenController{
                 layer(new LayerBuilder("Layer_Loading_BackgroundImage"){{
                         childLayoutCenter();
                         image(new ImageBuilder("img_Loading_Background") {{
-                            filename("Interface/Images/bkg_pirate_table.jpg");
+//                            filename("Interface/Images/bkg_pirate_table.jpg");
+                              backgroundColor("#ccf6");
                             height("100%");
                             width("100%");
                         }});
@@ -144,7 +138,7 @@ public class LoadingScreen extends BaseAppState implements ScreenController{
                                            
                         image(new ImageBuilder("img_Loading") {{
 //                                filename("Interface/Images/Loading/ruins.jpg");
-                                  filename(loadRandomImage());  
+                                filename(loadRandomImage());  
                                 height("50%");
                                 width("50%");
                                 alignCenter();
@@ -162,7 +156,7 @@ public class LoadingScreen extends BaseAppState implements ScreenController{
                         
                         text(new TextBuilder("text_LoadingHints2") {{
                                 text(getLoadingScreenHintText2());
-                                font("Interface/Fonts/Default.fnt");
+                                font("Interface/Fonts/verdana-48-regular.fnt");
                                 height("10%");
                                 width("80%");
                                 alignCenter();
@@ -336,7 +330,6 @@ public class LoadingScreen extends BaseAppState implements ScreenController{
     @Override
     public void bind(Nifty nifty, Screen screen) {
         this.nifty = nifty;
-        this.screen = screen;
         
     }
 

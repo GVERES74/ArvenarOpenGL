@@ -41,28 +41,17 @@ public class MainMenuScreen extends BaseAppState {
     
     private SimpleApplication app;
         
-    private Node              rootNode;
-    private AssetManager      assetManager;
     private AppStateManager   stateManager;
     private InputManager      inputManager;
-    private RenderManager     renderManager;
-    private AudioRenderer     audioRenderer;
-    private ViewPort          viewPort;
     private Nifty nifty;
-    private Camera camera;
-    private AudioNode soundPlayer;
     
     
     IntroMap menuScene;
     
-    private Node startRootNode = new Node("Main Menu RootNode");
-    private Node startGUINode = new Node("Main Menu GUINode");
     
-    float screenHeight, screenWidth, timer;
     public boolean load = false;
     public int frameCount = 0;  
     
-    BitmapText menuItemText, camPosInfoText;
     
     
     
@@ -74,17 +63,17 @@ public class MainMenuScreen extends BaseAppState {
         nifty = PlayGame.nifty;
         app.getGuiViewPort().addProcessor(PlayGame.niftyDisplay);
         
-        this.rootNode     = this.app.getRootNode();
-        this.assetManager = this.app.getAssetManager();
+        this.app.getRootNode();
+        this.app.getAssetManager();
         this.stateManager = this.app.getStateManager();
         
             
         this.inputManager = this.app.getInputManager();
-        this.viewPort     = this.app.getViewPort();
-        this.camera       = this.app.getCamera();
+        this.app.getViewPort();
+        this.app.getCamera();
         
-        screenHeight = app.getCamera().getHeight();
-        screenWidth = app.getCamera().getWidth();
+        app.getCamera().getHeight();
+        app.getCamera().getWidth();
         
         
         
@@ -142,7 +131,6 @@ public class MainMenuScreen extends BaseAppState {
     @Override
     protected void onEnable(){
         
-        timer = 0;               
         nifty.gotoScreen("Screen_AnimatedMainMenu");
         app.getFlyByCamera().setDragToRotate(true);
         

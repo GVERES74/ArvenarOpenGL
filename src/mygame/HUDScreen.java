@@ -59,7 +59,7 @@ public class HUDScreen extends BaseAppState {
     @Override
     protected void onEnable() {
      gpsInfo = nifty.getScreen("Screen_HUD").findNiftyControl("cameraLocationInfo", Label.class);
-       
+     nifty.setDebugOptionPanelColors(false); //true if all panel visible e.g. during testing phase
            
            
         //Called when the state is fully enabled, ie: is attached and         
@@ -111,6 +111,7 @@ public class HUDScreen extends BaseAppState {
                     neverStopRendering(true);
                     
                     }});
+                    
                     
                     panel(new PanelBuilder("Panel_HUD_Left"){{ //left main panel
                         alignCenter();
@@ -193,13 +194,7 @@ public class HUDScreen extends BaseAppState {
                             width("100%");
                             childLayoutCenter();
                             
-                            control(new LabelBuilder("cameraLocationInfo"){{
-                                text(""+gpsInfo);
-                                valignBottom();
-                                height("20%");
-                                width("50%");
-                            }});
-                                                        
+                                                                                    
                             image(new ImageBuilder("HUD_MinimapImg"){{
                                 filename("Interface/Images/Hud/minimap_base.png");
                                 alignLeft();
@@ -207,7 +202,13 @@ public class HUDScreen extends BaseAppState {
                                 height("250px");
                                 width("250px");                          
                             }}); 
-                                                       
+                            
+                            control(new LabelBuilder("cameraLocationInfo"){{
+                                text(""+gpsInfo);
+                                valignTop();
+                                height("20%");
+                                width("50%");
+                            }});
                                                         
                          }}); //panel MiniMap end
                     
@@ -239,7 +240,7 @@ public class HUDScreen extends BaseAppState {
             layer(new LayerBuilder("Layer_AssetInfo"){{
                 childLayoutCenter();    
                     panel(new PanelBuilder("Panel_HUD_Dialog"){{
-                        backgroundColor("#66c2");    
+//                        backgroundColor("");    
                             height("10%");
                             width("40%");
                             visible(false);
